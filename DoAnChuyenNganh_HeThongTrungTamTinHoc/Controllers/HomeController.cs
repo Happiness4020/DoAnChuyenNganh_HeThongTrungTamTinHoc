@@ -13,5 +13,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         {
             return View();
         }
+        public ActionResult ThongTinHocVien()
+        {
+            return View();
+        }
     }
 }
