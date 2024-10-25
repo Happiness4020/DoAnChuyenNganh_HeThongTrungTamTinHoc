@@ -26,7 +26,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             {
                 if (dn.Email == "duy" && dn.MatKhau == "1")
                 {
-                    return RedirectToAction("ThongTinHocVien", "Account");
+                    return RedirectToAction("ThongTinHocVien", "Home");
                 }
                 else
                 {
@@ -38,11 +38,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
 
         public ActionResult DangKy()
-        {
-            return View();
-        }
-
-        public ActionResult ThongTinHocVien()
         {
             return View();
         }
