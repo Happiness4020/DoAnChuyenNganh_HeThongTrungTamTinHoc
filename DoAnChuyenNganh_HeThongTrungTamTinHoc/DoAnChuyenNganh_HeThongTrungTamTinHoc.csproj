@@ -179,9 +179,9 @@
     <Content Include="Views\GiangVien\Index.cshtml" />
     <Content Include="Views\Account\DangNhap.cshtml" />
     <Content Include="Views\Account\DangKy.cshtml" />
-    <Content Include="Views\Account\ThongTinHocVien.cshtml" />
     <Content Include="Views\GioiThieu\Index.cshtml" />
     <Content Include="Views\LienHe\Index.cshtml" />
+    <Content Include="Views\Home\ThongTinHocVien.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -193,6 +193,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\DangKy\" />
+    <Folder Include="Views\test\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
