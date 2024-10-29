@@ -115,6 +115,80 @@
         </div>
     </div>
 </div>
+<div class="container-fluid mt-5">
+    <div class="card w-100">
+        <h2 class="text-center text-uppercase" style="color: #0066b3">Cảm Nhận Học Viên</h2>
+        <div class="row justify-content-center">
+            @*@foreach (var feedback in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@feedback.StudentName</h5>
+                        <p class="card-text">@feedback.Content</p>
+                        <footer class="blockquote-footer">
+                            <small class="text-muted">@feedback.Date.ToString("dd/MM/yyyy")</small>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+         }*@
+            @*sẽ bổ sung khi thêm csdl*@
+            <div class="col-md-3">
+                <div class="card mb-4 border-primary">
+                    <div class="card-header text-white" style="background-color: #0066b3">
+                        <h5 class="m-0">Bùi Khánh Duy</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Khóa học rất bổ ích</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <small>29/10/2024</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-4 border-primary">
+                    <div class="card-header text-white" style="background-color: #0066b3">
+                        <h5 class="m-0">Trần Vạn</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Giáo viên ở đây dạy rất hay</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <small>20/10/2024</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-4 border-primary">
+                    <div class="card-header text-white" style="background-color: #0066b3">
+                        <h5 class="m-0">Nguyễn Văn A</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Khóa học hay, dễ hiểu, giúp tôi học được nhiều thứ</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <small>11/09/2024</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-4 border-primary">
+                    <div class="card-header text-white" style="background-color: #0066b3">
+                        <h5 class="m-0">Trần Khánh B</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Giáo viên dạy dễ hiểu, nhiệt tình. Xứng đáng để bỏ tiền.</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <small>13/08/2024</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
