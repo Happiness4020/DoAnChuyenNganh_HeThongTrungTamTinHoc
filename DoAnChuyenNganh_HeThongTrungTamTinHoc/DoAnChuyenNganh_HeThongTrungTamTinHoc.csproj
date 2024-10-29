@@ -139,6 +139,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Css\GiangVien.css" />
+    <Content Include="Css\LichDay.css" />
     <Content Include="Global.asax" />
     <Content Include="images\home.png" />
     <Content Include="images\school.png" />
@@ -165,6 +166,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DangNhap.cs" />
+    <Compile Include="Models\LichDay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +212,7 @@
     <Content Include="Views\GioiThieu\Index.cshtml" />
     <Content Include="Views\LienHe\Index.cshtml" />
     <Content Include="Views\Home\ThongTinHocVien.cshtml" />
+    <Content Include="Views\GiangVien\LichDay.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
