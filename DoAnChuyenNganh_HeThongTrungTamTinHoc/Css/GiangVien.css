@@ -12,7 +12,7 @@ body {
 }
 
 header {
-    background-color: #4CAF50;
+    background-color: #0066b3;
     color: white;
     padding: 10px 0;
     text-align: center;
@@ -42,10 +42,10 @@ main {
     padding: 20px;
 }
 
-main h2 {
-    color: #4CAF50;
-    margin-bottom: 10px;
-}
+    main h2 {
+        color: #0066b3;
+        margin-bottom: 10px;
+    }
 
 table {
     width: 100%;
@@ -63,14 +63,14 @@ th, td {
 }
 
 th {
-    background-color: #4CAF50;
+    background-color: #0066b3;
     color: white;
 }
 
 footer {
     text-align: center;
     padding: 10px 0;
-    background-color: #4CAF50;
+    background-color: #0066b3;
     color: white;
     position: fixed;
     bottom: 0;

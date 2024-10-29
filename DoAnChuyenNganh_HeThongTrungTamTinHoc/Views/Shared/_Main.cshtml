@@ -28,8 +28,11 @@
 <body class="d-flex flex-column h-100 w-100">
     <div style="background-color: #fff; height: 100px;" class="d-flex align-items-center">
         <a href="@Url.Action("Index", "Home")" class="text-decoration-none w-100 d-flex align-items-center justify-content-center" style="color: #0066b3">
-            <img src="~/images/school.png" />
-            <h3 class="mx-2">Trung tâm Tin học HUIT</h3>
+            <img src="https://its.huit.edu.vn/app_web/ttcntt/images/news/01_banner_its-.jpg?width=200" alt="Logo"/>
+            <div class="d-flex align-items-center flex-column mx-2">
+                <h4>Trường Đại học Công thương TP.Hồ Chí Minh</h4>
+                <h3 class="mx-2" style="color: red;">Trung tâm Tin học HUIT</h3>
+            </div>
         </a>
     </div>
     <header style="background-color: #0066b3">
@@ -64,16 +67,16 @@
                             <a class="nav-link text-white" href="@Url.Action("Index", "LienHe")">Liên Hệ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="@Url.Action("DangNhap", "Account")">Đăng nhập</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="@Url.Action("DangKy", "Account")">Đăng ký</a>
-                        </li>
-                        <li class="nav-item">
                             <div class="d-flex align-items-center m-1">
                                 <input type="text" placeholder="Tìm kiếm" class="form-control" />
                                 <button class="btn btn-light mx-1"><i class="fa fa-search"></i></button>
                             </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="@Url.Action("DangNhap", "Account")">Đăng nhập</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="@Url.Action("DangKy", "Account")">Đăng ký</a>
                         </li>
                     </ul>
                 </div>
