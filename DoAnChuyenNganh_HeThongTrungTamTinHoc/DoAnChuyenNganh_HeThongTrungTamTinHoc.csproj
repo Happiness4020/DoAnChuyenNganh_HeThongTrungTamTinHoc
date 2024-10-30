@@ -144,6 +144,7 @@
     <Content Include="images\home.png" />
     <Content Include="images\school.png" />
     <Content Include="Javascript\GiangVien.js" />
+    <Content Include="Javascript\HocVien.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -160,6 +161,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GiangVienController.cs" />
     <Compile Include="Controllers\GioiThieuController.cs" />
+    <Compile Include="Controllers\HocVienController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LienHeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -211,8 +213,8 @@
     <Content Include="Views\Account\DangKy.cshtml" />
     <Content Include="Views\GioiThieu\Index.cshtml" />
     <Content Include="Views\LienHe\Index.cshtml" />
-    <Content Include="Views\Home\ThongTinHocVien.cshtml" />
     <Content Include="Views\GiangVien\LichDay.cshtml" />
+    <Content Include="Views\HocVien\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

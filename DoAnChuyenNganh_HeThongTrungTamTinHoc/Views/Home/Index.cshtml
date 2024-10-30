@@ -6,8 +6,8 @@
 <style>
     .mySwiper {
         width: 100%;
-        max-width: 1140px;
         margin: 0 auto;
+        margin-top: 0;
     }
 </style>
 
@@ -16,22 +16,32 @@
                       centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
         <swiper-slide>
             <a href="#">
-                <img class="card-img-top" src="~/images/12-2.png" alt="Product image" style="width: 100%; height: auto;">
+                <img class="card-img-top" src="https://csc.edu.vn/data/images/slider/Tin%20hoc%20Van%20Phong/298-VBA.png" alt="Product image" style="width: 100%; height: auto;">
             </a>
         </swiper-slide>
         <swiper-slide>
             <a href="#">
-                <img class="card-img-top" src="~/images/chieu-sinh31522-8.png" alt="Product image" style="width: 100%; height: auto;">
+                <img class="card-img-top" src="https://csc.edu.vn/data/images/slider/Data-science/Banner-Analytics-lap-trinh.jpg" alt="Product image" style="width: 100%; height: auto;">
             </a>
         </swiper-slide>
         <swiper-slide>
             <a href="#">
-                <img class="card-img-top" src="~/images/dao-tao-theo-yeu-cau.png" alt="Product image" style="width: 100%; height: auto;">
+                <img class="card-img-top" src="https://csc.edu.vn/data/images/slider/Data-science/combo-python-co-ban-python-visualization-k290.png" alt="Product image" style="width: 100%; height: auto;">
+            </a>
+        </swiper-slide>
+        <swiper-slide>
+            <a href="#">
+                <img class="card-img-top" src="	https://csc.edu.vn/data/images/slider/Tin%20hoc%20Van%20Phong/299-ud-cntt-co-ban.jpg" alt="Product image" style="width: 100%; height: auto;">
+            </a>
+        </swiper-slide>
+        <swiper-slide>
+            <a href="#">
+                <img class="card-img-top" src="https://csc.edu.vn/data/images/slider/lap-trinh/lap-trinh-di-dong-da-nen-tang-flutter-k299.png" alt="Product image" style="width: 100%; height: auto;">
             </a>
         </swiper-slide>
     </swiper-container>
 </div>
-<div class="container-fluid mt-5">
+<div class="container-fluid border p-2" style="background-color: lightgray">
     <div class="row">
         <div class="col-md-2">
             <div class="card mb-4">
@@ -114,10 +124,13 @@
             </div>
         </div>
     </div>
+    <div class="d-flex justify-content-center">
+        <a href="#" class="btn text-white" style="background-color: #0066b3">Xem tất cả khóa học</a>
+    </div>
 </div>
-<div class="container-fluid mt-5">
-    <div class="card w-100">
-        <h2 class="text-center text-uppercase" style="color: #0066b3">Cảm Nhận Học Viên</h2>
+<div class="container-fluid p-0">
+    <div class="card w-100 p-3" style="border-radius: 0px; background-color: #0066b3;">
+        <h2 class="text-center text-uppercase text-white">Cảm Nhận Học Viên</h2>
         <div class="row justify-content-center">
             @*@foreach (var feedback in Model)
         {
@@ -136,7 +149,7 @@
             @*sẽ bổ sung khi thêm csdl*@
             <div class="col-md-3">
                 <div class="card mb-4 border-primary">
-                    <div class="card-header text-white" style="background-color: #0066b3">
+                    <div class="card-header" style="color: #0066b3;">
                         <h5 class="m-0">Bùi Khánh Duy</h5>
                     </div>
                     <div class="card-body">
@@ -149,7 +162,7 @@
             </div>
             <div class="col-md-3">
                 <div class="card mb-4 border-primary">
-                    <div class="card-header text-white" style="background-color: #0066b3">
+                    <div class="card-header" style="color: #0066b3;">
                         <h5 class="m-0">Trần Vạn</h5>
                     </div>
                     <div class="card-body">
@@ -162,7 +175,7 @@
             </div>
             <div class="col-md-3">
                 <div class="card mb-4 border-primary">
-                    <div class="card-header text-white" style="background-color: #0066b3">
+                    <div class="card-header" style="color: #0066b3;">
                         <h5 class="m-0">Nguyễn Văn A</h5>
                     </div>
                     <div class="card-body">
@@ -175,7 +188,7 @@
             </div>
             <div class="col-md-3">
                 <div class="card mb-4 border-primary">
-                    <div class="card-header text-white" style="background-color: #0066b3">
+                    <div class="card-header" style="color: #0066b3;">
                         <h5 class="m-0">Trần Khánh B</h5>
                     </div>
                     <div class="card-body">
@@ -185,6 +198,36 @@
                         <small>13/08/2024</small>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid text-center p-2">
+    <div class="mb-4" style="color: #0066b3">
+        <span class="h4">Cám ơn bạn đã tin tưởng và đồng hành cùng Trung tâm Tin học HUIT</span>
+        <img src="https://csc.edu.vn/template/frontend/images/home/heart-icon.png" alt="icon trái tim" class="ms-2" />
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 mb-4">
+                <div class="h1" style="color: orangered">
+                    <span>10</span>+
+                </div>
+                <div class="fw-bold" style="color: #0066b3">Năm phát triển</div>
+            </div>
+
+            <div class="col-sm-4 mb-4">
+                <div class="h1" style="color: orangered">
+                    <span>50</span>+
+                </div>
+                <div class="fw-bold" style="color: #0066b3">Chương trình học</div>
+            </div>
+
+            <div class="col-sm-4 mb-4">
+                <div class="h1" style="color: orangered">
+                    <span>100.000</span>+
+                </div>
+                <div class="fw-bold" style="color: #0066b3">Học viên khắp mọi miền</div>
             </div>
         </div>
     </div>
