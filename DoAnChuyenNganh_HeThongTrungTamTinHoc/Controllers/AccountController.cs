@@ -26,7 +26,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             {
                 if (dn.Email == "duy" && dn.MatKhau == "1")
                 {
-                    return RedirectToAction("ThongTinHocVien", "Home");
+                    return RedirectToAction("Index", "HocVien");
                 }
                 else
                 {
