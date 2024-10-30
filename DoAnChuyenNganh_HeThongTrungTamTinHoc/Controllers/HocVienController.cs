@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 {
-    public class HomeController : Controller
+    public class HocVienController : Controller
     {
-        // GET: Home
+        // GET: HocVien
         public ActionResult Index()
         {
             return View();

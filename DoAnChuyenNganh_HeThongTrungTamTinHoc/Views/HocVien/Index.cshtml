@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_HocVien.cshtml";
+}
+<style>
+    .table-header
+    {
+        background-color: #0066b3;
+    }
+
+    th {
+        background-color: #0066b3;
+    }
+</style>
+
+<div class="container-fluid d-flex flex-column h-100">
+    <div class="p-3">
+        <section id="profile">
+            <h2 class="" style="color: #0066b3">Thông tin học viên</h2>
+            <table class="table table-bordered table-hover">
+                <thead class="table-header">
+                    <tr>
+                        <th>Ảnh học viên</th>
+                        <th>Mã học viên</th>
+                        <th>Tên học viên</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id="thongTinHocVien">
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <script src="~/Javascript/HocVien.js"></script>
+</div>
+
