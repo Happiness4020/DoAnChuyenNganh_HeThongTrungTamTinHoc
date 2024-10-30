@@ -1,42 +1,45 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giảng viên - Lịch dạy và thông tin</title>
     <link href="~/Css/GiangVien.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
 </head>
+
 <body class="d-flex flex-column h-100">
-    <header class="bg-primary" style="background-color: #0066b3;">
-        <h1>Chào mừng Giảng viên</h1>
-        <nav>
-            <ul>
-                <li><a href="~/GiangVien/Index">Thông tin giảng viên</a></li>
-                <li><a href="~/GiangVien/LichDay">Lịch dạy</a></li>
-                <li><a href="#logout">Đăng xuất</a></li>
-            </ul>
-        </nav>
+    <header>
+        <div class="header-content">
+            <h1>Chào mừng Giảng viên</h1>
+            <nav>
+                <ul>
+                    <li><a href="~/GiangVien/Index">Thông tin giảng viên</a></li>
+                    <li><a href="~/GiangVien/LichDay">Lịch dạy</a></li>
+                    <li><a href="#logout">Đăng xuất</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <main class="p-3 w-100">
-        @RenderBody()
+    <main>
         <section id="profile">
+            @RenderBody()
             <h2>Thông tin giảng viên</h2>
-            <p>Tên: <span id="teacherName">Nguyễn Văn A</span></p>
-            <p>Email: <span id="teacherEmail">nguyenvana@example.com</span></p>
-            <p>Khoa: <span id="teacherDepartment">Khoa Công Nghệ Thông Tin</span></p>
+            <div class="info-box">
+                <p><strong>Tên:</strong> Nguyễn Văn A</p>
+                <p><strong>Email:</strong> nguyenvana@example.com</p>
+                <p><strong>Khoa:</strong> Khoa Công Nghệ Thông Tin</p>
+            </div>
         </section>
-
-        
-
     </main>
 
-    <footer class="bg-primary position-fixed left-0 text-white" style="background-color: #0066b3; ">
+    <footer>
         <p>© 2024 Quản lý lịch giảng dạy</p>
     </footer>
-
-
-    
 </body>
+
 </html>
