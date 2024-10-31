@@ -1,18 +1,56 @@
-﻿
+
 @model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TaiKhoan
 
 @{
-    ViewBag.Title = "Đăng nhập";
+
+    ViewBag.Title = "Đăng nhập hệ thống";
+
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
-<div class="card mb-3 w-50 mx-auto mt-5" style="max-width: 700px; background-color: #0066b3;">
-    <div class="row g-0 mt-1 mb-0">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <div class="card-body text-center">
-                <h2 style="color: white;">@ViewBag.Title</h2>
-            </div>
+<style>
+    .dangnhap-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f0f2f5;
+        margin: 0;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        background-color: #0066b3;
+        border-radius: 8px;
+        padding: 30px 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-card h3 {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        border-radius: 6px;
+    }
+
+    .btn-submit {
+        background-color: #ffffff;
+        color: #0066b3;
+        font-weight: bold;
+        border-radius: 6px;
+        width: 100%;
+    }
+</style>
+
+
+<div class="dangnhap-body">
+    <div class="card login-card">
+        <div class="text-center">
+            <h3>@ViewBag.Title</h3>
         </div>
     </div>
     <div class="row g-0 mt-0">
@@ -51,6 +89,7 @@
                         </div>
                     </div>
                 }
+
             </div>
         </div>
     </div>

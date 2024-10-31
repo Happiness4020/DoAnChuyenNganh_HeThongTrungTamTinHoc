@@ -1,16 +1,59 @@
 ﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TaiKhoan
 @{
-    ViewBag.Title = "Đăng Ký";
+
+    ViewBag.Title = "Đăng ký tài khoản";
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
-<div class="card mb-3 mx-auto mt-5" style="max-width: 700px; background-color: #0066b3;">
-    <div class="row g-0 mt-1 mb-0">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <div class="card-body text-center">
-                <h2 style="color: white;">@ViewBag.Title</h2>
-            </div>
+<style>
+    .dangky-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f0f2f5;
+        margin: 0;
+    }
+    .register-card {
+        width: 100%;
+        max-width: 500px;
+        background-color: #0066b3;
+        border-radius: 8px;
+        padding: 40px 25px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .register-card h2 {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 25px;
+    }
+
+    .form-control {
+        border-radius: 6px;
+    }
+
+    .btn-submit {
+        background-color: #ffffff;
+        color: #0066b3;
+        font-weight: bold;
+        border-radius: 6px;
+        width: 48%;
+    }
+
+    .btn-back {
+        background-color: orangered;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 6px;
+        width: 48%;
+    }
+</style>
+
+<div class="dangky-body">
+    <div class="card register-card">
+        <div class="text-center">
+            <h2>@ViewBag.Title</h2>
         </div>
     </div>
     <div class="row g-0 mt-1">
@@ -59,8 +102,8 @@
                         </div>
                     </div>
                 }
+
             </div>
         </div>
     </div>
 </div>
-
