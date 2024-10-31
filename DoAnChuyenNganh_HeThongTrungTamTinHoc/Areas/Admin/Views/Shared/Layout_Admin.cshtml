@@ -1,4 +1,9 @@
-﻿<!doctype html>
+﻿@{
+    var userName = Context.Request.Cookies["NguoiDung"];
+    var role = Context.Request.Cookies["QuyenHan"];
+}
+
+<!doctype html>
 <html>
 
 <head>
@@ -97,7 +102,10 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                                     <div class="message-body">
-                                        <a href="/User/DangXuat" class="btn btn-outline-primary mx-3 mt-2 d-block shadow-none">Logout</a>
+                                        <a class="btn btn-close-white mx-3 mt-2 d-block shadow-none">Chào @userName.Value</a>
+                                    </div>
+                                    <div class="message-body">
+                                        <a href="/Account/DangXuat" class="btn btn-outline-primary mx-3 mt-2 d-block shadow-none">Logout</a>
                                     </div>
                                 </div>
                             </li>

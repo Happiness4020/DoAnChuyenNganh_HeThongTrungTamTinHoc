@@ -1,0 +1,71 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TaiKhoan
+@{
+    ViewBag.Title = "Đăng nhập hệ thống";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<style>
+    .dangnhap-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f0f2f5;
+        margin: 0;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        background-color: #0066b3;
+        border-radius: 8px;
+        padding: 30px 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .login-card h3 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+    .form-control {
+        border-radius: 6px;
+    }
+
+    .btn-submit {
+        background-color: #ffffff;
+        color: #0066b3;
+        font-weight: bold;
+        border-radius: 6px;
+        width: 100%;
+    }
+</style>
+
+
+<div class="dangnhap-body">
+    <div class="card login-card">
+        @using (Html.BeginForm("DangNhap", "Account", FormMethod.Post))
+        {
+            <div class="text-center">
+            <h3>@ViewBag.Title</h3>
+            </div>
+            <div>
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.TenDangNhap, new { @style = "color: white;" })
+                    @Html.TextBoxFor(model => model.TenDangNhap, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TenDangNhap, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.MatKhau, new { @style = "color: white;" })
+                    @Html.PasswordFor(model => model.MatKhau, new { placeholder = "Mật khẩu..", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-submit">Đăng nhập</button>
+                </div>
+            </div>
+         }
+     </div>
+</div>
+

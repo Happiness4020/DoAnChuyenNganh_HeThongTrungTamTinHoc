@@ -1,0 +1,50 @@
+﻿@{
+    var userName = Context.Request.Cookies["NguoiDung"];
+    var role = Context.Request.Cookies["QuyenHan"];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giảng viên - Lịch dạy và thông tin</title>
+    <link href="~/Css/GiangVien.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header>
+        <div class="header-content">
+            <img src="~/images/sv_logo_dashboard.png" alt="Logo" style="background-color:white" />
+            <h1>Chào mừng Giảng viên</h1>
+            <nav>
+                <ul>
+                    <li><a href="@Url.Action("Index", "GiangVien")">Thông tin giảng viên</a></li>
+                    <li><a href="@Url.Action("LichDay", "GiangVien")">Lịch dạy</a></li>
+                    <li>
+                        <a>Chào @userName.Value</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("DangXuat", "Account")">Đăng xuất</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="profile">
+            @RenderBody()
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Quản lý lịch giảng dạy</p>
+    </footer>
+</body>
+
+</html>

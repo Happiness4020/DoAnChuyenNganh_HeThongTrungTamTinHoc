@@ -1,0 +1,94 @@
+﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LichDay>
+@{
+    ViewBag.Title = "LichDay";
+    ViewData["Title"] = "Lịch dạy";
+    Layout = "~/Views/Shared/_GiangVien.cshtml";
+}
+
+<link href="~/Css/LichDay.css" rel="stylesheet" />
+
+<div class="schedule">
+    <h2>Lịch giảng viên</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Ca học</th>
+                <th>Thứ 2 <br> 28/10/2024</th>
+                <th>Thứ 3 <br> 29/10/2024</th>
+                <th>Thứ 4 <br> 30/10/2024</th>
+                <th>Thứ 5 <br> 31/10/2024</th>
+                <th>Thứ 6 <br> 01/11/2024</th>
+                <th>Thứ 7 <br> 02/11/2024</th>
+                <th>Chủ nhật <br> 03/11/2024</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Sáng</td>
+                <td></td>
+                <td>
+                    <div class="class-box green">
+                        <strong>Phát triển phần mềm ứng dụng thông minh</strong><br>
+                        12DHTH01 - 01011014503<br>
+                        Tiết: 1 - 6<br>
+                        Phòng: A102 - 140 Lê Trọng Tấn<br>
+                        GV: Lâm Thị Họa Mi
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                    <div class="class-box gray">
+                        <strong>Công nghệ phần mềm nâng cao</strong><br>
+                        12DHTH01 - 010110103203<br>
+                        Tiết: 4 - 6<br>
+                        Phòng: A304 - 140 Lê Trọng Tấn<br>
+                        GV: Mạnh Thiên Lý
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Chiều</td>
+                <td>
+                    <div class="class-box green">
+                        <strong>Thực hành cơ sở dữ liệu NoSQL</strong><br>
+                        12DHTH10 - 010100483114<br>
+                        Tiết: 7 - 12<br>
+                        Phòng: A106 - 140 Lê Trọng Tấn<br>
+                        GV: Nguyễn Thị Thu Tâm
+                    </div>
+                </td>
+                <td></td>
+                <td>
+                    <div class="class-box green suspended">
+                        <span class="suspended-badge">Tạm ngừng</span>
+                        <strong>Thực hành kiểm định phần mềm</strong><br>
+                        12DHTH04 - 010110104106<br>
+                        Tiết: 7 - 12<br>
+                        Phòng: A103 - 140 Lê Trọng Tấn<br>
+                        GV: Đào Minh Châu
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Tối</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="~/Javascript/GiangVien.js"></script>
+
+
+
