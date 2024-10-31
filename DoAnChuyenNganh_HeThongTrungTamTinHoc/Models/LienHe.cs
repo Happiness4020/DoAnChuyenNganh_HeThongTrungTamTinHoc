@@ -12,16 +12,17 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class LichDay
+    public partial class LienHe
     {
-        public string MaLichDay { get; set; }
+        public string MaLienHe { get; set; }
+        public string NoiDung { get; set; }
+        public System.DateTime Ngaylienhe { get; set; }
+        public string MaHV { get; set; }
         public string MaGV { get; set; }
-        public string MaLH { get; set; }
-        public System.DateTime NgayDay { get; set; }
-        public System.TimeSpan GioBatDau { get; set; }
-        public System.TimeSpan GioKetThuc { get; set; }
+        public string MaQL { get; set; }
     
         public virtual GiaoVien GiaoVien { get; set; }
-        public virtual LopHoc LopHoc { get; set; }
+        public virtual HocVien HocVien { get; set; }
+        public virtual NguoiQuanLy NguoiQuanLy { get; set; }
     }
 }

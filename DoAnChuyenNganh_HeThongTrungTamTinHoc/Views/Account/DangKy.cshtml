@@ -1,4 +1,4 @@
-﻿
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TaiKhoan
 @{
     ViewBag.Title = "Đăng ký tài khoản";
     Layout = "~/Views/Shared/_Main.cshtml";
@@ -13,6 +13,7 @@
         background-color: #f0f2f5;
         margin: 0;
     }
+
     .register-card {
         width: 100%;
         max-width: 500px;
@@ -22,11 +23,11 @@
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     }
 
-    .register-card h2 {
-        color: white;
-        font-weight: 600;
-        margin-bottom: 25px;
-    }
+        .register-card h2 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
 
     .form-control {
         border-radius: 6px;
@@ -51,26 +52,37 @@
 
 <div class="dangky-body">
     <div class="card register-card">
-        <div class="text-center">
-            <h2>@ViewBag.Title</h2>
-        </div>
-        <div>
-            <div class="mb-3">
-                <input type="text" placeholder="Mã học viên" class="form-control" />
+        @using (Html.BeginForm("DangKy", "Account", FormMethod.Post))
+        {
+            <div class="text-center">
+                <h2>@ViewBag.Title</h2>
             </div>
-            <div class="mb-3">
-                <input type="text" placeholder="Email" class="form-control" />
+            <div>
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.MaHV, new { @style = "color: white;" })
+                    @Html.TextBoxFor(model => model.MaHV, new { placeholder = "Mã học viên..", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.MaHV, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.TenDangNhap, new { @style = "color: white;" })
+                    @Html.TextBoxFor(model => model.TenDangNhap, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TenDangNhap, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.MatKhau, new { @style = "color: white;" })
+                    @Html.PasswordFor(model => model.MatKhau, new { placeholder = "Mật khẩu..", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-3">
+                    @Html.Label("retypePassword", "Nhập lại mật khẩu", new { @style = "color: white;" })
+                    @Html.Password("retypePassword", "", new { placeholder = "Nhập lại mật khẩu..", @class = "form-control" })
+                    @Html.ValidationMessage("retypePassword", "", new { @class = "text-danger" })
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-submit">Đăng ký</button>
+                    <a href="/Home/Index" class="btn btn-back">Quay lại</a>
+                </div>
             </div>
-            <div class="mb-3">
-                <input type="password" placeholder="Mật khẩu" class="form-control" />
-            </div>
-            <div class="mb-3">
-                <input type="password" placeholder="Xác nhận mật khẩu" class="form-control" />
-            </div>
-            <div class="text-center mt-4">
-                <button type="submit" class="btn btn-submit">Đăng ký</button>
-                <a href="/Home/Index" class="btn btn-back">Quay lại</a>
-            </div>
-        </div>
-    </div>
+        }
+     </div>
 </div>
