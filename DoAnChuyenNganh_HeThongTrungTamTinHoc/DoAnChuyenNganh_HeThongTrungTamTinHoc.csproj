@@ -142,6 +142,7 @@
     <Content Include="Css\LichDay.css" />
     <Content Include="Global.asax" />
     <Content Include="images\home.png" />
+    <Content Include="images\huongdanthanhtoan.png" />
     <Content Include="images\kh1.jpg" />
     <Content Include="images\kh10.jpg" />
     <Content Include="images\kh11.jpg" />
@@ -227,6 +228,7 @@
     <Content Include="Views\LienHe\Index.cshtml" />
     <Content Include="Views\GiangVien\LichDay.cshtml" />
     <Content Include="Views\HocVien\Index.cshtml" />
+    <Content Include="Views\Home\HuongDanThanhToan.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
