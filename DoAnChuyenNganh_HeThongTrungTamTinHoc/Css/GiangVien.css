@@ -14,7 +14,7 @@ body {
 
 /* Header */
 header {
-    background-color: #0066b3;
+    background-color: white;
     color: #fff;
     padding: 15px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -31,6 +31,7 @@ header {
 
 header h1 {
     font-size: 1.8rem;
+    color: #0066b3;
 }
 
 header nav ul {
@@ -43,7 +44,7 @@ header nav ul {
     }
 
         header nav ul li a {
-            color: white;
+            color: #0066b3;
             text-decoration: none;
             font-weight: 500;
             padding: 8px 15px;

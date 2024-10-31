@@ -1,6 +1,6 @@
-﻿
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TaiKhoan
 @{
-    ViewBag.Title = "DangKy";
+    ViewBag.Title = "Đăng Ký";
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
@@ -21,73 +21,36 @@
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6 text-light">
-                            <input type="text" placeholder="Mã học viên" class="form-control" />
-                            @*@Html.LabelFor(model => model.Username, "Đăng nhập")
-                                @Html.TextBoxFor(model => model.Username, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })*@
+                            @Html.LabelFor(model => model.MaHV)
+                            @Html.TextBoxFor(model => model.MaHV, new { placeholder = "Mã học viên..", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MaHV, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6 text-light">
-                            <input type="text" placeholder="Email" class="form-control" />
-                            @*@Html.LabelFor(model => model.Username, "Đăng nhập")
-                                @Html.TextBoxFor(model => model.Username, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })*@
+                            @Html.LabelFor(model => model.TenDangNhap)
+                            @Html.TextBoxFor(model => model.TenDangNhap, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TenDangNhap, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6 text-light">
-                            <input type="password" placeholder="Mật khẩu" class="form-control" />
-                            @*@Html.LabelFor(model => model.Password, "Mật khẩu")
-                                @Html.PasswordFor(model => model.Password, new { placeholder = "Mật khẩu..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })*@
+                            @Html.LabelFor(model => model.MatKhau)
+                            @Html.PasswordFor(model => model.MatKhau, new { placeholder = "Mật khẩu..", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6 text-light">
-                            <input type="password" placeholder="Xác nhận mật khẩu" class="form-control" />
-                            @*@Html.LabelFor(model => model.ConfirmPassword, "Xác nhận mật khẩu")
-                                @Html.PasswordFor(model => model.ConfirmPassword, new { placeholder = "Xác nhận mật khẩu..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })*@
+                            @Html.Label("retypePassword", "Nhập lại mật khẩu")
+                            @Html.Password("retypePassword", "", new { @class = "form-control" })
+                            @Html.ValidationMessage("retypePassword", "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            @*@Html.LabelFor(model => model.Email, "Email")
-                                @Html.TextBoxFor(model => model.Email, new { placeholder = "Email..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            @*@Html.LabelFor(model => model.DateOfBirth, "Ngày sinh")
-                                <br />
-                                @Html.TextBoxFor(model => model.DateOfBirth, new { placeholder = "Ngày sinh..", @class = "form-control", type = "date" })
-                                <br />
-                                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            @*@Html.LabelFor(model => model.PhoneNum, "Số điện thoại")
-                                @Html.TextBoxFor(model => model.PhoneNum, new { placeholder = "Số điện thoại..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.PhoneNum, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            @*@Html.LabelFor(model => model.Address, "Địa chỉ")
-                                @Html.TextBoxFor(model => model.Address, new { placeholder = "Địa chỉ..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
+                    
                     <div class="row my-2 mt-4">
                         <div class="col-3"></div>
                         <div class="col-6 text-light text-end">

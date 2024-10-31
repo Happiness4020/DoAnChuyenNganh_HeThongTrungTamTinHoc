@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a0190b412838465c8e748a5ad986ef66" Name="Diagram1">
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.ChiTiet_HocVien_LopHoc" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.ChuongTrinhHoc" Width="1.5" PointX="1.5" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.GiaoDichHocPhi" Width="1.5" PointX="5.25" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.GiaoVien" Width="1.5" PointX="0.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.HocVien" Width="1.5" PointX="3" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.KhoaHoc" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.LichDay" Width="1.5" PointX="3" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.LichHoc" Width="1.5" PointX="8.25" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.LienHe" Width="1.5" PointX="6" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.LopHoc" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.NguoiQuanLy" Width="1.5" PointX="5.25" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.PhuongThucThanhToan" Width="1.5" PointX="3" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.TaiKhoan" Width="1.5" PointX="3" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.TaiLieuHocTap" Width="1.5" PointX="3" PointY="25.875" IsExpanded="true" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__ChiTiet_Ho__MaHV__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__ChiTiet_Ho__MaLH__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__KhoaHoc__TinhTra__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaHV__74AE54BC" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaKH__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaPT__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichDay__MaGV__797309D9" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LienHe__MaGV__09A971A2" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LopHoc__MaGV__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__TaiKhoan__MaGV__6FE99F9F" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichHoc__MaHV__7D439ABD" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LienHe__MaHV__08B54D69" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__TaiKhoan__MaHV__6EF57B66" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LopHoc__MaKH__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__NguoiQuanL__MaKH__01142BA1" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__TaiLieuHoc__MaKH__04E4BC85" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichDay__MaLH__7A672E12" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichHoc__MaLH__7E37BEF6" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LienHe__MaQL__0A9D95DB" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__NguoiQuanL__MaLH__02084FDA" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

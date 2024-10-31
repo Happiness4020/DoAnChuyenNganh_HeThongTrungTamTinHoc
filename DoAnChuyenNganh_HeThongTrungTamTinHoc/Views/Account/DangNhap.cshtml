@@ -1,5 +1,5 @@
 ﻿
-@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.DangNhap
+@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TaiKhoan
 
 @{
     ViewBag.Title = "Đăng nhập";
@@ -23,19 +23,19 @@
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6 text-light">
-                            <input type="email" placeholder="Email" class="form-control" />
-                            @*@Html.LabelFor(model => model.Username, "Đăng nhập")
-                                @Html.TextBoxFor(model => model.Username, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })*@
+                            @*<input type="email" placeholder="Email" class="form-control" />*@
+                            @Html.LabelFor(model => model.TenDangNhap, "Đăng nhập")
+                            @Html.TextBoxFor(model => model.TenDangNhap, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TenDangNhap, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6 text-light">
-                            <input type="password" placeholder="Mật khẩu" class="form-control" />
-                            @*@Html.LabelFor(model => model.Password, "Mật khẩu")
-                                @Html.PasswordFor(model => model.Password, new { placeholder = "Mật khẩu..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })*@
+                            @*<input type="password" placeholder="Mật khẩu" class="form-control" />*@
+                            @Html.LabelFor(model => model.MatKhau, "Mật khẩu")
+                            @Html.PasswordFor(model => model.MatKhau, new { placeholder = "Mật khẩu..", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row my-2">
