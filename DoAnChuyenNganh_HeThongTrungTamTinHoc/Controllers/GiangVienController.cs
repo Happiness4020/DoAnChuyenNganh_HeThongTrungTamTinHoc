@@ -17,13 +17,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
         public ActionResult LichDay()
         {
-            //var lichDayList = new List<LichDay>
-            //{
-            //    new LichDay { Ngay = DateTime.Now, Gio = "08:00 - 10:00", MonHoc = "Toán Cao Cấp", PhongHoc = "Phòng A101" },
-            //    new LichDay { Ngay = DateTime.Now.AddDays(2), Gio = "10:00 - 12:00", MonHoc = "Lập Trình C", PhongHoc = "Phòng B201" }
-            //};
+            var lichDayList = new List<LichDay>
+            {
+                new LichDay { Ngay = DateTime.Now, Gio = "08:00 - 10:00", MonHoc = "Toán Cao Cấp", PhongHoc = "Phòng A101" },
+                new LichDay { Ngay = DateTime.Now.AddDays(2), Gio = "10:00 - 12:00", MonHoc = "Lập Trình C", PhongHoc = "Phòng B201" }
+            };
 
-            return View();
+            return View(lichDayList);
         }
         //
         public ActionResult lich()
