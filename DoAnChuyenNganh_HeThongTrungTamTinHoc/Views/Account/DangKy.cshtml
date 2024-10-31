@@ -1,103 +1,76 @@
 ﻿
 @{
-    ViewBag.Title = "DangKy";
+    ViewBag.Title = "Đăng ký tài khoản";
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
-<div class="card mb-3 mx-auto mt-5" style="max-width: 700px; background-color: #0066b3;">
-    <div class="row g-0 mt-1 mb-0">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <div class="card-body text-center">
-                <h2 style="color: white;">@ViewBag.Title</h2>
-            </div>
+<style>
+    .dangky-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f0f2f5;
+        margin: 0;
+    }
+    .register-card {
+        width: 100%;
+        max-width: 500px;
+        background-color: #0066b3;
+        border-radius: 8px;
+        padding: 40px 25px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .register-card h2 {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 25px;
+    }
+
+    .form-control {
+        border-radius: 6px;
+    }
+
+    .btn-submit {
+        background-color: #ffffff;
+        color: #0066b3;
+        font-weight: bold;
+        border-radius: 6px;
+        width: 48%;
+    }
+
+    .btn-back {
+        background-color: orangered;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 6px;
+        width: 48%;
+    }
+</style>
+
+<div class="dangky-body">
+    <div class="card register-card">
+        <div class="text-center">
+            <h2>@ViewBag.Title</h2>
         </div>
-    </div>
-    <div class="row g-0 mt-1">
-        <div class="col-md-12">
-            <div class="card-body">
-                @using (Html.BeginForm("DangKy", "Account", FormMethod.Post))
-                {
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            <input type="text" placeholder="Mã học viên" class="form-control" />
-                            @*@Html.LabelFor(model => model.Username, "Đăng nhập")
-                                @Html.TextBoxFor(model => model.Username, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            <input type="text" placeholder="Email" class="form-control" />
-                            @*@Html.LabelFor(model => model.Username, "Đăng nhập")
-                                @Html.TextBoxFor(model => model.Username, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            <input type="password" placeholder="Mật khẩu" class="form-control" />
-                            @*@Html.LabelFor(model => model.Password, "Mật khẩu")
-                                @Html.PasswordFor(model => model.Password, new { placeholder = "Mật khẩu..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            <input type="password" placeholder="Xác nhận mật khẩu" class="form-control" />
-                            @*@Html.LabelFor(model => model.ConfirmPassword, "Xác nhận mật khẩu")
-                                @Html.PasswordFor(model => model.ConfirmPassword, new { placeholder = "Xác nhận mật khẩu..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            @*@Html.LabelFor(model => model.Email, "Email")
-                                @Html.TextBoxFor(model => model.Email, new { placeholder = "Email..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            @*@Html.LabelFor(model => model.DateOfBirth, "Ngày sinh")
-                                <br />
-                                @Html.TextBoxFor(model => model.DateOfBirth, new { placeholder = "Ngày sinh..", @class = "form-control", type = "date" })
-                                <br />
-                                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            @*@Html.LabelFor(model => model.PhoneNum, "Số điện thoại")
-                                @Html.TextBoxFor(model => model.PhoneNum, new { placeholder = "Số điện thoại..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.PhoneNum, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light">
-                            @*@Html.LabelFor(model => model.Address, "Địa chỉ")
-                                @Html.TextBoxFor(model => model.Address, new { placeholder = "Địa chỉ..", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })*@
-                        </div>
-                    </div>
-                    <div class="row my-2 mt-4">
-                        <div class="col-3"></div>
-                        <div class="col-6 text-light text-end">
-                            <button type="submit" class="btn btn-light">Đăng ký</button> &nbsp;
-                            <a href="/Home/Index" class="btn btn-warning">Quay lại</a>
-                        </div>
-                    </div>
-                }
+        <div>
+            <div class="mb-3">
+                <input type="text" placeholder="Mã học viên" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <input type="text" placeholder="Email" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <input type="password" placeholder="Mật khẩu" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <input type="password" placeholder="Xác nhận mật khẩu" class="form-control" />
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-submit">Đăng ký</button>
+                <a href="/Home/Index" class="btn btn-back">Quay lại</a>
             </div>
         </div>
     </div>
 </div>
-
