@@ -42,8 +42,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+
+    <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis, Version=4.11.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.11.0\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
+
     <Reference Include="Microsoft.CodeAnalysis, Version=4.12.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.12.0-3.final\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
+
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=4.12.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.4.12.0-3.final\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
@@ -75,6 +89,12 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.7.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
+
     <Reference Include="System.Text.Encoding.CodePages, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encoding.CodePages.9.0.0-rc.2.24473.5\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
@@ -156,8 +176,19 @@
     <Content Include="images\kh8.jpg" />
     <Content Include="images\kh9.jpg" />
     <Content Include="images\school.png" />
+    <Content Include="images\sv_logo_dashboard.png" />
     <Content Include="Javascript\GiangVien.js" />
     <Content Include="Javascript\HocVien.js" />
+    <Content Include="Models\TrungTamTinHoc.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
+      <LastGenOutput>TrungTamTinHoc.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\TrungTamTinHoc.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
+      <LastGenOutput>TrungTamTinHoc.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -180,8 +211,64 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChiTiet_HocVien_LopHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChuongTrinhHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DangNhap.cs" />
-    <Compile Include="Models\LichDay.cs" />
+    <Compile Include="Models\GiaoDichHocPhi.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GiaoVien.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HocVien.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\KhoaHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LichDay.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LichHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LienHe.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LopHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NguoiQuanLy.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PhuongThucThanhToan.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TaiKhoan.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TaiLieuHocTap.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TrungTamTinHoc.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrungTamTinHoc.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TrungTamTinHoc.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TrungTamTinHoc.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +296,13 @@
     <Content Include="Areas\Script\tabler-icons\fonts\tabler-icons.ttf" />
     <Content Include="Areas\Script\tabler-icons\fonts\tabler-icons.woff" />
     <Content Include="Areas\Script\tabler-icons\fonts\tabler-icons.woff2" />
+    <EntityDeploy Include="Models\TrungTamTinHoc.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TrungTamTinHoc.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\TrungTamTinHoc.edmx.diagram">
+      <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
+    </Content>
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
@@ -244,6 +338,9 @@
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.11.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.11.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

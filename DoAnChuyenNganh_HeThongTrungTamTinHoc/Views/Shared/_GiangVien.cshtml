@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var userName = Context.Request.Cookies["NguoiDung"];
+    var role = Context.Request.Cookies["QuyenHan"];
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -14,12 +19,18 @@
 <body class="d-flex flex-column h-100">
     <header>
         <div class="header-content">
+            <img src="~/images/sv_logo_dashboard.png" alt="Logo" style="background-color:white" />
             <h1>Chào mừng Giảng viên</h1>
             <nav>
                 <ul>
-                    <li><a href="~/GiangVien/Index">Thông tin giảng viên</a></li>
-                    <li><a href="~/GiangVien/LichDay">Lịch dạy</a></li>
-                    <li><a href="#logout">Đăng xuất</a></li>
+                    <li><a href="@Url.Action("Index", "GiangVien")">Thông tin giảng viên</a></li>
+                    <li><a href="@Url.Action("LichDay", "GiangVien")">Lịch dạy</a></li>
+                    <li>
+                        <a>Chào @userName.Value</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("DangXuat", "Account")">Đăng xuất</a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -28,12 +39,6 @@
     <main>
         <section id="profile">
             @RenderBody()
-            <h2>Thông tin giảng viên</h2>
-            <div class="info-box">
-                <p><strong>Tên:</strong> Nguyễn Văn A</p>
-                <p><strong>Email:</strong> nguyenvana@example.com</p>
-                <p><strong>Khoa:</strong> Khoa Công Nghệ Thông Tin</p>
-            </div>
         </section>
     </main>
 
