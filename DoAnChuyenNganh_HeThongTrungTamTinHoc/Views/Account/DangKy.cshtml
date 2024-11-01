@@ -54,6 +54,7 @@
     <div class="card register-card">
         @using (Html.BeginForm("DangKy", "Account", FormMethod.Post))
         {
+            @*@Html.AntiForgeryToken()*@
             <div class="text-center">
                 <h2>@ViewBag.Title</h2>
             </div>
@@ -84,5 +85,5 @@
                 </div>
             </div>
         }
-     </div>
+    </div>
 </div>
