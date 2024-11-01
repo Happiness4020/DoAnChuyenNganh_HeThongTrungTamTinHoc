@@ -81,7 +81,7 @@
             <!-- Sidebar scroll-->
             <div class="scroll-sidebar" data-simplebar>
                 <div class="d-flex mb-4 align-items-center justify-content-between">
-                    <a href="#" class="text-nowrap logo-img ms-0 ms-md-1">
+                    <a href="@Url.Action("Index", "Admin")" class="text-nowrap logo-img ms-0 ms-md-1">
                         <h3 class="text-white">Admin Dashboard</h3>
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -93,7 +93,6 @@
                     <ul id="sidebarnav" class="mb-4 pb-2">
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-5"></i>
-                            <span class="hide-menu text-white">Quay lại</span>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link primary-hover-bg"
@@ -111,7 +110,7 @@
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link warning-hover-bg"
-                               href="~/Admin/KhachHang/Index"
+                               href="@Url.Action("AccountList", "AdminAccount")"
                                aria-expanded="false">
 
                                 <span class="aside-icon p-2 bg-light-warning rounded-3">
