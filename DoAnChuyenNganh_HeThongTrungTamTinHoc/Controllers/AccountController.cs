@@ -73,6 +73,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult DangNhap(TaiKhoan tk)
         {
+            
             if (tk != null)
             {
                 TaiKhoan taikhoan = ttth.TaiKhoan.Where(t => t.TenDangNhap == tk.TenDangNhap).FirstOrDefault();
@@ -97,7 +98,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         return RedirectToAction("Index", "HocVien");
                     }
                 }
-                    ModelState.AddModelError("MatKhau", "Đăng nhập không thành công");
             }
             return View();
         }
