@@ -1,0 +1,85 @@
+﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TaiKhoan>
+
+@{
+    ViewBag.Title = "Quản lý tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<style>
+    /* Tùy chỉnh bảng */
+    .custom-table {
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-table thead {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .custom-table thead th {
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 12px 15px;
+    }
+
+    .custom-table tbody tr:hover {
+        background-color: #f1f5f9;
+    }
+
+    .custom-table tbody td {
+        padding: 12px 15px;
+        vertical-align: middle;
+    }
+
+    .table-responsive {
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+    }
+</style>
+
+<h2 style="color: #0066b3">@ViewBag.Title</h2>
+
+<a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
+<br />
+<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("AccountAdd", "AdminAccount")">Thêm tài khoản</a>
+
+<form class="d-flex mb-3 mt-2" action="@Url.Action("AccountList", "AdminAccount")">
+    <input class="form-control me-" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm theo tên đăng nhập" aria-label="Search" style="max-width: 400px;">
+    <button class="btn btn-outline-primary ms-2" type="submit">Search</button>
+    <a class="btn btn-danger ms-2" href="@Url.Action("AccountList", "AdminAccount")">Hủy</a>
+</form>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Tài Khoản</h2>
+    <div class="table-responsive">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>Mã Tài Khoản</th>
+                    <th>Tên Đăng Nhập</th>
+                    <th>Quyền Hạn</th>
+                    <th>Mã Học Viên</th>
+                    <th>Mã Giáo Viên</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var taiKhoan in Model)
+                {
+                <tr>
+                    <td>@taiKhoan.MaTK</td>
+                    <td>@taiKhoan.TenDangNhap</td>
+                    <td>@taiKhoan.QuyenHan</td>
+                    <td>@taiKhoan.MaHV</td>
+                    <td>@taiKhoan.MaGV</td>
+                    <td><a href="/Admin/Account/AccountEdit/@taiKhoan.MaTK" style="text-decoration: none;">Sửa</a></td>
+                    <td><a href="/Admin/Account/AccountDelete/@taiKhoan.MaTK" style="text-decoration: none;">Xóa</a></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

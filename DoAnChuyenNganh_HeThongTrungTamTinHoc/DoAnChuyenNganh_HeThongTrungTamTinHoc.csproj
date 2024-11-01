@@ -188,6 +188,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminAccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -291,6 +292,8 @@
     <Content Include="Models\TrungTamTinHoc.edmx.diagram">
       <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\AdminAccount\AccountList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminAccount\AccountAdd.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
