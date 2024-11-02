@@ -190,6 +190,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminAccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminGiangVienController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GiangVienController.cs" />
@@ -294,6 +295,8 @@
     </Content>
     <Content Include="Areas\Admin\Views\AdminAccount\AccountList.cshtml" />
     <Content Include="Areas\Admin\Views\AdminAccount\AccountAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienAdd.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
