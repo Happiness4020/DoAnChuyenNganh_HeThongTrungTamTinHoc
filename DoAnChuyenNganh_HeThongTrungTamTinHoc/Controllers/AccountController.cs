@@ -73,29 +73,38 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult DangNhap(TaiKhoan tk)
         {
-            
             if (tk != null)
             {
-                TaiKhoan taikhoan = ttth.TaiKhoan.Where(t => t.TenDangNhap == tk.TenDangNhap).FirstOrDefault();
-                if (taikhoan != null)
+                if (tk.MatKhau == null)
+                {
+                    ModelState.AddModelError("MatKhau", "Vui lòng nhập mật khẩu");
+                    return View();
+                }
+                else
                 {
 
-                    HttpCookie NDCookie = new HttpCookie("NguoiDung", taikhoan.TenDangNhap);
-                    HttpCookie roleCookie = new HttpCookie("QuyenHan", taikhoan.QuyenHan);
 
-                    Response.Cookies.Add(NDCookie);
-                    Response.Cookies.Add(roleCookie);
-                    if (taikhoan.QuyenHan == "Quản lý")
+                    TaiKhoan taikhoan = ttth.TaiKhoan.Where(t => t.TenDangNhap == tk.TenDangNhap).FirstOrDefault();
+                    if (taikhoan != null)
                     {
-                        return RedirectToAction("Index", "Admin", new { area = "Admin" });
-                    }
-                    else if (taikhoan.QuyenHan == "Giáo viên")
-                    {
-                        return RedirectToAction("Index", "GiangVien");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "HocVien");
+
+                        HttpCookie NDCookie = new HttpCookie("NguoiDung", taikhoan.TenDangNhap);
+                        HttpCookie roleCookie = new HttpCookie("QuyenHan", taikhoan.QuyenHan);
+
+                        Response.Cookies.Add(NDCookie);
+                        Response.Cookies.Add(roleCookie);
+                        if (taikhoan.QuyenHan == "Quản lý")
+                        {
+                            return RedirectToAction("Index", "Admin", new { area = "Admin" });
+                        }
+                        else if (taikhoan.QuyenHan == "Giáo viên")
+                        {
+                            return RedirectToAction("Index", "GiangVien");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "HocVien");
+                        }
                     }
                 }
             }

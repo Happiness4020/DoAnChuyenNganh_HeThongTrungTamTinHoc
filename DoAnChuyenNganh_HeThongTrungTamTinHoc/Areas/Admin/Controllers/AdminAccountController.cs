@@ -48,7 +48,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View();
                 }
 
-                if (string.IsNullOrEmpty(tk.MaHV) || string.IsNullOrEmpty(tk.MaGV))
+                if (string.IsNullOrEmpty(tk.MaHV) && string.IsNullOrEmpty(tk.MaGV))
                 {
                     ModelState.AddModelError("", "Vui lòng chọn mã học viên hoặc mã giáo viên!!!");
                     return View();
