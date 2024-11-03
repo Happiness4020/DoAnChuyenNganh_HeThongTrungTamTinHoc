@@ -1,9 +1,9 @@
-﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.GiaoVien 
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.HocVien
+
 @{
-    ViewBag.Title = "Thêm giảng viên";
+    ViewBag.Title = "Thêm học viên";
     Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
 }
-
 
 
 <div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
@@ -15,20 +15,21 @@
             </div>
         </div>
     </div>
+
     <div class="row g-0 mt-1">
         <div class="col-md-12">
             <div class="card-body text-dark p-0">
-                @using (Html.BeginForm("GiangVienAdd", "AdminGiangVien", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("HocVienAdd", "AdminHocVien", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    
-                    <div class="row my-2">
+                    <input type="hidden" name="MaHV" value="@ViewBag.MaHV" />
+                    @*<div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @Html.LabelFor(model => model.MaGV, "Mã giáo viên")
-                            @Html.TextBoxFor(model => model.MaGV, new { placeholder = "Mã giáo viên", @class = "form-control", Value = ViewBag.MaGV })
-                            @Html.ValidationMessageFor(model => model.HoTen, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.MaHV, "Mã học viên")
+                            @Html.TextBoxFor(model => model.MaHV, new { placeholder = "Mã học viên", @class = "form-control", Value = ViewBag.MaGV })
+                            @Html.ValidationMessageFor(model => model.MaHV, "", new { @class = "text-danger" })
                         </div>
-                    </div>
+                    </div>*@
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
@@ -40,40 +41,36 @@
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @Html.LabelFor(model => model.NgayVaoLam, "Ngày vào làm")
-                            @Html.TextBoxFor(model => model.NgayVaoLam, new { placeholder = "Ngày vào làm", @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.NgayVaoLam, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.Anh, "Ảnh học viên")
+                            <input type="file" name="imageFile" id="imageFile" class="form-control" />
+                            @Html.ValidationMessageFor(model => model.Anh, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @Html.LabelFor(model => model.BangCapGV, "Bằng cấp")
-                            @Html.TextBoxFor(model => model.BangCapGV, new { placeholder = "Bằng cấp", @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.BangCapGV, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.NgaySinh, "Ngày sinh")
+                            @Html.TextBoxFor(model => model.NgaySinh, "{0:dd/MM/yyyy}", new { placeholder = "Ngày sinh", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NgaySinh, "", new { @class = "text-danger" }) 
                         </div>
                     </div>
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @Html.LabelFor(model => model.LinhVucDaoTao, "Lĩnh vực đào tạo")
-                            @Html.TextBoxFor(model => model.LinhVucDaoTao, new { placeholder = "Lĩnh vực đào tạo", @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.LinhVucDaoTao, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6">
-                            @Html.LabelFor(model => model.TrinhDo, "Trình độ")
-                            @Html.TextBoxFor(model => model.TrinhDo, new { placeholder = "Trình độ", @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.TrinhDo, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.GioiTinh, "Giới tính")
+                            @Html.DropDownListFor(model => model.GioiTinh, new List<SelectListItem>()
+                               {
+                                    new SelectListItem {Text = "Nam",Value = "Nam"},
+                                    new SelectListItem {Text = "Nữ",Value = "Nữ"},
+                               }, "Chọn giới tính", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
                             @Html.LabelFor(model => model.Email, "Email")
-                            @Html.TextBoxFor(model => model.Email, new { placeholder = "Email", @class = "form-control" })
+                            @Html.TextBoxFor(model => model.Email, new { placeholder = "Ngày sinh", @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -93,19 +90,11 @@
                             @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6">
-                            @Html.LabelFor(model => model.Luong, "Lương")
-                            @Html.TextBoxFor(model => model.Luong, new { placeholder = "Lương", @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Luong, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
                     <div class="row my-2 mt-3 mb-3">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            <button type="submit" class="btn btn-primary">Thêm giảng viên</button> &nbsp;
-                            <a href="/Admin/AdminGiangVien/GiangVientList" class="btn btn-danger">Quay lại</a>
+                            <button type="submit" class="btn btn-primary">Thêm học viên</button> &nbsp;
+                            <a href="/Admin/AdminHocVien/HocVienList" class="btn btn-danger">Quay lại</a>
                         </div>
                     </div>
                 }
@@ -113,3 +102,7 @@
         </div>
     </div>
 </div>
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
