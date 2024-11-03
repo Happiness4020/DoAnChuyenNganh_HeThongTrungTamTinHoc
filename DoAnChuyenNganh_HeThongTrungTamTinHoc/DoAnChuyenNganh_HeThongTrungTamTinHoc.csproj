@@ -43,10 +43,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis, Version=4.12.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.12.0-3.final\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
@@ -125,6 +125,14 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AnhHocVien\HVZR4WC8UE.jpg" />
+    <Content Include="AnhHocVien\image1.jpg" />
+    <Content Include="AnhHocVien\image2.jpg" />
+    <Content Include="AnhHocVien\image3.jpg" />
+    <Content Include="AnhHocVien\image4.jpg" />
+    <Content Include="AnhHocVien\image5.jpg" />
+    <Content Include="AnhHocVien\image6.jpg" />
+    <Content Include="AnhHocVien\noimage.jpg" />
     <Content Include="Areas\Images\user.jpg" />
     <Content Include="Areas\Script\logo.svg" />
     <Content Include="Areas\Script\styles.min.css" />
@@ -191,6 +199,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminAccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminGiangVienController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminHocVienController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GiangVienController.cs" />
@@ -297,6 +306,10 @@
     <Content Include="Areas\Admin\Views\AdminAccount\AccountAdd.cshtml" />
     <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienList.cshtml" />
     <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHocVien\HocVienList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHocVien\HocVienAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHocVien\HocVienDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHocVien\HocVienEdit.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />

@@ -45,7 +45,7 @@
 
 <a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
 <br />
-<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("AccountAdd", "AdminAccount")">Thêm học viên</a>
+<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("HocVienAdd", "AdminHocVien")">Thêm học viên</a>
 
 <form class="d-flex mb-3 mt-2" action="@Url.Action("HocVienList", "AdminHocVien")">
     <input class="form-control me-" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm theo tên học viên" aria-label="Search" style="max-width: 400px;">
@@ -75,14 +75,25 @@
                     <tr>
                         <td>@hocvien.MaHV</td>
                         <td>@hocvien.HoTen</td>
-                        <td>@hocvien.Anh</td>
+                        <td>
+                            @{ var imagePath = Server.MapPath($"~/AnhHocVien/{hocvien.Anh}");
+                                if (System.IO.File.Exists(imagePath) && hocvien.Anh != null)
+                                {
+                                    <img src="~/AnhHocVien/@hocvien.Anh" width="150px" />
+                                }
+                                else
+                                {
+                                    <img src="~/AnhHocVien/noimage.jpg" width="150px" />
+                                }
+                            }
+                        </td>
                         <td>@hocvien.NgaySinh</td>
                         <td>@hocvien.GioiTinh</td>
                         <td>@hocvien.Email</td>
                         <td>@hocvien.SoDT</td>
                         <td>@hocvien.DiaChi</td>
-                        <td><a href="/Admin/Account/AccountEdit/@hocvien.MaHV" style="text-decoration: none;">Sửa</a></td>
-                        <td><a href="/Admin/Account/AccountDelete/@hocvien.MaHV" style="text-decoration: none;">Xóa</a></td>
+                        <td><a href="/Admin/AdminHocVien/HocVienEdit/@hocvien.MaHV" style="text-decoration: none;">Sửa</a></td>
+                        <td><a href="/Admin/AdminHocVien/HocVienDelete/@hocvien.MaHV" style="text-decoration: none;">Xóa</a></td>
                     </tr>
                  }
             </tbody>
