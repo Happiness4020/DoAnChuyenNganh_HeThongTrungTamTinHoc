@@ -182,17 +182,18 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 existingHocVien.SoDT = hocvien.SoDT;
                 existingHocVien.DiaChi = hocvien.DiaChi;
 
-           
+
+                string fileName = "noimage.jpg";
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
-                   
+
                     if (imageFile.ContentLength > 2000000)
                     {
                         ModelState.AddModelError("Image", "Kích thước file không được lớn hơn 2MB.");
                         return View(hocvien);
                     }
 
-                    
+
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
                     if (!allowedExtensions.Contains(fileEx))
@@ -201,7 +202,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         return View(hocvien);
                     }
 
-                    
+
                     if (!string.IsNullOrEmpty(existingHocVien.Anh))
                     {
                         var oldImagePath = Path.Combine(Server.MapPath("~/AnhHocVien"), existingHocVien.Anh);
@@ -211,12 +212,16 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         }
                     }
 
-                    
-                    var fileName = existingHocVien.MaHV + fileEx;
+
+                    fileName = existingHocVien.MaHV + fileEx;
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
                     imageFile.SaveAs(path);
                     existingHocVien.Anh = fileName;
                 }
+                else
+                {
+                    existingHocVien.Anh = fileName;
+                }    
 
                 
                 ttth.SaveChanges();

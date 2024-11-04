@@ -28,7 +28,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult GiangVienAdd(GiaoVien gv)
+        public ActionResult GiangVienAdd(GiaoVien gv, HttpPostedFileBase imageFile)
         {
             if (ModelState.IsValid)
             {
@@ -39,28 +39,59 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View();
                 }
 
+                var emailDaTonTai = db.GiaoVien.Where(h => h.Email == gv.Email).FirstOrDefault();
+                if (emailDaTonTai != null)
+                {
+                    ModelState.AddModelError("Email", "Email này đã được sử dụng!!");
+                    return View();
+                }
+
                 if (string.IsNullOrEmpty(gv.HoTen) && string.IsNullOrEmpty(gv.Anh) && string.IsNullOrEmpty(gv.NgayVaoLam.ToString()) && string.IsNullOrEmpty(gv.Anh) && string.IsNullOrEmpty(gv.BangCapGV) && string.IsNullOrEmpty(gv.LinhVucDaoTao) && string.IsNullOrEmpty(gv.TrinhDo) && string.IsNullOrEmpty(gv.Email) && string.IsNullOrEmpty(gv.SoDT) && string.IsNullOrEmpty(gv.DiaChi) && string.IsNullOrEmpty(gv.Luong.ToString()))
                 {
                     ModelState.AddModelError("", "Vui lòng nhập đầy đủ thông tin của giảng viên!!!");
                     return View();
                 }
-                else if (!string.IsNullOrEmpty(magv))
+
+                string filename = "noimage.jpg";
+                if (imageFile != null && imageFile.ContentLength > 0)
                 {
-                    giaovien = new GiaoVien
+                    // Kiểm tra kích thước
+                    if (imageFile.ContentLength > 2000000)
                     {
-                        MaGV = magv,
-                        HoTen = gv.HoTen,
-                        Anh = gv.Anh,
-                        NgayVaoLam = DateTime.Parse(gv.NgayVaoLam.ToString()),
-                        BangCapGV = gv.BangCapGV,
-                        LinhVucDaoTao = gv.LinhVucDaoTao,
-                        TrinhDo = gv.TrinhDo,
-                        Email = gv.Email,
-                        SoDT = gv.SoDT,
-                        DiaChi = gv.DiaChi,
-                        Luong = gv.Luong
-                    };
-                }    
+                        ModelState.AddModelError("Image", "Kích thước file không được lớn hơn 2MB.");
+                        return View();
+                    }
+
+                    // Kiểm tra loại file
+                    var allowedExtensions = new[] { ".jpg", ".png" };
+                    var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
+                    if (!allowedExtensions.Contains(fileEx))
+                    {
+                        ModelState.AddModelError("Image", "Chỉ chấp nhận định dạng JPG hoặc PNG.");
+                        return View();
+                    }
+
+                    // Tạo tên file ảnh từ mã giảng viên
+                    filename = magv + fileEx;
+                    var path = Path.Combine(Server.MapPath("~/AnhHocVien"), filename);
+                    imageFile.SaveAs(path);
+                }
+
+                // Lưu thông tin giảng viên vào CSDL
+                giaovien = new GiaoVien
+                {
+                    MaGV = magv,
+                    HoTen = gv.HoTen,
+                    Anh = filename, // Nếu không có ảnh, `Anh` sẽ được lưu là chuỗi rỗng
+                    NgayVaoLam = gv.NgayVaoLam,
+                    BangCapGV = gv.BangCapGV,
+                    LinhVucDaoTao = gv.LinhVucDaoTao,
+                    TrinhDo = gv.TrinhDo,
+                    Email = gv.Email,
+                    SoDT = gv.SoDT,
+                    DiaChi = gv.DiaChi,
+                    Luong = gv.Luong
+                };
 
                 db.GiaoVien.Add(giaovien);
                 db.SaveChanges();
