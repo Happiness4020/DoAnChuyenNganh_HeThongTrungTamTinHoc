@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
-using System.Text;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
@@ -76,7 +77,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         public static string TaoMaGiangVien()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            StringBuilder maGiangVien = new StringBuilder("HV");
+            StringBuilder maGiangVien = new StringBuilder("GV");
 
             for (int i = 0; i < 8; i++)
             {
@@ -84,6 +85,100 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
 
             return maGiangVien.ToString();
+        }
+
+        public ActionResult GiangVienDelete(string id)
+        {
+            GiaoVien gv = db.GiaoVien.Where(t => t.MaGV == id).FirstOrDefault();
+            return View(gv);
+        }
+        [HttpPost]
+        public ActionResult GiangVienDelete(string id, GiaoVien giaovien)
+        {
+            GiaoVien gv = db.GiaoVien.Where(t => t.MaGV == id).FirstOrDefault();
+            db.GiaoVien.Remove(gv);
+            db.SaveChanges();
+            return RedirectToAction("GiangVienList");
+        }
+
+        public ActionResult GiangVienEdit(string id)
+        {
+            GiaoVien gv = db.GiaoVien.Where(t => t.MaGV == id).FirstOrDefault();
+            return View(gv);
+        }    
+        [HttpPost]
+        public ActionResult GiangVienEdit(GiaoVien gv, HttpPostedFileBase imageFile)
+        {
+            if (ModelState.IsValid)
+            {
+                GiaoVien giangVienTonTai = db.GiaoVien.FirstOrDefault(h => h.MaGV == gv.MaGV);
+                if (giangVienTonTai == null)
+                {
+                    ModelState.AddModelError("", "Không tìm thấy giảng viên.");
+                    return View(gv);
+                }
+
+                var emailDaTonTai = db.GiaoVien.Any(t => t.Email == gv.Email && t.MaGV != gv.MaGV);
+                if (emailDaTonTai)
+                {
+                    ModelState.AddModelError("Email", "Email này đã được sử dụng!!");
+                    return View(gv);
+                }
+
+
+                giangVienTonTai.HoTen = gv.HoTen;
+                giangVienTonTai.NgayVaoLam = gv.NgayVaoLam;
+                giangVienTonTai.BangCapGV = gv.BangCapGV;
+                giangVienTonTai.LinhVucDaoTao = gv.LinhVucDaoTao;
+                giangVienTonTai.TrinhDo = gv.TrinhDo;
+                giangVienTonTai.Email = gv.Email;
+                giangVienTonTai.SoDT = gv.SoDT;
+                giangVienTonTai.DiaChi = gv.DiaChi;
+                giangVienTonTai.Luong = gv.Luong;
+
+
+                if (imageFile != null && imageFile.ContentLength > 0)
+                {
+
+                    if (imageFile.ContentLength > 2000000)
+                    {
+                        ModelState.AddModelError("Image", "Kích thước file không được lớn hơn 2MB.");
+                        return View(gv);
+                    }
+
+
+                    var allowedExtensions = new[] { ".jpg", ".png" };
+                    var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
+                    if (!allowedExtensions.Contains(fileEx))
+                    {
+                        ModelState.AddModelError("Image", "Chỉ chấp nhận định JPG hoặc PNG.");
+                        return View(gv);
+                    }
+
+
+                    if (!string.IsNullOrEmpty(giangVienTonTai.Anh))
+                    {
+                        var oldImagePath = Path.Combine(Server.MapPath("~/AnhHocVien"), giangVienTonTai.Anh);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+
+                    var fileName = giangVienTonTai.MaGV + fileEx;
+                    var path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
+                    imageFile.SaveAs(path);
+                    giangVienTonTai.Anh = fileName;
+                }
+
+
+                db.SaveChanges();
+
+                return RedirectToAction("GiangVienList");
+            }
+
+            return View(gv);
         }
     }
 }

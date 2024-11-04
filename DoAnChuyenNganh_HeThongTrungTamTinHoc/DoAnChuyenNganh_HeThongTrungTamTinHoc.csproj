@@ -310,6 +310,8 @@
     <Content Include="Areas\Admin\Views\AdminHocVien\HocVienAdd.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHocVien\HocVienDelete.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHocVien\HocVienEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienEdit.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
