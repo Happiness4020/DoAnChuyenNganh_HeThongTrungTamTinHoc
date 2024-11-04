@@ -30,7 +30,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Required(ErrorMessage = "Bạn phải nhập họ tên")]
         public string HoTen { get; set; }
         [Display(Name = "Nhập ảnh")]
-        [Required(ErrorMessage = "Bạn chọn ảnh")]
         public string Anh { get; set; }
         [Display(Name = "Nhập ngày vào làm")]
         [Required(ErrorMessage = "Bạn phải nhập ngày vào làm")]
