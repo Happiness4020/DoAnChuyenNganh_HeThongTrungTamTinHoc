@@ -1,5 +1,4 @@
-﻿    @model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.GiaoVien>
-
+﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.GiaoVien>
 @{
     ViewBag.Title = "Quản lý giảng viên";
     Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
@@ -49,7 +48,7 @@
     <a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("GiangVienAdd", "AdminGiangVien")">Thêm giảng viên</a>
 
     <form class="d-flex mb-3 mt-2" action="@Url.Action("GiangVienList", "AdminGiangVien")">
-        <input class="form-control me-" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm theo tên giảng viên" aria-label="Search" style="max-width: 400px;">
+        <input class="form-control" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm theo tên giảng viên" aria-label="Search" style="max-width: 400px;">
         <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>
         <a class="btn btn-danger ms-2" href="@Url.Action("GiangVienList", "AdminGiangVien")">Hủy</a>
     </form>

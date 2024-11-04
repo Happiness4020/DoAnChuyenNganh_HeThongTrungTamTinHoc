@@ -11,7 +11,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class KhoaHoc
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,6 +24,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             this.TaiLieuHocTap = new HashSet<TaiLieuHocTap>();
         }
     
+        [Key]
         public string MaKH { get; set; }
         public string TenKH { get; set; }
         public string MoTa { get; set; }
