@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 {
     public class LienHeController : Controller
     {
+        TrungTamTinHocEntities db = new TrungTamTinHocEntities();
         // GET: LienHe
         public ActionResult Index()
         {
+            var cths = db.ChuongTrinhHoc.ToList();
+            ViewBag.ChuongTrinhHocs = cths;
             return View();
         }
     }

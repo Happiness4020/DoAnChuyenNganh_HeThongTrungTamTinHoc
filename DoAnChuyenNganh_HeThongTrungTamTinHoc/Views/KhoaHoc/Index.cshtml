@@ -56,7 +56,7 @@
             </div>*@
             <form class="d-flex mb-3 mt-2 search-box input-group" action="@Url.Action("Index", "KhoaHoc")">
                 <input class="form-control" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm khóa học" aria-label="Search" style="max-width: 600px; font-weight: 700;">
-                <button class="btn btn-outline-light mx-1" type="button">
+                <button class="btn btn-outline-light mx-1" type="submit" id="search" name="search" value="@ViewBag.Search" aria-label="Search">
                     <i class="fa fa-solid fa-search"></i>
                 </button>
                 <a class="btn btn-danger border-0" href="@Url.Action("Index", "KhoaHoc")">Hủy</a>
@@ -75,18 +75,18 @@
                     <div class="card-body d-flex flex-column">
                         @if (item.Anh != "")
                         {
-                            <a href="#">
+                            <a href="/KhoaHoc/ChiTietKhoaHoc/@item.MaKH">
                                 <img src="~/images/@item.Anh" alt="Khóa học" class="card-img-top fixed-image" />
                             </a>
                         }
                         else
                         {
-                            <a href="#">
+                            <a href="/KhoaHoc/ChiTietKhoaHoc/@item.MaKH">
                                 <img src="~/images/noimage.jpg" alt="Khóa học" class="card-img-top fixed-image" />
                             </a>
                         }
-                        <h5 class="card-title flex-grow-1 mt-2"><a href="#" class="text-decoration-none" style="color: #0066b3">@Html.DisplayFor(model => item.TenKH)</a></h5>
-                        <p class="card-text flex-grow-1">@Html.DisplayFor(model => item.MoTa)</p>
+                        <h5 class="card-title flex-grow-1 mt-2"><a href="/KhoaHoc/ChiTietKhoaHoc/@item.MaKH" class="text-decoration-none" style="color: #0066b3">@Html.DisplayFor(model => item.TenKH)</a></h5>
+                        <span class="card-text flex-grow-1">Ngày khai giảng: @Html.DisplayFor(model => item.NgayBatDau)</span>
                         <h4>Học phí: @Html.DisplayFor(model => item.HocPhi) VND</h4>
                     </div>
                 </div>

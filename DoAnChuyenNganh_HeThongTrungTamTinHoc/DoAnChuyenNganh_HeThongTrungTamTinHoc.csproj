@@ -352,6 +352,7 @@
     <Content Include="Views\HocVien\Index.cshtml" />
     <Content Include="Views\Home\HuongDanThanhToan.cshtml" />
     <Content Include="Views\KhoaHoc\Index.cshtml" />
+    <Content Include="Views\KhoaHoc\ChiTietKhoaHoc.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

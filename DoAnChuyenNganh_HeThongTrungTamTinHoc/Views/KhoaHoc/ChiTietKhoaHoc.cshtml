@@ -1,0 +1,79 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.KhoaHoc
+@{
+    ViewBag.Title = "Chi tiết khóa học";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<style>
+    .link-style {
+        color: black;
+        text-decoration: none;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container-fluid p-0">
+    <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" navigation="true" space-between="30"
+                      centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
+        <swiper-slide>
+            <a href="/KhoaHoc/ChiTietKhoaHoc/KH015">
+                <img class="card-img-top" src="https://csc.edu.vn/data/images/slider/Tin%20hoc%20Van%20Phong/298-VBA.png" alt="Product image" style="width: 100%; height: auto;">
+            </a>
+        </swiper-slide>
+        <swiper-slide>
+            <a href="/KhoaHoc/ChiTietKhoaHoc/KH013">
+                <img class="card-img-top" src="https://csc.edu.vn/data/images/slider/Data-science/Banner-Analytics-lap-trinh.jpg" alt="Product image" style="width: 100%; height: auto;">
+            </a>
+        </swiper-slide>
+        <swiper-slide>
+            <a href="/KhoaHoc/ChiTietKhoaHoc/KH027">
+                <img class="card-img-top" src="https://csc.edu.vn/data/images/slider/Data-science/combo-python-co-ban-python-visualization-k290.png" alt="Product image" style="width: 100%; height: auto;">
+            </a>
+        </swiper-slide>
+        <swiper-slide>
+            <a href="/KhoaHoc/ChiTietKhoaHoc/KH019">
+                <img class="card-img-top" src="	https://csc.edu.vn/data/images/slider/Tin%20hoc%20Van%20Phong/299-ud-cntt-co-ban.jpg" alt="Product image" style="width: 100%; height: auto;">
+            </a>
+        </swiper-slide>
+        <swiper-slide>
+            <a href="/KhoaHoc/ChiTietKhoaHoc/KH014">
+                <img class="card-img-top" src="https://csc.edu.vn/data/images/slider/lap-trinh/lap-trinh-di-dong-da-nen-tang-flutter-k299.png" alt="Product image" style="width: 100%; height: auto;">
+            </a>
+        </swiper-slide>
+    </swiper-container>
+</div>
+
+<div class="card mb-3 mx-auto shadow-lg border-2 mt-3" style="max-width: 1024px; border-radius: 8px; background-color: #f8f9fa;">
+    <div class="row g-0 mt-1">
+        <div class="col-md-12 text-center">
+            <div class="card-body">
+                <h2 class="text-danger" style="font-weight: bold; font-size: 2.5em;">@ViewBag.Title</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row g-0">
+        <div class="col-md-6">
+            <img src="~/images/@Model.Anh" class="img-fluid" alt="Course image" style="width: 100%; height: 100%;">
+        </div>
+        <div class="col-md-6 d-flex align-items-center p-3 shadow-sm" style="background-color: #0066b3;">
+            <div class="card-body">
+                <h5 class="card-title mb-2 text-white" style="font-weight: 600; font-size: 1.8em;">@Model.TenKH</h5>
+                <p class="card-text mb-2 text-white">Chương trình học: <a href="/ChuongTrinhHoc/Game_In_Category/@Model.ChuongTrinhHoc.TenChuongTrinh" class="text-info">@Html.DisplayFor(model => model.ChuongTrinhHoc.TenChuongTrinh)</a></p>
+                <p class="card-text mb-2 text-white">Ngày khai giảng: <span class="text-warning">@Html.DisplayFor(model => model.NgayBatDau)</span></p>
+                <p class="card-text mb-2 text-white">Ngày kết thúc: <span class="text-warning">@Html.DisplayFor(model => model.NgayKetThuc)</span></p>
+                <p class="card-text mb-2 text-white">Học phí: <span class="text-info">@Html.DisplayFor(model => model.HocPhi)</span></p>
+                <p class="card-text mb-2 text-white">Loại khóa học: <span class="text-info">@Html.DisplayFor(model => model.LoaiKH)</span></p>
+                <div class="mt-4">
+                    <a href="@Url.Action("DangKyKhoaHoc", "HocPhi", new { id = Model.MaKH })" class="btn btn-danger text-white px-4 py-2" style="font-weight: bold;">Đăng ký</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-0">
+        <div class="col-md-12">
+            <div class="card-body text-white text-justify" style="line-height: 1.6;">
+                <p class="card-text mt-3" style="font-size: 1.1em; color: #0066b3">@Model.MoTa</p>
+            </div>
+        </div>
+    </div>
+</div>

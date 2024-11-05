@@ -57,11 +57,13 @@
                                 Chương trình đào tạo
                             </a>
                             <ul class="dropdown-menu mt-4">
-                                <li><a class="dropdown-item" href="#">Chương trình 1</a></li>
-                                <li><a class="dropdown-item" href="#">Chương trình 2</a></li>
-                                <li><a class="dropdown-item" href="#">Chương trình 3</a></li>
-                                <li><a class="dropdown-item" href="#">Chương trình 4</a></li>
-                                <li><a class="dropdown-item" href="#">Chương trình 5</a></li>
+                                @if (ViewBag.ChuongTrinhHocs != null)
+                                {
+                                    foreach (var item in ViewBag.ChuongTrinhHocs)
+                                    {
+                                        <li><a class="dropdown-item" href="#">@item.TenChuongTrinh</a></li>
+                                    }
+                                }
                             </ul>
                         </li>
                         <li class="nav-item">
