@@ -13,7 +13,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         // GET: GioiThieu
         public ActionResult Index()
         {
-            var cths = db.ChuongTrinhHoc.ToList();
+            List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
             ViewBag.ChuongTrinhHocs = cths;
             return View();
         }
