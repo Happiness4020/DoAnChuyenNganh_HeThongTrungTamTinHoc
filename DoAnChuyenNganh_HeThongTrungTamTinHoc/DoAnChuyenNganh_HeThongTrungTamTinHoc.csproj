@@ -220,6 +220,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminHocVienController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ChuongTrinhHocController.cs" />
     <Compile Include="Controllers\GiangVienController.cs" />
     <Compile Include="Controllers\GioiThieuController.cs" />
     <Compile Include="Controllers\HocVienController.cs" />
@@ -353,6 +354,7 @@
     <Content Include="Views\Home\HuongDanThanhToan.cshtml" />
     <Content Include="Views\KhoaHoc\Index.cshtml" />
     <Content Include="Views\KhoaHoc\ChiTietKhoaHoc.cshtml" />
+    <Content Include="Views\ChuongTrinhHoc\KhoaHocTheoChuongTrinh.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -363,6 +365,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Views\AdminChuongTrinhHoc\" />
     <Folder Include="Areas\Admin\Views\DangKy\" />
   </ItemGroup>
   <ItemGroup>
