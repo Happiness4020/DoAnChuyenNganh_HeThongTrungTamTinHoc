@@ -14,11 +14,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         public ActionResult Index()
         {
             var khs = db.KhoaHoc.Take(12).ToList();
+            var cths = db.ChuongTrinhHoc.ToList();
+            ViewBag.ChuongTrinhHocs = cths;
             return View(khs);
         }
 
         public ActionResult HuongDanThanhToan()
         {
+            var cths = db.ChuongTrinhHoc.ToList();
+            ViewBag.ChuongTrinhHocs = cths;
             return View();
         }
     }
