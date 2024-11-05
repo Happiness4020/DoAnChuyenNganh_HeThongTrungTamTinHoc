@@ -1,6 +1,6 @@
 ﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TaiKhoan
 @{
-    ViewBag.Title = "Thêm tài khoản";
+    ViewBag.Title = "Sửa tài khoản";
     Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
 }
 
@@ -16,7 +16,7 @@
     <div class="row g-0 mt-1">
         <div class="col-md-12">
             <div class="card-body text-dark p-0">
-                @using (Html.BeginForm("AccountAdd", "AdminAccount", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("AccountEdit", "AdminAccount", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <div class="row my-2">
                         <div class="col-3"></div>
@@ -69,7 +69,7 @@
                     <div class="row my-2 mt-3 mb-3">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            <button type="submit" class="btn btn-primary">Thêm tài khoản</button> &nbsp;
+                            <button type="submit" class="btn btn-primary">Lưu tài khoản</button> &nbsp;
                             <a href="/Admin/AdminAccount/AccountList" class="btn btn-danger">Quay lại</a>
                         </div>
                     </div>
