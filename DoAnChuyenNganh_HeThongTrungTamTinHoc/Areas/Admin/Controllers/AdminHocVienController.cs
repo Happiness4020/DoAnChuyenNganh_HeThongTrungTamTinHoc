@@ -138,8 +138,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult HocVienDelete( string id, HocVien hocvien)
         {
-            HocVien hv = ttth.HocVien.Where(t => t.MaHV == id).FirstOrDefault();
-            ttth.HocVien.Remove(hv);
+            hocvien = ttth.HocVien.Where(t => t.MaHV == id).FirstOrDefault();
+            ttth.HocVien.Remove(hocvien);
             ttth.SaveChanges();
             return RedirectToAction("HocVienList");
         }

@@ -157,25 +157,13 @@
     <Content Include="Css\GiangVien.css" />
     <Content Include="Css\LichDay.css" />
     <Content Include="Global.asax" />
-    <Content Include="images\banner-bg2.jpg" />
-    <Content Include="images\Chuyen-vien-thiet-ke-Do-hoa-va-Web.jpg" />
-    <Content Include="images\fundamentals-of-python-python-co-ban-version-2024.jpg" />
     <Content Include="images\home.png" />
     <Content Include="images\huongdanthanhtoan.png" />
     <Content Include="images\kh1.jpg" />
     <Content Include="images\kh10.jpg" />
     <Content Include="images\kh11.jpg" />
     <Content Include="images\kh12.jpg" />
-    <Content Include="images\kh13.jpg" />
-    <Content Include="images\kh14.jpg" />
-    <Content Include="images\kh15.jpg" />
-    <Content Include="images\kh16.jpg" />
-    <Content Include="images\kh17.jpg" />
-    <Content Include="images\kh18.jpg" />
-    <Content Include="images\kh19.jpg" />
     <Content Include="images\kh2.jpg" />
-    <Content Include="images\kh20.jpg" />
-    <Content Include="images\kh21.jpg" />
     <Content Include="images\kh3.jpg" />
     <Content Include="images\kh4.jpg" />
     <Content Include="images\kh5.jpg" />
@@ -183,13 +171,7 @@
     <Content Include="images\kh7.jpg" />
     <Content Include="images\kh8.jpg" />
     <Content Include="images\kh9.jpg" />
-    <Content Include="images\kh_android.jpg" />
-    <Content Include="images\kiem-thu-phan-mem-co-ban.jpg" />
-    <Content Include="images\lap-trinh-vien-co-ban-java.jpg" />
-    <Content Include="images\Lap-trinh-vien-NET.jpg" />
-    <Content Include="images\noimage.jpg" />
     <Content Include="images\school.png" />
-    <Content Include="images\SQL-for-Data-Analytics.jpg" />
     <Content Include="images\sv_logo_dashboard.png" />
     <Content Include="Javascript\GiangVien.js" />
     <Content Include="Javascript\HocVien.js" />
@@ -225,7 +207,6 @@
     <Compile Include="Controllers\GioiThieuController.cs" />
     <Compile Include="Controllers\HocVienController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\KhoaHocController.cs" />
     <Compile Include="Controllers\LienHeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -261,6 +242,7 @@
     <Compile Include="Models\LopHoc.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MaHVorMaGVAttribute.cs" />
     <Compile Include="Models\NguoiQuanLy.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
@@ -330,8 +312,8 @@
     <Content Include="Areas\Admin\Views\AdminHocVien\HocVienAdd.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHocVien\HocVienDelete.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHocVien\HocVienEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienDelete.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminAccount\AccountDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminAccount\AccountEdit.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />

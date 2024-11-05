@@ -25,8 +25,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string MatKhau { get; set; }
         public string QuyenHan { get; set; }
         [Display(Name = "Nhập mã học viên")]
-        [Required(ErrorMessage = "Bạn phải nhập mã học viên")]
+        [MaHVorMaGV(ErrorMessage = "Vui lòng chọn Mã học viên hoặc Mã giáo viên, không được chọn cả hai.")]
         public string MaHV { get; set; }
+        [Display(Name = "Nhập mã học viên")]
         public string MaGV { get; set; }
     
         public virtual GiaoVien GiaoVien { get; set; }

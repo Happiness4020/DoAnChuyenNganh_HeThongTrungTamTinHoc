@@ -73,6 +73,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult DangNhap(TaiKhoan tk)
         {
+           
             if (tk != null)
             {
                 if (tk.MatKhau == null)
@@ -87,6 +88,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     TaiKhoan taikhoan = ttth.TaiKhoan.Where(t => t.TenDangNhap == tk.TenDangNhap).FirstOrDefault();
                     if (taikhoan != null)
                     {
+                        if (taikhoan.MatKhau != tk.MatKhau)
+                        {
+                            ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
+                            return View();
+                        }
 
                         HttpCookie NDCookie = new HttpCookie("NguoiDung", taikhoan.TenDangNhap);
                         HttpCookie roleCookie = new HttpCookie("QuyenHan", taikhoan.QuyenHan);
