@@ -40,6 +40,8 @@
         height: 200px;
         object-fit: cover;
     }
+
+
 </style>
 
 <div class="search-section">
@@ -66,7 +68,59 @@
 </div>
 
 <div class="container-fluid border p-2" style="background-color: lightgray">
-    <h2 style="color: #0066b3">Tất cả khóa học</h2>
+    <h1 style="color: orangered" class="text-center">Tất cả khóa học</h1>
+    <div class="container-fluid d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center pagination-custom">
+                @{
+                    int trangtruoc = ViewBag.Page - 1;
+                    if (trangtruoc <= 0)
+                    {
+                        trangtruoc = 1;
+                    }
+                    int trangsau = ViewBag.Page + 1;
+                    if (trangsau > ViewBag.NumberOfPages)
+                    {
+                        trangsau = ViewBag.NumberOfPages;
+                    }
+                }
+                <li class="page-item">
+                    <a class="page-link" href="/KhoaHoc/Index?page=@trangtruoc&sort_by=@ViewBag.SortBy" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @for (int i = 0; i < ViewBag.NumberOfPages; i++)
+                {
+                    if (i + 1 == ViewBag.Page)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" href="/KhoaHoc/Index?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/KhoaHoc/Index?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                        </li>
+                    }
+                }
+                <li class="page-item">
+                    <a class="page-link" href="/KhoaHoc/Index?page=@trangsau&sort_by=@ViewBag.SortBy" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="d-flex justify-content-end mb-3">
+        <form method="get" action="/KhoaHoc/Index" class="d-inline">
+            <label for="sort_by" class="me-2 fw-bold" style="color: orangered;">Sắp xếp:</label>
+            <select name="sort_by" id="sortBy" class="form-select d-inline w-auto" onchange="this.form.submit()">
+                <option value="price_asc" @(ViewBag.SortBy == "price_asc" ? "selected" : "")>Học phí tăng dần</option>
+                <option value="price_desc" @(ViewBag.SortBy == "price_desc" ? "selected" : "")>Học phí giảm dần</option>
+            </select>
+        </form>
+    </div>
     <div class="row mt-3">
         @foreach (var item in Model)
         {
@@ -92,5 +146,36 @@
                 </div>
             </div>
         }
+    </div>
+    <div class="container-fluid d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center pagination-custom">
+                <li class="page-item">
+                    <a class="page-link" href="/KhoaHoc/Index?page=@trangtruoc&sort_by=@ViewBag.SortBy" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @for (int i = 0; i < ViewBag.NumberOfPages; i++)
+                {
+                    if (i + 1 == ViewBag.Page)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" href="/KhoaHoc/Index?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/KhoaHoc/Index?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                        </li>
+                    }
+                }
+                <li class="page-item">
+                    <a class="page-link" href="/KhoaHoc/Index?page=@trangsau&sort_by=@ViewBag.SortBy" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
