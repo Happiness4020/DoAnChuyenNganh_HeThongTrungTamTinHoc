@@ -10,6 +10,20 @@
         height: 200px;
         object-fit: cover;
     }
+    .card {
+        border: none;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
 </style>
 
 <div class="container-fluid p-0" style="background-color: rgb(0 102 179 / 0.88)">

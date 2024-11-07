@@ -10,6 +10,21 @@
         margin: 0 auto;
         margin-top: 0;
     }
+
+    .card {
+        border: none;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
 </style>
 
 <div class="container-fluid p-0">
@@ -74,24 +89,9 @@
     </div>
 </div>
 <div class="container-fluid p-0">
-    <div class="card w-100 p-3" style="border-radius: 0px; background-color: #0066b3;">
+    <div class="w-100 p-3" style="border-radius: 0px; background-color: #0066b3;">
         <h2 class="text-center text-uppercase text-white">Cảm Nhận Học Viên</h2>
         <div class="row justify-content-center">
-            @*@foreach (var feedback in Model)
-        {
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">@feedback.StudentName</h5>
-                        <p class="card-text">@feedback.Content</p>
-                        <footer class="blockquote-footer">
-                            <small class="text-muted">@feedback.Date.ToString("dd/MM/yyyy")</small>
-                        </footer>
-                    </div>
-                </div>
-            </div>
-         }*@
-            @*sẽ bổ sung khi thêm csdl*@
             <div class="col-md-3">
                 <div class="card mb-4 border-primary">
                     <div class="card-header" style="color: #0066b3;">
