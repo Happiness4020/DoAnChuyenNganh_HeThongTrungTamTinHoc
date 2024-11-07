@@ -17,5 +17,24 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             ViewBag.ChuongTrinhHocs = cths;
             return View();
         }
+
+        public ActionResult LichSu()
+        {
+            List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
+            ViewBag.ChuongTrinhHocs = cths;
+            return View();
+        }
+        public ActionResult ChucNang()
+        {
+            List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
+            ViewBag.ChuongTrinhHocs = cths;
+            return View();
+        }
+        public ActionResult ToChuc()
+        {
+            List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
+            ViewBag.ChuongTrinhHocs = cths;
+            return View();
+        }
     }
 }

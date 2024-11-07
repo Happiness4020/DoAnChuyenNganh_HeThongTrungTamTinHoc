@@ -157,6 +157,9 @@
     <Content Include="Css\GiangVien.css" />
     <Content Include="Css\LichDay.css" />
     <Content Include="Global.asax" />
+    <Content Include="images\chucnangnhiemvu.jpg" />
+    <Content Include="images\cocautochuc.jpg" />
+    <Content Include="images\giamdoc.png" />
     <Content Include="images\home.png" />
     <Content Include="images\huongdanthanhtoan.png" />
     <Content Include="images\kh1.jpg" />
@@ -171,8 +174,14 @@
     <Content Include="images\kh7.jpg" />
     <Content Include="images\kh8.jpg" />
     <Content Include="images\kh9.jpg" />
+    <Content Include="images\lichsuhinhthanh.jpg" />
+    <Content Include="images\logo-da-thong-bao-bo-cong-thuong-mau-xanh.png" />
+    <Content Include="images\phogiamdoc.jpg" />
+    <Content Include="images\phongmay.jpg" />
     <Content Include="images\school.png" />
+    <Content Include="images\sodotochuc.png" />
     <Content Include="images\sv_logo_dashboard.png" />
+    <Content Include="images\tapthettth.jpg" />
     <Content Include="Javascript\GiangVien.js" />
     <Content Include="Javascript\HocVien.js" />
     <Content Include="Models\TrungTamTinHoc.Context.tt">
@@ -340,6 +349,9 @@
     <Content Include="Views\KhoaHoc\Index.cshtml" />
     <Content Include="Views\KhoaHoc\ChiTietKhoaHoc.cshtml" />
     <Content Include="Views\ChuongTrinhHoc\KhoaHocTheoChuongTrinh.cshtml" />
+    <Content Include="Views\GioiThieu\LichSu.cshtml" />
+    <Content Include="Views\GioiThieu\ChucNang.cshtml" />
+    <Content Include="Views\GioiThieu\ToChuc.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
