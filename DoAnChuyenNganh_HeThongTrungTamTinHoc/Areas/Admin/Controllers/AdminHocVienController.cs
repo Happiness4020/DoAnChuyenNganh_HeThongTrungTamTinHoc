@@ -58,6 +58,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View();
                 }
 
+                
+
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
                     // Kiểm tra kích thước
@@ -82,7 +84,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         MaHV = mahv,
                         HoTen = hocvien.HoTen,
                         Anh = hocvien.Anh,
-                        NgaySinh = DateTime.Parse(hocvien.NgaySinh.ToString()),
+                        NgaySinh = DateTime.Parse(hocvien.NgaySinh.ToString("dd/MM/yyyy")),
                         GioiTinh = hocvien.GioiTinh,
                         Email = hocvien.Email,
                         SoDT = hocvien.SoDT,
@@ -159,14 +161,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                HocVien existingHocVien = ttth.HocVien.FirstOrDefault(h => h.MaHV == hocvien.MaHV);
-                if (existingHocVien == null)
+                HocVien hv = ttth.HocVien.FirstOrDefault(h => h.MaHV == hocvien.MaHV);
+                if (hv == null)
                 {
                     ModelState.AddModelError("", "Không tìm thấy học viên.");
                     return View(hocvien);
                 }
-
-
+                
+                
                 var emailExists = ttth.HocVien.Any(h => h.Email == hocvien.Email && h.MaHV != hocvien.MaHV);
                 if (emailExists)
                 {
@@ -174,13 +176,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(hocvien);
                 }
 
-              
-                existingHocVien.HoTen = hocvien.HoTen;
-                existingHocVien.NgaySinh = hocvien.NgaySinh;
-                existingHocVien.GioiTinh = hocvien.GioiTinh;
-                existingHocVien.Email = hocvien.Email;
-                existingHocVien.SoDT = hocvien.SoDT;
-                existingHocVien.DiaChi = hocvien.DiaChi;
+
+                hv.HoTen = hocvien.HoTen;
+                hv.NgaySinh = hocvien.NgaySinh;
+                hv.GioiTinh = hocvien.GioiTinh;
+                hv.Email = hocvien.Email;
+                hv.SoDT = hocvien.SoDT;
+                hv.DiaChi = hocvien.DiaChi;
 
 
                 string fileName = "noimage.jpg";
@@ -203,9 +205,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     }
 
 
-                    if (!string.IsNullOrEmpty(existingHocVien.Anh))
+                    if (!string.IsNullOrEmpty(hv.Anh))
                     {
-                        var oldImagePath = Path.Combine(Server.MapPath("~/AnhHocVien"), existingHocVien.Anh);
+                        var oldImagePath = Path.Combine(Server.MapPath("~/AnhHocVien"), hv.Anh);
                         if (System.IO.File.Exists(oldImagePath))
                         {
                             System.IO.File.Delete(oldImagePath);
@@ -213,14 +215,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     }
 
 
-                    fileName = existingHocVien.MaHV + fileEx;
+                    fileName = hv.MaHV + fileEx;
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
                     imageFile.SaveAs(path);
-                    existingHocVien.Anh = fileName;
+                    hv.Anh = fileName;
                 }
                 else
                 {
-                    existingHocVien.Anh = fileName;
+                    hv.Anh = fileName;
                 }    
 
                 

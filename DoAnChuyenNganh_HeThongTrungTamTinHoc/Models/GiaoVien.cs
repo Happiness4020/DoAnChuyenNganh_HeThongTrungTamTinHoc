@@ -23,7 +23,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             this.LopHoc = new HashSet<LopHoc>();
             this.TaiKhoan = new HashSet<TaiKhoan>();
         }
-    
+
         [Key]
         public string MaGV { get; set; }
         [Display(Name = "Nhập họ tên")]
@@ -55,7 +55,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Display(Name = "Nhập lương")]
         [Required(ErrorMessage = "Bạn phải nhập lương")]
         public double Luong { get; set; }
-    
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LichDay> LichDay { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

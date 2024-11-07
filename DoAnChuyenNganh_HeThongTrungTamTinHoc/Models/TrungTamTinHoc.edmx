@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TrungTamTinHocModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TrungTamTinHocModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ChiTiet_HocVien_LopHoc">
           <Key>
             <PropertyRef Name="MaLH" />
@@ -74,7 +74,7 @@
           </Key>
           <Property Name="MaKH" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="TenKH" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="MoTa" Type="nvarchar" MaxLength="200" />
+          <Property Name="MoTa" Type="nvarchar(max)" />
           <Property Name="Anh" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="NgayBatDau" Type="date" Nullable="false" />
           <Property Name="NgayKetThuc" Type="date" Nullable="false" />
@@ -505,8 +505,7 @@
             <End Role="TaiLieuHocTap" EntitySet="TaiLieuHocTap" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TrungTamTinHocModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -594,7 +593,7 @@
           </Key>
           <Property Name="MaKH" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TenKH" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MoTa" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Anh" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="NgayBatDau" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="NgayKetThuc" Type="DateTime" Nullable="false" Precision="0" />
