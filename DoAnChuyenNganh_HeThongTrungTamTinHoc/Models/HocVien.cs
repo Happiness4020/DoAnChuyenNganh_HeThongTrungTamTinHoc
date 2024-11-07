@@ -24,7 +24,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             this.LienHe = new HashSet<LienHe>();
             this.TaiKhoan = new HashSet<TaiKhoan>();
         }
-    
+
         public string MaHV { get; set; }
 
         [Required(ErrorMessage = "Bạn phải nhập đầy đủ họ tên")]
@@ -53,7 +53,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 
         [Required(ErrorMessage = "Bạn phải nhập địa chỉ")]
         public string DiaChi { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
