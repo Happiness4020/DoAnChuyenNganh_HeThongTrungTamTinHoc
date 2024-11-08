@@ -44,12 +44,52 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         public ActionResult ChiTietKhoaHoc(string id)
         {
             KhoaHoc kh = db.KhoaHoc.Where(t => t.MaKH == id).FirstOrDefault();
+
+            var binhluans = db.BinhLuanKhoaHoc
+                     .Where(bl => bl.MaKH == id)
+                     .OrderByDescending(bl => bl.NgayBinhLuan) // Sắp xếp theo ngày bình luận
+                     .ToList();            
+
+            ViewBag.BinhLuans = binhluans;
+
             List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
             ViewBag.ChuongTrinhHocs = cths;
 
-            
-
             return View(kh);
+        }
+
+        public string LayMaHV()
+        {
+            string tenDangNhap = Session["TenDangNhap"]?.ToString();
+            var taiKhoan = db.TaiKhoan.SingleOrDefault(tk => tk.TenDangNhap == tenDangNhap);
+            return taiKhoan?.MaHV;
+        }
+
+        [HttpPost]
+        public ActionResult ThemBinhLuan(string MaKH, string NoiDung)
+        {
+
+
+            ViewBag.MAHV = LayMaHV();
+
+            if (string.IsNullOrEmpty(LayMaHV()))
+            {
+                TempData["ErrorMessage"] = "Vui lòng đăng nhập để thêm bình luận.";
+                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
+            }
+
+            BinhLuanKhoaHoc binhluan = new BinhLuanKhoaHoc
+            {
+                MaKH = MaKH,
+                MaHV = LayMaHV(),
+                NoiDung = NoiDung,
+                NgayBinhLuan = DateTime.Now
+            };
+
+            db.BinhLuanKhoaHoc.Add(binhluan);
+            db.SaveChanges();
+
+            return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
         }
     }
 }
