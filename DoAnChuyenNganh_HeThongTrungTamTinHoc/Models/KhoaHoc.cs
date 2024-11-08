@@ -21,6 +21,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             this.LopHoc = new HashSet<LopHoc>();
             this.NguoiQuanLy = new HashSet<NguoiQuanLy>();
             this.TaiLieuHocTap = new HashSet<TaiLieuHocTap>();
+            this.BinhLuanKhoaHoc = new HashSet<BinhLuanKhoaHoc>();
         }
     
         public string MaKH { get; set; }
@@ -43,5 +44,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public virtual ICollection<NguoiQuanLy> NguoiQuanLy { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TaiLieuHocTap> TaiLieuHocTap { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
     }
 }

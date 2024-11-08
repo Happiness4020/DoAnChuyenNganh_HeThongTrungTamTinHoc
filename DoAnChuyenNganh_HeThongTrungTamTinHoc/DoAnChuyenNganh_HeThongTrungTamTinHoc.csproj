@@ -230,6 +230,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BinhLuanKhoaHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ChiTiet_HocVien_LopHoc.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
