@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Chi tiết khóa học";
     Layout = "~/Views/Shared/_Main.cshtml";
+    var userName = Context.Request.Cookies["NguoiDung"];
 }
 
 <style>
@@ -43,6 +44,9 @@
     </swiper-container>
 </div>
 
+<nav aria-label="breadcrumb" class="breadcrumb mx-2">
+    @Html.MvcSiteMap().SiteMapPath()
+</nav>
 <div class="card mb-3 mx-auto shadow-lg border-2 mt-3" style="max-width: 1024px; border-radius: 8px; background-color: #f8f9fa;">
     <div class="row g-0 mt-1">
         <div class="col-md-12 text-center">
@@ -74,6 +78,54 @@
             <div class="card-body text-white text-justify" style="line-height: 1.6;">
                 <p class="card-text mt-3" style="font-size: 1.1em; color: #0066b3">@Model.MoTa</p>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5 mb-3">
+    <!-- Danh sách bình luận -->
+    <div class="row">
+        <div class="col-12">
+            <h4 class="mb-3" style="color: orangered">Bình luận (3)</h4>
+            <!-- Bình luận 1 -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Nguyễn Văn B</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Ngày bình luận: 05/11/2024</h6>
+                    <p class="card-text">Khóa học rất thú vị và dễ hiểu!</p>
+                </div>
+            </div>
+
+            <!-- Bình luận 2 -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Trần Thị C</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Ngày bình luận: 06/11/2024</h6>
+                    <p class="card-text">Giảng viên nhiệt tình và có phương pháp giảng dạy rõ ràng.</p>
+                </div>
+            </div>
+
+            <!-- Bình luận 3 -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Lê Văn D</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Ngày bình luận: 06/11/2024</h6>
+                    <p class="card-text">Nội dung khóa học rất đầy đủ, tôi học được nhiều kiến thức bổ ích.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h4 class="mb-3">Thêm bình luận</h4>
+            <form>
+                <div class="mb-3">
+                    <label for="binhLuan" class="form-label">Bình luận</label>
+                    <textarea class="form-control" id="binhLuan" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i>&nbsp;Gửi</button>
+            </form>
         </div>
     </div>
 </div>

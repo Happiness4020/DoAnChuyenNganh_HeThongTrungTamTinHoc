@@ -46,6 +46,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             KhoaHoc kh = db.KhoaHoc.Where(t => t.MaKH == id).FirstOrDefault();
             List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
             ViewBag.ChuongTrinhHocs = cths;
+
+            
+
             return View(kh);
         }
     }

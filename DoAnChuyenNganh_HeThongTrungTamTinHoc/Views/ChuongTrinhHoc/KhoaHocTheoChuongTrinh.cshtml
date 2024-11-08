@@ -84,7 +84,10 @@
             </ul>
         </nav>
     </div>
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-between mb-3">
+        <nav aria-label="breadcrumb" class="breadcrumb mx-2">
+            @Html.MvcSiteMap().SiteMapPath()
+        </nav>
         <form method="get" action="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@ViewBag.MaCT" class="d-inline">
             <label for="sort_by" class="me-2 fw-bold" style="color: orangered;">Sắp xếp:</label>
             <select name="sort_by" id="sortBy" class="form-select d-inline w-auto" onchange="this.form.submit()">
