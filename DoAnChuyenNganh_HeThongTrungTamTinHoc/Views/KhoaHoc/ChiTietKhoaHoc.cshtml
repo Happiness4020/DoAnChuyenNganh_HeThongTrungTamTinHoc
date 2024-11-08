@@ -83,49 +83,50 @@
 </div>
 
 <div class="container mt-5 mb-3">
-    <!-- Danh sách bình luận -->
     <div class="row">
         <div class="col-12">
-            <h4 class="mb-3" style="color: orangered">Bình luận (3)</h4>
-            <!-- Bình luận 1 -->
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Nguyễn Văn B</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Ngày bình luận: 05/11/2024</h6>
-                    <p class="card-text">Khóa học rất thú vị và dễ hiểu!</p>
-                </div>
-            </div>
+            <h4 class="mb-3" style="color: orangered">Bình luận (@(ViewBag.BinhLuans != null ? ViewBag.BinhLuans.Count : 0))</h4>
 
-            <!-- Bình luận 2 -->
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Trần Thị C</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Ngày bình luận: 06/11/2024</h6>
-                    <p class="card-text">Giảng viên nhiệt tình và có phương pháp giảng dạy rõ ràng.</p>
+            @foreach (var binhluan in ViewBag.BinhLuans)
+            {
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@binhluan.HocVien.HoTen</h5>
+                        <p class="card-text">@binhluan.NoiDung</p>
+                        <span class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">Ngày đăng: @binhluan.NgayBinhLuan.ToString("dd/MM/yyyy")</span>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Bình luận 3 -->
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Lê Văn D</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Ngày bình luận: 06/11/2024</h6>
-                    <p class="card-text">Nội dung khóa học rất đầy đủ, tôi học được nhiều kiến thức bổ ích.</p>
-                </div>
-            </div>
+            }
         </div>
     </div>
 
+    <h1 style="color: red;">@ViewBag.MAHV</h1>
+
     <div class="row">
         <div class="col-12">
-            <h4 class="mb-3">Thêm bình luận</h4>
-            <form>
+            <h4 class="mb-3" style="color: orangered;">Thêm bình luận</h4>
+            <form action="@Url.Action("ThemBinhLuan", "KhoaHoc")" method="post">
+                <input type="hidden" name="MaKH" value="@Model.MaKH" />
+                <input type="hidden" name="MaHV" value="@userName" />
                 <div class="mb-3">
-                    <label for="binhLuan" class="form-label">Bình luận</label>
-                    <textarea class="form-control" id="binhLuan" rows="4" required></textarea>
+                    <label for="NoiDung" class="form-label">Nội dung</label>
+                    <textarea class="form-control" id="NoiDung"  name="NoiDung" rows="4" required placeholder="Nhập bình luận tại đây"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i>&nbsp;Gửi</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i>&nbsp;Đăng</button>
             </form>
         </div>
     </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success mt-3">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger mt-3">
+            @TempData["ErrorMessage"]
+        </div>
+    }
 </div>
