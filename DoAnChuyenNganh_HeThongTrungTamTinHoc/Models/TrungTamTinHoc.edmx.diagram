@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="0f55d57660af4622b81eefcbd470218d" Name="Diagram1">
-        <EntityTypeShape EntityType="TrungTamTinHocModel.ChiTiet_HocVien_LopHoc" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="TrungTamTinHocModel.ChuongTrinhHoc" Width="1.5" PointX="1.5" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="TrungTamTinHocModel.GiaoDichHocPhi" Width="1.5" PointX="5.25" PointY="14.875" IsExpanded="true" />
         <EntityTypeShape EntityType="TrungTamTinHocModel.GiaoVien" Width="1.5" PointX="0.75" PointY="10" IsExpanded="true" />
@@ -19,8 +18,6 @@
         <EntityTypeShape EntityType="TrungTamTinHocModel.PhuongThucThanhToan" Width="1.5" PointX="3" PointY="22.5" IsExpanded="true" />
         <EntityTypeShape EntityType="TrungTamTinHocModel.TaiKhoan" Width="1.5" PointX="3" PointY="14.625" IsExpanded="true" />
         <EntityTypeShape EntityType="TrungTamTinHocModel.TaiLieuHocTap" Width="1.5" PointX="3" PointY="25.875" IsExpanded="true" />
-        <AssociationConnector Association="TrungTamTinHocModel.FK__ChiTiet_Ho__MaHV__68487DD7" ManuallyRouted="false" />
-        <AssociationConnector Association="TrungTamTinHocModel.FK__ChiTiet_Ho__MaLH__693CA210" ManuallyRouted="false" />
         <AssociationConnector Association="TrungTamTinHocModel.FK__KhoaHoc__TinhTra__5BE2A6F2" ManuallyRouted="false" />
         <AssociationConnector Association="TrungTamTinHocModel.FK__GiaoDichHo__MaHV__74AE54BC" ManuallyRouted="false" />
         <AssociationConnector Association="TrungTamTinHocModel.FK__GiaoDichHo__MaKH__75A278F5" ManuallyRouted="false" />
@@ -39,6 +36,12 @@
         <AssociationConnector Association="TrungTamTinHocModel.FK__LichHoc__MaLH__7E37BEF6" ManuallyRouted="false" />
         <AssociationConnector Association="TrungTamTinHocModel.FK__LienHe__MaQL__0A9D95DB" ManuallyRouted="false" />
         <AssociationConnector Association="TrungTamTinHocModel.FK__NguoiQuanL__MaLH__02084FDA" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TrungTamTinHocModel.BinhLuanKhoaHoc" Width="1.5" PointX="8.625" PointY="12.5" />
+        <AssociationConnector Association="TrungTamTinHocModel.FK__BinhLuanKh__MaHV__0E6E26BF" />
+        <AssociationConnector Association="TrungTamTinHocModel.FK__BinhLuanKh__MaKH__0F624AF8" />
+        <EntityTypeShape EntityType="TrungTamTinHocModel.ChiTiet_HocVien_LopHoc" Width="1.5" PointX="8.25" PointY="15.625" />
+        <AssociationConnector Association="TrungTamTinHocModel.FK__ChiTiet_Ho__MaHV__6754599E" />
+        <AssociationConnector Association="TrungTamTinHocModel.FK__ChiTiet_Ho__MaLH__68487DD7" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

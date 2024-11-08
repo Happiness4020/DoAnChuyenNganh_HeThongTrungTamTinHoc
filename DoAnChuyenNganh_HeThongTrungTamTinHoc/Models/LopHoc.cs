@@ -30,7 +30,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public System.TimeSpan GioKetThuc { get; set; }
         public string MaGV { get; set; }
     
-        public virtual ChiTiet_HocVien_LopHoc ChiTiet_HocVien_LopHoc { get; set; }
         public virtual GiaoVien GiaoVien { get; set; }
         public virtual KhoaHoc KhoaHoc { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -39,5 +38,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public virtual ICollection<LichHoc> LichHoc { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NguoiQuanLy> NguoiQuanLy { get; set; }
+        public virtual ChiTiet_HocVien_LopHoc ChiTiet_HocVien_LopHoc { get; set; }
     }
 }

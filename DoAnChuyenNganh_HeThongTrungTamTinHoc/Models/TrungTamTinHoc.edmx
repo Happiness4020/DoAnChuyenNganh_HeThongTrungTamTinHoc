@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="TrungTamTinHocModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BinhLuanKhoaHoc">
+          <Key>
+            <PropertyRef Name="MaHV" />
+            <PropertyRef Name="MaKH" />
+            <PropertyRef Name="NgayBinhLuan" />
+          </Key>
+          <Property Name="MaHV" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="MaKH" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="NoiDung" Type="nvarchar(max)" />
+          <Property Name="NgayBinhLuan" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="ChiTiet_HocVien_LopHoc">
           <Key>
             <PropertyRef Name="MaLH" />
@@ -15,7 +26,6 @@
           <Property Name="DiemKiemTraLan2" Type="float" />
           <Property Name="DiemKiemTraLan3" Type="float" />
           <Property Name="DiemTrungBinh" Type="float" StoreGeneratedPattern="Computed" />
-          <Property Name="Tinhtrang" Type="bit" Nullable="false" />
           <Property Name="Sobuoivang" Type="int" Nullable="false" />
           <Property Name="Daketthuc" Type="bit" Nullable="false" />
         </EntityType>
@@ -102,6 +112,7 @@
           <Property Name="MaHV" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="MaLH" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="NgayHoc" Type="datetime" Nullable="false" />
+          <Property Name="DiemDanh" Type="bit" Nullable="false" />
           <Property Name="GioBatDau" Type="time" Precision="7" Nullable="false" />
           <Property Name="GioKetThuc" Type="time" Precision="7" Nullable="false" />
         </EntityType>
@@ -169,7 +180,31 @@
           <Property Name="LinkTaiLieu" Type="nvarchar" MaxLength="255" />
           <Property Name="MoTa" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <Association Name="FK__ChiTiet_Ho__MaHV__68487DD7">
+        <Association Name="FK__BinhLuanKh__MaHV__0E6E26BF">
+          <End Role="HocVien" Type="Self.HocVien" Multiplicity="1" />
+          <End Role="BinhLuanKhoaHoc" Type="Self.BinhLuanKhoaHoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HocVien">
+              <PropertyRef Name="MaHV" />
+            </Principal>
+            <Dependent Role="BinhLuanKhoaHoc">
+              <PropertyRef Name="MaHV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BinhLuanKh__MaKH__0F624AF8">
+          <End Role="KhoaHoc" Type="Self.KhoaHoc" Multiplicity="1" />
+          <End Role="BinhLuanKhoaHoc" Type="Self.BinhLuanKhoaHoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KhoaHoc">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="BinhLuanKhoaHoc">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ChiTiet_Ho__MaHV__6754599E">
           <End Role="HocVien" Type="Self.HocVien" Multiplicity="0..1" />
           <End Role="ChiTiet_HocVien_LopHoc" Type="Self.ChiTiet_HocVien_LopHoc" Multiplicity="*" />
           <ReferentialConstraint>
@@ -181,7 +216,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChiTiet_Ho__MaLH__693CA210">
+        <Association Name="FK__ChiTiet_Ho__MaLH__68487DD7">
           <End Role="LopHoc" Type="Self.LopHoc" Multiplicity="1" />
           <End Role="ChiTiet_HocVien_LopHoc" Type="Self.ChiTiet_HocVien_LopHoc" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -193,7 +228,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__GiaoDichHo__MaHV__74AE54BC">
+        <Association Name="FK__GiaoDichHo__MaHV__73BA3083">
           <End Role="HocVien" Type="Self.HocVien" Multiplicity="1" />
           <End Role="GiaoDichHocPhi" Type="Self.GiaoDichHocPhi" Multiplicity="*" />
           <ReferentialConstraint>
@@ -205,7 +240,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__GiaoDichHo__MaKH__75A278F5">
+        <Association Name="FK__GiaoDichHo__MaKH__74AE54BC">
           <End Role="KhoaHoc" Type="Self.KhoaHoc" Multiplicity="1" />
           <End Role="GiaoDichHocPhi" Type="Self.GiaoDichHocPhi" Multiplicity="*" />
           <ReferentialConstraint>
@@ -217,7 +252,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__GiaoDichHo__MaPT__76969D2E">
+        <Association Name="FK__GiaoDichHo__MaPT__75A278F5">
           <End Role="PhuongThucThanhToan" Type="Self.PhuongThucThanhToan" Multiplicity="1" />
           <End Role="GiaoDichHocPhi" Type="Self.GiaoDichHocPhi" Multiplicity="*" />
           <ReferentialConstraint>
@@ -241,7 +276,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__LichDay__MaGV__797309D9">
+        <Association Name="FK__LichDay__MaGV__787EE5A0">
           <End Role="GiaoVien" Type="Self.GiaoVien" Multiplicity="1" />
           <End Role="LichDay" Type="Self.LichDay" Multiplicity="*" />
           <ReferentialConstraint>
@@ -253,7 +288,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__LichDay__MaLH__7A672E12">
+        <Association Name="FK__LichDay__MaLH__797309D9">
           <End Role="LopHoc" Type="Self.LopHoc" Multiplicity="1" />
           <End Role="LichDay" Type="Self.LichDay" Multiplicity="*" />
           <ReferentialConstraint>
@@ -373,7 +408,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TaiKhoan__MaGV__6FE99F9F">
+        <Association Name="FK__TaiKhoan__MaGV__6EF57B66">
           <End Role="GiaoVien" Type="Self.GiaoVien" Multiplicity="0..1" />
           <End Role="TaiKhoan" Type="Self.TaiKhoan" Multiplicity="*" />
           <ReferentialConstraint>
@@ -385,7 +420,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TaiKhoan__MaHV__6EF57B66">
+        <Association Name="FK__TaiKhoan__MaHV__6E01572D">
           <End Role="HocVien" Type="Self.HocVien" Multiplicity="0..1" />
           <End Role="TaiKhoan" Type="Self.TaiKhoan" Multiplicity="*" />
           <ReferentialConstraint>
@@ -410,6 +445,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="TrungTamTinHocModelStoreContainer">
+          <EntitySet Name="BinhLuanKhoaHoc" EntityType="Self.BinhLuanKhoaHoc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChiTiet_HocVien_LopHoc" EntityType="Self.ChiTiet_HocVien_LopHoc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChuongTrinhHoc" EntityType="Self.ChuongTrinhHoc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GiaoDichHocPhi" EntityType="Self.GiaoDichHocPhi" Schema="dbo" store:Type="Tables" />
@@ -424,23 +460,31 @@
           <EntitySet Name="PhuongThucThanhToan" EntityType="Self.PhuongThucThanhToan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaiKhoan" EntityType="Self.TaiKhoan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaiLieuHocTap" EntityType="Self.TaiLieuHocTap" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__ChiTiet_Ho__MaHV__68487DD7" Association="Self.FK__ChiTiet_Ho__MaHV__68487DD7">
+          <AssociationSet Name="FK__BinhLuanKh__MaHV__0E6E26BF" Association="Self.FK__BinhLuanKh__MaHV__0E6E26BF">
+            <End Role="HocVien" EntitySet="HocVien" />
+            <End Role="BinhLuanKhoaHoc" EntitySet="BinhLuanKhoaHoc" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BinhLuanKh__MaKH__0F624AF8" Association="Self.FK__BinhLuanKh__MaKH__0F624AF8">
+            <End Role="KhoaHoc" EntitySet="KhoaHoc" />
+            <End Role="BinhLuanKhoaHoc" EntitySet="BinhLuanKhoaHoc" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChiTiet_Ho__MaHV__6754599E" Association="Self.FK__ChiTiet_Ho__MaHV__6754599E">
             <End Role="HocVien" EntitySet="HocVien" />
             <End Role="ChiTiet_HocVien_LopHoc" EntitySet="ChiTiet_HocVien_LopHoc" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChiTiet_Ho__MaLH__693CA210" Association="Self.FK__ChiTiet_Ho__MaLH__693CA210">
+          <AssociationSet Name="FK__ChiTiet_Ho__MaLH__68487DD7" Association="Self.FK__ChiTiet_Ho__MaLH__68487DD7">
             <End Role="LopHoc" EntitySet="LopHoc" />
             <End Role="ChiTiet_HocVien_LopHoc" EntitySet="ChiTiet_HocVien_LopHoc" />
           </AssociationSet>
-          <AssociationSet Name="FK__GiaoDichHo__MaHV__74AE54BC" Association="Self.FK__GiaoDichHo__MaHV__74AE54BC">
+          <AssociationSet Name="FK__GiaoDichHo__MaHV__73BA3083" Association="Self.FK__GiaoDichHo__MaHV__73BA3083">
             <End Role="HocVien" EntitySet="HocVien" />
             <End Role="GiaoDichHocPhi" EntitySet="GiaoDichHocPhi" />
           </AssociationSet>
-          <AssociationSet Name="FK__GiaoDichHo__MaKH__75A278F5" Association="Self.FK__GiaoDichHo__MaKH__75A278F5">
+          <AssociationSet Name="FK__GiaoDichHo__MaKH__74AE54BC" Association="Self.FK__GiaoDichHo__MaKH__74AE54BC">
             <End Role="KhoaHoc" EntitySet="KhoaHoc" />
             <End Role="GiaoDichHocPhi" EntitySet="GiaoDichHocPhi" />
           </AssociationSet>
-          <AssociationSet Name="FK__GiaoDichHo__MaPT__76969D2E" Association="Self.FK__GiaoDichHo__MaPT__76969D2E">
+          <AssociationSet Name="FK__GiaoDichHo__MaPT__75A278F5" Association="Self.FK__GiaoDichHo__MaPT__75A278F5">
             <End Role="PhuongThucThanhToan" EntitySet="PhuongThucThanhToan" />
             <End Role="GiaoDichHocPhi" EntitySet="GiaoDichHocPhi" />
           </AssociationSet>
@@ -448,11 +492,11 @@
             <End Role="ChuongTrinhHoc" EntitySet="ChuongTrinhHoc" />
             <End Role="KhoaHoc" EntitySet="KhoaHoc" />
           </AssociationSet>
-          <AssociationSet Name="FK__LichDay__MaGV__797309D9" Association="Self.FK__LichDay__MaGV__797309D9">
+          <AssociationSet Name="FK__LichDay__MaGV__787EE5A0" Association="Self.FK__LichDay__MaGV__787EE5A0">
             <End Role="GiaoVien" EntitySet="GiaoVien" />
             <End Role="LichDay" EntitySet="LichDay" />
           </AssociationSet>
-          <AssociationSet Name="FK__LichDay__MaLH__7A672E12" Association="Self.FK__LichDay__MaLH__7A672E12">
+          <AssociationSet Name="FK__LichDay__MaLH__797309D9" Association="Self.FK__LichDay__MaLH__797309D9">
             <End Role="LopHoc" EntitySet="LopHoc" />
             <End Role="LichDay" EntitySet="LichDay" />
           </AssociationSet>
@@ -492,11 +536,11 @@
             <End Role="LopHoc" EntitySet="LopHoc" />
             <End Role="NguoiQuanLy" EntitySet="NguoiQuanLy" />
           </AssociationSet>
-          <AssociationSet Name="FK__TaiKhoan__MaGV__6FE99F9F" Association="Self.FK__TaiKhoan__MaGV__6FE99F9F">
+          <AssociationSet Name="FK__TaiKhoan__MaGV__6EF57B66" Association="Self.FK__TaiKhoan__MaGV__6EF57B66">
             <End Role="GiaoVien" EntitySet="GiaoVien" />
             <End Role="TaiKhoan" EntitySet="TaiKhoan" />
           </AssociationSet>
-          <AssociationSet Name="FK__TaiKhoan__MaHV__6EF57B66" Association="Self.FK__TaiKhoan__MaHV__6EF57B66">
+          <AssociationSet Name="FK__TaiKhoan__MaHV__6E01572D" Association="Self.FK__TaiKhoan__MaHV__6E01572D">
             <End Role="HocVien" EntitySet="HocVien" />
             <End Role="TaiKhoan" EntitySet="TaiKhoan" />
           </AssociationSet>
@@ -509,22 +553,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TrungTamTinHocModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="ChiTiet_HocVien_LopHoc">
-          <Key>
-            <PropertyRef Name="MaLH" />
-          </Key>
-          <Property Name="MaLH" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MaHV" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="DiemKiemTraLan1" Type="Double" />
-          <Property Name="DiemKiemTraLan2" Type="Double" />
-          <Property Name="DiemKiemTraLan3" Type="Double" />
-          <Property Name="DiemTrungBinh" Type="Double" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="Tinhtrang" Type="Boolean" Nullable="false" />
-          <Property Name="Sobuoivang" Type="Int32" Nullable="false" />
-          <Property Name="Daketthuc" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="HocVien" Relationship="Self.FK__ChiTiet_Ho__MaHV__68487DD7" FromRole="ChiTiet_HocVien_LopHoc" ToRole="HocVien" />
-          <NavigationProperty Name="LopHoc" Relationship="Self.FK__ChiTiet_Ho__MaLH__693CA210" FromRole="ChiTiet_HocVien_LopHoc" ToRole="LopHoc" />
-        </EntityType>
         <EntityType Name="ChuongTrinhHoc">
           <Key>
             <PropertyRef Name="MaChuongTrinh" />
@@ -581,11 +609,12 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="SoDT" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DiaChi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ChiTiet_HocVien_LopHoc" Relationship="Self.FK__ChiTiet_Ho__MaHV__68487DD7" FromRole="HocVien" ToRole="ChiTiet_HocVien_LopHoc" />
           <NavigationProperty Name="GiaoDichHocPhi" Relationship="Self.FK__GiaoDichHo__MaHV__74AE54BC" FromRole="HocVien" ToRole="GiaoDichHocPhi" />
           <NavigationProperty Name="LichHoc" Relationship="Self.FK__LichHoc__MaHV__7D439ABD" FromRole="HocVien" ToRole="LichHoc" />
           <NavigationProperty Name="LienHe" Relationship="Self.FK__LienHe__MaHV__08B54D69" FromRole="HocVien" ToRole="LienHe" />
           <NavigationProperty Name="TaiKhoan" Relationship="Self.FK__TaiKhoan__MaHV__6EF57B66" FromRole="HocVien" ToRole="TaiKhoan" />
+          <NavigationProperty Name="BinhLuanKhoaHoc" Relationship="TrungTamTinHocModel.FK__BinhLuanKh__MaHV__0E6E26BF" FromRole="HocVien" ToRole="BinhLuanKhoaHoc" />
+          <NavigationProperty Name="ChiTiet_HocVien_LopHoc" Relationship="TrungTamTinHocModel.FK__ChiTiet_Ho__MaHV__6754599E" FromRole="HocVien" ToRole="ChiTiet_HocVien_LopHoc" />
         </EntityType>
         <EntityType Name="KhoaHoc">
           <Key>
@@ -606,6 +635,7 @@
           <NavigationProperty Name="LopHoc" Relationship="Self.FK__LopHoc__MaKH__5FB337D6" FromRole="KhoaHoc" ToRole="LopHoc" />
           <NavigationProperty Name="NguoiQuanLy" Relationship="Self.FK__NguoiQuanL__MaKH__01142BA1" FromRole="KhoaHoc" ToRole="NguoiQuanLy" />
           <NavigationProperty Name="TaiLieuHocTap" Relationship="Self.FK__TaiLieuHoc__MaKH__04E4BC85" FromRole="KhoaHoc" ToRole="TaiLieuHocTap" />
+          <NavigationProperty Name="BinhLuanKhoaHoc" Relationship="TrungTamTinHocModel.FK__BinhLuanKh__MaKH__0F624AF8" FromRole="KhoaHoc" ToRole="BinhLuanKhoaHoc" />
         </EntityType>
         <EntityType Name="LichDay">
           <Key>
@@ -632,6 +662,7 @@
           <Property Name="GioKetThuc" Type="Time" Nullable="false" Precision="7" />
           <NavigationProperty Name="HocVien" Relationship="Self.FK__LichHoc__MaHV__7D439ABD" FromRole="LichHoc" ToRole="HocVien" />
           <NavigationProperty Name="LopHoc" Relationship="Self.FK__LichHoc__MaLH__7E37BEF6" FromRole="LichHoc" ToRole="LopHoc" />
+          <Property Name="DiemDanh" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="LienHe">
           <Key>
@@ -658,12 +689,12 @@
           <Property Name="GioBatDau" Type="Time" Nullable="false" Precision="7" />
           <Property Name="GioKetThuc" Type="Time" Nullable="false" Precision="7" />
           <Property Name="MaGV" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="ChiTiet_HocVien_LopHoc" Relationship="Self.FK__ChiTiet_Ho__MaLH__693CA210" FromRole="LopHoc" ToRole="ChiTiet_HocVien_LopHoc" />
           <NavigationProperty Name="GiaoVien" Relationship="Self.FK__LopHoc__MaGV__5EBF139D" FromRole="LopHoc" ToRole="GiaoVien" />
           <NavigationProperty Name="KhoaHoc" Relationship="Self.FK__LopHoc__MaKH__5FB337D6" FromRole="LopHoc" ToRole="KhoaHoc" />
           <NavigationProperty Name="LichDay" Relationship="Self.FK__LichDay__MaLH__7A672E12" FromRole="LopHoc" ToRole="LichDay" />
           <NavigationProperty Name="LichHoc" Relationship="Self.FK__LichHoc__MaLH__7E37BEF6" FromRole="LopHoc" ToRole="LichHoc" />
           <NavigationProperty Name="NguoiQuanLy" Relationship="Self.FK__NguoiQuanL__MaLH__02084FDA" FromRole="LopHoc" ToRole="NguoiQuanLy" />
+          <NavigationProperty Name="ChiTiet_HocVien_LopHoc" Relationship="TrungTamTinHocModel.FK__ChiTiet_Ho__MaLH__68487DD7" FromRole="LopHoc" ToRole="ChiTiet_HocVien_LopHoc" />
         </EntityType>
         <EntityType Name="NguoiQuanLy">
           <Key>
@@ -713,30 +744,6 @@
           <Property Name="MoTa" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="KhoaHoc" Relationship="Self.FK__TaiLieuHoc__MaKH__04E4BC85" FromRole="TaiLieuHocTap" ToRole="KhoaHoc" />
         </EntityType>
-        <Association Name="FK__ChiTiet_Ho__MaHV__68487DD7">
-          <End Role="HocVien" Type="Self.HocVien" Multiplicity="0..1" />
-          <End Role="ChiTiet_HocVien_LopHoc" Type="Self.ChiTiet_HocVien_LopHoc" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HocVien">
-              <PropertyRef Name="MaHV" />
-            </Principal>
-            <Dependent Role="ChiTiet_HocVien_LopHoc">
-              <PropertyRef Name="MaHV" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ChiTiet_Ho__MaLH__693CA210">
-          <End Role="LopHoc" Type="Self.LopHoc" Multiplicity="1" />
-          <End Role="ChiTiet_HocVien_LopHoc" Type="Self.ChiTiet_HocVien_LopHoc" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="LopHoc">
-              <PropertyRef Name="MaLH" />
-            </Principal>
-            <Dependent Role="ChiTiet_HocVien_LopHoc">
-              <PropertyRef Name="MaLH" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__KhoaHoc__TinhTra__5BE2A6F2">
           <End Role="ChuongTrinhHoc" Type="Self.ChuongTrinhHoc" Multiplicity="1" />
           <End Role="KhoaHoc" Type="Self.KhoaHoc" Multiplicity="*" />
@@ -954,7 +961,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="TrungTamTinHocEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ChiTiet_HocVien_LopHoc" EntityType="Self.ChiTiet_HocVien_LopHoc" />
           <EntitySet Name="ChuongTrinhHoc" EntityType="Self.ChuongTrinhHoc" />
           <EntitySet Name="GiaoDichHocPhi" EntityType="Self.GiaoDichHocPhi" />
           <EntitySet Name="GiaoVien" EntityType="Self.GiaoVien" />
@@ -968,14 +974,6 @@
           <EntitySet Name="PhuongThucThanhToan" EntityType="Self.PhuongThucThanhToan" />
           <EntitySet Name="TaiKhoan" EntityType="Self.TaiKhoan" />
           <EntitySet Name="TaiLieuHocTap" EntityType="Self.TaiLieuHocTap" />
-          <AssociationSet Name="FK__ChiTiet_Ho__MaHV__68487DD7" Association="Self.FK__ChiTiet_Ho__MaHV__68487DD7">
-            <End Role="HocVien" EntitySet="HocVien" />
-            <End Role="ChiTiet_HocVien_LopHoc" EntitySet="ChiTiet_HocVien_LopHoc" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ChiTiet_Ho__MaLH__693CA210" Association="Self.FK__ChiTiet_Ho__MaLH__693CA210">
-            <End Role="LopHoc" EntitySet="LopHoc" />
-            <End Role="ChiTiet_HocVien_LopHoc" EntitySet="ChiTiet_HocVien_LopHoc" />
-          </AssociationSet>
           <AssociationSet Name="FK__KhoaHoc__TinhTra__5BE2A6F2" Association="Self.FK__KhoaHoc__TinhTra__5BE2A6F2">
             <End Role="ChuongTrinhHoc" EntitySet="ChuongTrinhHoc" />
             <End Role="KhoaHoc" EntitySet="KhoaHoc" />
@@ -1048,28 +1046,107 @@
             <End Role="LopHoc" EntitySet="LopHoc" />
             <End Role="NguoiQuanLy" EntitySet="NguoiQuanLy" />
           </AssociationSet>
+          <EntitySet Name="BinhLuanKhoaHoc" EntityType="TrungTamTinHocModel.BinhLuanKhoaHoc" />
+          <AssociationSet Name="FK__BinhLuanKh__MaHV__0E6E26BF" Association="TrungTamTinHocModel.FK__BinhLuanKh__MaHV__0E6E26BF">
+            <End Role="HocVien" EntitySet="HocVien" />
+            <End Role="BinhLuanKhoaHoc" EntitySet="BinhLuanKhoaHoc" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BinhLuanKh__MaKH__0F624AF8" Association="TrungTamTinHocModel.FK__BinhLuanKh__MaKH__0F624AF8">
+            <End Role="KhoaHoc" EntitySet="KhoaHoc" />
+            <End Role="BinhLuanKhoaHoc" EntitySet="BinhLuanKhoaHoc" />
+          </AssociationSet>
+          <EntitySet Name="ChiTiet_HocVien_LopHoc" EntityType="TrungTamTinHocModel.ChiTiet_HocVien_LopHoc" />
+          <AssociationSet Name="FK__ChiTiet_Ho__MaHV__6754599E" Association="TrungTamTinHocModel.FK__ChiTiet_Ho__MaHV__6754599E">
+            <End Role="HocVien" EntitySet="HocVien" />
+            <End Role="ChiTiet_HocVien_LopHoc" EntitySet="ChiTiet_HocVien_LopHoc" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChiTiet_Ho__MaLH__68487DD7" Association="TrungTamTinHocModel.FK__ChiTiet_Ho__MaLH__68487DD7">
+            <End Role="LopHoc" EntitySet="LopHoc" />
+            <End Role="ChiTiet_HocVien_LopHoc" EntitySet="ChiTiet_HocVien_LopHoc" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="BinhLuanKhoaHoc">
+          <Key>
+            <PropertyRef Name="MaHV" />
+            <PropertyRef Name="MaKH" />
+            <PropertyRef Name="NgayBinhLuan" />
+          </Key>
+          <Property Name="MaHV" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MaKH" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NgayBinhLuan" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="HocVien" Relationship="TrungTamTinHocModel.FK__BinhLuanKh__MaHV__0E6E26BF" FromRole="BinhLuanKhoaHoc" ToRole="HocVien" />
+          <NavigationProperty Name="KhoaHoc" Relationship="TrungTamTinHocModel.FK__BinhLuanKh__MaKH__0F624AF8" FromRole="BinhLuanKhoaHoc" ToRole="KhoaHoc" />
+        </EntityType>
+        <Association Name="FK__BinhLuanKh__MaHV__0E6E26BF">
+          <End Type="TrungTamTinHocModel.HocVien" Role="HocVien" Multiplicity="1" />
+          <End Type="TrungTamTinHocModel.BinhLuanKhoaHoc" Role="BinhLuanKhoaHoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HocVien">
+              <PropertyRef Name="MaHV" />
+            </Principal>
+            <Dependent Role="BinhLuanKhoaHoc">
+              <PropertyRef Name="MaHV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BinhLuanKh__MaKH__0F624AF8">
+          <End Type="TrungTamTinHocModel.KhoaHoc" Role="KhoaHoc" Multiplicity="1" />
+          <End Type="TrungTamTinHocModel.BinhLuanKhoaHoc" Role="BinhLuanKhoaHoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KhoaHoc">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="BinhLuanKhoaHoc">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ChiTiet_HocVien_LopHoc">
+          <Key>
+            <PropertyRef Name="MaLH" />
+          </Key>
+          <Property Name="MaLH" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MaHV" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="DiemKiemTraLan1" Type="Double" />
+          <Property Name="DiemKiemTraLan2" Type="Double" />
+          <Property Name="DiemKiemTraLan3" Type="Double" />
+          <Property Name="DiemTrungBinh" Type="Double" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Sobuoivang" Type="Int32" Nullable="false" />
+          <Property Name="Daketthuc" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="HocVien" Relationship="TrungTamTinHocModel.FK__ChiTiet_Ho__MaHV__6754599E" FromRole="ChiTiet_HocVien_LopHoc" ToRole="HocVien" />
+          <NavigationProperty Name="LopHoc" Relationship="TrungTamTinHocModel.FK__ChiTiet_Ho__MaLH__68487DD7" FromRole="ChiTiet_HocVien_LopHoc" ToRole="LopHoc" />
+        </EntityType>
+        <Association Name="FK__ChiTiet_Ho__MaHV__6754599E">
+          <End Type="TrungTamTinHocModel.HocVien" Role="HocVien" Multiplicity="0..1" />
+          <End Type="TrungTamTinHocModel.ChiTiet_HocVien_LopHoc" Role="ChiTiet_HocVien_LopHoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HocVien">
+              <PropertyRef Name="MaHV" />
+            </Principal>
+            <Dependent Role="ChiTiet_HocVien_LopHoc">
+              <PropertyRef Name="MaHV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ChiTiet_Ho__MaLH__68487DD7">
+          <End Type="TrungTamTinHocModel.LopHoc" Role="LopHoc" Multiplicity="1" />
+          <End Type="TrungTamTinHocModel.ChiTiet_HocVien_LopHoc" Role="ChiTiet_HocVien_LopHoc" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="LopHoc">
+              <PropertyRef Name="MaLH" />
+            </Principal>
+            <Dependent Role="ChiTiet_HocVien_LopHoc">
+              <PropertyRef Name="MaLH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="TrungTamTinHocModelStoreContainer" CdmEntityContainer="TrungTamTinHocEntities">
-          <EntitySetMapping Name="ChiTiet_HocVien_LopHoc">
-            <EntityTypeMapping TypeName="TrungTamTinHocModel.ChiTiet_HocVien_LopHoc">
-              <MappingFragment StoreEntitySet="ChiTiet_HocVien_LopHoc">
-                <ScalarProperty Name="MaLH" ColumnName="MaLH" />
-                <ScalarProperty Name="MaHV" ColumnName="MaHV" />
-                <ScalarProperty Name="DiemKiemTraLan1" ColumnName="DiemKiemTraLan1" />
-                <ScalarProperty Name="DiemKiemTraLan2" ColumnName="DiemKiemTraLan2" />
-                <ScalarProperty Name="DiemKiemTraLan3" ColumnName="DiemKiemTraLan3" />
-                <ScalarProperty Name="DiemTrungBinh" ColumnName="DiemTrungBinh" />
-                <ScalarProperty Name="Tinhtrang" ColumnName="Tinhtrang" />
-                <ScalarProperty Name="Sobuoivang" ColumnName="Sobuoivang" />
-                <ScalarProperty Name="Daketthuc" ColumnName="Daketthuc" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ChuongTrinhHoc">
             <EntityTypeMapping TypeName="TrungTamTinHocModel.ChuongTrinhHoc">
               <MappingFragment StoreEntitySet="ChuongTrinhHoc">
@@ -1154,6 +1231,7 @@
           <EntitySetMapping Name="LichHoc">
             <EntityTypeMapping TypeName="TrungTamTinHocModel.LichHoc">
               <MappingFragment StoreEntitySet="LichHoc">
+                <ScalarProperty Name="DiemDanh" ColumnName="DiemDanh" />
                 <ScalarProperty Name="MaLichHoc" ColumnName="MaLichHoc" />
                 <ScalarProperty Name="MaHV" ColumnName="MaHV" />
                 <ScalarProperty Name="MaLH" ColumnName="MaLH" />
@@ -1230,6 +1308,30 @@
                 <ScalarProperty Name="TenTaiLieu" ColumnName="TenTaiLieu" />
                 <ScalarProperty Name="LinkTaiLieu" ColumnName="LinkTaiLieu" />
                 <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BinhLuanKhoaHoc">
+            <EntityTypeMapping TypeName="TrungTamTinHocModel.BinhLuanKhoaHoc">
+              <MappingFragment StoreEntitySet="BinhLuanKhoaHoc">
+                <ScalarProperty Name="NgayBinhLuan" ColumnName="NgayBinhLuan" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="MaHV" ColumnName="MaHV" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChiTiet_HocVien_LopHoc">
+            <EntityTypeMapping TypeName="TrungTamTinHocModel.ChiTiet_HocVien_LopHoc">
+              <MappingFragment StoreEntitySet="ChiTiet_HocVien_LopHoc">
+                <ScalarProperty Name="Daketthuc" ColumnName="Daketthuc" />
+                <ScalarProperty Name="Sobuoivang" ColumnName="Sobuoivang" />
+                <ScalarProperty Name="DiemTrungBinh" ColumnName="DiemTrungBinh" />
+                <ScalarProperty Name="DiemKiemTraLan3" ColumnName="DiemKiemTraLan3" />
+                <ScalarProperty Name="DiemKiemTraLan2" ColumnName="DiemKiemTraLan2" />
+                <ScalarProperty Name="DiemKiemTraLan1" ColumnName="DiemKiemTraLan1" />
+                <ScalarProperty Name="MaHV" ColumnName="MaHV" />
+                <ScalarProperty Name="MaLH" ColumnName="MaLH" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
