@@ -36,8 +36,13 @@
     }
 </style>
 
-
+<nav aria-label="breadcrumb" class="breadcrumb mx-2">
+    @Html.MvcSiteMap().SiteMapPath()
+</nav>
 <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <nav aria-label="breadcrumb" class="breadcrumb mx-2">
+        @Html.MvcSiteMap().SiteMapPath()
+    </nav>
     <div class="container" style="max-width: 800px; padding: 20px; background-color: #ededed; border-radius: 8px;">
         <div class="col-md-12">
             <h2 class="text-center" style="color: orangered">@ViewBag.Title</h2>
