@@ -110,6 +110,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         else
                         {
                             Session["TenDangNhap"] = taikhoan.TenDangNhap;
+                            Session["MaHV"] = taikhoan.MaHV;
                             return RedirectToAction("Index", "HocVien");
                         }
                     }
@@ -131,6 +132,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             Response.Cookies.Add(roleCookie);
 
             Session["TenDangNhap"] = null;
+            Session["MaHV"] = null;
 
             return RedirectToAction("DangNhap", "Account");
         }

@@ -41,14 +41,24 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return View(khoahocs);
         }
 
-        public ActionResult ChiTietKhoaHoc(string id)
+        public ActionResult ChiTietKhoaHoc(string id, int page = 1, string sort_by = "time_asc")
         {
             KhoaHoc kh = db.KhoaHoc.Where(t => t.MaKH == id).FirstOrDefault();
 
             var binhluans = db.BinhLuanKhoaHoc
                      .Where(bl => bl.MaKH == id)
-                     .OrderByDescending(bl => bl.NgayBinhLuan) // Sắp xếp theo ngày bình luận
-                     .ToList();            
+                     .OrderByDescending(bl => bl.NgayBinhLuan)
+                     .ToList();
+
+            int tongSoBinhLuan = binhluans.Count;
+            ViewBag.TongSoBinhLuan = tongSoBinhLuan;
+
+            int NumberOfRecordsPerPage = 3;
+            int NumberOfPages = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(binhluans.Count) / Convert.ToDouble(NumberOfRecordsPerPage)));
+            int NumberOfRecordsToSkip = (page - 1) * NumberOfRecordsPerPage;
+            ViewBag.Page = page;
+            ViewBag.NumberOfPages = NumberOfPages;
+            binhluans = binhluans.Skip(NumberOfRecordsToSkip).Take(NumberOfRecordsPerPage).ToList();   
 
             ViewBag.BinhLuans = binhluans;
 
