@@ -1035,7 +1035,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="QL_TrungTamTinHocEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="TrungTamTinHocEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BinhLuanKhoaHoc" EntityType="Self.BinhLuanKhoaHoc" />
           <EntitySet Name="ChiTiet_HocVien_LopHoc" EntityType="Self.ChiTiet_HocVien_LopHoc" />
           <EntitySet Name="ChuongTrinhHoc" EntityType="Self.ChuongTrinhHoc" />
@@ -1145,7 +1145,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="QL_TrungTamTinHocModelStoreContainer" CdmEntityContainer="QL_TrungTamTinHocEntities">
+        <EntityContainerMapping StorageEntityContainer="QL_TrungTamTinHocModelStoreContainer" CdmEntityContainer="TrungTamTinHocEntities">
           <EntitySetMapping Name="BinhLuanKhoaHoc">
             <EntityTypeMapping TypeName="QL_TrungTamTinHocModel.BinhLuanKhoaHoc">
               <MappingFragment StoreEntitySet="BinhLuanKhoaHoc">
