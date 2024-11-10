@@ -18,9 +18,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string MaHV { get; set; }
         public string MaLH { get; set; }
         public System.DateTime NgayHoc { get; set; }
+        public bool DiemDanh { get; set; }
         public System.TimeSpan GioBatDau { get; set; }
         public System.TimeSpan GioKetThuc { get; set; }
-        public bool DiemDanh { get; set; }
     
         public virtual HocVien HocVien { get; set; }
         public virtual LopHoc LopHoc { get; set; }

@@ -13,10 +13,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TrungTamTinHocEntities : DbContext
+    public partial class QL_TrungTamTinHocEntities : DbContext
     {
-        public TrungTamTinHocEntities()
-            : base("name=TrungTamTinHocEntities")
+        public QL_TrungTamTinHocEntities()
+            : base("name=QL_TrungTamTinHocEntities")
         {
         }
     
@@ -25,6 +25,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
+        public virtual DbSet<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
         public virtual DbSet<ChuongTrinhHoc> ChuongTrinhHoc { get; set; }
         public virtual DbSet<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
         public virtual DbSet<GiaoVien> GiaoVien { get; set; }
@@ -38,7 +40,5 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public virtual DbSet<PhuongThucThanhToan> PhuongThucThanhToan { get; set; }
         public virtual DbSet<TaiKhoan> TaiKhoan { get; set; }
         public virtual DbSet<TaiLieuHocTap> TaiLieuHocTap { get; set; }
-        public virtual DbSet<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
-        public virtual DbSet<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
     }
 }

@@ -9,10 +9,10 @@
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 {
-
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
 
 
     public partial class TaiKhoan
@@ -31,6 +31,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string MaHV { get; set; }
         [Display(Name = "Nhập mã học viên")]
         public string MaGV { get; set; }
+
 
         public virtual GiaoVien GiaoVien { get; set; }
         public virtual HocVien HocVien { get; set; }
