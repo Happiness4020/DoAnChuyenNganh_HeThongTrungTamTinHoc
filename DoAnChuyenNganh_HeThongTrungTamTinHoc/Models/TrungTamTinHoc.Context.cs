@@ -13,10 +13,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class QL_TrungTamTinHocEntities : DbContext
+    public partial class TrungTamTinHocEntities : DbContext
     {
-        public QL_TrungTamTinHocEntities()
-            : base("name=QL_TrungTamTinHocEntities")
+        public TrungTamTinHocEntities()
+            : base("name=TrungTamTinHocEntities")
         {
         }
     
