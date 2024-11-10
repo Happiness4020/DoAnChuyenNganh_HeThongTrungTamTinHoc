@@ -25,6 +25,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         }
 
         [Key]
+
         public string MaGV { get; set; }
         [Display(Name = "Nhập họ tên")]
         [Required(ErrorMessage = "Bạn phải nhập họ tên")]
@@ -55,7 +56,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Display(Name = "Nhập lương")]
         [Required(ErrorMessage = "Bạn phải nhập lương")]
         public double Luong { get; set; }
-
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LichDay> LichDay { get; set; }

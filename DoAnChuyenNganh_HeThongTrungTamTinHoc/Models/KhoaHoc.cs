@@ -17,11 +17,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public KhoaHoc()
         {
+            this.BinhLuanKhoaHoc = new HashSet<BinhLuanKhoaHoc>();
             this.GiaoDichHocPhi = new HashSet<GiaoDichHocPhi>();
             this.LopHoc = new HashSet<LopHoc>();
             this.NguoiQuanLy = new HashSet<NguoiQuanLy>();
             this.TaiLieuHocTap = new HashSet<TaiLieuHocTap>();
-            this.BinhLuanKhoaHoc = new HashSet<BinhLuanKhoaHoc>();
         }
     
         public string MaKH { get; set; }
@@ -33,8 +33,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string MaChuongTrinh { get; set; }
         public double HocPhi { get; set; }
         public string LoaiKH { get; set; }
-        public bool TinhTrang { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
         public virtual ChuongTrinhHoc ChuongTrinhHoc { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
@@ -44,7 +45,5 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public virtual ICollection<NguoiQuanLy> NguoiQuanLy { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TaiLieuHocTap> TaiLieuHocTap { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
     }
 }
