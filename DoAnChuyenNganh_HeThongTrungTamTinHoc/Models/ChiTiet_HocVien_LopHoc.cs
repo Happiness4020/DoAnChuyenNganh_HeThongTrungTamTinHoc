@@ -12,16 +12,18 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TaiKhoan
+    public partial class ChiTiet_HocVien_LopHoc
     {
-        public int MaTK { get; set; }
-        public string TenDangNhap { get; set; }
-        public string MatKhau { get; set; }
-        public string QuyenHan { get; set; }
+        public string MaLH { get; set; }
         public string MaHV { get; set; }
-        public string MaGV { get; set; }
+        public Nullable<double> DiemKiemTraLan1 { get; set; }
+        public Nullable<double> DiemKiemTraLan2 { get; set; }
+        public Nullable<double> DiemKiemTraLan3 { get; set; }
+        public Nullable<double> DiemTrungBinh { get; set; }
+        public int Sobuoivang { get; set; }
+        public bool Daketthuc { get; set; }
     
-        public virtual GiaoVien GiaoVien { get; set; }
         public virtual HocVien HocVien { get; set; }
+        public virtual LopHoc LopHoc { get; set; }
     }
 }
