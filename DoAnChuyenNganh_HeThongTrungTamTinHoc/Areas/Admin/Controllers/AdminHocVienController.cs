@@ -140,6 +140,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult HocVienDelete( string id, HocVien hocvien)
         {
+
             hocvien = ttth.HocVien.Where(t => t.MaHV == id).FirstOrDefault();
             ttth.HocVien.Remove(hocvien);
             ttth.SaveChanges();
@@ -167,9 +168,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     ModelState.AddModelError("", "Không tìm thấy học viên.");
                     return View(hocvien);
                 }
+
                 
                 
                 var emailExists = ttth.HocVien.Any(h => h.Email == hocvien.Email && h.MaHV != hocvien.MaHV);
+
                 if (emailExists)
                 {
                     ModelState.AddModelError("Email", "Email này đã được sử dụng!!");

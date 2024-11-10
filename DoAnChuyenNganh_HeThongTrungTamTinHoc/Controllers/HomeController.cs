@@ -13,10 +13,19 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         // GET: Home
         public ActionResult Index()
         {
+
             var khs = db.KhoaHoc.Take(12).ToList();
             List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
             ViewBag.ChuongTrinhHocs = cths;
+
+
+            if (khs == null || !khs.Any())
+            {
+                return Content("Không có dữ liệu khóa học.");
+            }
+
             return View(khs);
+
         }
 
         public ActionResult HuongDanThanhToan()
@@ -25,5 +34,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             ViewBag.ChuongTrinhHocs = cths;
             return View();
         }
+
+
     }
 }

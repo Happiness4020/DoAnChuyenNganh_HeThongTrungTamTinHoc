@@ -1,0 +1,43 @@
+﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.KhoaHoc>
+
+@{
+    ViewBag.Title = "Học Phí";
+}
+
+<h2>Giỏ Hàng - Học Phí</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>Giỏ hàng của bạn đang trống.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên Khóa Học</th>
+                <th>Mô Tả</th>
+                <th>Học Phí</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var khoaHoc in Model)
+            {
+                <tr>
+                    <td>@khoaHoc.TenKH</td>
+                    <td>@khoaHoc.MoTa</td>
+                    <td>@khoaHoc.HocPhi VND</td>
+                    <td>
+                        <a href="@Url.Action("RemoveFromCart", "HocVien", new { courseId = khoaHoc.MaKH })" class="btn btn-danger">
+                            Xóa
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-right">
+        <a href="@Url.Action("ThanhToan", "HocVien")" class="btn btn-success">Thanh Toán</a>
+    </div>
+}

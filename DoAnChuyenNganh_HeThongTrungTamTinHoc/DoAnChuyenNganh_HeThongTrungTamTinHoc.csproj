@@ -195,8 +195,8 @@
     <Content Include="Javascript\HocVien.js" />
     <Content Include="Models\TrungTamTinHoc.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TrungTamTinHoc.Context.cs</LastGenOutput>
       <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
+      <LastGenOutput>TrungTamTinHoc.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\TrungTamTinHoc.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -320,13 +320,6 @@
     <Content Include="Areas\Script\tabler-icons\fonts\tabler-icons.ttf" />
     <Content Include="Areas\Script\tabler-icons\fonts\tabler-icons.woff" />
     <Content Include="Areas\Script\tabler-icons\fonts\tabler-icons.woff2" />
-    <EntityDeploy Include="Models\TrungTamTinHoc.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>TrungTamTinHoc.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\TrungTamTinHoc.edmx.diagram">
-      <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\AdminAccount\AccountList.cshtml" />
     <Content Include="Areas\Admin\Views\AdminAccount\AccountAdd.cshtml" />
     <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienList.cshtml" />
@@ -340,6 +333,13 @@
     <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienDelete.cshtml" />
     <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienEdit.cshtml" />
     <Content Include="Mvc.sitemap" />
+    <EntityDeploy Include="Models\TrungTamTinHoc.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TrungTamTinHoc.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\TrungTamTinHoc.edmx.diagram">
+      <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
+    </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -26,7 +26,14 @@
                     <li><a href="@Url.Action("Index", "GiangVien")">Thông tin giảng viên</a></li>
                     <li><a href="@Url.Action("LichDay", "GiangVien")">Lịch dạy</a></li>
                     <li>
-                        <a>Chào @userName.Value</a>
+                        @if (userName != null)
+                        {
+                            <a>Chào @userName.Value</a>
+                        }
+                        else
+                        {
+                            <a>Chào khách!</a>
+                        }
                     </li>
                     <li class="nav-item">
                         <a href="@Url.Action("DangXuat", "Account")">Đăng xuất</a>

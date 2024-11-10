@@ -23,8 +23,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(taikhoans);
         }
 
-        public ActionResult AccountAdd()
-        {
+            public ActionResult AccountAdd()
+            {
             var hocviens = db.HocVien
                                    .Where(hv => !db.TaiKhoan.Any(tk => tk.MaHV == hv.MaHV))
                                    .ToList();
