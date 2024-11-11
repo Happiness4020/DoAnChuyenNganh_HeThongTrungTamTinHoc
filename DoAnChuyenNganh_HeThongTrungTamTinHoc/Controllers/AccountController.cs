@@ -105,6 +105,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         }
                         else if (taikhoan.QuyenHan == "Giáo viên")
                         {
+                            Session["MaGV"] = taikhoan.MaGV;
                             return RedirectToAction("Index", "GiangVien");
                         }
                         else
@@ -133,6 +134,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
             Session["TenDangNhap"] = null;
             Session["MaHV"] = null;
+            Session["MaGV"] = null;
 
             return RedirectToAction("DangNhap", "Account");
         }
