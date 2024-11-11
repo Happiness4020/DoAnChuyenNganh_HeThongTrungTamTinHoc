@@ -65,9 +65,9 @@
     <header class="custom-header">
     </header>
 
-    <main class="shadow-sm" style="background-color: #fff; min-width: 500px; min-height: 500px;">
-        <div class="schedule">
-            <h2 class="text-center">@ViewBag.Title</h2>
+    <main class="shadow-sm" style="background-color: #fff; max-width: 600px; min-height: 500px;">
+        <div class="container-fluid">
+            <h3 class="text-center" style="color: #0066b3;">@ViewBag.Title</h3>
 
             @if (ViewBag.LichDay.Count == 0)
             {
@@ -77,28 +77,30 @@
             {
                 foreach (var item in Model)
                 {
-                    <table class="schedule">
-                        <thead>
-                            <tr>
-                                <th>Lớp học</th>
-                                <th>Mã lớp</th>
-                                <th>Ngày dạy</th>
-                                <th>Giờ bắt đầu</th>
-                                <th>Giờ kết thúc</th>
-                                <th>Giảng viên</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background-color: #0066b3; color: #fff;">
-                                <td><strong>@item.LopHoc.TenLop</strong></td>
-                                <td>@item.MaLH</td>
-                                <td>@item.NgayDay</td>
-                                <td>@item.GioBatDau</td>
-                                <td>@item.GioKetThuc</td>
-                                <td>@item.GiaoVien.HoTen</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <a href="#" class="text-decoration-none">
+                        <table class="schedule border">
+                            <thead>
+                                <tr style="background-color: #0066b3;">
+                                    <th>Lớp học</th>
+                                    <th>Mã lớp</th>
+                                    <th>Ngày dạy</th>
+                                    <th>Giờ bắt đầu</th>
+                                    <th>Giờ kết thúc</th>
+                                    <th>Giảng viên</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="color: #0066b3;">
+                                    <td><strong>@item.LopHoc.TenLop</strong></td>
+                                    <td>@item.MaLH</td>
+                                    <td>@item.NgayDay</td>
+                                    <td>@item.GioBatDau</td>
+                                    <td>@item.GioKetThuc</td>
+                                    <td>@item.GiaoVien.HoTen</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </a> 
                 }
             }
         </div>
