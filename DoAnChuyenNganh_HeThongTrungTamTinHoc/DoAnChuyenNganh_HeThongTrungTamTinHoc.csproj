@@ -67,6 +67,12 @@
     <Reference Include="MvcSiteMapProvider.WebActivator, Version=4.6.26.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvcSiteMapProvider.MVC5.4.6.26\lib\net45\MvcSiteMapProvider.WebActivator.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
@@ -162,6 +168,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Css\GiangVien.css" />
     <Content Include="Css\LichDay.css" />
@@ -185,6 +192,7 @@
     <Content Include="images\kh9.jpg" />
     <Content Include="images\lichsuhinhthanh.jpg" />
     <Content Include="images\logo-da-thong-bao-bo-cong-thuong-mau-xanh.png" />
+    <Content Include="images\noimage.jpg" />
     <Content Include="images\phogiamdoc.jpg" />
     <Content Include="images\phongmay.jpg" />
     <Content Include="images\school.png" />
@@ -215,9 +223,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminAccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminChuongTrinhHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminGiangVienController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHocVienController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminKhoaHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BinhLuanController.cs" />
@@ -340,6 +350,14 @@
     <Content Include="Models\TrungTamTinHoc.edmx.diagram">
       <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\AdminChuongTrinhHoc\ChuongTrinhHocList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChuongTrinhHoc\ChuongTrinhHocAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChuongTrinhHoc\ChuongTrinhHocDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChuongTrinhHoc\ChuongTrinhHocEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocEdit.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -389,9 +407,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AnhKhoaHoc\" />
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Views\AdminChuongTrinhHoc\" />
     <Folder Include="Areas\Admin\Views\DangKy\" />
     <Folder Include="Views\BinhLuan\" />
   </ItemGroup>

@@ -17,6 +17,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LopHoc()
         {
+            this.ChiTiet_HocVien_LopHoc = new HashSet<ChiTiet_HocVien_LopHoc>();
             this.LichDay = new HashSet<LichDay>();
             this.LichHoc = new HashSet<LichHoc>();
             this.NguoiQuanLy = new HashSet<NguoiQuanLy>();
@@ -30,7 +31,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public System.TimeSpan GioKetThuc { get; set; }
         public string MaGV { get; set; }
     
-        public virtual ChiTiet_HocVien_LopHoc ChiTiet_HocVien_LopHoc { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
         public virtual GiaoVien GiaoVien { get; set; }
         public virtual KhoaHoc KhoaHoc { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

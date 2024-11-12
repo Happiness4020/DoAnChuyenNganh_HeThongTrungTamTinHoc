@@ -15,7 +15,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
         public ActionResult AccountList(string search = "")
         {
-            var ds = db.TaiKhoan;
 
             List<TaiKhoan> taikhoans = db.TaiKhoan.Where(e => e.TenDangNhap.Contains(search)).ToList();
             ViewBag.Search = search;
@@ -23,8 +22,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(taikhoans);
         }
 
-            public ActionResult AccountAdd()
-            {
+        public ActionResult AccountAdd()
+        {
             var hocviens = db.HocVien
                                    .Where(hv => !db.TaiKhoan.Any(tk => tk.MaHV == hv.MaHV))
                                    .ToList();
@@ -99,7 +98,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             else
             {
                 return View();
-            } 
+            }
         }
 
         public ActionResult AccountDelete(int id)

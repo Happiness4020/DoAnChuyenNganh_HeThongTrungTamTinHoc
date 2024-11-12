@@ -96,7 +96,7 @@
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link primary-hover-bg"
-                               href="/Home/Index"
+                               href="@Url.Action("Index", "Home")"
                                aria-expanded="false">
                                 <span class="aside-icon p-2 bg-light-primary rounded-3">
                                     <i class="ti ti-layout-dashboard fs-7 text-primary"></i>
@@ -121,12 +121,22 @@
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link danger-hover-bg"
-                               href="~/Admin/DS_Sach/Index"
+                               href="@Url.Action("ChuongTrinhHocList", "AdminChuongTrinhHoc")"
                                aria-expanded="false">
-                                <span class="aside-icon p-2 bg-light-danger rounded-3">
-                                    <i class="ti ti-article fs-7 text-danger"></i>
+                                <span class="aside-icon p-2 bg-light-secondary rounded-3">
+                                    <i class="ti ti-article fs-7 text-secondary"></i>
                                 </span>
-                                <span class="hide-menu ms-2 ps-1 text-white">Chương trình học, khóa học</span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Danh sách chương trình học</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link danger-hover-bg"
+                               href="@Url.Action("KhoaHocList", "AdminKhoaHoc")"
+                               aria-expanded="false">
+                                <span class="aside-icon p-2 bg-light-indigo rounded-3">
+                                    <i class="ti ti-article fs-7 text-indigo"></i>
+                                </span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Danh sách khóa học</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
