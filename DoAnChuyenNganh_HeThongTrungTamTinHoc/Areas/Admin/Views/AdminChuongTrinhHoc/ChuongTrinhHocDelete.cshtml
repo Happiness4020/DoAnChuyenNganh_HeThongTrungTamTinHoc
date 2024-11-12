@@ -1,0 +1,35 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.ChuongTrinhHoc
+
+@{
+    ViewBag.Title = "ChuongTrinhHocDelete";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+
+<h3>Bạn có muốn xóa chương trình này ?</h3>
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <form class="p-4 mt-0" style="max-width: 100%" action="/Admin/AdminChuongTrinhHoc/ChuongTrinhHocDelete/@Model.MaChuongTrinh" method="post">
+        <input type="hidden" name="Id" value="@Model.MaChuongTrinh" />
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Tên chương trình
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TenChuongTrinh)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Xóa" class="btn btn-default" /> |
+                <a class="btn btn-danger ms-2" href="@Url.Action("ChuongTrinhHocList", "AdminAccount")">Quay lại</a>
+            </div>
+        }
+    </form>
+</div>

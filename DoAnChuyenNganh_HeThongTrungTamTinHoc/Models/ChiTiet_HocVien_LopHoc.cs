@@ -14,6 +14,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     
     public partial class ChiTiet_HocVien_LopHoc
     {
+        public int id { get; set; }
         public string MaLH { get; set; }
         public string MaHV { get; set; }
         public Nullable<double> DiemKiemTraLan1 { get; set; }

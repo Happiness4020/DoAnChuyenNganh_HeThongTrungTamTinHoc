@@ -1,0 +1,115 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.KhoaHoc
+
+@{
+    ViewBag.Title = "KhoaHocEdit";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <div class="row g-0 mt-1 mb-0">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="card-body p-0 text-dark">
+                <h2 style="color: #0066b3">Chỉnh sửa thông tin khóa học</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-0 mt-1">
+        <div class="col-md-12">
+            <div class="card-body text-dark p-0">
+                @using (Html.BeginForm("KhoaHocEdit", "AdminKhoaHoc", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.MaKH)
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.TenKH, "Tên khóa học")
+                            @Html.EditorFor(model => model.TenKH, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TenKH, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.MoTa, "Mô tả")
+                            @Html.EditorFor(model => model.MoTa, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.Anh, "Ảnh khóa học")
+                            <input type="file" name="imageFile" id="imageFile" class="form-control" />
+                            @if (!string.IsNullOrEmpty(Model.Anh))
+                            {
+                                <p>Ảnh hiện tại:</p>
+                                <img src="~/AnhKhoaHoc/@Model.Anh" alt="Ảnh khóa học" width="100" />
+                            }
+                            @Html.ValidationMessageFor(model => model.Anh, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.NgayBatDau, "Ngày bắt đầu")
+                            @Html.TextBoxFor(model => model.NgayBatDau, "{0:dd/MM/yyyy}", new { placeholder = "Ngày bắt đầu", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NgayBatDau, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.NgayKetThuc, "Ngày kết thúc")
+                            @Html.TextBoxFor(model => model.NgayKetThuc, "{0:dd/MM/yyyy}", new { placeholder = "Ngày kết thúc", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NgayKetThuc, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.MaChuongTrinh, "Chương trình")
+                            @Html.DropDownListFor(model => model.MaChuongTrinh, (IEnumerable<SelectListItem>)ViewBag.MaChuongTrinh, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MaChuongTrinh, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.HocPhi, "Học phí")
+                            @Html.EditorFor(model => model.HocPhi, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.HocPhi, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.LoaiKH, "Loại khóa học")
+                            @Html.EditorFor(model => model.LoaiKH, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LoaiKH, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2 mt-3 mb-3">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button> &nbsp;
+                            <a href="/Admin/AdminKhoaHoc/KhoaHocList" class="btn btn-danger">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

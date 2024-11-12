@@ -22,7 +22,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     
         public string MaChuongTrinh { get; set; }
         public string TenChuongTrinh { get; set; }
-        public string Anh { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<KhoaHoc> KhoaHoc { get; set; }

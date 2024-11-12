@@ -91,7 +91,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         DiaChi = hocvien.DiaChi
                     };
                     
-                    ttth.HocVien.Add(hocvien);
+                    ttth.HocVien.Add(hv);
                     ttth.SaveChanges();
 
                     // Truy vấn lại và đổi tên ảnh
@@ -107,7 +107,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 {
                     // Lưu thông tin vào CSDL
                     hocvien.Anh = "";
-                    ttth.HocVien.Add(hocvien);
+                    ttth.HocVien.Add(hv);
                     ttth.SaveChanges();
                 }
                 return RedirectToAction("HocVienList");
@@ -233,8 +233,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
                 return RedirectToAction("HocVienList");
             }
-
-            return View(hocvien);
+            else
+            {
+                return View();
+            }    
+         
         }
 
     }

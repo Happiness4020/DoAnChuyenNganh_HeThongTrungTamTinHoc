@@ -70,16 +70,16 @@
             <tbody>
                 @foreach (var taiKhoan in Model)
                 {
-                <tr>
-                    <td>@taiKhoan.MaTK</td>
-                    <td>@taiKhoan.TenDangNhap</td>
-                    <td>@taiKhoan.MatKhau</td>
-                    <td>@taiKhoan.QuyenHan</td>
-                    <td>@taiKhoan.MaHV</td>
-                    <td>@taiKhoan.MaGV</td>
-                    <td><a href="/Admin/AdminAccount/AccountEdit/@taiKhoan.MaTK" style="text-decoration: none;">Sửa</a></td>
-                    <td><a href="/Admin/AdminAccount/AccountDelete/@taiKhoan.MaTK" style="text-decoration: none;">Xóa</a></td>
-                </tr>
+                    <tr>
+                        <td>@taiKhoan.MaTK</td>
+                        <td>@taiKhoan.TenDangNhap</td>
+                        <td>@taiKhoan.MatKhau</td>
+                        <td>@taiKhoan.QuyenHan</td>
+                        <td>@taiKhoan.MaHV</td>
+                        <td>@taiKhoan.MaGV</td>
+                        <td><a href="@Url.Action("AccountEdit", "AdminAccount", new { id = taiKhoan.MaTK })" style="text-decoration: none;">Sửa</a></td>
+                        <td><a href="@Url.Action("AccountDelete", "AdminAccount", new { id = taiKhoan.MaTK })" style="text-decoration: none;">Xóa</a></td>
+                    </tr>
                 }
             </tbody>
         </table>

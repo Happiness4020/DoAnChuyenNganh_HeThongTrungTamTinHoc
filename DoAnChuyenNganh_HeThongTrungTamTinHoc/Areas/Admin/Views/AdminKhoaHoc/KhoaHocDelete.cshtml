@@ -1,0 +1,66 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.KhoaHoc
+
+@{
+    ViewBag.Title = "Xóa Khóa Học";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<h3>Bạn có muốn xóa khóa học này?</h3>
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <form class="p-4 mt-0" style="max-width: 100%" action="/Admin/AdminKhoaHoc/KhoaHocDelete/@Model.MaKH" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="MaKH" value="@Model.MaKH" />
+
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Mã khóa học</dt>
+            <dd>@Html.DisplayFor(model => model.MaKH)</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Tên khóa học</dt>
+            <dd>@Html.DisplayFor(model => model.TenKH)</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Mô tả</dt>
+            <dd>@Html.DisplayFor(model => model.MoTa)</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Ảnh khóa học</dt>
+            <dd>
+                @if (Model.Anh != "")
+                {
+                    <img src="~/images/@Model.Anh" width="200px" />
+                }
+                else
+                {
+                    <img src="~/images/noimage.jpg" width="200px" />
+                }
+            </dd>
+            &nbsp;
+            &nbsp;
+            <dt>Ngày bắt đầu</dt>
+            <dd>@Html.DisplayFor(model => model.NgayBatDau)</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Ngày kết thúc</dt>
+            <dd>@Html.DisplayFor(model => model.NgayKetThuc)</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Học phí</dt>
+            <dd>@Html.DisplayFor(model => model.HocPhi)</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Loại khóa học</dt>
+            <dd>@Html.DisplayFor(model => model.LoaiKH)</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Chương trình học</dt>
+            <dd>@Html.DisplayFor(model => model.ChuongTrinhHoc.TenChuongTrinh)</dd>
+        </dl>
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-default" /> |
+            <a class="btn btn-danger ms-2" href="@Url.Action("KhoaHocList", "AdminKhoaHoc")">Quay lại</a>
+        </div>
+    </form>
+</div>
