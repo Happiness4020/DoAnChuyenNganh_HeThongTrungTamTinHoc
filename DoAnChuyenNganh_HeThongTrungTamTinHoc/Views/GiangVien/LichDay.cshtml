@@ -1,94 +1,114 @@
 ﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LichDay>
 @{
-    ViewBag.Title = "LichDay";
-    ViewData["Title"] = "Lịch dạy";
+    ViewBag.Title = "Lịch dạy giảng viên";
     Layout = "~/Views/Shared/_GiangVien.cshtml";
 }
 
-<link href="~/Css/LichDay.css" rel="stylesheet" />
+<link href="~/Css/LichHoc.css" rel="stylesheet" />
 
-<div class="schedule">
-    <h2>Lịch giảng viên</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Ca học</th>
-                <th>Thứ 2 <br> 28/10/2024</th>
-                <th>Thứ 3 <br> 29/10/2024</th>
-                <th>Thứ 4 <br> 30/10/2024</th>
-                <th>Thứ 5 <br> 31/10/2024</th>
-                <th>Thứ 6 <br> 01/11/2024</th>
-                <th>Thứ 7 <br> 02/11/2024</th>
-                <th>Chủ nhật <br> 03/11/2024</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Sáng</td>
-                <td></td>
-                <td>
-                    <div class="class-box green">
-                        <strong>Phát triển phần mềm ứng dụng thông minh</strong><br>
-                        12DHTH01 - 01011014503<br>
-                        Tiết: 1 - 6<br>
-                        Phòng: A102 - 140 Lê Trọng Tấn<br>
-                        GV: Lâm Thị Họa Mi
-                    </div>
-                </td>
-                <td></td>
-                <td></td>
-                <td>
-                    <div class="class-box gray">
-                        <strong>Công nghệ phần mềm nâng cao</strong><br>
-                        12DHTH01 - 010110103203<br>
-                        Tiết: 4 - 6<br>
-                        Phòng: A304 - 140 Lê Trọng Tấn<br>
-                        GV: Mạnh Thiên Lý
-                    </div>
-                </td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Chiều</td>
-                <td>
-                    <div class="class-box green">
-                        <strong>Thực hành cơ sở dữ liệu NoSQL</strong><br>
-                        12DHTH10 - 010100483114<br>
-                        Tiết: 7 - 12<br>
-                        Phòng: A106 - 140 Lê Trọng Tấn<br>
-                        GV: Nguyễn Thị Thu Tâm
-                    </div>
-                </td>
-                <td></td>
-                <td>
-                    <div class="class-box green suspended">
-                        <span class="suspended-badge">Tạm ngừng</span>
-                        <strong>Thực hành kiểm định phần mềm</strong><br>
-                        12DHTH04 - 010110104106<br>
-                        Tiết: 7 - 12<br>
-                        Phòng: A103 - 140 Lê Trọng Tấn<br>
-                        GV: Đào Minh Châu
-                    </div>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Tối</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Trung tâm tin học - HUIT</title>
+    <style>
+        .custom-header {
+            background-color: #0066b3;
+            color: white;
+        }
 
-<script src="~/Javascript/GiangVien.js"></script>
+        .info {
+            float: left;
+            color: #fff;
+            font-weight: normal;
+            text-align: left;
+            width: 100%;
+            padding-left: 3px;
+        }
 
+        .schedule {
+            width: 90%;
+            margin: 20px auto;
+            overflow-x: auto;
+        }
 
+        .tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+            white-space: nowrap;
+        }
 
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .schedule {
+            width: 100%;
+            margin: 20px auto;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column h-100 w-100">
+    <header class="custom-header">
+    </header>
+
+    <main class="shadow-sm" style="background-color: #fff; max-width: 600px; min-height: 500px;">
+        <div class="container-fluid">
+            <h3 class="text-center" style="color: #0066b3;">@ViewBag.Title</h3>
+
+            @if (ViewBag.LichDay.Count == 0)
+            {
+                <h3 style="color: orangered;" class="text-center mt-5">Hiện chưa có lịch dạy!</h3>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <a href="#" class="text-decoration-none">
+                        <table class="schedule border">
+                            <thead>
+                                <tr style="background-color: #0066b3;">
+                                    <th>Lớp học</th>
+                                    <th>Mã lớp</th>
+                                    <th>Ngày dạy</th>
+                                    <th>Giờ bắt đầu</th>
+                                    <th>Giờ kết thúc</th>
+                                    <th>Giảng viên</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="color: #0066b3;">
+                                    <td><strong>@item.LopHoc.TenLop</strong></td>
+                                    <td>@item.MaLH</td>
+                                    <td>@item.NgayDay</td>
+                                    <td>@item.GioBatDau</td>
+                                    <td>@item.GioKetThuc</td>
+                                    <td>@item.GiaoVien.HoTen</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </a> 
+                }
+            }
+        </div>
+    </main>
+
+    <footer class="text-white" style="background-color: #0066b3; width: 100%;">
+        <!-- Footer content -->
+    </footer>
+
+</body>
+</html>
