@@ -22,7 +22,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     
         public int MaPT { get; set; }
         public string TenPT { get; set; }
-        public string MoTa { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
