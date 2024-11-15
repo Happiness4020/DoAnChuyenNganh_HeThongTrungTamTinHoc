@@ -1,0 +1,43 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LopHoc
+
+@{
+    ViewBag.Title = "Xóa lớp học";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<h3>Bạn có chắc chắn muốn xóa lớp học này?</h3>
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <form class="p-4 mt-0" style="max-width: 100%" action="/Admin/AdminLopHoc/LopHocDeleteConfirmed/@Model.MaLH" method="post">
+        <input type="hidden" name="MaLH" value="@Model.MaLH" />
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Tên lớp</dt>
+            <dd>@Model.TenLop</dd>
+            &nbsp;
+            <dt>Sĩ số</dt>
+            <dd>@Model.SiSo</dd>
+            &nbsp;
+            <dt>Giờ bắt đầu</dt>
+            <dd>@Model.GioBatDau</dd>
+            &nbsp;
+            <dt>Giờ kết thúc</dt>
+            <dd>@Model.GioKetThuc</dd>
+            &nbsp;
+            <dt>Giáo viên</dt>
+            <dd>@Model.GiaoVien.HoTen</dd>
+            &nbsp;
+            <dt>Khóa học</dt>
+            <dd>@Model.KhoaHoc.TenKH</dd>
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Xóa" class="btn btn-primary" /> &nbsp;
+                <a class="btn btn-danger" href="@Url.Action("LopHocList", "AdminLopHoc")">Quay lại</a>
+            </div>
+        }
+    </form>
+</div>

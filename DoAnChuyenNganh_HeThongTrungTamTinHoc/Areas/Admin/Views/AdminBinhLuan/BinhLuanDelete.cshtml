@@ -1,0 +1,42 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.BinhLuanKhoaHoc
+
+@{
+    ViewBag.Title = "Xóa Bình Luận Khóa Học";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<h3>Bạn có muốn xóa bình luận này?</h3>
+
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <form class="p-4 mt-0" style="max-width: 100%" action="/Admin/AdminBinhLuan/BinhLuanDelete/@Model.MaHV" method="post">
+        <input type="hidden" name="Id" value="@Model.MaHV" />
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Nội dung bình luận
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NoiDung)
+            </dd>
+            <dt>
+                Tên học viên
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HocVien.HoTen)
+            </dd>
+            <dt>
+                Tên khóa học
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.KhoaHoc.TenKH)
+            </dd>
+        </dl>
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-default" /> |
+            <a class="btn btn-danger ms-2" href="@Url.Action("BinhLuanList", "AdminBinhLuanKhoaHoc")">Quay lại</a>
+        </div>
+    </form>
+</div>

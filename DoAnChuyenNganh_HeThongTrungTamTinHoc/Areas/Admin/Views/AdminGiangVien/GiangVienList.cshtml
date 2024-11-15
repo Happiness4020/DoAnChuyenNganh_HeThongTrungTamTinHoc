@@ -64,7 +64,6 @@
                         <th>Ngày vào làm</th>
                         <th>Bằng cấp</th>
                         <th>Lĩnh vực đào tạo</th>
-                        <th>Trình độ</th>
                         <th>Email</th>
                         <th>SĐT</th>
                         <th>Địa chỉ</th>
@@ -77,16 +76,15 @@
                         <tr>
                             <td>@giangVien.MaGV</td>
                             <td>@giangVien.HoTen</td>
-                            <td>@giangVien.NgayVaoLam</td>
+                            <td>@giangVien.NgayVaoLam.ToString("dd/MM/yyyy")</td>
                             <td>@giangVien.BangCapGV</td>
                             <td>@giangVien.LinhVucDaoTao</td>
-                            <td>@giangVien.TrinhDo</td>
                             <td>@giangVien.Email</td>
                             <td>@giangVien.SoDT</td>
                             <td>@giangVien.DiaChi</td>
                             <td>@giangVien.Luong</td>
-                            <td><a href="/Admin/AdminGiangVien/GiangVienEdit/@giangVien.MaGV" style="text-decoration: none;">Sửa</a></td>
-                            <td><a href="/Admin/AdminGiangVien/GiangVienDelete/@giangVien.MaGV" style="text-decoration: none;">Xóa</a></td>
+                            <td><a href="/Admin/AdminGiangVien/GiangVienEdit/@giangVien.MaGV" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a></td>
+                            <td><a href="/Admin/AdminGiangVien/GiangVienDelete/@giangVien.MaGV" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a></td>
                         </tr>
                     }
                 </tbody>

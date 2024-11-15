@@ -37,14 +37,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         public ActionResult KhoaHocAdd()
         {
             // Lấy danh sách các chương trình học từ database
-            var chuongTrinhHocList = ttth.ChuongTrinhHoc.Select(ct => new SelectListItem
-            {
-                Value = ct.MaChuongTrinh.ToString(),
-                Text = ct.TenChuongTrinh
-            }).ToList();
+            ViewBag.MaChuongTrinh = new SelectList(ttth.ChuongTrinhHoc, "MaChuongTrinh", "TenChuongTrinh");  // Dropdown cho chương trình học
 
-            // Truyền danh sách này vào ViewBag với khóa 'MaChuongTrinh'
-            ViewBag.MaChuongTrinh = chuongTrinhHocList;
+
+            
             ViewBag.MaKH = makh;
             return View();
         }
@@ -52,8 +48,21 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult KhoaHocAdd(KhoaHoc khoahoc, HttpPostedFileBase imageFile)
         {
+            if (string.IsNullOrEmpty(khoahoc.MaChuongTrinh))
+            {
+                ModelState.AddModelError("MaChuongTrinh", "Vui lòng chọn chương trình");
+            }
+            // Đảm bảo `ViewBag.MaChuongTrinh` có giá trị khi trả về view nếu có lỗi.
+            var chuongTrinhHocList = ttth.ChuongTrinhHoc.Select(ct => new SelectListItem
+            {
+                Value = ct.MaChuongTrinh.ToString(),
+                Text = ct.TenChuongTrinh
+            }).ToList();
+            ViewBag.MaChuongTrinh = new SelectList(chuongTrinhHocList, "Value", "Text");
             if (ModelState.IsValid)
             {
+
+
                 var existingKhoaHoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == khoahoc.MaKH);
                 if (existingKhoaHoc != null)
                 {
@@ -104,6 +113,28 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return maHocVien.ToString();
         }
 
+        public ActionResult KhoaHocDelete(string id)
+        {
+            var khoahoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == id);
+            if (khoahoc == null)
+            {
+                return HttpNotFound("Không tìm thấy khóa học.");
+            }
+            return View(khoahoc);
+        }
+
+        [HttpPost]
+        public ActionResult KhoaHocDelete(string id, KhoaHoc khoahoc)
+        {
+            khoahoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == id);
+            if (khoahoc != null)
+            {
+                ttth.KhoaHoc.Remove(khoahoc);
+                ttth.SaveChanges();
+            }
+            return RedirectToAction("KhoaHocList");
+        }
+
 
         public ActionResult KhoaHocEdit(string id)
         {
@@ -112,29 +143,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             {
                 return HttpNotFound("Không tìm thấy khóa học.");
             }
-            // Lấy danh sách các chương trình học và đánh dấu mục đã chọn
-            var chuongTrinhHocList = ttth.ChuongTrinhHoc.Select(ct => new SelectListItem
-            {
-                Value = ct.MaChuongTrinh.ToString(),
-                Text = ct.TenChuongTrinh,
-                Selected = ct.MaChuongTrinh == khoahoc.MaChuongTrinh // Đánh dấu mục đã chọn
-            }).ToList();
-
-            // Truyền danh sách này vào ViewBag với khóa 'MaChuongTrinh'
-            ViewBag.MaChuongTrinh = chuongTrinhHocList;
+            ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc, "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);  // Dropdown cho chương trình học
             return View(khoahoc);
         }
 
         [HttpPost]
         public ActionResult KhoaHocEdit(KhoaHoc khoahoc, HttpPostedFileBase imageFile)
         {
-            // Cập nhật lại ViewBag.MaChuongTrinh khi POST
-            ViewBag.MaChuongTrinh = ttth.ChuongTrinhHoc.Select(ct => new SelectListItem
-            {
-                Value = ct.MaChuongTrinh.ToString(),
-                Text = ct.TenChuongTrinh,
-                Selected = ct.MaChuongTrinh == khoahoc.MaChuongTrinh // Đánh dấu mục đã chọn
-            }).ToList();
+           
 
             if (ModelState.IsValid)
             {
@@ -180,29 +196,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 ttth.SaveChanges();
                 return RedirectToAction("KhoaHocList");
             }
-            return View();
+            else
+            {
+                ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc, "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);  
+                return View(khoahoc);
+            }    
         }
 
-        public ActionResult KhoaHocDelete(string id)
-        {
-            var khoahoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == id);
-            if (khoahoc == null)
-            {
-                return HttpNotFound("Không tìm thấy khóa học.");
-            }
-            return View(khoahoc);
-        }
-
-        [HttpPost]
-        public ActionResult KhoaHocDelete(string id, KhoaHoc khoahoc)
-        {
-            khoahoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == id);
-            if (khoahoc != null)
-            {
-                ttth.KhoaHoc.Remove(khoahoc);
-                ttth.SaveChanges();
-            }
-            return RedirectToAction("KhoaHocList");
-        }
+      
     }
 }

@@ -78,7 +78,7 @@
                         <div class="col-3"></div>
                         <div class="col-6">
                             @Html.LabelFor(model => model.MaChuongTrinh, "Chương trình")
-                            @Html.DropDownListFor(model => model.MaChuongTrinh, (IEnumerable<SelectListItem>)ViewBag.MaChuongTrinh, new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.MaChuongTrinh, (SelectList)ViewBag.MaChuongTrinhList, "-- Chọn chương trình --", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.MaChuongTrinh, "", new { @class = "text-danger" })
                         </div>
                     </div>

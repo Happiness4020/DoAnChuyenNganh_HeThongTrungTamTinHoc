@@ -33,9 +33,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult ChuongTrinhHocAdd(ChuongTrinhHoc cth)
         {
+            if (string.IsNullOrEmpty(cth.TenChuongTrinh))
+            {
+                ModelState.AddModelError("TenChuongTrinh", "Vui lòng nhập tên chương trình");
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 ChuongTrinhHoc chuongTrinhHoc = db.ChuongTrinhHoc.Where(t => t.MaChuongTrinh == cth.MaChuongTrinh).FirstOrDefault();
+               
 
                 var tenCT = db.ChuongTrinhHoc.Where(t => t.TenChuongTrinh == cth.TenChuongTrinh).FirstOrDefault();
                 if (tenCT != null)

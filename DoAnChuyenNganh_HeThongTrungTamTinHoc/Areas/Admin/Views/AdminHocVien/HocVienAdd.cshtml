@@ -23,14 +23,7 @@
                 {
                     <form onsubmit="return validateDateFormat()">
                         <input type="hidden" name="MaHV" value="@ViewBag.MaHV" />
-                        @*<div class="row my-2">
-                                <div class="col-3"></div>
-                                <div class="col-6">
-                                    @Html.LabelFor(model => model.MaHV, "Mã học viên")
-                                    @Html.TextBoxFor(model => model.MaHV, new { placeholder = "Mã học viên", @class = "form-control", Value = ViewBag.MaGV })
-                                    @Html.ValidationMessageFor(model => model.MaHV, "", new { @class = "text-danger" })
-                                </div>
-                            </div>*@
+                        
                         <div class="row my-2">
                             <div class="col-3"></div>
                             <div class="col-6">
@@ -51,7 +44,7 @@
                             <div class="col-3"></div>
                             <div class="col-6">
                                 @Html.LabelFor(model => model.NgaySinh, "Ngày sinh")
-                                @Html.TextBoxFor(model => model.NgaySinh, "{0:dd/MM/yyyy}", new { placeholder = "Ngày sinh", @class = "form-control" })
+                                @Html.TextBoxFor(model => model.NgaySinh, "{0:dd/MM/yyyy}", new { placeholder = "Ngày sinh", @class = "form-control" , type = "date" })
                                 @Html.ValidationMessageFor(model => model.NgaySinh, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -71,7 +64,7 @@
                             <div class="col-3"></div>
                             <div class="col-6">
                                 @Html.LabelFor(model => model.Email, "Email")
-                                @Html.TextBoxFor(model => model.Email, new { placeholder = "Ngày sinh", @class = "form-control" })
+                                @Html.TextBoxFor(model => model.Email, new { placeholder = "Email", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>

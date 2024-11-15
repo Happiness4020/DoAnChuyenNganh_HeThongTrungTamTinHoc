@@ -40,9 +40,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Display(Name = "Nhập lĩnh vực đào tạo")]
         [Required(ErrorMessage = "Bạn phải nhập lĩnh vực đào tạo")]
         public string LinhVucDaoTao { get; set; }
-        [Display(Name = "Nhập trình độ")]
-        [Required(ErrorMessage = "Bạn phải nhập trình độ")]
-        public string TrinhDo { get; set; }
         [Display(Name = "Nhập email")]
         [Required(ErrorMessage = "Bạn phải nhập email")]
         public string Email { get; set; }

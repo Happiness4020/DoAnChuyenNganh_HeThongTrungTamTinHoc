@@ -18,7 +18,7 @@
     <div class="row g-0 mt-1">
         <div class="col-md-12">
             <div class="card-body text-dark p-0">
-                @using (Html.BeginForm("ChuongTrinhHocList", "AdminChuongTrinhHoc", new { area = "Admin" }, FormMethod.Post))
+                @using (Html.BeginForm("ChuongTrinhHocAdd", "AdminChuongTrinhHoc", new { area = "Admin" }, FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
 

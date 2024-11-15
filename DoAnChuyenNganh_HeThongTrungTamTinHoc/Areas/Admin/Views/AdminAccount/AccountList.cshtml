@@ -77,8 +77,8 @@
                         <td>@taiKhoan.QuyenHan</td>
                         <td>@taiKhoan.MaHV</td>
                         <td>@taiKhoan.MaGV</td>
-                        <td><a href="@Url.Action("AccountEdit", "AdminAccount", new { id = taiKhoan.MaTK })" style="text-decoration: none;">Sửa</a></td>
-                        <td><a href="@Url.Action("AccountDelete", "AdminAccount", new { id = taiKhoan.MaTK })" style="text-decoration: none;">Xóa</a></td>
+                        <td><a href="@Url.Action("AccountEdit", "AdminAccount", new { id = taiKhoan.MaTK })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a></td>
+                        <td><a href="@Url.Action("AccountDelete", "AdminAccount", new { id = taiKhoan.MaTK })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a></td>
                     </tr>
                 }
             </tbody>
