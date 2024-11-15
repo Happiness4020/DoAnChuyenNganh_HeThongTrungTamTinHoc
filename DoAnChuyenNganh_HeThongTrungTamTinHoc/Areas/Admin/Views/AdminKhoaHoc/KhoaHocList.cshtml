@@ -89,14 +89,14 @@
                                 }
                             }
                         </td>
-                        <td>@kh.NgayBatDau</td>
-                        <td>@kh.NgayKetThuc</td>
-                        <td>@kh.HocPhi</td>
+                        <td>@kh.NgayBatDau.ToString("dd/MM/yyyy")</td>
+                        <td>@kh.NgayKetThuc.ToString("dd/MM/yyyy")</td>
+                        <td>@kh.HocPhi.ToString("N0")</td>
                         <td>@kh.LoaiKH</td>
                         <td>@kh.ChuongTrinhHoc.TenChuongTrinh</td>
                         <td>
-                            <a href="@Url.Action("KhoaHocEdit", "AdminKhoaHoc", new { id = kh.MaKH })" style="text-decoration: none;">Sửa</a>
-                            <a href="@Url.Action("KhoaHocDelete", "AdminKhoaHoc", new { id = kh.MaKH })" style="text-decoration: none;">Xóa</a>
+                            <a href="@Url.Action("KhoaHocEdit", "AdminKhoaHoc", new { id = kh.MaKH })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
+                            <a href="@Url.Action("KhoaHocDelete", "AdminKhoaHoc", new { id = kh.MaKH })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
                         </td>
                     </tr>
                 }

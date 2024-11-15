@@ -1,12 +1,11 @@
-﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.ChuongTrinhHoc>
+﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LichDay>
 
 @{
-    ViewBag.Title = "Quản lý Chương Trình Học";
+    ViewBag.Title = "Quản lý Lịch Dạy";
     Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
 }
 
 <style>
-    /* Tùy chỉnh bảng */
     .custom-table {
         background-color: #ffffff;
         border-radius: 10px;
@@ -45,33 +44,41 @@
 
 <a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
 <br />
-<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("ChuongTrinhHocAdd", "AdminChuongTrinhHoc")">Thêm Chương Trình Học</a>
+<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("LichDayAdd", "AdminLichDay")">Thêm Lịch Dạy</a>
 
-<form class="d-flex mb-3 mt-2" action="@Url.Action("ChuongTrinhHocList", "AdminChuongTrinhHoc")">
-    <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm chương trình học" aria-label="Search" style="max-width: 400px;">
+<form class="d-flex mb-3 mt-2" action="@Url.Action("LichDayList", "AdminLichDay")">
+    <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm lịch dạy" aria-label="Search" style="max-width: 400px;">
     <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>
-    <a class="btn btn-danger ms-2" href="@Url.Action("ChuongTrinhHocList", "AdminChuongTrinhHoc")">Hủy</a>
+    <a class="btn btn-danger ms-2" href="@Url.Action("LichDayList", "AdminLichDay")">Hủy</a>
 </form>
 
 <div class="container mt-5">
-    <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Chương Trình Học</h2>
+    <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Lịch Dạy</h2>
     <div class="table-responsive">
         <table class="table custom-table">
             <thead>
                 <tr>
-                    <th>Tên Chương Trình</th>
+                    <th>Ngày</th>
+                    <th>Giảng Viên</th>
+                    <th>Lớp học</th>
+                    <th>Giờ bắt đầu</th>
+                    <th>Giờ kết thúc</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.TenChuongTrinh</td>
+                        <td>@item.NgayDay.ToString("dd/MM/yyyy")</td>
+                        <td>@item.GiaoVien.HoTen</td>
+                        <td>@item.LopHoc.TenLop</td>
+                        <td>@item.GioBatDau</td>
+                        <td>@item.GioKetThuc</td>
                         <td>
-                            <a href="@Url.Action("ChuongTrinhHocEdit", "AdminChuongTrinhHoc", new { id = item.MaChuongTrinh })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
+                            <a href="@Url.Action("LichDayEdit", "AdminLichDay", new { id = item.MaLichDay })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
                         </td>
                         <td>
-                            <a href="@Url.Action("ChuongTrinhHocDelete", "AdminChuongTrinhHoc", new { id = item.MaChuongTrinh })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
+                            <a href="@Url.Action("LichDayDelete", "AdminLichDay", new { id = item.MaLichDay })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
                         </td>
                     </tr>
                 }

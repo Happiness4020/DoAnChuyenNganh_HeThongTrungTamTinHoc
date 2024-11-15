@@ -1,0 +1,48 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LichHoc
+
+@{
+    ViewBag.Title = "LichHocDelete";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<h3>Bạn có chắc chắn muốn xóa lịch học này?</h3>
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <form class="p-4 mt-0" style="max-width: 100%" action="/Admin/AdminLichHoc/LichHocDelete/@Model.MaLichHoc" method="post">
+        <input type="hidden" name="Id" value="@Model.MaLichHoc" />
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Ngày học</dt>
+            <dd>@Model.NgayHoc.ToString("dd/MM/yyyy")</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Giờ bắt đầu</dt>
+            <dd>@Model.GioBatDau</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Giờ kết thúc</dt>
+            <dd>@Model.GioKetThuc</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Học viên</dt>
+            <dd>@Model.HocVien.HoTen</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Lớp học</dt>
+            <dd>@Model.LopHoc.TenLop</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Điểm danh</dt>
+            <dt>@Model.DiemDanh</dt>
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Xóa" class="btn btn-default" /> |
+                <a class="btn btn-danger ms-2" href="@Url.Action("LichHocList", "AdminLichHoc")">Quay lại</a>
+            </div>
+        }
+    </form>
+</div>

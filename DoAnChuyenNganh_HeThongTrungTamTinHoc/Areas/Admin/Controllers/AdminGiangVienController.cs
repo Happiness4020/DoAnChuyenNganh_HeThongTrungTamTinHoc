@@ -46,7 +46,16 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View();
                 }
 
-                if (string.IsNullOrEmpty(gv.HoTen) && string.IsNullOrEmpty(gv.Anh) && string.IsNullOrEmpty(gv.NgayVaoLam.ToString()) && string.IsNullOrEmpty(gv.Anh) && string.IsNullOrEmpty(gv.BangCapGV) && string.IsNullOrEmpty(gv.LinhVucDaoTao) && string.IsNullOrEmpty(gv.TrinhDo) && string.IsNullOrEmpty(gv.Email) && string.IsNullOrEmpty(gv.SoDT) && string.IsNullOrEmpty(gv.DiaChi) && string.IsNullOrEmpty(gv.Luong.ToString()))
+                if (string.IsNullOrEmpty(gv.HoTen) 
+                    && string.IsNullOrEmpty(gv.Anh) 
+                    && string.IsNullOrEmpty(gv.NgayVaoLam.ToString()) 
+                    && string.IsNullOrEmpty(gv.Anh) 
+                    && string.IsNullOrEmpty(gv.BangCapGV) 
+                    && string.IsNullOrEmpty(gv.LinhVucDaoTao) 
+                    && string.IsNullOrEmpty(gv.Email) 
+                    && string.IsNullOrEmpty(gv.SoDT) 
+                    && string.IsNullOrEmpty(gv.DiaChi) 
+                    && string.IsNullOrEmpty(gv.Luong.ToString()))
                 {
                     ModelState.AddModelError("", "Vui lòng nhập đầy đủ thông tin của giảng viên!!!");
                     return View();
@@ -86,7 +95,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     NgayVaoLam = gv.NgayVaoLam,
                     BangCapGV = gv.BangCapGV,
                     LinhVucDaoTao = gv.LinhVucDaoTao,
-                    TrinhDo = gv.TrinhDo,
                     Email = gv.Email,
                     SoDT = gv.SoDT,
                     DiaChi = gv.DiaChi,
@@ -161,7 +169,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 giangVienTonTai.NgayVaoLam = gv.NgayVaoLam;
                 giangVienTonTai.BangCapGV = gv.BangCapGV;
                 giangVienTonTai.LinhVucDaoTao = gv.LinhVucDaoTao;
-                giangVienTonTai.TrinhDo = gv.TrinhDo;
                 giangVienTonTai.Email = gv.Email;
                 giangVienTonTai.SoDT = gv.SoDT;
                 giangVienTonTai.DiaChi = gv.DiaChi;

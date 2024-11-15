@@ -223,11 +223,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminAccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminBinhLuanController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminChuongTrinhHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminGiangVienController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHocVienController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminKhoaHocController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminLichDayController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminLichHocController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminLopHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BinhLuanController.cs" />
@@ -303,6 +307,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -358,6 +363,20 @@
     <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocAdd.cshtml" />
     <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocDelete.cshtml" />
     <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminBinhLuan\BinhLuanList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminBinhLuan\BinhLuanDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichDay\LichDayList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichDay\LichDayAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichDay\LichDayDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichDay\LichDayEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichHoc\LichHocAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichHoc\LichHocDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichHoc\LichHocEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichHoc\LichHocList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocList.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

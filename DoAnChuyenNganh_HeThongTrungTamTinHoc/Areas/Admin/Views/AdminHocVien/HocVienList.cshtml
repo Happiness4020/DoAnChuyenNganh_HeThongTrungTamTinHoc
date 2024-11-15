@@ -87,13 +87,13 @@
                                 }
                             }
                         </td>
-                        <td>@hocvien.NgaySinh</td>
+                        <td>@hocvien.NgaySinh.ToString("dd/MM/yyyy")</td>
                         <td>@hocvien.GioiTinh</td>
                         <td>@hocvien.Email</td>
                         <td>@hocvien.SoDT</td>
                         <td>@hocvien.DiaChi</td>
-                        <td><a href="/Admin/AdminHocVien/HocVienEdit/@hocvien.MaHV" style="text-decoration: none;">Sửa</a></td>
-                        <td><a href="/Admin/AdminHocVien/HocVienDelete/@hocvien.MaHV" style="text-decoration: none;">Xóa</a></td>
+                        <td><a href="/Admin/AdminHocVien/HocVienEdit/@hocvien.MaHV" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a></td>
+                        <td><a href="/Admin/AdminHocVien/HocVienDelete/@hocvien.MaHV" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a></td>
                     </tr>
                  }
             </tbody>
