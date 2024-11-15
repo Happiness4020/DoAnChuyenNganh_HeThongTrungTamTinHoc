@@ -20,7 +20,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public int MaPT { get; set; }
         public System.DateTime NgayGD { get; set; }
         public double SoTien { get; set; }
-        public bool TrangThai { get; set; }
+        public string SoDT { get; set; }
+        public string Email { get; set; }
     
         public virtual HocVien HocVien { get; set; }
         public virtual KhoaHoc KhoaHoc { get; set; }
