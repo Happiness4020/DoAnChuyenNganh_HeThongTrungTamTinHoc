@@ -1,4 +1,5 @@
 ﻿using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -58,7 +59,50 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
         public ActionResult DanhSachLopHoc()
         {
-            return View();
+            string magv = Session["MaGV"]?.ToString();
+            if (string.IsNullOrEmpty(magv))
+            {
+                return RedirectToAction("Error");
+            }
+
+            var lopHocs = db.LopHoc
+                .Where(l => l.MaGV == magv)
+                .ToList();
+
+            return View(lopHocs);
+        }
+
+        public ActionResult ChiTietLopHoc(string malh)
+        {
+            if (string.IsNullOrEmpty(malh))
+            {
+                // Nếu không có mã lớp học, trả về danh sách trống hoặc lỗi
+                return RedirectToAction("Error");
+            }
+
+            var hocVienList = db.ChiTiet_HocVien_LopHoc
+            .Where(ctlh => ctlh.MaLH == malh)
+            .Select(ctlh => new HocVienViewModel
+            {
+                MaHV = ctlh.HocVien.MaHV,
+                HoTen = ctlh.HocVien.HoTen,
+                NgaySinh = ctlh.HocVien.NgaySinh,
+                GioiTinh = ctlh.HocVien.GioiTinh,
+                Email = ctlh.HocVien.Email,
+                SoDT = ctlh.HocVien.SoDT,
+                DiaChi = ctlh.HocVien.DiaChi,
+                DiemKiemTraLan1 = (float)ctlh.DiemKiemTraLan1,
+                DiemKiemTraLan2 = (float)ctlh.DiemKiemTraLan2,
+                DiemKiemTraLan3 = (float)ctlh.DiemKiemTraLan3,
+                DiemTrungBinh = (float)ctlh.DiemTrungBinh,
+                Sobuoivang = ctlh.Sobuoivang,
+                Daketthuc = ctlh.Daketthuc
+            })
+            .ToList();
+
+            ViewBag.MaLop = malh;
+
+            return View(hocVienList);
         }
     }
 }

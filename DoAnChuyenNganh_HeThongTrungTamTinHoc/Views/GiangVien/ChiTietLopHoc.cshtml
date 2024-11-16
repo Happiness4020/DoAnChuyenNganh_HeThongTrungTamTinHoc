@@ -1,0 +1,44 @@
+﻿
+@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels.HocVienViewModel>
+@{
+    ViewBag.Title = "ChiTietLopHoc";
+    Layout = "~/Views/Shared/_GiangVien.cshtml";
+}
+
+
+<main class="container">
+    <h2 class="text-center">Danh sách học viên trong lớp</h2>
+    <h1>@ViewBag.MaLop</h1>
+
+    @if (Model == null || !Model.Any())
+    {
+<p class="text-center text-danger">Không có học viên nào trong lớp này.</p> }
+            else
+            {
+<table class="table table-bordered table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>Mã học viên</th>
+            <th>Điểm kiểm tra lần 1</th>
+            <th>Điểm kiểm tra lần 2</th>
+            <th>Điểm kiểm tra lần 3</th>
+            <th>Điểm trung bình</th>
+            <th>Số buổi vắng</th>
+            <th>Đã kết thúc</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hv in Model)
+        {
+<tr>
+    <td>@hv.MaHV</td>
+    <td>@hv.DiemKiemTraLan1</td>
+    <td>@hv.DiemKiemTraLan2</td>
+    <td>@hv.DiemKiemTraLan3</td>
+    <td>@hv.DiemTrungBinh</td>
+    <td>@hv.Sobuoivang</td>
+    <td>@(hv.Daketthuc ? "Đã kết thúc" : "Đang học")</td>
+</tr>                }
+    </tbody>
+</table>}
+</main>
