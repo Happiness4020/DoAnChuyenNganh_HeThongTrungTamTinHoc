@@ -21,32 +21,6 @@
             color: white;
         }
 
-        .info {
-            float: left;
-            color: #fff;
-            font-weight: normal;
-            text-align: left;
-            width: 100%;
-            padding-left: 3px;
-        }
-
-        .schedule {
-            width: 90%;
-            margin: 20px auto;
-            overflow-x: auto;
-        }
-
-        .tooltip {
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 5px;
-            border-radius: 5px;
-            display: none;
-            z-index: 1000;
-            white-space: nowrap;
-        }
-
         body {
             font-family: 'Roboto', sans-serif;
             line-height: 1.6;
@@ -65,7 +39,7 @@
     <header class="custom-header">
     </header>
 
-    <main class="shadow-sm" style="background-color: #fff; max-width: 600px; min-height: 500px;">
+    <main class="shadow-sm" style="background-color: #fff; max-width: 100%; min-height: 500px;">
         <div class="container-fluid">
             <h3 class="text-center" style="color: #0066b3;">@ViewBag.Title</h3>
 
@@ -77,10 +51,11 @@
             {
                 foreach (var item in Model)
                 {
-                    <a href="#" class="text-decoration-none">
+                    <a href="@Url.Action("DanhSachHocVien", "GiangVien", new { malh = item.MaLH, ngayday = item.NgayDay })" class="text-decoration-none">
+
                         <table class="schedule border">
-                            <thead>
-                                <tr style="background-color: #0066b3;">
+                            <thead style="background-color: #0066b3">
+                                <tr>
                                     <th>Lớp học</th>
                                     <th>Mã lớp</th>
                                     <th>Ngày dạy</th>
@@ -93,9 +68,9 @@
                                 <tr style="color: #0066b3;">
                                     <td><strong>@item.LopHoc.TenLop</strong></td>
                                     <td>@item.MaLH</td>
-                                    <td>@item.NgayDay</td>
-                                    <td>@item.GioBatDau</td>
-                                    <td>@item.GioKetThuc</td>
+                                    <td style="color: orange">@item.NgayDay.ToShortDateString()</td>
+                                    <td style="color: orangered">@item.GioBatDau</td>
+                                    <td style="color: orangered">@item.GioKetThuc</td>
                                     <td>@item.GiaoVien.HoTen</td>
                                 </tr>
                             </tbody>

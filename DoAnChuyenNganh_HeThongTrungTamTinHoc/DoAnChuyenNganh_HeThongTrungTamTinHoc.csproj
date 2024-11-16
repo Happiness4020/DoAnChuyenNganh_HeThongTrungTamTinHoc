@@ -418,6 +418,8 @@
     <Content Include="Views\HocVien\HocPhi.cshtml" />
     <Content Include="Views\HocVien\Ketquahoctap.cshtml" />
     <Content Include="Views\HocVien\LichHoc.cshtml" />
+    <Content Include="Views\GiangVien\DanhSachHocVien.cshtml" />
+    <Content Include="Views\GiangVien\DanhGiaHocVien.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
