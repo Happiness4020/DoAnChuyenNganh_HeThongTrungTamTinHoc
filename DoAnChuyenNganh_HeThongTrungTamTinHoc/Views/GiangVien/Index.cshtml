@@ -6,8 +6,8 @@
 
 <style>
     #profile {
-        width: 80%;
-        margin: 0 auto;
+        width: 70%;
+        margin: auto;
         padding: 20px;
         background-color: #f8f9fa;
         border-radius: 8px;
@@ -24,6 +24,7 @@
         align-items: center;
         gap: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
     }
 
     .profile-img {
@@ -51,7 +52,7 @@
 </style>
 
 <section id="profile">
-    <h2>@ViewBag.Title</h2>
+    <h2 class="fw-bold">@ViewBag.Title</h2>
     <div class="info-box">
         <img src="~/AnhHocVien/@Model.Anh" alt="Ảnh giảng viên" class="profile-img" />
         <div class="info-grid">

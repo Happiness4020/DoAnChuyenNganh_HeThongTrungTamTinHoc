@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Danh sách lớp";
+    Layout = "~/Views/Shared/_GiangVien.cshtml";
+}
+
+<style>
+    .table th, .table td {
+        width: 250px;
+        text-align: center;
+    }
+</style>
+
+<h3 class="text-center" style="color: #0066b3;">Danh sách học viên của lớp @ViewBag.MaLH ngày @ViewBag.NgayDay</h3>
+<main class="shadow-sm" style="background-color: #fff; max-width: 100%; min-height: 500px; padding: 20px;">
+    <div class="container-fluid">
+        @if (Model == null)
+        {
+            <h4 class="text-center" style="color: orangered;">Không có học viên nào!</h4> 
+        }
+        else
+        {
+            <form action="@Url.Action("DiemDanh", "GiangVien")" method="post">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="thead-dark" style="background-color: #0066b3; color: white;">
+                        <tr>
+                            <th>Mã học viên</th>
+                            <th>Họ tên</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Vắng học</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var hv in Model)
+                        {
+                            <tr>
+                                <td>@hv.MaHV</td>
+                                <td>@hv.HoTen</td>
+                                <td>@hv.SoDT</td>
+                                <td>@hv.Email</td>
+                                <td>
+                                    <input type="checkbox" name="diemDanh[@hv.MaHV]" @*@(hv.DiemDanh == 0 ? "" : "checked")*@ />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="d-flex float-end">
+                    <button type="submit" class="btn btn-primary">Lưu điểm danh</button>
+                </div>
+            </form>
+        }
+    </div>
+</main>

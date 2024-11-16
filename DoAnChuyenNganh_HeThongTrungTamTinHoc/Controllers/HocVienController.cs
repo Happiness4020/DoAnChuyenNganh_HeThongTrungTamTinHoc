@@ -88,8 +88,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         {
                             MaKH = course.MaKH,
                             SoTien = course.HocPhi,
-                            NgayGD = DateTime.Now,
-                            TrangThai = false
+                            NgayGD = DateTime.Now
                         });
 
                         TempData["Message"] = "Khóa học đã được thêm vào giỏ hàng thành công!";
@@ -149,8 +148,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         MaHV = HttpContext.Request.Cookies["NguoiDung"]?.Value,
                         MaKH = item.MaKH,
                         SoTien = item.SoTien,
-                        NgayGD = DateTime.Now,
-                        TrangThai = true
+                        NgayGD = DateTime.Now
                     };
 
                     db.GiaoDichHocPhi.Add(newTransaction);

@@ -44,5 +44,21 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return View(lichdays);
         }
        
+        public ActionResult DanhSachHocVien(string malh, DateTime ngayday)
+        {
+            var hocviens = db.LichHoc
+            .Where(lh => lh.MaLH == malh)
+            .Select(lh => lh.HocVien)
+            .ToList();
+
+            ViewBag.MaLH = malh;
+            ViewBag.NgayDay = ngayday.ToShortDateString();
+            return View(hocviens);
+        }
+
+        public ActionResult DanhSachLopHoc()
+        {
+            return View();
+        }
     }
 }
