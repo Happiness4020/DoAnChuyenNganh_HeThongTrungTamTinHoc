@@ -129,9 +129,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                                 .FirstOrDefault(ct => ct.MaHV == hv.MaHV && ct.MaLH == malh);
                 if (hocvien != null)
                 {
-                    hocvien.DiemKiemTraLan1 = hv.DiemKiemTraLan1;
-                    hocvien.DiemKiemTraLan2 = hv.DiemKiemTraLan2;
-                    hocvien.DiemKiemTraLan3 = hv.DiemKiemTraLan3;
+                    hocvien.DiemKiemTraLan1 = Math.Round((double)hv.DiemKiemTraLan1, 2);
+                    hocvien.DiemKiemTraLan2 = Math.Round((double)hv.DiemKiemTraLan2, 2);
+                    hocvien.DiemKiemTraLan3 = Math.Round((double)hv.DiemKiemTraLan3, 2);
                     hocvien.Sobuoivang = hv.Sobuoivang;
                     hocvien.Daketthuc = hv.Daketthuc;
 
