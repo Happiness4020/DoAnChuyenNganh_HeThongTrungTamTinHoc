@@ -100,9 +100,47 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             })
             .ToList();
 
+            var lop = db.LopHoc.FirstOrDefault(lh => lh.MaLH == malh);
+            if (lop == null)
+            {
+                return RedirectToAction("Error");
+            }
+
+            ViewBag.TenLop = lop.TenLop;
             ViewBag.MaLop = malh;
 
             return View(hocVienList);
+        }
+
+        [HttpPost]
+        public ActionResult CapNhatDiem(List<HocVienViewModel> HocVienList, string malh)
+        {
+            if (HocVienList == null || !HocVienList.Any())
+            {
+                ViewBag.ErrorMessage = "Danh sách học viên trống!";
+                return RedirectToAction("ChiTietLopHoc", new { malh = malh });
+            }
+
+            ViewBag.MaLop = malh;
+
+            foreach (var hv in HocVienList)
+            {
+                var hocvien = db.ChiTiet_HocVien_LopHoc
+                                .FirstOrDefault(ct => ct.MaHV == hv.MaHV && ct.MaLH == malh);
+                if (hocvien != null)
+                {
+                    hocvien.DiemKiemTraLan1 = hv.DiemKiemTraLan1;
+                    hocvien.DiemKiemTraLan2 = hv.DiemKiemTraLan2;
+                    hocvien.DiemKiemTraLan3 = hv.DiemKiemTraLan3;
+                    hocvien.Sobuoivang = hv.Sobuoivang;
+                    hocvien.Daketthuc = hv.Daketthuc;
+
+                }
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("ChiTietLopHoc", new { malh = malh });
         }
     }
 }
