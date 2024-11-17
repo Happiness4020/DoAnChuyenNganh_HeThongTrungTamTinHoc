@@ -58,7 +58,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View();
                 }
 
-                
+                string filename = "noimage.jpg";
 
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
@@ -77,22 +77,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         ModelState.AddModelError("Image", "Chỉ chấp nhận hình ảnh dạng JPG hoặc PNG.");
                         return View();
                     }
-                    hocvien.Anh = "";
-                    // Lưu thông tin vào CSDL
-                    hv = new HocVien
-                    {
-                        MaHV = mahv,
-                        HoTen = hocvien.HoTen,
-                        Anh = hocvien.Anh,
-                        NgaySinh = DateTime.Parse(hocvien.NgaySinh.ToString("dd/MM/yyyy")),
-                        GioiTinh = hocvien.GioiTinh,
-                        Email = hocvien.Email,
-                        SoDT = hocvien.SoDT,
-                        DiaChi = hocvien.DiaChi
-                    };
                     
-                    ttth.HocVien.Add(hv);
-                    ttth.SaveChanges();
+                    
 
                     // Truy vấn lại và đổi tên ảnh
                     HocVien Hocvien = ttth.HocVien.ToList().Last();
@@ -100,16 +86,23 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
                     imageFile.SaveAs(path);
 
-                    Hocvien.Anh = fileName;
-                    ttth.SaveChanges();
+                   
                 }
-                else
+                // Lưu thông tin vào CSDL
+                hv = new HocVien
                 {
-                    // Lưu thông tin vào CSDL
-                    hocvien.Anh = "";
-                    ttth.HocVien.Add(hv);
-                    ttth.SaveChanges();
-                }
+                    MaHV = mahv,
+                    HoTen = hocvien.HoTen,
+                    Anh = filename,
+                    NgaySinh = DateTime.Parse(hocvien.NgaySinh.ToString("dd/MM/yyyy")),
+                    GioiTinh = hocvien.GioiTinh,
+                    Email = hocvien.Email,
+                    SoDT = hocvien.SoDT,
+                    DiaChi = hocvien.DiaChi
+                };
+
+                ttth.HocVien.Add(hv);
+                ttth.SaveChanges();
                 return RedirectToAction("HocVienList");
             }
             else
