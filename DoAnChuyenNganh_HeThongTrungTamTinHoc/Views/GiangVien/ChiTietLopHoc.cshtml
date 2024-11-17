@@ -5,6 +5,11 @@
     Layout = "~/Views/Shared/_GiangVien.cshtml";
 }
 
+<style>
+    table th, table td {
+        text-align: center;
+    }
+</style>
 
 <main class="container">
     <h2 class="text-center">Bảng điểm @ViewBag.TenLop</h2>
@@ -15,49 +20,59 @@
     }
     else
     {
-        <form action="/GiangVien/CapNhatDiem?@ViewBag.MaLop" method="post">
-            <input type="hidden" name="MaLop" value="@ViewBag.MaLop" />
+        <form action="@Url.Action("CapNhatDiem", "GiangVien")" method="post">
+            <input type="hidden" name="malh" value="@ViewBag.MaLop" />
             <table class="table table-bordered table-hover">
                 <thead class="table-primary">
                     <tr>
                         <th>Mã học viên</th>
                         <th>Tên học viên</th>
-                        <th>Điểm kiểm tra lần 1</th>
-                        <th>Điểm kiểm tra lần 2</th>
-                        <th>Điểm kiểm tra lần 3</th>
+                        <th>Điểm KTL 1</th>
+                        <th>Điểm KTL 2</th>
+                        <th>Điểm KTL 3</th>
+                        <th>Điểm trung bình</th>
                         <th>Số buổi vắng</th>
                         <th>Đã kết thúc</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @for (int i = 0; i < Model.Count; i++)
                     {
                     <tr>
-                        
-                        <td>@item.MaHV</td>
-                        <td>@item.HoTen</td>
                         <td>
-                            <input type="number" name="DiemKiemTraLan1" value="@item.DiemKiemTraLan1" step="0.1" class="form-control"/>
+                            @Model[i].MaHV
+                            <input type="hidden" name="HocVienList[@i].MaHV" value="@Model[i].MaHV" />
+                        </td>
+                        <td>@Model[i].HoTen</td>
+                        <td>
+                            <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan1" value="@Model[i].DiemKiemTraLan1" class="form-control" />
                         </td>
                         <td>
-                            <input type="number" name="DiemKiemTraLan2" value="@item.DiemKiemTraLan2" step="0.1" class="form-control"/>
+                            <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan2" value="@Model[i].DiemKiemTraLan2" class="form-control" />
                         </td>
                         <td>
-                            <input type="number" name="DiemKiemTraLan3" value="@item.DiemKiemTraLan1" step="0.1" class="form-control"/>
+                            <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan3" value="@Model[i].DiemKiemTraLan3" class="form-control" />
                         </td>
                         <td>
-                            <input type="number" name="SoBuoiVang" value="@item.Sobuoivang" step="1" class="form-control" />
+                            @Model[i].DiemTrungBinh
                         </td>
                         <td>
-                            <input type="checkbox" name="@item.Daketthuc" value="true" @(item.Daketthuc ? "checked" : "")/>
+                            <input type="number" name="HocVienList[@i].Sobuoivang" value="@Model[i].Sobuoivang" class="form-control" />
+                        </td>
+                        <td>
+                            <select name="HocVienList[@i].Daketthuc" class="form-control">
+                                <option value="false" @(Model[i].Daketthuc == false ? "selected" : "")>Đang học</option>
+                                <option value="true" @(Model[i].Daketthuc == true ? "selected" : "")>Đã kết thúc</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary" style="width: 100px;">Cập nhật</button>
                         </td>
                     </tr>
                     }
                 </tbody>
             </table>
-            <div class="d-flex float-end">
-                <button type="submit" class="btn btn-primary">Cập nhật điểm</button>
-            </div>
-        </form>  
+        </form>
     }
 </main>
