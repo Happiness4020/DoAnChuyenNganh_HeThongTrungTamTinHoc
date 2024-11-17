@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Danh sách lớp học";
+    ViewBag.Title = "Danh sách lớp học đang giảng dạy";
     Layout = "~/Views/Shared/_GiangVien.cshtml";
 }
 
@@ -24,7 +24,7 @@
             {
                 <a href="@Url.Action("ChiTietLopHoc", "GiangVien", new { malh = lop.MaLH})" class="text-decoration-none">
                     <table class="table table-bordered table-striped table-hover">
-                        <thead class="thead-dark" style="background-color: #0066b3; color: white;">
+                        <thead class="table-primary" style="background-color: #0066b3; color: white;">
                             <tr>
                                 <th>Mã lớp</th>
                                 <th>Tên lớp</th>
@@ -36,7 +36,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <tr>
                                 <td>@lop.MaLH</td>
                                 <td>@lop.TenLop</td>

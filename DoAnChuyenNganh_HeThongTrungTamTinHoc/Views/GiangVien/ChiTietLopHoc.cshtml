@@ -1,44 +1,63 @@
 ﻿
 @model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels.HocVienViewModel>
 @{
-    ViewBag.Title = "ChiTietLopHoc";
+    ViewBag.Title = "Chi tiết lớp học";
     Layout = "~/Views/Shared/_GiangVien.cshtml";
 }
 
 
 <main class="container">
-    <h2 class="text-center">Danh sách học viên trong lớp</h2>
-    <h1>@ViewBag.MaLop</h1>
+    <h2 class="text-center">Bảng điểm @ViewBag.TenLop</h2>
 
     @if (Model == null || !Model.Any())
     {
-<p class="text-center text-danger">Không có học viên nào trong lớp này.</p> }
-            else
-            {
-<table class="table table-bordered table-hover">
-    <thead class="table-primary">
-        <tr>
-            <th>Mã học viên</th>
-            <th>Điểm kiểm tra lần 1</th>
-            <th>Điểm kiểm tra lần 2</th>
-            <th>Điểm kiểm tra lần 3</th>
-            <th>Điểm trung bình</th>
-            <th>Số buổi vắng</th>
-            <th>Đã kết thúc</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var hv in Model)
-        {
-<tr>
-    <td>@hv.MaHV</td>
-    <td>@hv.DiemKiemTraLan1</td>
-    <td>@hv.DiemKiemTraLan2</td>
-    <td>@hv.DiemKiemTraLan3</td>
-    <td>@hv.DiemTrungBinh</td>
-    <td>@hv.Sobuoivang</td>
-    <td>@(hv.Daketthuc ? "Đã kết thúc" : "Đang học")</td>
-</tr>                }
-    </tbody>
-</table>}
+        <p class="text-center text-danger">Không có học viên nào trong lớp này.</p>
+    }
+    else
+    {
+        <form action="/GiangVien/CapNhatDiem?@ViewBag.MaLop" method="post">
+            <input type="hidden" name="MaLop" value="@ViewBag.MaLop" />
+            <table class="table table-bordered table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Mã học viên</th>
+                        <th>Tên học viên</th>
+                        <th>Điểm kiểm tra lần 1</th>
+                        <th>Điểm kiểm tra lần 2</th>
+                        <th>Điểm kiểm tra lần 3</th>
+                        <th>Số buổi vắng</th>
+                        <th>Đã kết thúc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        
+                        <td>@item.MaHV</td>
+                        <td>@item.HoTen</td>
+                        <td>
+                            <input type="number" name="DiemKiemTraLan1" value="@item.DiemKiemTraLan1" step="0.1" class="form-control"/>
+                        </td>
+                        <td>
+                            <input type="number" name="DiemKiemTraLan2" value="@item.DiemKiemTraLan2" step="0.1" class="form-control"/>
+                        </td>
+                        <td>
+                            <input type="number" name="DiemKiemTraLan3" value="@item.DiemKiemTraLan1" step="0.1" class="form-control"/>
+                        </td>
+                        <td>
+                            <input type="number" name="SoBuoiVang" value="@item.Sobuoivang" step="1" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="checkbox" name="@item.Daketthuc" value="true" @(item.Daketthuc ? "checked" : "")/>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="d-flex float-end">
+                <button type="submit" class="btn btn-primary">Cập nhật điểm</button>
+            </div>
+        </form>  
+    }
 </main>
