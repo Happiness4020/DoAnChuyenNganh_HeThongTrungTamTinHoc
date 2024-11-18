@@ -1,6 +1,6 @@
 ﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LichDay>
 @{
-    ViewBag.Title = "Lịch dạy giảng viên";
+    ViewBag.Title = "Lịch dạy";
     Layout = "~/Views/Shared/_GiangVien.cshtml";
 }
 
@@ -41,7 +41,7 @@
 
     <main class="shadow-sm" style="background-color: #fff; max-width: 100%; min-height: 500px;">
         <div class="container-fluid">
-            <h3 class="text-center" style="color: #0066b3;">@ViewBag.Title</h3>
+            <h3 class="text-center" style="color: #0066b3;">@ViewBag.Title của giảng viên <span style="color: orangered">@ViewBag.TenGV</span></h3>
 
             @if (ViewBag.LichDay.Count == 0)
             {
@@ -53,8 +53,8 @@
                 {
                     <a href="@Url.Action("DanhSachHocVien", "GiangVien", new { malh = item.MaLH, ngayday = item.NgayDay })" class="text-decoration-none">
 
-                        <table class="schedule border">
-                            <thead style="background-color: #0066b3">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-primary">
                                 <tr>
                                     <th>Lớp học</th>
                                     <th>Mã lớp</th>
@@ -65,7 +65,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="color: #0066b3;">
+                                <tr>
                                     <td><strong>@item.LopHoc.TenLop</strong></td>
                                     <td>@item.MaLH</td>
                                     <td style="color: orange">@item.NgayDay.ToShortDateString()</td>

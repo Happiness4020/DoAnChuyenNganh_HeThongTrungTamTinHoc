@@ -11,24 +11,26 @@
     }
 </style>
 
-<h3 class="text-center" style="color: #0066b3;">Danh sách học viên của lớp @ViewBag.MaLH ngày @ViewBag.NgayDay</h3>
+<h3 class="text-center" style="color: #0066b3;">Danh sách học viên của <span style="color: orangered">@ViewBag.TenLop</span> ngày <span style="color: orange">@ViewBag.NgayDay</span></h3>
 <main class="shadow-sm" style="background-color: #fff; max-width: 100%; min-height: 500px; padding: 20px;">
     <div class="container-fluid">
         @if (Model == null)
         {
-            <h4 class="text-center" style="color: orangered;">Không có học viên nào!</h4> 
+            <h4 class="text-center" style="color: orangered;">Không có học viên nào!</h4>
         }
         else
         {
             <form action="@Url.Action("DiemDanh", "GiangVien")" method="post">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead class="thead-dark" style="background-color: #0066b3; color: white;">
+                <input type="hidden" name="malh" value="@ViewBag.MaLH" />
+                <input type="hidden" name="ngayday" value="@ViewBag.NgayDay" />
+                <table class="table table-bordered table-striped table-hover ">
+                    <thead class="table-primary" style="background-color: #0066b3; color: white;">
                         <tr>
                             <th>Mã học viên</th>
                             <th>Họ tên</th>
                             <th>Số điện thoại</th>
                             <th>Email</th>
-                            <th>Vắng học</th>
+                            <th>Điểm danh</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,7 +42,11 @@
                                 <td>@hv.SoDT</td>
                                 <td>@hv.Email</td>
                                 <td>
-                                    <input type="checkbox" name="diemDanh[@hv.MaHV]" @*@(hv.DiemDanh == 0 ? "" : "checked")*@ />
+                                    @*<input type="checkbox" name="diemDanh[@hv.MaHV]" @(hv.DiemDanh ? "checked" : "") value="false" />*@
+                                    <select name="diemDanh[@hv.MaHV]" class="form-control">
+                                        <option value="false" @(hv.DiemDanh == false ? "selected" : "")>Có học</option>
+                                        <option value="true" @(hv.DiemDanh == true ? "selected" : "")>Vắng</option>
+                                    </select>
                                 </td>
                             </tr>
                         }
@@ -51,6 +57,18 @@
                     <button type="submit" class="btn btn-primary">Lưu điểm danh</button>
                 </div>
             </form>
+        }
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Error"]
+            </div>
         }
     </div>
 </main>

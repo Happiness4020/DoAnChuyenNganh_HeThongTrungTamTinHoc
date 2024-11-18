@@ -29,7 +29,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             string magv = Session["MaGV"]?.ToString();
             if (string.IsNullOrEmpty(magv))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã giảng viên!");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã giảng viên!!!");
             }
 
             DateTime ngayHienTai = DateTime.Today;
@@ -40,7 +40,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 .Include(ld => ld.GiaoVien)
                 .ToList();
 
+            var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
             ViewBag.MaGV = magv;
+            ViewBag.TenGV = giaovien.HoTen;
             ViewBag.LichDay = lichdays;
             return View(lichdays);
         }
@@ -48,10 +51,29 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         public ActionResult DanhSachHocVien(string malh, DateTime ngayday)
         {
             var hocviens = db.LichHoc
-            .Where(lh => lh.MaLH == malh)
-            .Select(lh => lh.HocVien)
+            .Where(lh => lh.MaLH == malh && lh.NgayHoc == ngayday)
+            .Select(lh => new
+            {
+                lh.HocVien.MaHV,
+                lh.HocVien.HoTen,
+                lh.HocVien.SoDT,
+                lh.HocVien.Email,
+                lh.DiemDanh
+            })
+            .ToList()
+            .Select(hv => new HocVienViewModel
+            {
+                MaHV = hv.MaHV,
+                HoTen = hv.HoTen,
+                SoDT = hv.SoDT,
+                Email = hv.Email,
+                DiemDanh = hv.DiemDanh
+            })
             .ToList();
 
+            var lop = db.LopHoc.Where(lh => lh.MaLH == malh).FirstOrDefault();
+
+            ViewBag.TenLop = lop.TenLop;
             ViewBag.MaLH = malh;
             ViewBag.NgayDay = ngayday.ToShortDateString();
             return View(hocviens);
@@ -76,7 +98,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         {
             if (string.IsNullOrEmpty(malh))
             {
-                // Nếu không có mã lớp học, trả về danh sách trống hoặc lỗi
                 return RedirectToAction("Error");
             }
 
@@ -117,7 +138,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         {
             if (HocVienList == null || !HocVienList.Any())
             {
-                ViewBag.ErrorMessage = "Danh sách học viên trống!";
+                ViewBag.ErrorMessage = "Danh sách học viên trống!!!";
                 return RedirectToAction("ChiTietLopHoc", new { malh = malh });
             }
 
@@ -141,6 +162,64 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             db.SaveChanges();
 
             return RedirectToAction("ChiTietLopHoc", new { malh = malh });
+        }
+
+        [HttpPost]
+        public ActionResult DiemDanh(string malh, string ngayday, Dictionary<string, bool> diemDanh)
+        {
+            if (string.IsNullOrEmpty(malh) || string.IsNullOrEmpty(ngayday) || diemDanh == null)
+            {
+                TempData["Error"] = "Thông tin điểm danh không hợp lệ!!!";
+                return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
+            }
+
+            DateTime ngayHoc;
+            if (!DateTime.TryParse(ngayday, out ngayHoc))
+            {
+                TempData["Error"] = "Ngày học không hợp lệ!!!";
+                return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
+            }
+
+            foreach (var item in diemDanh)
+            {
+                string maHV = item.Key;
+                bool vangHoc = item.Value;
+
+                var lichHoc = db.LichHoc.FirstOrDefault(l => l.MaHV == maHV && l.MaLH == malh && l.NgayHoc == ngayHoc);
+
+                if (lichHoc != null)
+                {
+                    if (vangHoc)
+                    {
+                        if (!lichHoc.DiemDanh)
+                        {
+                            var chiTiet = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaLH == malh && ct.MaHV == maHV);
+                            if (chiTiet != null)
+                            {
+                                chiTiet.Sobuoivang++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (lichHoc.DiemDanh)
+                        {
+                            var chiTiet = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaLH == malh && ct.MaHV == maHV);
+                            if (chiTiet != null)
+                            {
+                                chiTiet.Sobuoivang = Math.Max(0, chiTiet.Sobuoivang - 1);
+                            }
+                        }
+                    }
+
+                    lichHoc.DiemDanh = vangHoc ? true : false;
+                }
+            }
+
+            db.SaveChanges();
+
+            TempData["Success"] = "Cập nhật điểm danh thành công!";
+            return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
         }
     }
 }
