@@ -30,6 +30,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string Anh { get; set; }
         public System.DateTime NgayBatDau { get; set; }
         public System.DateTime NgayKetThuc { get; set; }
+        public int Sobuoihoc { get; set; }
         public string MaChuongTrinh { get; set; }
         public double HocPhi { get; set; }
         public string LoaiKH { get; set; }
