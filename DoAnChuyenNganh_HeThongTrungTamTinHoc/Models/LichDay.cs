@@ -11,10 +11,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Reflection.Metadata;
-
+    
     public partial class LichDay
     {
         public string MaLichDay { get; set; }
