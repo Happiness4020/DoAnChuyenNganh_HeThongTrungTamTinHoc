@@ -7,6 +7,7 @@ using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 {
+    [AllowAnonymous]
     public class KhoaHocController : Controller
     {
         TrungTamTinHocEntities db = new TrungTamTinHocEntities();

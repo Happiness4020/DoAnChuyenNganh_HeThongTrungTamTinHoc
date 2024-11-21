@@ -6,9 +6,13 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
+using System.Web.Security;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 {
+    
+    //[Authorize(Roles = "Quản lý")]
     public class AccountController : Controller
     {
         TrungTamTinHocEntities ttth = new TrungTamTinHocEntities();
@@ -70,6 +74,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         {
             return View();
         }
+    
         [HttpPost]
         public ActionResult DangNhap(TaiKhoan tk)
         {
@@ -94,11 +99,16 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                             return View();
                         }
 
+                        FormsAuthentication.SetAuthCookie(taikhoan.TenDangNhap, false);
+
                         HttpCookie NDCookie = new HttpCookie("NguoiDung", taikhoan.TenDangNhap);
                         HttpCookie roleCookie = new HttpCookie("QuyenHan", taikhoan.QuyenHan);
 
                         Response.Cookies.Add(NDCookie);
                         Response.Cookies.Add(roleCookie);
+
+                        
+
                         if (taikhoan.QuyenHan == "Quản lý")
                         {
                             return RedirectToAction("Index", "Admin", new { area = "Admin" });
@@ -110,7 +120,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         }
                         else
                         {
-                            Session["TenDangNhap"] = taikhoan.TenDangNhap;
                             Session["MaHV"] = taikhoan.MaHV;
                             return RedirectToAction("Index", "HocVien");
                         }
@@ -132,11 +141,21 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             roleCookie.Expires = DateTime.Now.AddDays(-1);
             Response.Cookies.Add(roleCookie);
 
+            FormsAuthentication.SignOut();
             Session["TenDangNhap"] = null;
             Session["MaHV"] = null;
             Session["MaGV"] = null;
 
+
+            Session.Clear();
+
             return RedirectToAction("DangNhap", "Account");
+        }
+
+        public ActionResult Error404()
+        {
+            Response.StatusCode = 404;
+            return View();
         }
     }
 }
