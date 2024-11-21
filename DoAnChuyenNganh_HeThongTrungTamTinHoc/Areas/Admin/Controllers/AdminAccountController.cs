@@ -1,0 +1,213 @@
+﻿using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Text;
+
+namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
+{
+    public class AdminAccountController : Controller
+    {
+        // GET: Admin/Account
+
+        private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
+        public ActionResult AccountList(string search = "")
+        {
+
+            List<TaiKhoan> taikhoans = db.TaiKhoan.Where(e => e.TenDangNhap.Contains(search)).ToList();
+            ViewBag.Search = search;
+
+            return View(taikhoans);
+        }
+
+        public ActionResult AccountAdd()
+        {
+            var hocviens = db.HocVien
+                                   .Where(hv => !db.TaiKhoan.Any(tk => tk.MaHV == hv.MaHV))
+                                   .ToList();
+
+            var giaoviens = db.GiaoVien
+                                   .Where(gv => !db.TaiKhoan.Any(tk => tk.MaGV == gv.MaGV))
+                                   .ToList();
+            ViewBag.Hocviens = hocviens ?? new List<HocVien>();
+            ViewBag.Giaoviens = giaoviens ?? new List<GiaoVien>();
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AccountAdd(TaiKhoan tk)
+        {
+            if (ModelState.IsValid)
+            {
+                TaiKhoan taikhoan = db.TaiKhoan.Where(t => t.TenDangNhap == tk.TenDangNhap).FirstOrDefault();
+                if (taikhoan != null)
+                {
+                    ModelState.AddModelError("TenDangNhap", "Tài khoản đã tồn tại!!");
+                    return View();
+                }
+
+                if (string.IsNullOrEmpty(tk.MaHV) && string.IsNullOrEmpty(tk.MaGV))
+                {
+                    ModelState.AddModelError("", "Vui lòng chọn mã học viên hoặc mã giáo viên!!!");
+                    return View();
+                }
+
+                if (!string.IsNullOrEmpty(tk.MaHV))
+                {
+                    taikhoan = db.TaiKhoan.Where(t => t.MaHV == tk.MaHV).FirstOrDefault();
+                    if (taikhoan != null)
+                    {
+                        ModelState.AddModelError("MaHV", "Học viên đã có tài khoản!!");
+                        return View();
+                    }
+
+                    taikhoan = new TaiKhoan
+                    {
+                        MaHV = tk.MaHV,
+                        TenDangNhap = tk.TenDangNhap,
+                        MatKhau = tk.MatKhau,
+                        QuyenHan = tk.QuyenHan,
+                        MaGV = null
+                    };
+                }
+                else if (!string.IsNullOrEmpty(tk.MaGV))
+                {
+                    taikhoan = db.TaiKhoan.Where(t => t.MaGV == tk.MaGV).FirstOrDefault();
+                    if (taikhoan != null)
+                    {
+                        ModelState.AddModelError("MaGV", "Giáo viên đã có tài khoản!!");
+                        return View();
+                    }
+
+                    taikhoan = new TaiKhoan
+                    {
+                        MaGV = tk.MaGV,
+                        TenDangNhap = tk.TenDangNhap,
+                        MatKhau = tk.MatKhau,
+                        QuyenHan = tk.QuyenHan,
+                        MaHV = null
+                    };
+                }
+
+                db.TaiKhoan.Add(taikhoan);
+                db.SaveChanges();
+
+                return RedirectToAction("AccountList");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult AccountDelete(int id)
+        {
+            TaiKhoan tk = db.TaiKhoan.Where(t => t.MaTK == id).FirstOrDefault();
+            return View(tk);
+        }
+        [HttpPost]
+        public ActionResult AccountDelete(int id, TaiKhoan taiKhoan)
+        {
+            taiKhoan = db.TaiKhoan.Where(t => t.MaTK == id).FirstOrDefault();
+            db.TaiKhoan.Remove(taiKhoan);
+            db.SaveChanges();
+            return RedirectToAction("AccountList");
+        }
+
+
+
+        public ActionResult AccountEdit(int id)
+        {
+            TaiKhoan tk = db.TaiKhoan.FirstOrDefault(t => t.MaTK == id);
+            if (tk == null)
+            {
+                return HttpNotFound("Không tìm thấy tài khoản.");
+            }
+
+            var hocviens = db.HocVien
+                             .Where(hv => !db.TaiKhoan.Any(t => t.MaHV == hv.MaHV) || hv.MaHV == tk.MaHV)
+                             .ToList();
+
+            var giaoviens = db.GiaoVien
+                              .Where(gv => !db.TaiKhoan.Any(t => t.MaGV == gv.MaGV) || gv.MaGV == tk.MaGV)
+                              .ToList();
+
+            ViewBag.Hocviens = hocviens;
+            ViewBag.Giaoviens = giaoviens;
+
+            return View(tk);
+        }
+
+        [HttpPost]
+        public ActionResult AccountEdit(int id, TaiKhoan tk)
+        {
+            if (ModelState.IsValid)
+            {
+                // Kiểm tra trùng tên đăng nhập
+                var taikhoan = db.TaiKhoan.FirstOrDefault(t => t.TenDangNhap == tk.TenDangNhap && t.MaTK != id);
+                if (taikhoan != null)
+                {
+                    ModelState.AddModelError("TenDangNhap", "Tên đăng nhập đã tồn tại.");
+                    return View(tk);
+                }
+
+                // Kiểm tra điều kiện mã học viên hoặc giáo viên
+                if (string.IsNullOrEmpty(tk.MaHV) && string.IsNullOrEmpty(tk.MaGV))
+                {
+                    ModelState.AddModelError("", "Vui lòng chọn Mã học viên hoặc Mã giáo viên.");
+                    return View(tk);
+                }
+
+                // Kiểm tra mã học viên đã có tài khoản khác hay chưa
+                if (!string.IsNullOrEmpty(tk.MaHV))
+                {
+                    taikhoan = db.TaiKhoan.FirstOrDefault(t => t.MaHV == tk.MaHV && t.MaTK != id);
+                    if (taikhoan != null)
+                    {
+                        ModelState.AddModelError("MaHV", "Học viên này đã có tài khoản khác.");
+                        return View(tk);
+                    }
+                }
+
+                // Kiểm tra mã giáo viên đã có tài khoản khác hay chưa
+                if (!string.IsNullOrEmpty(tk.MaGV))
+                {
+                    taikhoan = db.TaiKhoan.FirstOrDefault(t => t.MaGV == tk.MaGV && t.MaTK != id);
+                    if (taikhoan != null)
+                    {
+                        ModelState.AddModelError("MaGV", "Giáo viên này đã có tài khoản khác.");
+                        return View(tk);
+                    }
+                }
+
+                // Lấy tài khoản từ database và cập nhật thông tin
+                TaiKhoan taikhoanUpdate = db.TaiKhoan.FirstOrDefault(t => t.MaTK == id);
+                if (taikhoanUpdate != null)
+                {
+                    taikhoanUpdate.TenDangNhap = tk.TenDangNhap;
+                    taikhoanUpdate.MatKhau = tk.MatKhau;
+                    taikhoanUpdate.QuyenHan = tk.QuyenHan;
+                    taikhoanUpdate.MaHV = tk.MaHV;
+                    taikhoanUpdate.MaGV = tk.MaGV;
+
+                    db.SaveChanges();
+                    return RedirectToAction("AccountList");
+                }
+            }
+
+            // Nếu model không hợp lệ, tải lại danh sách học viên và giáo viên
+            var hocviens = db.HocVien
+                             .Where(hv => !db.TaiKhoan.Any(t => t.MaHV == hv.MaHV) || hv.MaHV == tk.MaHV)
+                             .ToList();
+            var giaoviens = db.GiaoVien
+                              .Where(gv => !db.TaiKhoan.Any(t => t.MaGV == gv.MaGV) || gv.MaGV == tk.MaGV)
+                              .ToList();
+            ViewBag.Hocviens = hocviens;
+            ViewBag.Giaoviens = giaoviens;
+
+            return View(tk);
+        }
+
+    }
+}

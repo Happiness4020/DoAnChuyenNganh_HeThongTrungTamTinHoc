@@ -1,0 +1,110 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.KhoaHoc
+
+@{
+    ViewBag.Title = "Thêm khóa học";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <div class="row g-0 mt-1 mb-0">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="card-body p-0 text-dark">
+                <h2 style="color: #0066b3">@ViewBag.Title</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-0 mt-1">
+        <div class="col-md-12">
+            <div class="card-body text-dark p-0">
+                @using (Html.BeginForm("KhoaHocAdd", "AdminKhoaHoc", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <form>
+                        <input type="hidden" name="MaKH" value="@ViewBag.MaKH" />
+                        <input type="hidden" name="LoaiKH" value="Offline" />
+                        <div class="row my-2">
+                            <div class="col-3"></div>
+                            <div class="col-6">
+                                @Html.LabelFor(model => model.TenKH, "Tên khóa học")
+                                @Html.TextBoxFor(model => model.TenKH, new { placeholder = "Tên khóa học", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.TenKH, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-3"></div>
+                            <div class="col-6">
+                                @Html.LabelFor(model => model.MoTa, "Mô tả")
+                                @Html.TextAreaFor(model => model.MoTa, new { placeholder = "Mô tả khóa học", @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-3"></div>
+                            <div class="col-6">
+                                @Html.LabelFor(model => model.Anh, "Ảnh khóa học")
+                                <input type="file" name="imageFile" id="imageFile" class="form-control" />
+                                @Html.ValidationMessageFor(model => model.Anh, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-3"></div>
+                            <div class="col-6">
+                                @Html.LabelFor(model => model.NgayBatDau, "Ngày bắt đầu")
+                                @Html.TextBoxFor(model => model.NgayBatDau, "{0:dd/MM/yyyy}", new { placeholder = "Ngày bắt đầu", @class = "form-control", type = "date" })
+                                @Html.ValidationMessageFor(model => model.NgayBatDau, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-3"></div>
+                            <div class="col-6">
+                                @Html.LabelFor(model => model.NgayKetThuc, "Ngày kết thúc")
+                                @Html.TextBoxFor(model => model.NgayKetThuc, "{0:dd/MM/yyyy}", new { placeholder = "Ngày kết thúc", @class = "form-control", type = "date" })
+                                @Html.ValidationMessageFor(model => model.NgayKetThuc, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-3"></div>
+                            <div class="col-6">
+                                @Html.LabelFor(model => model.MaChuongTrinh, "Chương trình")
+                                @Html.DropDownList("MaChuongTrinh", ViewBag.MaChuongTrinh as SelectList, "Chọn chương trình", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.MaChuongTrinh, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-3"></div>
+                            <div class="col-6">
+                                @Html.LabelFor(model => model.HocPhi, "Học phí")
+                                @Html.TextBoxFor(model => model.HocPhi, new { placeholder = "Học phí", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HocPhi, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-3"></div>
+                            <div class="col-6">
+                                @Html.LabelFor(model => model.Sobuoihoc, "Số buổi học")
+                                @Html.EditorFor(model => model.Sobuoihoc, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Sobuoihoc, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row my-2 mt-3 mb-3">
+                            <div class="col-3"></div>
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-primary">Thêm khóa học</button> &nbsp;
+                                <a href="/Admin/AdminKhoaHoc/KhoaHocList" class="btn btn-danger">Quay lại</a>
+                            </div>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>

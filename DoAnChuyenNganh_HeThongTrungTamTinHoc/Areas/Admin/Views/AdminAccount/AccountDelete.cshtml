@@ -1,0 +1,56 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TaiKhoan
+
+@{
+    ViewBag.Title = "AccountDelete";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+
+<h3>Bạn có muốn xóa tài khoản này ?</h3>
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <form class="p-4 mt-0" style="max-width: 100%" action="/Admin/AdminAccount/AccountDelete/@Model.MaTK" method="post">
+        <input type="hidden" name="Id" value="@Model.MaTK" />
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Tên đăng nhập
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TenDangNhap)
+            </dd>
+            &nbsp;
+            &nbsp;
+            <dt>
+                Mật khẩu
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MatKhau)
+            </dd>
+            &nbsp;
+            &nbsp;
+            <dt>
+                Quyền hạn
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.QuyenHan)
+            </dd>
+            &nbsp;
+            &nbsp;
+
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Xóa" class="btn btn-default" /> |
+                <a class="btn btn-danger ms-2" href="@Url.Action("AccountList", "AdminAccount")">Quay lại</a>
+            </div>
+        }
+    </form>
+</div>

@@ -1,0 +1,128 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.GiaoVien
+@{
+    ViewBag.Title = "Xóa giảng viên";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<div style="background-color: lightgray;" class="">
+    <h2 class="text-center text-bg-danger">@ViewBag.Title</h2>
+    <div class="card mb-3 mx-auto" style="max-width: 800px">
+        <form class="p-4 mt-0" style="max-width: 100%" action="/Admin/AdminGiangVien/GiangVienDelete/@Model.MaGV" method="post">
+            <h3 style="color: orangered">Bạn có muốn xóa giảng viên này?</h3>
+            <input type="hidden" name="Id" value="@Model.MaGV" />
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    Mã giảng viên
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.MaGV)
+                </dd>
+                &nbsp;
+                &nbsp;
+
+                <dt>
+                    Họ tên
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.HoTen)
+                </dd>
+                &nbsp;
+                &nbsp;
+
+                <dt>
+                    Ảnh
+                </dt>
+                <dd>
+                    @if (Model.Anh != "")
+                    {
+                        <img src="~/AnhHocVien/@Model.Anh" width="200px" />
+                    }
+                    else
+                    {
+                        <img src="~/AnhHocVien/noimage.jpg" width="200px" />
+                    }
+                </dd>
+                &nbsp;
+                &nbsp;
+                <dt>
+                    Ngày vào làm
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.NgayVaoLam)
+                </dd>
+                &nbsp;
+                &nbsp;
+
+                <dt>
+                    Bằng cấp
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.BangCapGV)
+                </dd>
+                &nbsp;
+                &nbsp;
+                <dt>
+                    Lĩnh vực đào tạo
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.LinhVucDaoTao)
+                </dd>
+                &nbsp;
+                &nbsp;
+                <dt>
+                    Trình độ
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TrinhDo)
+                </dd>
+                &nbsp;
+                &nbsp;
+                <dt>
+                    Email
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                &nbsp;
+                &nbsp;
+                <dt>
+                    Số điện thoại
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.SoDT)
+                </dd>
+                &nbsp;
+                &nbsp;
+                <dt>
+                    Địa chỉ
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DiaChi)
+                </dd>
+                &nbsp;
+                &nbsp;
+                <dt>
+                    Lương
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Luong)
+                </dd>
+                &nbsp;
+                &nbsp;
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color d-flex float-end">
+                    <input type="submit" value="Delete" class="btn btn-primary" />
+                    <a class="btn btn-danger ms-2" href="@Url.Action("GiangVienList", "AdminGiangVien")">Quay lại</a>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+

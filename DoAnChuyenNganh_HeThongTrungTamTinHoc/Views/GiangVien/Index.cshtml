@@ -1,0 +1,36 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.GiaoVien
+@{
+    ViewBag.Title = "Thông tin giảng viên";
+    Layout = "~/Views/Shared/_GiangVien.cshtml";
+}
+
+<section id="profile" class="container my-4 p-4 bg-light rounded">
+    <h2 class="fw-bold text-center" style="color: #0066b3;">@ViewBag.Title</h2>
+    <div class="row align-items-center">
+        <div class="col-md-4 text-center mb-3 mb-md-0">
+            <img src="~/AnhHocVien/@Model.Anh" alt="Ảnh giảng viên" class="img-fluid rounded-circle" style="max-width: 100%; height: auto;" />
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-12 col-sm-6 mb-2">
+                    <p class="mb-0"><strong>Họ tên:</strong> @Model.HoTen</p>
+                </div>
+                <div class="col-12 col-sm-6 mb-2">
+                    <p class="mb-0"><strong>Email:</strong> @Model.Email</p>
+                </div>
+                <div class="col-12 col-sm-6 mb-2">
+                    <p class="mb-0"><strong>Số điện thoại:</strong> @Model.SoDT</p>
+                </div>
+                <div class="col-12 col-sm-6 mb-2">
+                    <p class="mb-0"><strong>Địa chỉ:</strong> @Model.DiaChi</p>
+                </div>
+                <div class="col-12 col-sm-6 mb-2">
+                    <p class="mb-0"><strong>Bằng cấp:</strong> @Model.BangCapGV</p>
+                </div>
+                <div class="col-12 col-sm-6 mb-2">
+                    <p class="mb-0"><strong>Lương:</strong> @Model.Luong</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

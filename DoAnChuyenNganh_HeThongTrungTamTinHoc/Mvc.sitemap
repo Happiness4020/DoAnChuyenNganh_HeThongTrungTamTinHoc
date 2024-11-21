@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+ 
+  <mvcSiteMapNode title="Home" controller="Home" action="Index">
+    <mvcSiteMapNode title="GioiThieu" controller="GioiThieu" action="Index">
+		<mvcSiteMapNode title="LichSu" controller="GioiThieu" action="LichSu" />
+		<mvcSiteMapNode title="ChucNang" controller="GioiThieu" action="ChucNang" />
+		<mvcSiteMapNode title="ToChuc" controller="GioiThieu" action="ToChuc" />
+        </mvcSiteMapNode>
+	    <mvcSiteMapNode title="HuongDanThanhToan" controller="Home" action="HuongDanThanhToan"/>
+	    <mvcSiteMapNode title="KhoaHoc" controller="KhoaHoc" action="Index">
+			<mvcSiteMapNode title="ChiTietKhoaHoc" controller="KhoaHoc" action="ChiTietKhoaHoc" preservedRouteParameters="id"/>
+		</mvcSiteMapNode>
+        <mvcSiteMapNode title="KhoaHocTheoChuongTrinh" 
+                        controller="ChuongTrinhHoc" 
+                        action="KhoaHocTheoChuongTrinh"
+                        preservedRouteParameters="id"/>
+        <mvcSiteMapNode title="LienHe" controller="LienHe" action="Index" />
+    </mvcSiteMapNode>
+</mvcSiteMap>

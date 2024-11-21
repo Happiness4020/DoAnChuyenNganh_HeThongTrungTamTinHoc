@@ -1,0 +1,165 @@
+﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.KhoaHoc>
+@{
+    ViewBag.Title = "Khóa học theo chương trình";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<style>
+    .fixed-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .card {
+        border: none;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="container-fluid p-0" style="background-color: rgb(0 102 179 / 0.88)">
+    <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" navigation="true" space-between="30"
+                    centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false" style="width: 50%;">
+        @foreach (var item in Model)
+        {
+            <swiper-slide>
+                <a href="/KhoaHoc/ChiTietKhoaHoc/@item.MaKH">
+                    <img class="card-img-top" src="~/images/@item.Anh" alt="Product image" style="width: 100%; max-height: 400px;">
+                </a>
+            </swiper-slide>
+        }
+    </swiper-container>
+</div>
+
+<div class="container-fluid p-2" style="background-color: lightgray">
+    <div class="container-fluid d-flex justify-content-center mt-3">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center pagination-custom">
+                @{
+                    int trangtruoc = ViewBag.Page - 1;
+                    if (trangtruoc <= 0)
+                    {
+                        trangtruoc = 1;
+                    }
+                    int trangsau = ViewBag.Page + 1;
+                    if (trangsau > ViewBag.NumberOfPages)
+                    {
+                        trangsau = ViewBag.NumberOfPages;
+                    }
+                }
+                <li class="page-item">
+                    <a class="page-link" href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@ViewBag.MaCT?page=@trangtruoc&sort_by=@ViewBag.SortBy" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @for (int i = 0; i < ViewBag.NumberOfPages; i++)
+                {
+                    if (i + 1 == ViewBag.Page)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@ViewBag.MaCT?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@ViewBag.MaCT?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                        </li>
+                    }
+                }
+                <li class="page-item">
+                    <a class="page-link" href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@ViewBag.MaCT?page=@trangsau&sort_by=@ViewBag.SortBy" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="d-flex justify-content-between mb-3">
+        <nav aria-label="breadcrumb" class="breadcrumb mx-2">
+            @Html.MvcSiteMap().SiteMapPath()
+        </nav>
+        <form method="get" action="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@ViewBag.MaCT" class="d-inline">
+            <label for="sort_by" class="me-2 fw-bold" style="color: orangered;">Sắp xếp:</label>
+            <select name="sort_by" id="sortBy" class="form-select d-inline w-auto" onchange="this.form.submit()">
+                <option value="price_asc" @(ViewBag.SortBy == "price_asc" ? "selected" : "")>Học phí tăng dần</option>
+                <option value="price_desc" @(ViewBag.SortBy == "price_desc" ? "selected" : "")>Học phí giảm dần</option>
+            </select>
+        </form>
+    </div>
+    <div class="d-flex align-items-center justify-content-center">
+        <h3 style="color: #0066b3">@ViewBag.Title:</h3>
+        @foreach (var item in Model)
+        {
+            <h3 class="ms-2 text-uppercase" style="color: orangered">@item.ChuongTrinhHoc.TenChuongTrinh</h3>
+            break;
+        }
+    </div>
+    <div class="row mt-3">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 d-flex mb-4">
+                <div class="card mb-4 mx-auto shadow-sm h-100 w-100" style="max-width: 330px;">
+                    <div class="card-body d-flex flex-column">
+                        @if (item.Anh != "")
+                        {
+                            <a href="/KhoaHoc/ChiTietKhoaHoc/@item.MaKH">
+                                <img src="~/images/@item.Anh" alt="Khóa học" class="card-img-top fixed-image" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="/KhoaHoc/ChiTietKhoaHoc/@item.MaKH">
+                                <img src="~/images/noimage.jpg" alt="Khóa học" class="card-img-top fixed-image" />
+                            </a>
+                        }
+                        <h5 class="card-title flex-grow-1 mt-2"><a href="/KhoaHoc/ChiTietKhoaHoc/@item.MaKH" class="text-decoration-none" style="color: #0066b3">@Html.DisplayFor(model => item.TenKH)</a></h5>
+                        <span class="card-text flex-grow-1">Ngày khai giảng: @Html.DisplayFor(model => item.NgayBatDau)</span>
+                        <h4>Học phí: @Html.DisplayFor(model => item.HocPhi) VND</h4>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="container-fluid d-flex justify-content-center mt-3">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center pagination-custom">
+                <li class="page-item">
+                    <a class="page-link" href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@ViewBag.MaCT?page=@trangtruoc&sort_by=@ViewBag.SortBy" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @for (int i = 0; i < ViewBag.NumberOfPages; i++)
+                {
+                    if (i + 1 == ViewBag.Page)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@ViewBag.MaCT?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@ViewBag.MaCT?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                        </li>
+                    }
+                }
+                <li class="page-item">
+                    <a class="page-link" href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@ViewBag.MaCT?page=@trangsau&sort_by=@ViewBag.SortBy" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+

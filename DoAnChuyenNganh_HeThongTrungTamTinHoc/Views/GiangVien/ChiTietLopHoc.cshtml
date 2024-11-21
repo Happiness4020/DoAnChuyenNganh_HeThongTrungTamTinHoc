@@ -1,0 +1,84 @@
+﻿
+@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels.HocVienViewModel>
+@{
+    ViewBag.Title = "Chi tiết lớp học";
+    Layout = "~/Views/Shared/_GiangVien.cshtml";
+}
+
+<style>
+    table th, table td {
+        text-align: center;
+    }
+</style>
+
+<main class="container">
+    <h2 class="text-center">Bảng điểm lớp <span style="color: orangered;">@ViewBag.TenLop</span></h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-center text-danger">Không có học viên nào trong lớp này.</p>
+    }
+    else
+    {
+        <form action="@Url.Action("CapNhatDiem", "GiangVien")" method="post">
+            <input type="hidden" name="malh" value="@ViewBag.MaLop" />
+            <table class="table table-bordered table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Mã học viên</th>
+                        <th>Tên học viên</th>
+                        <th>Điểm KTL 1</th>
+                        <th>Điểm KTL 2</th>
+                        <th>Điểm KTL 3</th>
+                        <th>Điểm trung bình</th>
+                        <th>Số buổi vắng</th>
+                        <th>Đã kết thúc</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                    <tr>
+                        <td>
+                            @Model[i].MaHV
+                            <input type="hidden" name="HocVienList[@i].MaHV" value="@Model[i].MaHV" />
+                        </td>
+                        <td>@Model[i].HoTen</td>
+                        <td>
+                            <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan1" value="@Model[i].DiemKiemTraLan1" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan2" value="@Model[i].DiemKiemTraLan2" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan3" value="@Model[i].DiemKiemTraLan3" class="form-control" />
+                        </td>
+                        <td>
+                            @Model[i].DiemTrungBinh
+                        </td>
+                        <td>
+                            @Model[i].Sobuoivang
+                        </td>
+                        <td>
+                            <select name="HocVienList[@i].Daketthuc" class="form-control">
+                                <option value="false" @(Model[i].Daketthuc == false ? "selected" : "")>Đang học</option>
+                                <option value="true" @(Model[i].Daketthuc == true ? "selected" : "")>Đã kết thúc</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary" style="width: 100px;" onclick="return xacNhanCapNhat()">Cập nhật</button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+    }
+</main>
+
+<script>
+    function xacNhanCapNhat() {
+        return confirm("Bạn có chắc chắn muốn cập nhật thông tin này?");
+    }
+</script>

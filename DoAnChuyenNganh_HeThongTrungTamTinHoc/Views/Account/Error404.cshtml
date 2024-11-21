@@ -1,0 +1,16 @@
+﻿@{ ViewBag.Title = "404 - Page Not Found";
+    Layout = "~/Views/Shared/_Main.cshtml"; }
+
+<main class="min-vh-100 d-flex flex-column align-items-center justify-content-center" style="background-color: #f8f9fa;">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold text-danger">404</h1>
+        <h2 class="text-dark">Oops! Trang bạn tìm không tồn tại.</h2>
+        <p class="text-secondary">Rất tiếc, chúng tôi không thể tìm thấy trang mà bạn đang tìm kiếm. Có thể bạn đã nhập sai địa chỉ hoặc trang đã bị gỡ bỏ.</p>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-3">
+            <i class="fa fa-home"></i> Quay lại trang chủ
+        </a>
+    </div>
+    <div class="mt-5">
+        <img src="https://via.placeholder.com/600x300?text=Error+404" alt="404 Error" class="img-fluid rounded">
+    </div>
+</main>

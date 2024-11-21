@@ -1,0 +1,93 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.HocVien
+@{
+    ViewBag.Title = "HocVienDelete";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+
+<h3>Bạn có muốn xóa học viên này ?</h3>
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <form class="p-4 mt-0" style="max-width: 100%" action="/Admin/AdminHocVien/HocVienDelete/@Model.MaHV" method="post">
+        <input type="hidden" name="Id" value="@Model.MaHV" />
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Họ tên
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HoTen)
+            </dd>
+            &nbsp;
+            &nbsp;
+
+            <dt>
+                Ảnh học viên
+            </dt>
+            <dd>
+                @if (Model.Anh != "")
+                {
+                    <img src="~/AnhHocVien/@Model.Anh" width="200px" />
+                }
+                else
+                {
+                    <img src="~/AnhHocVien/noimage.jpg" width="200px" />
+                }
+            </dd>
+            &nbsp;
+            &nbsp;
+            <dt>
+                Ngày sinh
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NgaySinh)
+            </dd>
+            &nbsp;
+            &nbsp;
+
+            <dt>
+                Giới tính
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GioiTinh)
+            </dd>
+            &nbsp;
+            &nbsp;
+            <dt>
+                Email
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            &nbsp;
+            &nbsp;
+            <dt>
+                Số điện thoại
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.SoDT)
+            </dd>
+            &nbsp;
+            &nbsp;
+            <dt>
+                Địa chỉ
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DiaChi)
+            </dd>
+            &nbsp;
+            &nbsp;  
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Xóa" class="btn btn-default" /> |
+                <a class="btn btn-danger ms-2" href="@Url.Action("HocVienList", "AdminHocVien")">Quay lại</a>
+            </div>
+        }
+    </form>
+</div>
+
+

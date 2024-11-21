@@ -1,0 +1,92 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LopHoc
+
+@{
+    ViewBag.Title = "Thêm lớp học";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <div class="row g-0 mt-1 mb-0">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="card-body p-0 text-dark">
+                <h2 style="color: #0066b3">@ViewBag.Title</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-0 mt-1">
+        <div class="col-md-12">
+            <div class="card-body text-dark p-0">
+                @using (Html.BeginForm("LopHocAdd", "AdminLopHoc", new { area = "Admin" }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <input type="hidden" name="MaLH" value="@ViewBag.MaLH" />
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.TenLop, "Tên Lớp")
+                            @Html.EditorFor(model => model.TenLop, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TenLop, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.MaKH, "Khóa Học")
+                            @Html.DropDownListFor(model => model.MaKH, (SelectList)ViewBag.MaKHList, "-- Chọn khóa học --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MaKH, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.SiSo, "Sỉ Số")
+                            @Html.EditorFor(model => model.SiSo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.SiSo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.GioBatDau, "Giờ Bắt Đầu")
+                            @Html.EditorFor(model => model.GioBatDau, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                            @Html.ValidationMessageFor(model => model.GioBatDau, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.GioKetThuc, "Giờ Kết Thúc")
+                            @Html.EditorFor(model => model.GioKetThuc, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                            @Html.ValidationMessageFor(model => model.GioKetThuc, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.MaGV, "Giáo Viên")
+                            @Html.DropDownListFor(model => model.MaGV, (SelectList)ViewBag.MaGVList, "-- Chọn giáo viên --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MaGV, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2 mt-3 mb-3">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary">Thêm lớp học</button> &nbsp;
+                            <a href="/Admin/AdminLopHoc/LopHocList" class="btn btn-danger">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

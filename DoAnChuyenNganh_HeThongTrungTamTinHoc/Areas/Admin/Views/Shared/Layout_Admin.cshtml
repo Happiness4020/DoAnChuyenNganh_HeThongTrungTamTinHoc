@@ -1,4 +1,9 @@
-﻿<!doctype html>
+﻿@{
+    var userName = Context.Request.Cookies["NguoiDung"];
+    var role = Context.Request.Cookies["QuyenHan"];
+}
+
+<!doctype html>
 <html>
 
 <head>
@@ -6,6 +11,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin page</title>
     <link href="~/Areas/Script/styles.min.css" rel="stylesheet" />
+
+    <style>
+        .sidebar-link:hover .hide-menu {
+            color: black !important;
+        }
+        .app-header {
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+        }
+
+        .navbar-light .navbar-nav .nav-link {
+            color: #333;
+        }
+
+        .nav-icon-hover {
+            transition: 0.3s;
+        }
+
+            .nav-icon-hover:hover {
+                transform: scale(1.1);
+            }
+
+        .dropdown-menu {
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .dropdown-menu .message-body {
+            padding: 10px 20px;
+            border-bottom: 1px solid #e9ecef;
+            background-color: #f8f9fa;
+        }
+
+        .dropdown-menu .message-body:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu .btn {
+            font-weight: bold;
+            width: 100%;
+            border-radius: 20px;
+            padding: 8px;
+        }
+
+        .btn-close-white {
+            color: #495057;
+            background: none;
+            font-size: 1.1rem;
+            text-align: left;
+        }
+
+        .btn-close-white:hover {
+            color: #007bff;
+            background-color: #e9ecef;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,12 +77,12 @@
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
          data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
-        <aside class="left-sidebar">
+        <aside class="left-sidebar" style="background: linear-gradient(120deg, #0066b3, #6ebbf5)">
             <!-- Sidebar scroll-->
             <div class="scroll-sidebar" data-simplebar>
                 <div class="d-flex mb-4 align-items-center justify-content-between">
-                    <a href="#" class="text-nowrap logo-img ms-0 ms-md-1">
-                        <img src="~/Areas/Script/logo.svg" width="180" alt="">
+                    <a href="@Url.Action("Index", "Admin")" class="text-nowrap logo-img ms-0 ms-md-1">
+                        <h3 class="text-white">Admin Dashboard</h3>
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -29,51 +93,120 @@
                     <ul id="sidebarnav" class="mb-4 pb-2">
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-5"></i>
-                            <span class="hide-menu">Quay lại</span>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link primary-hover-bg"
-                               href="/Home/Index"
+                               href="~/Home"
                                aria-expanded="false">
                                 <span class="aside-icon p-2 bg-light-primary rounded-3">
                                     <i class="ti ti-layout-dashboard fs-7 text-primary"></i>
                                 </span>
-                                <span class="hide-menu ms-2 ps-1">Trang chủ</span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Trang chủ</span>
                             </a>
                         </li>
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-5"></i>
-                            <span class="hide-menu">Các chức năng</span>
+                            <span class="hide-menu text-white">Các chức năng</span>
                         </li>
+                        @* -- Tài khoản --*@
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link warning-hover-bg"
-                               href="~/Admin/KhachHang/Index"
+                               href="@Url.Action("AccountList", "AdminAccount")"
                                aria-expanded="false">
 
                                 <span class="aside-icon p-2 bg-light-warning rounded-3">
                                     <i class="ti ti-article fs-7 text-warning"></i>
                                 </span>
-                                <span class="hide-menu ms-2 ps-1">Danh sách tài khoản</span>
+                                <span class="hide-menu ms-2 ps-1 text-white te">Danh sách tài khoản</span>
                             </a>
                         </li>
+                        @* -- Chương trình học --*@
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link danger-hover-bg"
-                               href="~/Admin/DS_Sach/Index"
+                               href="@Url.Action("ChuongTrinhHocList", "AdminChuongTrinhHoc")"
                                aria-expanded="false">
-                                <span class="aside-icon p-2 bg-light-danger rounded-3">
-                                    <i class="ti ti-alert-circle fs-7 text-danger"></i>
+                                <span class="aside-icon p-2 bg-light-secondary rounded-3">
+                                    <i class="ti ti-article fs-7 text-secondary"></i>
                                 </span>
-                                <span class="hide-menu ms-2 ps-1">Danh sách sản phẩm</span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Danh sách chương trình học</span>
                             </a>
                         </li>
+                        @* -- Khóa học --*@
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link danger-hover-bg"
+                               href="@Url.Action("KhoaHocList", "AdminKhoaHoc")"
+                               aria-expanded="false">
+                                <span class="aside-icon p-2 bg-light-indigo rounded-3">
+                                    <i class="ti ti-article fs-7 text-indigo"></i>
+                                </span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Danh sách khóa học</span>
+                            </a>
+                        </li>
+                        @* -- Học viên --*@
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link success-hover-bg"
-                               href="~/Admin/DS_ChuDe/Index"
+                               href="@Url.Action("HocVienList", "AdminHocVien")"
                                aria-expanded="false">
                                 <span class="aside-icon p-2 bg-light-success rounded-3">
-                                    <i class="ti ti-cards fs-7 text-success"></i>
+                                    <i class="ti ti-article fs-7 text-success"></i>
                                 </span>
-                                <span class="hide-menu ms-2 ps-1">Danh sách chủ đề</span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Danh sách học viên</span>
+                            </a>
+                        </li>
+                        @* -- Giảng viên --*@
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link primary-hover-bg"
+                               href="@Url.Action("GiangVienList", "AdminGiangVien")"
+                               aria-expanded="false">
+                                <span class="aside-icon p-2 bg-light-primary rounded-3">
+                                    <i class="ti ti-article fs-7 text-primary"></i>
+                                </span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Danh sách giáo viên</span>
+                            </a>
+                        </li>
+                        @* -- Bình luận --*@
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link primary-hover-bg"
+                               href="@Url.Action("BinhLuanList", "AdminBinhLuan")"
+                               aria-expanded="false">
+                                <span class="aside-icon p-2 bg-light-subtle rounded-3">
+                                    <i class="ti ti-article fs-7 text-subtle"></i>
+                                </span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Danh sách bình luận</span>
+                            </a>
+                        </li>
+                        @* -- Lịch dạy --*@
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link warning-hover-bg"
+                               href="@Url.Action("LichDayList", "AdminLichDay")"
+                               aria-expanded="false">
+
+                                <span class="aside-icon p-2 bg-light-warning rounded-3">
+                                    <i class="ti ti-article fs-7 text-warning"></i>
+                                </span>
+                                <span class="hide-menu ms-2 ps-1 text-white te">Danh sách lịch dạy</span>
+                            </a>
+                        </li>
+                        @* -- Lịch học --*@
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link danger-hover-bg"
+                               href="@Url.Action("LichHocList", "AdminLichHoc")"
+                               aria-expanded="false">
+                                <span class="aside-icon p-2 bg-light-secondary rounded-3">
+                                    <i class="ti ti-article fs-7 text-secondary"></i>
+                                </span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Danh sách lịch học</span>
+                            </a>
+                        </li>
+                        @* -- Lớp học --*@
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link danger-hover-bg"
+                               href="@Url.Action("LopHocList", "AdminLopHoc")"
+                               aria-expanded="false">
+                                <span class="aside-icon p-2 bg-light-indigo rounded-3">
+                                    <i class="ti ti-article fs-7 text-indigo"></i>
+                                </span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Danh sách lớp học</span>
                             </a>
                         </li>
                     </ul>
@@ -88,16 +221,20 @@
             <!--  Header Start -->
             <header class="app-header">
                 <nav class="navbar navbar-expand-lg navbar-light">
+                    <img src="https://its.huit.edu.vn/app_web/ttcntt/images/news/01_banner_its-.jpg?width=160" alt="Logo" />
+                    <div class="h2 mx-2" style="color: #0066b3">Trung tâm tin học HUIT</div>
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
                             <li class="nav-item dropdown">
-                                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                                   aria-expanded="false">
+                                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="~/Areas/Images/user.jpg" alt="" width="35" height="35" class="rounded-circle">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                                     <div class="message-body">
-                                        <a href="/User/DangXuat" class="btn btn-outline-primary mx-3 mt-2 d-block shadow-none">Logout</a>
+                                        <span class="btn btn-close-white mx-3 mt-2 d-block shadow-none primary-hover-bg">Chào, <strong>@userName.Value</strong></span>
+                                    </div>
+                                    <div class="message-body">
+                                        <a href="/Account/DangXuat" class="btn btn-outline-primary mx-3 mt-2 d-block shadow-none">Đăng xuất</a>
                                     </div>
                                 </div>
                             </li>
@@ -107,7 +244,7 @@
             </header>
             <!--  Header End -->
             <div class="container-fluid">
-                <div class="card">
+                <div class="card mt-5">
                     <div class="card-body">
                         <div>
                             @RenderBody()
@@ -125,7 +262,6 @@
 </body>
 
 </html>
-<!DOCTYPE html>
 
 
 

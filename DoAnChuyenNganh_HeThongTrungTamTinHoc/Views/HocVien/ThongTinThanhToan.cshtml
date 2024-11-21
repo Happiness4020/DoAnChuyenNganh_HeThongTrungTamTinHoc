@@ -1,0 +1,140 @@
+﻿
+@{
+    ViewBag.Title = "ThongTinThanhToan";
+    Layout = "~/Views/Shared/_HocVien.cshtml";
+}
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy tất cả hình ảnh có class "img-hover-zoom"
+        var images = document.querySelectorAll(".img-hover-zoom");
+
+        // Thêm sự kiện mouseenter và mouseleave cho từng hình ảnh
+        images.forEach(function (image) {
+            image.addEventListener("mouseenter", function () {
+                image.style.transform = "scale(1.1)"; // Phóng to khi di chuột vào
+            });
+
+            image.addEventListener("mouseleave", function () {
+                image.style.transform = "scale(1)"; // Trở lại kích thước ban đầu khi chuột rời khỏi
+            });
+        });
+    });
+</script>
+
+
+
+<style>
+    .container {
+        overflow: visible; /* Cho phép hình ảnh vượt ra ngoài container */
+    }
+
+
+    .img-hover-zoom {
+        transition: transform 0.3s ease; /* Thêm hiệu ứng mượt mà khi thay đổi */
+        width: 100%;
+        height: auto;
+        max-width: 100%; /* Đảm bảo hình ảnh không vượt quá chiều rộng của container */
+        display: block;
+        margin: 0 auto; /* Đảm bảo hình ảnh căn giữa */
+    }
+
+    }
+
+    .img-hover-zoom:hover {
+        transform: scale(1.1); /* Phóng to hình ảnh khi di chuột vào */
+    }
+</style>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center">Thông Tin Thanh Toán</h2>
+            <hr />
+        </div>
+    </div>
+
+    <!-- Thông báo khi thanh toán thành công -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["Message"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="row">
+        <!-- Thông tin chuyển khoản -->
+        <div class="col-md-6">
+            <h4>Thông Tin Chuyển Khoản</h4>
+            <p>Vui lòng chuyển khoản theo thông tin dưới đây:</p>
+            <ul>
+                <li><strong>Ngân hàng:</strong> MB Bank</li>
+                <li><strong>Số tài khoản:</strong> 0386826641</li>
+                <li><strong>Tên tài khoản:</strong> Lê Hồng Đức Trí </li>
+                <li><strong>Nội dung chuyển khoản:</strong> [Thanh toán học phí] - [Mã Học Viên] - [Mã Khóa Học] - [Thời Gian Chuyển Khoản]</li>
+                <li><strong>Liên hệ nhân viên qua số Zalo:</strong> 0386826641</li>
+                <li><strong>Liên hệ qua Gmail:</strong> lehongductri2911@gmail.com</li>
+            </ul>
+        </div>
+
+        <!-- Hình ảnh mã QR -->
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- Mã QR Ngân Hàng -->
+                <div class="col-md-4 mb-4 text-center">
+                    <h4>Mã QR Ngân Hàng</h4>
+                    <p>Quét mã QR bên dưới để chuyển khoản:</p>
+                    <a href="~/AnhHocVien/Anhnganhang2.jpg" target="_blank">
+                        <img src="~/AnhHocVien/Anhnganhang2.jpg" alt="Mã QR Ngân Hàng" class="img-fluid mb-3 img-hover-zoom" style="max-width: 100%; height: auto; margin-bottom: 20px;" />
+                    </a>
+                    <!-- Nút Tải về nằm dưới hình ảnh -->
+                    <a href="~/AnhHocVien/Anhnganhang2.jpg" download class="btn btn-primary">Tải về</a>
+                </div>
+
+                <!-- Mã QR Momo -->
+                <div class="col-md-4 mb-4 text-center">
+                    <h4>Mã QR Momo</h4>
+                    <p>Quét mã QR bên dưới để chuyển khoản:</p>
+                    <a href="~/AnhHocVien/Anhmomo.jpg" target="_blank">
+                        <img src="~/AnhHocVien/Anhmomo.jpg" alt="Mã QR Momo" class="img-fluid mb-3 img-hover-zoom" style="max-width: 100%; height: auto; margin-bottom: 20px;" />
+                    </a>
+                    <a href="~/AnhHocVien/Anhmomo.jpg" download class="btn btn-primary">Tải về</a>
+                </div>
+
+                <!-- Mã QR Viettel Money -->
+                <div class="col-md-4 mb-4 text-center">
+                    <h4>Mã QR Viettel Money</h4>
+                    <p>Quét mã QR bên dưới để chuyển khoản:</p>
+                    <a href="~/AnhHocVien/AnhViettelMoney.jpg" target="_blank">
+                        <img src="~/AnhHocVien/AnhViettelMoney.jpg" alt="Mã QR Viettel Money" class="img-fluid mb-3 img-hover-zoom" style="max-width: 100%; height: auto; margin-bottom: 20px;" />
+                    </a>
+                    <a href="~/AnhHocVien/AnhViettelMoney.jpg" download class="btn btn-primary">Tải về</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Thông tin xác nhận -->
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <h5 class="mb-3">Xác nhận thanh toán sau khi đã hoàn thành giao dịch</h5>
+            <form action="@Url.Action("XacNhanThanhToan", "HocVien")" method="post">
+                <button type="submit" class="btn btn-success">Xác Nhận Đã Thanh Toán</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quay về trang chủ -->
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <a href="@Url.Action("Index", "HocVien")" class="btn btn-primary">Quay về trang chủ</a>
+        </div>
+    </div>
+</div>
