@@ -20,7 +20,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             this.GiaoDichHocPhi = new HashSet<GiaoDichHocPhi>();
         }
     
-        public int MaPT { get; set; }
+        public int  MaPT { get; set; }
         public string TenPT { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
