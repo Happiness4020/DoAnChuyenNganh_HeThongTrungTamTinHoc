@@ -23,6 +23,9 @@
             <form action="@Url.Action("DiemDanh", "GiangVien")" method="post">
                 <input type="hidden" name="malh" value="@ViewBag.MaLH" />
                 <input type="hidden" name="ngayday" value="@ViewBag.NgayDay" />
+                 <div class="d-flex float-end">
+                    <button type="submit" class="btn btn-primary mb-2">Lưu điểm danh</button>
+                </div>
                 <table class="table table-bordered table-striped table-hover ">
                     <thead class="table-primary" style="background-color: #0066b3; color: white;">
                         <tr>
@@ -52,10 +55,6 @@
                         }
                     </tbody>
                 </table>
-
-                <div class="d-flex float-end">
-                    <button type="submit" class="btn btn-primary">Lưu điểm danh</button>
-                </div>
             </form>
         }
         @if (TempData["Success"] != null)
