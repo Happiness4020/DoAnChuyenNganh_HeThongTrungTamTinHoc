@@ -14,7 +14,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         // Kết nối đến cơ sở dữ liệu
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
         private static Random random = new Random();
-        private string maLichDay = TaoMaLichDay();
+        private string maLichDay = Utility.TaoMaNgauNhien("LD", 3);
 
         // Danh sách Lịch dạy
         public async Task<ActionResult> LichDayList(string search = "")

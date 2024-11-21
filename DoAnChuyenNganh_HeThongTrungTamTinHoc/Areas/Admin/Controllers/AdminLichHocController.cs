@@ -16,7 +16,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
     {
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
         private static Random random = new Random();
-        private string malh = TaoMaLichHoc();
+        private string malh = Utility.TaoMaNgauNhien("LH", 3);
         // GET: Admin/AdminLichHoc
         public async Task<ActionResult> LichHocList()
         {
@@ -24,18 +24,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(await lichHoc.ToListAsync());
         }
 
-        public static string TaoMaLichHoc()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            StringBuilder maHocVien = new StringBuilder("LH");
-
-            for (int i = 0; i < 3; i++)
-            {
-                maHocVien.Append(chars[random.Next(chars.Length)]);
-            }
-
-            return maHocVien.ToString();
-        }
 
        
         public ActionResult LichHocAdd()

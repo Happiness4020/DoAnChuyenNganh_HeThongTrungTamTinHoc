@@ -50,11 +50,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string LinhVucDaoTao { get; set; }
 
 
-        [Display(Name = "Nhập trình độ")]
-        [Required(ErrorMessage = "Bạn phải nhập trình độ")]
-        public string TrinhDo { get; set; }
-
-
         [Display(Name = "Nhập email")]
         [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ.Email hợp lệ ví dụ: abc@gmail.com")]
         [Required(ErrorMessage = "Bạn phải nhập email")]
