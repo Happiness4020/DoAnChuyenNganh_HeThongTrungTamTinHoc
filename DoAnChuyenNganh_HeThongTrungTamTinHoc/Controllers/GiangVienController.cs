@@ -148,14 +148,31 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             {
                 var hocvien = db.ChiTiet_HocVien_LopHoc
                                 .FirstOrDefault(ct => ct.MaHV == hv.MaHV && ct.MaLH == malh);
+
                 if (hocvien != null)
                 {
-                    hocvien.DiemKiemTraLan1 = Math.Round((double)hv.DiemKiemTraLan1, 2);
-                    hocvien.DiemKiemTraLan2 = Math.Round((double)hv.DiemKiemTraLan2, 2);
-                    hocvien.DiemKiemTraLan3 = Math.Round((double)hv.DiemKiemTraLan3, 2);
-                    hocvien.Sobuoivang = hv.Sobuoivang;
-                    hocvien.Daketthuc = hv.Daketthuc;
+                    var diemKTL1Cu = hocvien.DiemKiemTraLan1;
+                    var diemKTL2Cu = hocvien.DiemKiemTraLan2;
+                    var diemKTL3Cu = hocvien.DiemKiemTraLan3;
 
+                    try
+                    {
+                        hocvien.DiemKiemTraLan1 = Math.Round((double)hv.DiemKiemTraLan1, 2);
+                        hocvien.DiemKiemTraLan2 = Math.Round((double)hv.DiemKiemTraLan2, 2);
+                        hocvien.DiemKiemTraLan3 = Math.Round((double)hv.DiemKiemTraLan3, 2);
+                        hocvien.Daketthuc = hv.Daketthuc;
+
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        hocvien.DiemKiemTraLan1 = diemKTL1Cu;
+                        hocvien.DiemKiemTraLan2 = diemKTL2Cu;
+                        hocvien.DiemKiemTraLan3 = diemKTL3Cu;
+
+                        TempData["ErrorMessage"] = $"Lỗi khi cập nhật: {ex.Message}";
+                        return RedirectToAction("ChiTietLopHoc", new { malh = malh });
+                    }
                 }
             }
 
