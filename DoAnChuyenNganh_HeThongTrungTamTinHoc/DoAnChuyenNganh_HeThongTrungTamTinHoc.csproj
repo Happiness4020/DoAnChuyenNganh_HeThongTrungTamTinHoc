@@ -140,7 +140,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AnhHocVien\HVZR4WC8UE.jpg" />
+    <Content Include="AnhHocVien\Anhmomo.jpg" />
+    <Content Include="AnhHocVien\Anhnganhang1.jpg" />
+    <Content Include="AnhHocVien\Anhnganhang2.jpg" />
+    <Content Include="AnhHocVien\Anhnganhang3.jpg" />
+    <Content Include="AnhHocVien\AnhViettelMoney.jpg" />
+    <Content Include="AnhHocVien\AnhZalo.jpg" />
     <Content Include="AnhHocVien\image1.jpg" />
     <Content Include="AnhHocVien\image2.jpg" />
     <Content Include="AnhHocVien\image3.jpg" />
@@ -418,6 +423,7 @@
     <Content Include="Views\HocVien\HocPhi.cshtml" />
     <Content Include="Views\HocVien\Ketquahoctap.cshtml" />
     <Content Include="Views\HocVien\LichHoc.cshtml" />
+    <Content Include="Views\HocVien\ThongTinThanhToan.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

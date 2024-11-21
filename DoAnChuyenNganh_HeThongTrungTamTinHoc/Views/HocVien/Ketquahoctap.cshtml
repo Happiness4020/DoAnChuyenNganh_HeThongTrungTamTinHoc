@@ -1,4 +1,4 @@
-﻿@*@{
+﻿@{
     ViewBag.Title = "Kết quả học tập";
     Layout = "~/Views/Shared/_HocVien.cshtml";
 }
@@ -13,12 +13,10 @@
     <thead>
         <tr>
             <th>Mã Lớp</th>
-            <th>Tên Khóa Học</th>
             <th>Điểm Kiểm Tra Lần 1</th>
             <th>Điểm Kiểm Tra Lần 2</th>
             <th>Điểm Kiểm Tra Lần 3</th>
             <th>Điểm Trung Bình</th>
-            <th>Tình Trạng</th>
             <th>Số Buổi Vắng</th>
             <th>Đã Kết Thúc</th>
         </tr>
@@ -28,12 +26,10 @@
         {
 <tr>
     <td>@item.MaLH</td>
-    <td>@item.KhoaHoc?.TenKH ?? "Chưa có thông tin"</td>
     <td>@(item.DiemKiemTraLan1 ?? 0)</td>
     <td>@(item.DiemKiemTraLan2 ?? 0)</td>
     <td>@(item.DiemKiemTraLan3 ?? 0)</td>
     <td>@(item.DiemTrungBinh ?? 0)</td>
-    <td>@(item.TinhTrang ?? "Chưa xác định")</td>
     <td>@item.Sobuoivang</td>
     <td>@(item.Daketthuc ? "Đã kết thúc" : "Đang học")</td>
 </tr>}
@@ -44,4 +40,3 @@
 <div class="alert alert-warning">
     Không có kết quả học tập nào để hiển thị.
 </div>}
-*@
