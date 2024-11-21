@@ -58,7 +58,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 Value = ct.MaChuongTrinh.ToString(),
                 Text = ct.TenChuongTrinh
             }).ToList();
-            ViewBag.MaChuongTrinh = new SelectList(chuongTrinhHocList, "Value", "Text");
+            ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc, "MaChuongTrinh", "TenChuongTrinh");
             if (ModelState.IsValid)
             {
 
@@ -143,15 +143,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             {
                 return HttpNotFound("Không tìm thấy khóa học.");
             }
-            ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc, "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);  // Dropdown cho chương trình học
+            ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc, "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);
             return View(khoahoc);
         }
 
         [HttpPost]
         public ActionResult KhoaHocEdit(KhoaHoc khoahoc, HttpPostedFileBase imageFile)
         {
-           
-
             if (ModelState.IsValid)
             {
                 var kh = ttth.KhoaHoc.FirstOrDefault(k => k.MaKH == khoahoc.MaKH);
@@ -161,31 +159,34 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(khoahoc);
                 }
 
-                // Kiểm tra tên và các thông tin khác
+                // Cập nhật thông tin khóa học
                 kh.TenKH = khoahoc.TenKH;
                 kh.MoTa = khoahoc.MoTa;
                 kh.NgayBatDau = khoahoc.NgayBatDau;
                 kh.NgayKetThuc = khoahoc.NgayKetThuc;
                 kh.HocPhi = khoahoc.HocPhi;
                 kh.LoaiKH = khoahoc.LoaiKH;
+                kh.Sobuoihoc = khoahoc.Sobuoihoc;
                 kh.MaChuongTrinh = khoahoc.MaChuongTrinh;
 
+                // Kiểm tra và xử lý ảnh
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
                     if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
                     {
-                        ModelState.AddModelError("Image", "Chỉ chấp nhận hình ảnh JPG hoặc PNG và không lớn hơn 2MB.");
+                        ModelState.AddModelError("Anh", "Chỉ chấp nhận hình ảnh JPG hoặc PNG và không lớn hơn 2MB.");
+                        ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc, "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);
                         return View(khoahoc);
                     }
 
-                    // Xóa ảnh cũ và lưu ảnh mới
-                    var oldImagePath = Path.Combine(Server.MapPath("~/AnhKhoaHoc"), kh.Anh);
-                    if (System.IO.File.Exists(oldImagePath))
-                    {
-                        System.IO.File.Delete(oldImagePath);
-                    }
+                    //// Xóa ảnh cũ và lưu ảnh mới
+                    //var oldImagePath = Path.Combine(Server.MapPath("~/AnhKhoaHoc"), kh.Anh);
+                    //if (System.IO.File.Exists(oldImagePath))
+                    //{
+                    //    System.IO.File.Delete(oldImagePath);
+                    //}
 
                     var fileName = kh.MaKH + fileEx;
                     var path = Path.Combine(Server.MapPath("~/AnhKhoaHoc"), fileName);
@@ -198,11 +199,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
             else
             {
-                ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc, "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);  
+                // Đảm bảo ViewBag được thiết lập đúng kiểu dữ liệu khi trả về View
+                ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc, "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);
                 return View(khoahoc);
-            }    
+            }
         }
 
-      
+
+
     }
 }
