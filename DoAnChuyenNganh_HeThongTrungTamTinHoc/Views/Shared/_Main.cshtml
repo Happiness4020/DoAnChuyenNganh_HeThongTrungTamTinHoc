@@ -109,6 +109,11 @@
                                 </ul>
                             </li>
                         }
+
+                        @if (HttpContext.Current.User.IsInRole("Quản lý"))
+                        {
+                            <li><a href="@Url.Action("Index", "Admin", new { area = "Admin" })">Quản trị</a></li>
+                        }
                     </ul>
                 </div>
             </nav>

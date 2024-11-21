@@ -67,6 +67,7 @@
                     <th>Học phí</th>
                     <th>Loại khóa học</th>
                     <th>Chương trình học</th>
+                    <th>Số buổi học</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -94,6 +95,7 @@
                         <td>@kh.HocPhi.ToString("N0")</td>
                         <td>@kh.LoaiKH</td>
                         <td>@kh.ChuongTrinhHoc.TenChuongTrinh</td>
+                        <td>@kh.Sobuoihoc</td>
                         <td>
                             <a href="@Url.Action("KhoaHocEdit", "AdminKhoaHoc", new { id = kh.MaKH })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
                             <a href="@Url.Action("KhoaHocDelete", "AdminKhoaHoc", new { id = kh.MaKH })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>

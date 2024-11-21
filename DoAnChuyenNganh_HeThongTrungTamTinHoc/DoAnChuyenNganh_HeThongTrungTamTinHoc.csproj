@@ -140,12 +140,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AnhHocVien\Anhmomo.jpg" />
-    <Content Include="AnhHocVien\Anhnganhang1.jpg" />
-    <Content Include="AnhHocVien\Anhnganhang2.jpg" />
-    <Content Include="AnhHocVien\Anhnganhang3.jpg" />
-    <Content Include="AnhHocVien\AnhViettelMoney.jpg" />
-    <Content Include="AnhHocVien\AnhZalo.jpg" />
+    <Content Include="AnhHocVien\HVZR4WC8UE.jpg" />
     <Content Include="AnhHocVien\image1.jpg" />
     <Content Include="AnhHocVien\image2.jpg" />
     <Content Include="AnhHocVien\image3.jpg" />
@@ -153,6 +148,61 @@
     <Content Include="AnhHocVien\image5.jpg" />
     <Content Include="AnhHocVien\image6.jpg" />
     <Content Include="AnhHocVien\noimage.jpg" />
+    <Content Include="AnhKhoaHoc\12-2.png" />
+    <Content Include="AnhKhoaHoc\banner-bg2.jpg" />
+    <Content Include="AnhKhoaHoc\chieu-sinh31522-8.png" />
+    <Content Include="AnhKhoaHoc\chucnangnhiemvu.jpg" />
+    <Content Include="AnhKhoaHoc\Chuyen-vien-thiet-ke-Do-hoa-va-Web.jpg" />
+    <Content Include="AnhKhoaHoc\cocautochuc.jpg" />
+    <Content Include="AnhKhoaHoc\dao-tao-theo-yeu-cau.png" />
+    <Content Include="AnhKhoaHoc\fundamentals-of-python-python-co-ban-version-2024.jpg" />
+    <Content Include="AnhKhoaHoc\giamdoc.png" />
+    <Content Include="AnhKhoaHoc\home.png" />
+    <Content Include="AnhKhoaHoc\huongdanthanhtoan.png" />
+    <Content Include="AnhKhoaHoc\kh1.jpg" />
+    <Content Include="AnhKhoaHoc\kh10 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh10.jpg" />
+    <Content Include="AnhKhoaHoc\kh11 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh11.jpg" />
+    <Content Include="AnhKhoaHoc\kh12.jpg" />
+    <Content Include="AnhKhoaHoc\kh13.jpg" />
+    <Content Include="AnhKhoaHoc\kh14.jpg" />
+    <Content Include="AnhKhoaHoc\kh15.jpg" />
+    <Content Include="AnhKhoaHoc\kh16.jpg" />
+    <Content Include="AnhKhoaHoc\kh17.jpg" />
+    <Content Include="AnhKhoaHoc\kh18.jpg" />
+    <Content Include="AnhKhoaHoc\kh19.jpg" />
+    <Content Include="AnhKhoaHoc\kh2.jpg" />
+    <Content Include="AnhKhoaHoc\kh20.jpg" />
+    <Content Include="AnhKhoaHoc\kh21.jpg" />
+    <Content Include="AnhKhoaHoc\kh3.jpg" />
+    <Content Include="AnhKhoaHoc\kh4.jpg" />
+    <Content Include="AnhKhoaHoc\kh5.jpg" />
+    <Content Include="AnhKhoaHoc\kh6 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh6.jpg" />
+    <Content Include="AnhKhoaHoc\kh7 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh7.jpg" />
+    <Content Include="AnhKhoaHoc\kh8 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh8.jpg" />
+    <Content Include="AnhKhoaHoc\kh9 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh9.jpg" />
+    <Content Include="AnhKhoaHoc\KHAD3.jpg" />
+    <Content Include="AnhKhoaHoc\KHFTS.jpg" />
+    <Content Include="AnhKhoaHoc\KHLGC.jpg" />
+    <Content Include="AnhKhoaHoc\KHY8J.jpg" />
+    <Content Include="AnhKhoaHoc\kh_android.jpg" />
+    <Content Include="AnhKhoaHoc\kiem-thu-phan-mem-co-ban.jpg" />
+    <Content Include="AnhKhoaHoc\lap-trinh-vien-co-ban-java.jpg" />
+    <Content Include="AnhKhoaHoc\Lap-trinh-vien-NET.jpg" />
+    <Content Include="AnhKhoaHoc\lichsuhinhthanh.jpg" />
+    <Content Include="AnhKhoaHoc\logo-da-thong-bao-bo-cong-thuong-mau-xanh.png" />
+    <Content Include="AnhKhoaHoc\phogiamdoc.jpg" />
+    <Content Include="AnhKhoaHoc\phongmay.jpg" />
+    <Content Include="AnhKhoaHoc\school.png" />
+    <Content Include="AnhKhoaHoc\sodotochuc.png" />
+    <Content Include="AnhKhoaHoc\SQL-for-Data-Analytics.jpg" />
+    <Content Include="AnhKhoaHoc\sv_logo_dashboard.png" />
+    <Content Include="AnhKhoaHoc\tapthettth.jpg" />
     <Content Include="Areas\Images\user.jpg" />
     <Content Include="Areas\Script\logo.svg" />
     <Content Include="Areas\Script\styles.min.css" />
@@ -247,6 +297,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhoaHocController.cs" />
     <Compile Include="Controllers\LienHeController.cs" />
+    <Compile Include="Filter\AdminAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -314,6 +365,7 @@
     </Compile>
     <Compile Include="Models\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\HocVienViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -423,7 +475,10 @@
     <Content Include="Views\HocVien\HocPhi.cshtml" />
     <Content Include="Views\HocVien\Ketquahoctap.cshtml" />
     <Content Include="Views\HocVien\LichHoc.cshtml" />
-    <Content Include="Views\HocVien\ThongTinThanhToan.cshtml" />
+    <Content Include="Views\GiangVien\DanhSachHocVien.cshtml" />
+    <Content Include="Views\GiangVien\DanhSachLopHoc.cshtml" />
+    <Content Include="Views\GiangVien\ChiTietLopHoc.cshtml" />
+    <Content Include="Views\Account\Error404.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -432,7 +487,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AnhKhoaHoc\" />
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\DangKy\" />

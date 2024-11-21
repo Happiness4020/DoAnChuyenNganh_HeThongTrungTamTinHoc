@@ -23,35 +23,63 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             this.LopHoc = new HashSet<LopHoc>();
             this.TaiKhoan = new HashSet<TaiKhoan>();
         }
-        [Key]
-
+    
         public string MaGV { get; set; }
         [Display(Name = "Nhập họ tên")]
         [Required(ErrorMessage = "Bạn phải nhập họ tên")]
+        [RegularExpression("^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ ]*$")]
         public string HoTen { get; set; }
+
+
         [Display(Name = "Nhập ảnh")]
         public string Anh { get; set; }
+
+
         [Display(Name = "Nhập ngày vào làm")]
         [Required(ErrorMessage = "Bạn phải nhập ngày vào làm")]
         public System.DateTime NgayVaoLam { get; set; }
+
+
         [Display(Name = "Nhập bằng cấp")]
         [Required(ErrorMessage = "Bạn phải nhập bằng cấp")]
         public string BangCapGV { get; set; }
+
+
         [Display(Name = "Nhập lĩnh vực đào tạo")]
         [Required(ErrorMessage = "Bạn phải nhập lĩnh vực đào tạo")]
         public string LinhVucDaoTao { get; set; }
+
+
+        [Display(Name = "Nhập trình độ")]
+        [Required(ErrorMessage = "Bạn phải nhập trình độ")]
+        public string TrinhDo { get; set; }
+
+
         [Display(Name = "Nhập email")]
+        [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ.Email hợp lệ ví dụ: abc@gmail.com")]
         [Required(ErrorMessage = "Bạn phải nhập email")]
         public string Email { get; set; }
+
+
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Điện thoại chỉ nhập số nguyên")]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải là 10 số")]
+        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         [Display(Name = "Nhập số điện thoại")]
         [Required(ErrorMessage = "Bạn phải nhập số điện thoại")]
         public string SoDT { get; set; }
+
+
         [Display(Name = "Nhập địa chỉ")]
         [Required(ErrorMessage = "Bạn phải nhập địa chỉ")]
         public string DiaChi { get; set; }
+
+
         [Display(Name = "Nhập lương")]
         [Required(ErrorMessage = "Bạn phải nhập lương")]
         public double Luong { get; set; }
+
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LichDay> LichDay { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

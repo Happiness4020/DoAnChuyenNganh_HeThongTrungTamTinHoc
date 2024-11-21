@@ -25,8 +25,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             this.LienHe = new HashSet<LienHe>();
             this.TaiKhoan = new HashSet<TaiKhoan>();
         }
+    
         public string MaHV { get; set; }
-
         [Required(ErrorMessage = "Bạn phải nhập đầy đủ họ tên")]
         [RegularExpression("^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ ]*$")]
         public string HoTen { get; set; }

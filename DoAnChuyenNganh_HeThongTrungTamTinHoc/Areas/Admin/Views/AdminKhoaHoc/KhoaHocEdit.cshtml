@@ -101,6 +101,15 @@
                         </div>
                     </div>
 
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.Sobuoihoc, "Số buổi học")
+                            @Html.EditorFor(model => model.Sobuoihoc, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Sobuoihoc, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
                     <div class="row my-2 mt-3 mb-3">
                         <div class="col-3"></div>
                         <div class="col-6">

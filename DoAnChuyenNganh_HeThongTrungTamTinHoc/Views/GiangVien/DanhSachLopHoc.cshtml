@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Danh sách lớp học đang giảng dạy";
+    Layout = "~/Views/Shared/_GiangVien.cshtml";
+}
+
+<style>
+    .table th, .table td {
+        width: 250px;
+        text-align: center;
+    }
+</style>
+
+<h3 class="text-center" style="color: #0066b3;">@ViewBag.Title</h3>
+<main class="shadow-sm" style="background-color: #fff; max-width: 100%; min-height: 500px; padding: 20px;">
+    <div class="container-fluid">
+        @if (Model == null)
+        {
+            <h4 class="text-center" style="color: orangered;">Không có lớp học nào!</h4>
+        }
+        else
+        {
+            foreach (var lop in Model)
+            {
+                <a href="@Url.Action("ChiTietLopHoc", "GiangVien", new { malh = lop.MaLH})" class="text-decoration-none">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="table-primary" style="background-color: #0066b3; color: white;">
+                            <tr>
+                                <th>Mã lớp</th>
+                                <th>Tên lớp</th>
+                                <th>Mã khóa học</th>
+                                <th>Sỉ số</th>
+                                <th>Giờ bắt đầu</th>
+                                <th>Giờ kết thúc</th>
+                                <th>Mã giảng viên</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@lop.MaLH</td>
+                                <td>@lop.TenLop</td>
+                                <td>@lop.MaKH</td>
+                                <td>@lop.SiSo</td>
+                                <td style="color: orangered">@lop.GioBatDau</td>
+                                <td style="color: orangered">@lop.GioKetThuc</td>
+                                <td>@lop.MaGV</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </a>
+            }
+        }
+        </div>
+</main>
+

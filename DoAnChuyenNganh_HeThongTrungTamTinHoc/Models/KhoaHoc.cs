@@ -25,6 +25,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             this.TaiLieuHocTap = new HashSet<TaiLieuHocTap>();
         }
 
+      
+
         public string MaKH { get; set; }
 
         [Required(ErrorMessage = "Tên khóa học không được để trống")]
@@ -33,7 +35,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 
         [Required(ErrorMessage = "Mô tả không được để trống")]
         public string MoTa { get; set; }
-
         public string Anh { get; set; }
 
         [Display(Name = "Ngày bắt đầu")]
@@ -43,6 +44,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Display(Name = "Ngày kết thúc")]
         [Required(ErrorMessage = "Bạn phải nhập ngày kết thúc")]
         public System.DateTime NgayKetThuc { get; set; }
+
+        [Required(ErrorMessage = "Bạn phải nhập số buổi học")]
+        public int Sobuoihoc { get; set; }
 
         [Required(ErrorMessage = "Bạn phải chọn chương trình học")]
         public string MaChuongTrinh { get; set; }
@@ -54,8 +58,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Required(ErrorMessage = "Bạn phải nhập loại khóa học")]
         [StringLength(50, ErrorMessage = "Loại khóa học không được vượt quá 50 ký tự")]
         public string LoaiKH { get; set; }
-
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
         public virtual ChuongTrinhHoc ChuongTrinhHoc { get; set; }

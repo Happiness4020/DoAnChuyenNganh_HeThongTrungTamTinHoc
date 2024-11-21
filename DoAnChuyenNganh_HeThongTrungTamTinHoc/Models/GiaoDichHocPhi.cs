@@ -24,7 +24,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string Email { get; set; }
     
         public virtual HocVien HocVien { get; set; }
-        public virtual KhoaHoc KhoaHoc { get; set; }
         public virtual PhuongThucThanhToan PhuongThucThanhToan { get; set; }
+        public virtual KhoaHoc KhoaHoc { get; set; }
     }
 }

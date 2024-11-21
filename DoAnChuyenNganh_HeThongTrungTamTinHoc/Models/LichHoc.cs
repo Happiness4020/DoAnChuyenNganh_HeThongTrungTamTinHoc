@@ -16,7 +16,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     public partial class LichHoc
     {
         public string MaLichHoc { get; set; }
-
         [Required(ErrorMessage = "Bạn phải nhập mã học viên ")]
         public string MaHV { get; set; }
 
@@ -27,7 +26,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public System.DateTime NgayHoc { get; set; }
 
-     
+
         public bool DiemDanh { get; set; }
 
         [Required(ErrorMessage = "Bạn phải nhập giờ bắt đầu ")]
@@ -35,6 +34,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 
         [Required(ErrorMessage = "Bạn phải nhập giờ kết thúc ")]
         public System.TimeSpan GioKetThuc { get; set; }
+
         public virtual HocVien HocVien { get; set; }
         public virtual LopHoc LopHoc { get; set; }
     }
