@@ -12,7 +12,7 @@
 </style>
 
 <main class="container">
-    <h2 class="text-center">Bảng điểm @ViewBag.TenLop</h2>
+    <h2 class="text-center">Bảng điểm lớp <span style="color: orangered;">@ViewBag.TenLop</span></h2>
 
     @if (Model == null || !Model.Any())
     {
@@ -58,7 +58,7 @@
                             @Model[i].DiemTrungBinh
                         </td>
                         <td>
-                            <input type="number" name="HocVienList[@i].Sobuoivang" value="@Model[i].Sobuoivang" class="form-control" />
+                            @Model[i].Sobuoivang
                         </td>
                         <td>
                             <select name="HocVienList[@i].Daketthuc" class="form-control">
@@ -67,7 +67,7 @@
                             </select>
                         </td>
                         <td>
-                            <button type="submit" class="btn btn-primary" style="width: 100px;">Cập nhật</button>
+                            <button type="submit" class="btn btn-primary" style="width: 100px;" onclick="return xacNhanCapNhat()">Cập nhật</button>
                         </td>
                     </tr>
                     }
@@ -76,3 +76,9 @@
         </form>
     }
 </main>
+
+<script>
+    function xacNhanCapNhat() {
+        return confirm("Bạn có chắc chắn muốn cập nhật thông tin này?");
+    }
+</script>
