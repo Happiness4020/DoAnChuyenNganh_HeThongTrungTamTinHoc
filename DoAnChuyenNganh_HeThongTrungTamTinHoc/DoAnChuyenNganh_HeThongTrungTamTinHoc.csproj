@@ -483,6 +483,7 @@
     <Content Include="Views\GiangVien\DanhSachLopHoc.cshtml" />
     <Content Include="Views\GiangVien\ChiTietLopHoc.cshtml" />
     <Content Include="Views\Account\Error404.cshtml" />
+    <Content Include="Views\HocVien\ThongTinThanhToan.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
