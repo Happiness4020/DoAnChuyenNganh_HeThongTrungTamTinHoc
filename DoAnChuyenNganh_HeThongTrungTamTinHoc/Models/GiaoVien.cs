@@ -48,7 +48,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Display(Name = "Nhập lĩnh vực đào tạo")]
         [Required(ErrorMessage = "Bạn phải nhập lĩnh vực đào tạo")]
         public string LinhVucDaoTao { get; set; }
-
+ 
 
         [Display(Name = "Nhập email")]
         [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ.Email hợp lệ ví dụ: abc@gmail.com")]

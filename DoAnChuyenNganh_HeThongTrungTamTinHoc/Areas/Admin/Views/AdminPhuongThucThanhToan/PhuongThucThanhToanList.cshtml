@@ -45,13 +45,13 @@
 <a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
 <br />
 
-<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("PhuongThucThanhToanAdd", "AdminPhuongThucThanhToan")">Thêm phương thức thanh toán</a>
+@*<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("PhuongThucThanhToanAdd", "AdminPhuongThucThanhToan")">Thêm phương thức thanh toán</a>
 
 <form class="d-flex mb-3 mt-2" action="@Url.Action("PhuongThucThanhToanList", "AdminPhuongThucThanhToan")">
     <input class="form-control me-" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm theo tên phương thức thanh toán" aria-label="Search" style="max-width: 400px;">
     <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>
     <a class="btn btn-danger ms-2" href="@Url.Action("PhuongThucThanhToanList", "AdminPhuongThucThanhToan")">Hủy</a>
-</form>
+</form>*@
 
 
 <div class="container mt-5">
@@ -68,10 +68,6 @@
                 {
                     <tr>
                         <td>@item.TenPT</td>
-                        <td>
-                            <a href="@Url.Action("PhuongThucThanhToanEdit", "AdminPhuongThucThanhToan", new { id = item.MaPT })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
-                            <a href="@Url.Action("PhuongThucThanhToanDelete", "AdminPhuongThucThanhToan", new { id = item.MaPT })" class="btn btn-danger btn-sm">Xóa</a>
-                        </td>
                     </tr>
                 }
             </tbody>

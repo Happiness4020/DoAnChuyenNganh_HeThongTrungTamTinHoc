@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
+    [AdminAuthorize]
     public class AdminGiangVienController : Controller
     {
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();

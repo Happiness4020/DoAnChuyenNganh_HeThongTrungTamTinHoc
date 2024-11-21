@@ -9,9 +9,11 @@ using System.Web;
 using System.Web.Mvc;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 using System.Text;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
+    [AdminAuthorize]
     public class AdminLopHocController : Controller
     {
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();

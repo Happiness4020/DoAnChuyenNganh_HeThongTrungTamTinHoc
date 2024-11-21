@@ -7,10 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
+    [AdminAuthorize]
     public class AdminKhoaHocController : Controller
     {
         private TrungTamTinHocEntities ttth = new TrungTamTinHocEntities();
