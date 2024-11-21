@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
+    [AdminAuthorize]
     public class AdminChuongTrinhHocController : Controller
     {
         // GET: Admin/AdminChuongTrinhHoc
         TrungTamTinHocEntities db = new TrungTamTinHocEntities();
         private static Random random = new Random();
-        private string mact = TaoMaChuongTrinh();
+        private string mact = Utility.TaoMaNgauNhien("CT", 3);
 
 
         public ActionResult ChuongTrinhHocList(string search = "")
@@ -66,18 +68,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }    
         }
 
-        public static string TaoMaChuongTrinh()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            StringBuilder maHocVien = new StringBuilder("CT");
-
-            for (int i = 0; i < 3; i++)
-            {
-                maHocVien.Append(chars[random.Next(chars.Length)]);
-            }
-
-            return maHocVien.ToString();
-        }
 
         public ActionResult ChuongTrinhHocDelete(string id)
         {

@@ -5,9 +5,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Text;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
+    [AdminAuthorize]
     public class AdminAccountController : Controller
     {
         // GET: Admin/Account

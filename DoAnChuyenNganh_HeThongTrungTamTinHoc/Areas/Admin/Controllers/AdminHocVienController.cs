@@ -5,22 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
+    [AdminAuthorize]
     public class AdminHocVienController : Controller
     {
         // GET: Admin/AdminHocVien
         TrungTamTinHocEntities ttth = new TrungTamTinHocEntities();
         private static Random random = new Random();
-        private string mahv = TaoMaHocVien();
+        private string mahv = Utility.TaoMaNgauNhien("HV", 8);
 
 
-        public ActionResult HocVienList(string search = "")
+        public ActionResult HocVienList(string search = "", int page = 1, int pageSize = 10)
         {
             List<HocVien> hocvien = ttth.HocVien.Where(t => t.HoTen.Contains(search)).ToList();
             ViewBag.Search = search;
+
+            // phân trang
+            int NoOfRecordPerPage = 7;
+            int NoOfPage = (int)Math.Ceiling((double)hocvien.Count / NoOfRecordPerPage);
+            int NoOfRecordToSkip = (page - 1) * NoOfRecordPerPage;
+
+            ViewBag.Page = page;
+            ViewBag.NoOfPage = NoOfPage;
+            hocvien = hocvien.Skip(NoOfRecordToSkip).Take(NoOfRecordPerPage).ToList();
             return View(hocvien);
         }
 
@@ -42,9 +53,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View();
                 }
 
-                if (string.IsNullOrEmpty(hocvien.HoTen) && string.IsNullOrEmpty(hocvien.Anh) 
-                    && string.IsNullOrEmpty(hocvien.NgaySinh.ToString()) && string.IsNullOrEmpty(hocvien.GioiTinh) 
-                    && string.IsNullOrEmpty(hocvien.Email) && string.IsNullOrEmpty(hocvien.SoDT) 
+                if (string.IsNullOrEmpty(hocvien.HoTen) && string.IsNullOrEmpty(hocvien.Anh)
+                    && string.IsNullOrEmpty(hocvien.NgaySinh.ToString()) && string.IsNullOrEmpty(hocvien.GioiTinh)
+                    && string.IsNullOrEmpty(hocvien.Email) && string.IsNullOrEmpty(hocvien.SoDT)
                     && string.IsNullOrEmpty(hocvien.DiaChi))
                 {
                     ModelState.AddModelError("submit", "Vui lòng nhập đầy đủ thông tin của học viên !");
@@ -62,23 +73,17 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
-                    // Kiểm tra kích thước
-                    if (imageFile.ContentLength > 2000000)
-                    {
-                        ModelState.AddModelError("Image", "Kích thước file không được lớn hơn 2MB.");
-                        return View();
-                    }
 
                     // Kiểm tra loại file
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
-                    if (!allowedExtensions.Contains(fileEx))
+                    if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
                     {
-                        ModelState.AddModelError("Image", "Chỉ chấp nhận hình ảnh dạng JPG hoặc PNG.");
+                        ModelState.AddModelError("Anh", "Chỉ chấp nhận hình ảnh JPG hoặc PNG và không lớn hơn 2MB.");
                         return View();
                     }
-                    
-                    
+
+
 
                     // Truy vấn lại và đổi tên ảnh
                     HocVien Hocvien = ttth.HocVien.ToList().Last();
@@ -86,7 +91,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
                     imageFile.SaveAs(path);
 
-                   
+
                 }
                 // Lưu thông tin vào CSDL
                 hv = new HocVien
@@ -109,20 +114,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             {
                 return View();
             }
-            
-        }
 
-        public static string TaoMaHocVien()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            StringBuilder maHocVien = new StringBuilder("HV");
-
-            for (int i = 0; i < 8; i++)
-            {
-                maHocVien.Append(chars[random.Next(chars.Length)]);
-            }
-
-            return maHocVien.ToString();
         }
 
         public ActionResult HocVienDelete(string id)
@@ -131,7 +123,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(hv);
         }
         [HttpPost]
-        public ActionResult HocVienDelete( string id, HocVien hocvien)
+        public ActionResult HocVienDelete(string id, HocVien hocvien)
         {
 
             hocvien = ttth.HocVien.Where(t => t.MaHV == id).FirstOrDefault();
@@ -162,8 +154,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(hocvien);
                 }
 
-                
-                
+
+
                 var emailExists = ttth.HocVien.Any(h => h.Email == hocvien.Email && h.MaHV != hocvien.MaHV);
 
                 if (emailExists)
@@ -185,19 +177,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
 
-                    if (imageFile.ContentLength > 2000000)
-                    {
-                        ModelState.AddModelError("Image", "Kích thước file không được lớn hơn 2MB.");
-                        return View(hocvien);
-                    }
-
-
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
-                    if (!allowedExtensions.Contains(fileEx))
+                    if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
                     {
-                        ModelState.AddModelError("Image", "Chỉ chấp nhận hình ảnh dạng JPG hoặc PNG.");
-                        return View(hocvien);
+                        ModelState.AddModelError("Anh", "Chỉ chấp nhận hình ảnh JPG hoặc PNG và không lớn hơn 2MB.");
+                        return View();
                     }
 
 
@@ -219,9 +204,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 else
                 {
                     hv.Anh = fileName;
-                }    
+                }
 
-                
+
                 ttth.SaveChanges();
 
                 return RedirectToAction("HocVienList");
@@ -229,8 +214,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             else
             {
                 return View();
-            }    
-         
+            }
+
         }
 
     }
