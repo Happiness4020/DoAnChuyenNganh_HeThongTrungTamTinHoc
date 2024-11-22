@@ -5,23 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
+    [AdminAuthorize]
     public class AdminGiangVienController : Controller
     {
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
+        string magv = Utility.TaoMaNgauNhien("GV", 8);
         // GET: Admin/AdminGiangVien
-        public ActionResult GiangVienList(string search = "")
+        public ActionResult GiangVienList(string search = "", int page = 1, int pageSize = 10)
         {
-            var ds = db.GiaoVien;
 
             List<GiaoVien> giangviens = db.GiaoVien.Where(e => e.HoTen.Contains(search)).ToList();
             ViewBag.Search = search;
+            // phân trang
+            int NoOfRecordPerPage = 7;
+            int NoOfPage = (int)Math.Ceiling((double)giangviens.Count / NoOfRecordPerPage);
+            int NoOfRecordToSkip = (page - 1) * NoOfRecordPerPage;
+
+            ViewBag.Page = page;
+            ViewBag.NoOfPage = NoOfPage;
+            giangviens = giangviens.Skip(NoOfRecordToSkip).Take(NoOfRecordPerPage).ToList();
             return View(giangviens);
         }
-        string magv = TaoMaGiangVien();
+        
         public ActionResult GiangVienAdd()
         {
             ViewBag.MaGV = magv;
@@ -64,22 +74,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 string filename = "noimage.jpg";
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
-                    // Kiểm tra kích thước
-                    if (imageFile.ContentLength > 2000000)
-                    {
-                        ModelState.AddModelError("Image", "Kích thước file không được lớn hơn 2MB.");
-                        return View();
-                    }
-
+                   
                     // Kiểm tra loại file
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
-                    if (!allowedExtensions.Contains(fileEx))
+                    if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
                     {
-                        ModelState.AddModelError("Image", "Chỉ chấp nhận định dạng JPG hoặc PNG.");
+                        ModelState.AddModelError("Anh", "Chỉ chấp nhận hình ảnh JPG hoặc PNG và không lớn hơn 2MB.");
                         return View();
                     }
-
                     // Tạo tên file ảnh từ mã giảng viên
                     filename = magv + fileEx;
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), filename);
@@ -112,19 +115,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
         }
 
-        private static Random random = new Random();
-        public static string TaoMaGiangVien()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            StringBuilder maGiangVien = new StringBuilder("GV");
-
-            for (int i = 0; i < 8; i++)
-            {
-                maGiangVien.Append(chars[random.Next(chars.Length)]);
-            }
-
-            return maGiangVien.ToString();
-        }
+       
 
         public ActionResult GiangVienDelete(string id)
         {
@@ -178,19 +169,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
 
-                    if (imageFile.ContentLength > 2000000)
-                    {
-                        ModelState.AddModelError("Image", "Kích thước file không được lớn hơn 2MB.");
-                        return View(gv);
-                    }
+                    
 
 
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
-                    if (!allowedExtensions.Contains(fileEx))
+                    if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
                     {
-                        ModelState.AddModelError("Image", "Chỉ chấp nhận định JPG hoặc PNG.");
-                        return View(gv);
+                        ModelState.AddModelError("Anh", "Chỉ chấp nhận hình ảnh JPG hoặc PNG và không lớn hơn 2MB.");
+                        return View();
                     }
 
 
