@@ -3,8 +3,10 @@ using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,6 +22,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             ViewBag.MaGV = magv;
 
             var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
+            ViewBag.Email = giaovien.Email;
 
             return View(giaovien);
         }
@@ -238,5 +242,74 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             TempData["Success"] = "Cập nhật điểm danh thành công!";
             return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
         }
+
+        [HttpPost]
+        public ActionResult CapNhatThongTinGiaoVien(GiaoVien thontingiaovien)
+        {
+            if (ModelState.IsValid)
+            {
+                string magv = Session["MaGV"]?.ToString();
+                var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
+                if (giaovien != null)
+                {
+                    giaovien.HoTen = thontingiaovien.HoTen;
+                    giaovien.Email = thontingiaovien.Email;
+                    giaovien.SoDT = thontingiaovien.SoDT;
+                    giaovien.DiaChi = thontingiaovien.DiaChi;
+                    giaovien.BangCapGV = thontingiaovien.BangCapGV;
+                    giaovien.LinhVucDaoTao = thontingiaovien.LinhVucDaoTao;
+                    giaovien.NgayVaoLam = thontingiaovien.NgayVaoLam;
+                    giaovien.Luong = thontingiaovien.Luong;
+
+                    db.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy giảng viên!";
+                }
+            }
+
+            TempData["ErrorMessage"] = "Dữ liệu không hợp lệ!";
+            return RedirectToAction("Index");
+        }
+
+        //[HttpPost]
+        //public async Task<ActionResult> CapNhatAnhGiangVien(HttpPostedFileBase Anh)
+        //{
+        //    if (Anh != null && Anh.ContentLength > 0)
+        //    {
+        //        string magv = Session["MaGV"]?.ToString();
+        //        var giaoVien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
+        //        string clientID = "e30cd3223e3d967";
+        //        string imageUrl = await UploadImageToImgur(Anh, clientID);
+
+        //        if (giaoVien != null)
+        //        {
+        //            string fileName = Path.GetFileName(Anh.FileName);
+        //            string path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
+        //            Anh.SaveAs(path);
+
+        //            giaoVien.Anh = fileName;
+        //            db.SaveChanges();
+
+        //            TempData["SuccessMessage"] = "Cập nhật ảnh thành công!";
+        //        }
+        //        else
+        //        {
+        //            TempData["ErrorMessage"] = "Không tìm thấy giảng viên!";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        TempData["ErrorMessage"] = "Vui lòng chọn một ảnh hợp lệ!";
+        //    }
+
+        //    return RedirectToAction("Index");
+        //}
     }
 }
