@@ -43,6 +43,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Required(ErrorMessage = " Bạn phải nhập giáo viên ")]
         public string MaGV { get; set; }
 
+        [Required(ErrorMessage = " Bạn phải nhập trạng thái ")]
+        public bool TrangThai { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
         public virtual GiaoVien GiaoVien { get; set; }
