@@ -393,6 +393,7 @@
     <Compile Include="Models\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\HocVienViewModel.cs" />
+    <Compile Include="ViewModels\KhoaHocViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -469,6 +470,7 @@
     <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichDelete.cshtml" />
     <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichEdit.cshtml" />
     <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminKhoaHoc\DanhSachHocVienThamGiaKhoaHoc.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -526,6 +528,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\DangKy\" />
+    <Folder Include="Areas\Admin\Views\DemDSLopHoc\" />
     <Folder Include="Views\BinhLuan\" />
   </ItemGroup>
   <ItemGroup>

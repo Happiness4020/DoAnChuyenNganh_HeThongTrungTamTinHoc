@@ -4,52 +4,16 @@
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
-<style>
-    .dangnhap-body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        background-color: #f0f2f5;
-        margin: 0;
-    }
-
-    .login-card {
-        width: 100%;
-        max-width: 400px;
-        background-color: #0066b3;
-        border-radius: 8px;
-        padding: 30px 20px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-        .login-card h3 {
-            color: white;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-    .form-control {
-        border-radius: 6px;
-    }
-
-    .btn-submit {
-        background-color: #ffffff;
-        color: #0066b3;
-        font-weight: bold;
-        border-radius: 6px;
-        width: 100%;
-    }
-</style>
 
 
-<div class="dangnhap-body">
-    <div class="card login-card">
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card login-card p-4" style="width: 400px; background-color: #0066b3; border-radius: 10px;">
         @using (Html.BeginForm("DangNhap", "Account", FormMethod.Post))
         {
             @*@Html.AntiForgeryToken()*@
-            <div class="text-center">
-                <h3>@ViewBag.Title</h3>
+            <div class="text-center mb-4">
+                <h3 class="text-white">@ViewBag.Title</h3>
             </div>
             <div>
                 <div class="mb-3">
@@ -63,13 +27,15 @@
                     @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
                 </div>
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-submit">Đăng nhập</button>
+                    <button type="submit" class="btn btn-submit btn-primary w-100">Đăng nhập</button>
                 </div>
-                <div>
-                    <a class="text-white text-decoration-none">Bạn chưa có tài khoản ? </a> <a class="text-white" href="/Account/DangKy">Đăng ký ngay</a>
+                <div class="text-center mt-3">
+                    <a class="text-white text-decoration-none">Bạn chưa có tài khoản?</a>
+                    <a class="text-white" href="/Account/DangKy">Đăng ký ngay</a>
                 </div>
             </div>
         }
     </div>
 </div>
+
 

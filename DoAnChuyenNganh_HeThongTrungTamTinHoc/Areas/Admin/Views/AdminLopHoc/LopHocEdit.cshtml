@@ -79,6 +79,19 @@
                         </div>
                     </div>
 
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.TrangThai, "Trạng Thái")
+                            @Html.DropDownListFor(model => model.TrangThai, new List<SelectListItem>()
+                            {
+                                new SelectListItem { Text = "Chưa mở lớp", Value = "false", Selected = !Model.TrangThai },
+                                new SelectListItem { Text = "Đã mở lớp", Value = "true", Selected = Model.TrangThai }
+                            }, "Chọn trạng thái", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
                     <div class="row my-2 mt-3 mb-3">
                         <div class="col-3"></div>
                         <div class="col-6">
