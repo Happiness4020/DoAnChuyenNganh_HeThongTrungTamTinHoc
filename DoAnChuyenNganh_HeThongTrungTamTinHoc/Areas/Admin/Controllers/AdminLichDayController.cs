@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Services;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
@@ -121,6 +123,22 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             ViewBag.GiaoVienList = new SelectList(db.GiaoVien, "MaGV", "HoTen", lichDay.MaGV);
             ViewBag.LopHocList = new SelectList(db.LopHoc, "MaLH", "TenLop", lichDay.MaLH);
             return View(lichDay);
+        }
+
+        private readonly LichDayService lichdayservice;
+
+        public AdminLichDayController(LichDayService lichDayService)
+        {
+            lichdayservice = lichDayService;
+        }
+
+        public ActionResult PhanLichDay(string magv)
+        {
+            // Gọi service phân lịch dạy
+            lichdayservice.PhanLichDayChoGV(magv);
+
+            // Quay lại trang hiện tại hoặc trang danh sách lịch dạy
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            // Đăng ký CustomControllerFactory
+            ControllerBuilder.Current.SetControllerFactory(new CustomControllerFactory());
         }
 
         //protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)

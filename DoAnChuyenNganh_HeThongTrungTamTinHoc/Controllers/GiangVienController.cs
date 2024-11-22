@@ -6,7 +6,6 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -277,39 +276,36 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult> CapNhatAnhGiangVien(HttpPostedFileBase Anh)
-        //{
-        //    if (Anh != null && Anh.ContentLength > 0)
-        //    {
-        //        string magv = Session["MaGV"]?.ToString();
-        //        var giaoVien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+        [HttpPost]
+        public ActionResult CapNhatAnhGiangVien(HttpPostedFileBase Anh)
+        {
+            if (Anh != null && Anh.ContentLength > 0)
+            {
+                string magv = Session["MaGV"]?.ToString();
+                var giaoVien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
 
-        //        string clientID = "e30cd3223e3d967";
-        //        string imageUrl = await UploadImageToImgur(Anh, clientID);
+                if (giaoVien != null)
+                {
+                    string fileName = Path.GetFileName(Anh.FileName);
+                    string path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
+                    Anh.SaveAs(path);
 
-        //        if (giaoVien != null)
-        //        {
-        //            string fileName = Path.GetFileName(Anh.FileName);
-        //            string path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
-        //            Anh.SaveAs(path);
+                    giaoVien.Anh = fileName;
+                    db.SaveChanges();
 
-        //            giaoVien.Anh = fileName;
-        //            db.SaveChanges();
+                    TempData["SuccessMessage"] = "Cập nhật ảnh thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy giảng viên!";
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Vui lòng chọn một ảnh hợp lệ!";
+            }
 
-        //            TempData["SuccessMessage"] = "Cập nhật ảnh thành công!";
-        //        }
-        //        else
-        //        {
-        //            TempData["ErrorMessage"] = "Không tìm thấy giảng viên!";
-        //        }
-        //    }
-        //    else
-        //    {
-        //        TempData["ErrorMessage"] = "Vui lòng chọn một ảnh hợp lệ!";
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
+            return RedirectToAction("Index");
+        }
     }
 }
