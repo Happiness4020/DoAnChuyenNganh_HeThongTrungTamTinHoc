@@ -8,40 +8,40 @@
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.BinhLuanKhoaHoc" Width="1.5" PointX="9" PointY="11" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.ChiTiet_HocVien_LopHoc" Width="1.5" PointX="5.25" PointY="18.5" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.ChuongTrinhHoc" Width="1.5" PointX="1.5" PointY="20.25" />
-        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.GiaoDichHocPhi" Width="1.5" PointX="6" PointY="6.5" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.GiaoVien" Width="1.5" PointX="0.75" PointY="10.25" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.HocVien" Width="1.5" PointX="0.75" PointY="5.25" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.LichDay" Width="1.5" PointX="6" PointY="10.75" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.LichHoc" Width="1.5" PointX="8.25" PointY="14.75" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.LienHe" Width="1.5" PointX="3" PointY="10.75" />
-        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.LopHoc" Width="1.5" PointX="3" PointY="14.25" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.NguoiQuanLy" Width="1.5" PointX="5.25" PointY="14.625" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.PhuongThucThanhToan" Width="1.5" PointX="3.75" PointY="4.375" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.TaiKhoan" Width="1.5" PointX="3" PointY="6.75" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.TaiLieuHocTap" Width="1.5" PointX="3" PointY="23" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__BinhLuanKh__MaHV__09A971A2" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__ChiTiet_Ho__MaHV__6383C8BA" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__ChiTiet_Ho__MaLH__6477ECF3" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaHV__6EF57B66" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaPT__70DDC3D8" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichDay__MaGV__73BA3083" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LienHe__MaGV__04E4BC85" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LopHoc__MaGV__5AEE82B9" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__TaiKhoan__MaGV__6B24EA82" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichHoc__MaHV__787EE5A0" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LienHe__MaHV__03F0984C" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__TaiKhoan__MaHV__6A30C649" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichDay__MaLH__74AE54BC" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichHoc__MaLH__797309D9" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LienHe__MaQL__05D8E0BE" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__NguoiQuanL__MaLH__7D439ABD" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.KhoaHoc" Width="1.5" PointX="3.75" PointY="26" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__BinhLuanKh__MaKH__0A9D95DB" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__KhoaHoc__MaChuon__5812160E" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaKH__6FE99F9F" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LopHoc__MaKH__5BE2A6F2" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__NguoiQuanL__MaKH__7C4F7684" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__TaiLieuHoc__MaKH__00200768" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.LopHoc" Width="1.5" PointX="8" PointY="18.375" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__ChiTiet_Ho__MaLH__656C112C" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LopHoc__MaGV__5BE2A6F2" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LopHoc__MaKH__5CD6CB2B" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichDay__MaLH__75A278F5" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichHoc__MaLH__7A672E12" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__NguoiQuanL__MaLH__7E37BEF6" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.GiaoDichHocPhi" Width="1.5" PointX="11" PointY="14.625" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaHV__6FE99F9F" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaKH__70DDC3D8" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaPT__71D1E811" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

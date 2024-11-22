@@ -337,7 +337,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         });
 
                         // Gửi email xác nhận thanh toán
-                        SendEmailInternal(item.MaKH, item.SoTien, item.Email);
+                        SendEmailInternal(item.MaKH, (double)item.SoTien, item.Email);
                     }
 
                     // Lưu các thay đổi vào cơ sở dữ liệu

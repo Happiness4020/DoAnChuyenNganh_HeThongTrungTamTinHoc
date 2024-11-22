@@ -17,14 +17,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public int MaGD { get; set; }
         public string MaHV { get; set; }
         public string MaKH { get; set; }
-        public int MaPT { get; set; }
-        public System.DateTime NgayGD { get; set; }
-        public double SoTien { get; set; }
+        public Nullable<int> MaPT { get; set; }
+        public Nullable<System.DateTime> NgayGD { get; set; }
+        public Nullable<double> SoTien { get; set; }
         public string SoDT { get; set; }
         public string Email { get; set; }
     
         public virtual HocVien HocVien { get; set; }
-        public virtual PhuongThucThanhToan PhuongThucThanhToan { get; set; }
         public virtual KhoaHoc KhoaHoc { get; set; }
+        public virtual PhuongThucThanhToan PhuongThucThanhToan { get; set; }
     }
 }

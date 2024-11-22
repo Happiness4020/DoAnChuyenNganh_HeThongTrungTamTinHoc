@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
@@ -37,8 +38,45 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             ViewBag.NoOfPage = NoOfPage;
             khoahoc = khoahoc.Skip(NoOfRecordToSkip).Take(NoOfRecordPerPage).ToList();
 
+
             return View(khoahoc);
         }
+
+        public async Task<ActionResult> DanhSachHocVienThamGiaKhoaHoc()
+        {
+            // Lấy tất cả các khóa học
+            var khoaHocList = await ttth.KhoaHoc.ToListAsync();
+
+            // Dùng ViewModel để hiển thị khóa học cùng số học viên đăng ký
+            var khoaHocViewModelList = new List<KhoaHocViewModel>();
+
+            foreach (var khoaHoc in khoaHocList)
+            {
+                // Đếm số học viên đã đăng ký khóa học này
+                var soHocVien = await ttth.GiaoDichHocPhi
+                                        .Where(gd => gd.MaKH == khoaHoc.MaKH)
+                                        .Select(gd => gd.MaHV)
+                                        .Distinct()
+                                        .CountAsync();
+
+                // Kiểm tra điều kiện mở lớp
+                bool moLop = soHocVien >= 20;
+
+                // Thêm vào ViewModel
+                var khoaHocViewModel = new KhoaHocViewModel
+                {
+                    MaKH = khoaHoc.MaKH,
+                    TenKH = khoaHoc.TenKH,
+                    SoHocVien = soHocVien,
+                    MoLop = moLop
+                };
+
+                khoaHocViewModelList.Add(khoaHocViewModel);
+            }
+
+            return View(khoaHocViewModelList);
+        }
+
 
         public async Task<ActionResult> KhoaHocAdd()
         {
