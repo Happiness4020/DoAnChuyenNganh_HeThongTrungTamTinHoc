@@ -314,6 +314,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminLichHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminLopHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminPhuongThucThanhToanController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CustomControllerFactory.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BinhLuanController.cs" />
@@ -328,6 +329,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Services\LichDayService.cs" />
     <Compile Include="Models\BinhLuanKhoaHoc.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
