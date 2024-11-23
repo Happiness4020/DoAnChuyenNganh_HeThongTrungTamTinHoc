@@ -11,15 +11,20 @@
     }
 </style>
 
-<main class="container">
-    <h2 class="text-center">Bảng điểm lớp <span style="color: orangered;">@ViewBag.TenLop</span></h2>
+<div class="d-flex float-start">
+    <a href="@Url.Action("DanhSachLopHoc", "GiangVien")" class="btn btn-primary mb-2">Quay lại</a>
+</div>
 
+<main class="container-fluid">
     @if (Model == null || !Model.Any())
     {
-        <p class="text-center text-danger">Không có học viên nào trong lớp này.</p>
+        <div class="container mt-5">
+            <h3 class="text-center text-danger">Không có học viên nào trong lớp này!</h3>
+        </div>
     }
     else
     {
+        <h2 class="text-center">Bảng điểm lớp <span style="color: orangered;">@ViewBag.TenLop</span></h2>
         <form action="@Url.Action("CapNhatDiem", "GiangVien")" method="post">
             <input type="hidden" name="malh" value="@ViewBag.MaLop" />
             <table class="table table-bordered table-hover">
@@ -39,37 +44,37 @@
                 <tbody>
                     @for (int i = 0; i < Model.Count; i++)
                     {
-                    <tr>
-                        <td>
-                            @Model[i].MaHV
-                            <input type="hidden" name="HocVienList[@i].MaHV" value="@Model[i].MaHV" />
-                        </td>
-                        <td>@Model[i].HoTen</td>
-                        <td>
-                            <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan1" value="@Model[i].DiemKiemTraLan1" class="form-control" />
-                        </td>
-                        <td>
-                            <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan2" value="@Model[i].DiemKiemTraLan2" class="form-control" />
-                        </td>
-                        <td>
-                            <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan3" value="@Model[i].DiemKiemTraLan3" class="form-control" />
-                        </td>
-                        <td>
-                            @Model[i].DiemTrungBinh
-                        </td>
-                        <td>
-                            @Model[i].Sobuoivang
-                        </td>
-                        <td>
-                            <select name="HocVienList[@i].Daketthuc" class="form-control">
-                                <option value="false" @(Model[i].Daketthuc == false ? "selected" : "")>Đang học</option>
-                                <option value="true" @(Model[i].Daketthuc == true ? "selected" : "")>Đã kết thúc</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button type="submit" class="btn btn-primary" style="width: 100px;" onclick="return xacNhanCapNhat()">Cập nhật</button>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @Model[i].MaHV
+                                <input type="hidden" name="HocVienList[@i].MaHV" value="@Model[i].MaHV" />
+                            </td>
+                            <td>@Model[i].HoTen</td>
+                            <td>
+                                <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan1" value="@Model[i].DiemKiemTraLan1" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan2" value="@Model[i].DiemKiemTraLan2" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" name="HocVienList[@i].DiemKiemTraLan3" value="@Model[i].DiemKiemTraLan3" class="form-control" />
+                            </td>
+                            <td>
+                                @Model[i].DiemTrungBinh
+                            </td>
+                            <td>
+                                @Model[i].Sobuoivang
+                            </td>
+                            <td>
+                                <select name="HocVienList[@i].Daketthuc" class="form-control">
+                                    <option value="false" @(Model[i].Daketthuc == false ? "selected" : "")>Đang học</option>
+                                    <option value="true" @(Model[i].Daketthuc == true ? "selected" : "")>Đã kết thúc</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary" style="width: 100px;" onclick="return xacNhanCapNhat()">Cập nhật</button>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>

@@ -48,6 +48,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             ViewBag.MaGV = magv;
             ViewBag.TenGV = giaovien.HoTen;
             ViewBag.LichDay = lichdays;
+            ViewBag.Email = giaovien.Email;
             return View(lichdays);
         }
        
@@ -76,6 +77,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
             var lop = db.LopHoc.Where(lh => lh.MaLH == malh).FirstOrDefault();
 
+            string magv = Session["MaGV"]?.ToString();
+            if (string.IsNullOrEmpty(magv))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã giảng viên!!!");
+            }
+            var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
+            ViewBag.Email = giaovien.Email;
             ViewBag.TenLop = lop.TenLop;
             ViewBag.MaLH = malh;
             ViewBag.NgayDay = ngayday.ToShortDateString();
@@ -93,6 +102,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             var lopHocs = db.LopHoc
                 .Where(l => l.MaGV == magv)
                 .ToList();
+
+            var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
+            ViewBag.Email = giaovien.Email;
 
             return View(lopHocs);
         }
@@ -130,6 +143,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 return RedirectToAction("Error");
             }
 
+            string magv = Session["MaGV"]?.ToString();
+            if (string.IsNullOrEmpty(magv))
+            {
+                return RedirectToAction("Error");
+            }
+            var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
+            ViewBag.Email = giaovien.Email;
             ViewBag.TenLop = lop.TenLop;
             ViewBag.MaLop = malh;
 

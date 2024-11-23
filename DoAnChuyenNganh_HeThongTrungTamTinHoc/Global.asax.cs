@@ -14,9 +14,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-
-            // Đăng ký CustomControllerFactory
-            ControllerBuilder.Current.SetControllerFactory(new CustomControllerFactory());
         }
 
         //protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)

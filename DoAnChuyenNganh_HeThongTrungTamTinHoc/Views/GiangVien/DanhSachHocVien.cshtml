@@ -6,12 +6,15 @@
 
 <style>
     .table th, .table td {
-        width: 250px;
+        min-width: 150px;
         text-align: center;
     }
 </style>
 
-<h3 class="text-center" style="color: #0066b3;">Danh sách học viên của <span style="color: orangered">@ViewBag.TenLop</span> ngày <span style="color: orange">@ViewBag.NgayDay</span></h3>
+<h3 class="text-center" style="color: #0066b3;">
+    Danh sách học viên của lớp <span style="color: orangered">@ViewBag.TenLop</span> ngày <span style="color: orange">@ViewBag.NgayDay</span>
+</h3>
+
 <main class="shadow-sm" style="background-color: #fff; max-width: 100%; min-height: 500px; padding: 20px;">
     <div class="container-fluid">
         @if (Model == null)
@@ -23,49 +26,58 @@
             <form action="@Url.Action("DiemDanh", "GiangVien")" method="post">
                 <input type="hidden" name="malh" value="@ViewBag.MaLH" />
                 <input type="hidden" name="ngayday" value="@ViewBag.NgayDay" />
-                 <div class="d-flex float-end">
-                    <button type="submit" class="btn btn-primary mb-2">Lưu điểm danh</button>
+
+                <div class="row mb-3">
+                    <div class="col-6 col-md-2">
+                        <a href="@Url.Action("LichDay", "GiangVien")" class="btn btn-primary w-100 mb-2">Quay lại</a>
+                    </div>
+                    <div class="col-6 col-md-3 ms-auto">
+                        <button type="submit" class="btn btn-primary w-100 mb-2">Lưu điểm danh</button>
+                    </div>
                 </div>
-                <table class="table table-bordered table-striped table-hover ">
-                    <thead class="table-primary" style="background-color: #0066b3; color: white;">
-                        <tr>
-                            <th>Mã học viên</th>
-                            <th>Họ tên</th>
-                            <th>Số điện thoại</th>
-                            <th>Email</th>
-                            <th>Điểm danh</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var hv in Model)
-                        {
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="table-primary" style="background-color: #0066b3; color: white;">
                             <tr>
-                                <td>@hv.MaHV</td>
-                                <td>@hv.HoTen</td>
-                                <td>@hv.SoDT</td>
-                                <td>@hv.Email</td>
-                                <td>
-                                    @*<input type="checkbox" name="diemDanh[@hv.MaHV]" @(hv.DiemDanh ? "checked" : "") value="false" />*@
-                                    <select name="diemDanh[@hv.MaHV]" class="form-control">
-                                        <option value="false" @(hv.DiemDanh == false ? "selected" : "")>Có học</option>
-                                        <option value="true" @(hv.DiemDanh == true ? "selected" : "")>Vắng</option>
-                                    </select>
-                                </td>
+                                <th>Mã học viên</th>
+                                <th>Họ tên</th>
+                                <th>Số điện thoại</th>
+                                <th>Email</th>
+                                <th>Điểm danh</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var hv in Model)
+                            {
+                                <tr>
+                                    <td>@hv.MaHV</td>
+                                    <td>@hv.HoTen</td>
+                                    <td>@hv.SoDT</td>
+                                    <td>@hv.Email</td>
+                                    <td>
+                                        <select name="diemDanh[@hv.MaHV]" class="form-control">
+                                            <option value="false" @(hv.DiemDanh == false ? "selected" : "")>Có học</option>
+                                            <option value="true" @(hv.DiemDanh == true ? "selected" : "")>Vắng</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </form>
         }
+
         @if (TempData["Success"] != null)
         {
-            <div class="alert alert-success">
+            <div class="alert alert-success mt-3">
                 @TempData["Success"]
             </div>
         }
         @if (TempData["Error"] != null)
         {
-            <div class="alert alert-danger">
+            <div class="alert alert-danger mt-3">
                 @TempData["Error"]
             </div>
         }
