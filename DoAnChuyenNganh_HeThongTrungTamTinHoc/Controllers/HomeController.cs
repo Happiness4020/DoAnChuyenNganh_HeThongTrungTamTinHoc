@@ -16,14 +16,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
         public async Task<ActionResult> Index()
         {
-            // Truy xuất danh sách khóa học một cách không đồng bộ
             var khs = await db.KhoaHoc.Take(12).ToListAsync();
 
-            // Truy xuất danh sách chương trình học một cách không đồng bộ
             List<ChuongTrinhHoc> cths = await db.ChuongTrinhHoc.ToListAsync();
             ViewBag.ChuongTrinhHocs = cths;
 
-            // Kiểm tra xem khs có dữ liệu không
             if (khs == null || !khs.Any())
             {
                 return Content("Không có dữ liệu khóa học.");
@@ -38,7 +35,5 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             ViewBag.ChuongTrinhHocs = cths;
             return View();
         }
-
-
     }
 }
