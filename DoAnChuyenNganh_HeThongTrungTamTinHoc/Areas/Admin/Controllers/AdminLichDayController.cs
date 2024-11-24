@@ -64,19 +64,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View();
         }
 
-        // Tạo mã Lịch dạy ngẫu nhiên
-        public static string TaoMaLichDay()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            StringBuilder maLichDay = new StringBuilder("LD");
-
-            for (int i = 0; i < 5; i++)
-            {
-                maLichDay.Append(chars[random.Next(chars.Length)]);
-            }
-
-            return maLichDay.ToString();
-        }
 
         // Xóa Lịch dạy
         public async Task<ActionResult> LichDayDelete(string id)
@@ -137,6 +124,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 {
                     foreach (var lich in lichhocs)
                     {
+                        string maLD = Utility.TaoMaNgauNhien("LD", 5);
                         // Kiểm tra xem đã có lịch dạy nào cho lớp, ngày và giờ này chưa
                         bool lichDayTonTai = db.LichDay.Any(ld =>
                             ld.MaLH == lich.MaLH &&
@@ -153,7 +141,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                             {
                                 var lichday = new LichDay
                                 {
-                                    MaLichDay = TaoMaLichDay(),
+                                    MaLichDay = maLD,
                                     MaGV = ttLopHoc.MaGV,
                                     MaLH = lich.MaLH,
                                     NgayDay = lich.NgayHoc.Date,

@@ -59,7 +59,6 @@
             <thead>
                 <tr>
                     <th>Tên lớp</th>
-                    <th>Sỉ số</th>
                     <th>Giờ bắt đầu</th>
                     <th>Giờ kết thúc</th>
                     <th>Giáo viên</th>
@@ -73,7 +72,6 @@
                 {
                     <tr>
                         <td>@Html.DisplayFor(modelItem => item.TenLop)</td>
-                        <td>@Html.DisplayFor(modelItem => item.SiSo)</td>
                         <td>@Html.DisplayFor(modelItem => item.GioBatDau)</td>
                         <td>@Html.DisplayFor(modelItem => item.GioKetThuc)</td>
                         <td>@Html.DisplayFor(modelItem => item.GiaoVien.HoTen)</td>
@@ -82,6 +80,7 @@
                             @if (item.TrangThai)
                             {
                                 <span style="color: green; font-weight: bold;">Đã mở lớp</span>
+                                <a href="@Url.Action("PhanLichHocChoHocVien", "AdminLopHoc", new { maLH = item.MaLH, ngayBatDau = item.KhoaHoc.NgayBatDau, ngayKetThuc = item.KhoaHoc.NgayKetThuc, soBuoiHoc = item.KhoaHoc.Sobuoihoc  })" class="btn btn-outline-primary btn-sm">Phân Lịch Học</a>
                             }
                             else
                             {
@@ -91,6 +90,7 @@
                         <td>
                             <a href="@Url.Action("LopHocEdit", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
                             <a href="@Url.Action("LopHocDelete", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
+                            
                         </td>
                     </tr>
                 }
