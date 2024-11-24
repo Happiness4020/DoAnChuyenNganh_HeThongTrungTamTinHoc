@@ -19,6 +19,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
         private static Random random = new Random();
         private string malh = Utility.TaoMaNgauNhien("LH", 3);
+
+
         public async Task<ActionResult> LopHocList()
         {
             var lopHoc = db.LopHoc.Include(l => l.GiaoVien).Include(l => l.KhoaHoc);
@@ -123,7 +125,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(lopHoc);
         }
 
-        
+
         public async Task<ActionResult> LopHocEdit(string id)
         {
             if (id == null)
@@ -140,7 +142,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(lopHoc);
         }
 
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> LopHocEdit(LopHoc lopHoc)
@@ -226,6 +228,73 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                                      .ToList();
             return danhSachHocVien;
         }
+
+
+        public async Task<ActionResult> PhanLichHocChoHocVien(string maLH, DateTime ngayBatDau, DateTime ngayKetThuc, int soBuoiHoc)
+        {
+            // Bước 1: Kiểm tra lớp học tồn tại không
+            var lopHoc = await db.LopHoc.FindAsync(maLH);
+            if (lopHoc == null)
+            {
+                return HttpNotFound("Lớp học không tồn tại.");
+            }
+
+            // Bước 2: Lấy danh sách học viên đã đăng ký vào lớp học
+            var danhSachHocVien = db.ChiTiet_HocVien_LopHoc
+                                    .Where(ct => ct.MaLH == maLH)
+                                    .Select(ct => ct.MaHV)
+                                    .ToList();
+
+            if (danhSachHocVien.Count == 0)
+            {
+                return Content("Không có học viên trong lớp này.");
+            }
+
+            // Bước 3: Xác định lịch học cho lớp (ngày học trong tuần - thứ 2, 4, 6)
+            List<DayOfWeek> ngayHocTrongTuan = new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Friday };
+            List<DateTime> dsNgayHoc = new List<DateTime>();
+            DateTime ngayHienTai = ngayBatDau;
+
+            while (ngayHienTai <= ngayKetThuc && dsNgayHoc.Count < soBuoiHoc)
+            {
+                if (ngayHocTrongTuan.Contains(ngayHienTai.DayOfWeek))
+                {
+                    dsNgayHoc.Add(ngayHienTai);
+                }
+                ngayHienTai = ngayHienTai.AddDays(1);
+            }
+
+            // Bước 4: Phân lịch học cho từng học viên
+            foreach (var maHV in danhSachHocVien)
+            {
+                foreach (var ngayHoc in dsNgayHoc)
+                {
+                    string malichhoc = Utility.TaoMaNgauNhien("LH", 4);
+                    // Tạo bản ghi lịch học cho học viên
+                    var lichHoc = new LichHoc
+                    {
+                        MaLichHoc = malichhoc,
+                        MaLH = maLH,
+                        MaHV = maHV,
+                        NgayHoc = ngayHoc,
+                        DiemDanh = true,
+                        GioBatDau = lopHoc.GioBatDau,  // Giả định giờ bắt đầu là 8:00 AM
+                        GioKetThuc = lopHoc.GioKetThuc // Giả định giờ kết thúc là 11:00 AM
+                    };
+
+                    // Thêm lịch học vào cơ sở dữ liệu
+                    db.LichHoc.Add(lichHoc);
+                }
+            }
+
+            // Lưu lịch học cho tất cả học viên
+            await db.SaveChangesAsync();
+
+            // Trả về thông báo thành công
+            ViewBag.Message = $"Đã phân lịch học cho {danhSachHocVien.Count} học viên trong lớp {lopHoc.TenLop}.";
+            return RedirectToAction("LopHocList");
+        }
+
 
     }
 }
