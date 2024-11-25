@@ -5,6 +5,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 {
@@ -77,6 +78,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
             ViewBag.ChuongTrinhHocs = cths;
 
+            ViewBag.KhoaHocNoiBats = KhoaHocNoiBat();
+
             return View(kh);
         }
 
@@ -124,6 +127,56 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
             }
         }
+        [HttpPost]
+        public ActionResult SuaBinhLuan(string MaKH)
+        {
+            try
+            {
+                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
+            }
+            catch
+            {
+                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
+            }
+        }
 
+        public List<KhoaHocNoiBatViewModel> KhoaHocNoiBat()
+        {
+            List<KhoaHocNoiBatViewModel> khoahocs;
+            try
+            {
+                var khoahocnoibat = db.GiaoDichHocPhi
+                .GroupBy(gd => gd.MaKH)
+                .Select(group => new
+                {
+                    MaKH = group.Key,
+                    SoLanDangKy = group.Count()
+                })
+                .OrderByDescending(x => x.SoLanDangKy)
+                .Take(10)
+                .ToList();
+
+                khoahocs = khoahocnoibat
+                    .Join(db.KhoaHoc,
+                        gd => gd.MaKH,
+                        kh => kh.MaKH,
+                        (gd, kh) => new KhoaHocNoiBatViewModel
+                        {
+                            MaKH = kh.MaKH,
+                            TenKH = kh.TenKH,
+                            Anh = kh.Anh,
+                            NgayBatDau = kh.NgayBatDau.Date,
+                            HocPhi = kh.HocPhi,
+                            SoLanDangKy = gd.SoLanDangKy
+                        })
+                    .ToList();
+
+                return khoahocs;
+            }
+            catch
+            {
+                return khoahocs = null;
+            }
+        }
     }
 }

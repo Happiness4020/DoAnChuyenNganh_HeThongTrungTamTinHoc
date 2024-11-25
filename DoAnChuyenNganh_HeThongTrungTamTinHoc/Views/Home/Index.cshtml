@@ -4,6 +4,9 @@
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
 <style>
     .mySwiper {
         width: 100%;
@@ -24,6 +27,25 @@
     .card-title {
         font-weight: 600;
         margin-bottom: 15px;
+    }
+
+    #backToTopBtn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none;
+        background-color: orangered;
+        color: white;
+        border: none;
+        border-radius: 100px;
+        padding: 10px;
+        font-size: 15px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+
+    #backToTopBtn:hover {
+        background-color: darkred;
     }
 </style>
 
@@ -88,26 +110,32 @@
         <a href="@Url.Action("Index", "KhoaHoc")" class="btn text-white" style="background-color: #0066b3">Xem tất cả khóa học</a>
     </div>
 </div>
-<div class="container-fluid p-0">
+
+
+<div class="container-fluid p-0 overflow-hidden">
     <div class="w-100 p-3" style="border-radius: 0px; background-color: #0066b3;">
-        <h2 class="text-center text-uppercase text-white">Cảm Nhận Học Viên</h2>
-        <div class="row justify-content-center">
-            <div class="col-md-3">
-                <div class="card mb-4 border-primary">
-                    <div class="card-header" style="color: #0066b3;">
-                        <h5 class="m-0">Bùi Khánh Duy</h5>
+        <h2 class="text-center text-uppercase text-white">Đánh giá của học viên</h2>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                @foreach (var binhluan in ViewBag.BinhLuans)
+                {
+                    <div class="swiper-slide">
+                        <div class="card mb-4 mx-auto shadow-sm h-100" style="max-width: 300px; min-height: 150px;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title flex-grow-1 mt-2">
+                                    @binhluan.HoTen
+                                </h5>
+                                <span class="card-text flex-grow-1">@binhluan.NoiDung</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">Khóa học rất bổ ích</p>
-                    </div>
-                    <div class="card-footer text-muted">
-                        <small>29/10/2024</small>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </div>
 </div>
+
+
 <div class="container-fluid text-center p-2">
     <div class="mb-4" style="color: #0066b3">
         <span class="h4">Cám ơn bạn đã tin tưởng và đồng hành cùng Trung tâm Tin học HUIT</span>
@@ -139,6 +167,42 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+<button onclick="scrollToTop()" id="backToTopBtn" title="Quay về đầu trang">
+    <i class="fa-solid fa-up-long"></i>
+</button>
 
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 3,
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            1024: { slidesPerView: 4 },
+            768: { slidesPerView: 2 },
+            640: { slidesPerView: 1 },
+        },
+    });
+
+    window.onscroll = function () {
+        var btn = document.getElementById("backToTopBtn");
+        if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    };
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+</script>
