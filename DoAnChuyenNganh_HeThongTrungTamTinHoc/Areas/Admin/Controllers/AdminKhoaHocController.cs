@@ -129,7 +129,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 return RedirectToAction("KhoaHocList");
             }
             return View();
-        }
+        }   
 
 
         public async Task<ActionResult> KhoaHocDelete(string id)
