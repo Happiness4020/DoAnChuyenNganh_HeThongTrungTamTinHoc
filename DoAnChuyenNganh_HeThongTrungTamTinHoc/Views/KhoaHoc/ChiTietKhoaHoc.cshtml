@@ -5,11 +5,29 @@
     var userName = Context.Request.Cookies["NguoiDung"];
 }
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
 <style>
     .link-style {
         color: black;
         text-decoration: none;
         font-weight: 700;
+    }
+
+    #khoahocs {
+        border: none;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    #khoahocs:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+        font-weight: 600;
+        margin-bottom: 15px;
     }
 </style>
 
@@ -77,6 +95,43 @@
         <div class="col-md-12">
             <div class="card-body text-white text-justify" style="line-height: 1.6;">
                 <p class="card-text mt-3" style="font-size: 1.1em; color: #0066b3">@Model.MoTa</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-0 overflow-hidden">
+    <div class="w-100 p-3" style="border-radius: 0px; background-color: #0066b3;">
+        <h2 class="text-center text-uppercase text-white">Khóa học nổi bật</h2>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                @foreach (var khoahoc in ViewBag.KhoaHocNoiBats)
+                {
+                    <div class="swiper-slide">
+                        <div id="khoahocs" class="card mb-4 mx-auto shadow-sm h-100" style="max-width: 300px;">
+                            <div class="card-body d-flex flex-column">
+                                @if (khoahoc.Anh != "")
+                                {
+                                    <a href="/KhoaHoc/ChiTietKhoaHoc/@khoahoc.MaKH">
+                                        <img src="~/images/@khoahoc.Anh" alt="Khóa học" class="card-img-top" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="/KhoaHoc/ChiTietKhoaHoc/@khoahoc.MaKH">
+                                        <img src="~/images/noimage.jpg" alt="Khóa học" class="card-img-top" />
+                                    </a>
+                                }
+                                <h5 class="card-title flex-grow-1 mt-2">
+                                    <a href="/KhoaHoc/ChiTietKhoaHoc/@khoahoc.MaKH" class="text-decoration-none" style="color: #0066b3">@khoahoc.TenKH</a>
+                                </h5>
+                                <span class="card-text flex-grow-1">Ngày khai giảng: @khoahoc.NgayBatDau</span>
+                                <h4>Học phí: @khoahoc.HocPhi VND</h4>
+                                <p>Số lượt đăng ký: @khoahoc.SoLanDangKy</p>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -208,3 +263,23 @@
         </div>
     }
 </div>
+
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 4, // Số lượng item hiển thị cùng lúc
+        spaceBetween: 20, // Khoảng cách giữa các slide
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            1024: { slidesPerView: 4 },
+            768: { slidesPerView: 2 },
+            640: { slidesPerView: 1 },
+        },
+    });
+</script>
