@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
@@ -48,8 +49,18 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
             var binhluans = db.BinhLuanKhoaHoc
                      .Where(bl => bl.MaKH == id)
-                     .OrderByDescending(bl => bl.NgayBinhLuan)
                      .ToList();
+
+            // Sắp xếp
+            if (sort_by == "datetime_asc")
+            {
+                binhluans = binhluans.OrderBy(c => c.NgayBinhLuan).ToList();
+            }
+            else if (sort_by == "datetime_desc")
+            {
+                binhluans = binhluans.OrderByDescending(c => c.NgayBinhLuan).ToList();
+            }
+            ViewBag.SortBy = sort_by;
 
             int tongSoBinhLuan = binhluans.Count;
             ViewBag.TongSoBinhLuan = tongSoBinhLuan;
@@ -69,38 +80,50 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return View(kh);
         }
 
-        public string LayMaHV()
-        {
-            string tenDangNhap = Session["TenDangNhap"]?.ToString();
-            var taiKhoan = db.TaiKhoan.SingleOrDefault(tk => tk.TenDangNhap == tenDangNhap);
-            return taiKhoan?.MaHV;
-        }
-
         [HttpPost]
         public ActionResult ThemBinhLuan(string MaKH, string NoiDung)
         {
-
-
-            ViewBag.MAHV = LayMaHV();
-
-            if (string.IsNullOrEmpty(LayMaHV()))
+            try
             {
-                TempData["ErrorMessage"] = "Vui lòng đăng nhập để thêm bình luận.";
+                string mahv = Session["MaHV"]?.ToString();
+                ViewBag.MAHV = mahv;
+
+                if (string.IsNullOrEmpty(mahv))
+                {
+                    TempData["ErrorMessage"] = "Vui lòng đăng nhập để thêm bình luận.";
+                    return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
+                }
+
+                BinhLuanKhoaHoc binhluan = new BinhLuanKhoaHoc
+                {
+                    MaKH = MaKH,
+                    MaHV = mahv,
+                    NoiDung = NoiDung,
+                    NgayBinhLuan = DateTime.Now
+                };
+
+                db.BinhLuanKhoaHoc.Add(binhluan);
+                db.SaveChanges();
+
                 return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
             }
-
-            BinhLuanKhoaHoc binhluan = new BinhLuanKhoaHoc
+            catch
             {
-                MaKH = MaKH,
-                MaHV = LayMaHV(),
-                NoiDung = NoiDung,
-                NgayBinhLuan = DateTime.Now
-            };
-
-            db.BinhLuanKhoaHoc.Add(binhluan);
-            db.SaveChanges();
-
-            return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
+                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
+            }
         }
+        [HttpPost]
+        public ActionResult XoaBinhLuan(string MaKH)
+        {
+            try
+            {
+                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
+            }
+            catch
+            {
+                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
+            }
+        }
+
     }
 }

@@ -87,6 +87,16 @@
         <div class="col-12">
             <h4 class="mb-3" style="color: orangered">Bình luận (@(ViewBag.BinhLuans != null ? ViewBag.TongSoBinhLuan : 0))</h4>
 
+            <div class="d-flex justify-content-between mb-3">
+                <form method="get" action="/KhoaHoc/ChiTietKhoaHoc/@Model.MaKH" class="d-inline">
+                    <label for="sort_by" class="me-2 fw-bold" style="color: orangered;">Sắp xếp:</label>
+                    <select name="sort_by" id="sortBy" class="form-select d-inline w-auto" onchange="this.form.submit()">
+                        <option value="datetime_asc" @(ViewBag.SortBy == "datetime_asc" ? "selected" : "")>Cũ nhất</option>
+                        <option value="datetime_desc" @(ViewBag.SortBy == "datetime_desc" ? "selected" : "")>Mới nhất</option>
+                    </select>
+                </form>
+            </div>
+
             @foreach (var binhluan in ViewBag.BinhLuans)
             {
                 <div class="card mb-3 shadow-sm">
