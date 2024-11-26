@@ -33,18 +33,18 @@ else
 
                 if (course != null && student != null)
                 {
-                    <tr>
-                        <td>@student.MaHV</td> <!-- Mã học viên -->
-                        <td>@course.MaKH</td> <!-- Mã khóa học -->
-                        <td>@item.MaPT</td>
-                        <td>@item.NgayGD.ToString("dd/MM/yyyy")</td> <!-- Ngày giao dịch -->
-                        <td>@item.SoTien.ToString("N0") VND</td> <!-- Số tiền học phí -->
-                        <td>@student.SoDT</td> <!-- Số điện thoại học viên -->
-                        <td>@student.Email</td> <!-- Email học viên -->
-                        <td>
-                            <a href="@Url.Action("RemoveFromCart", "HocVien", new { courseId = item.MaKH })" class="btn btn-danger">Xóa</a>
-                        </td>
-                    </tr>
+            <tr>
+                <td>@student.MaHV</td> <!-- Mã học viên -->
+                <td>@course.MaKH</td> <!-- Mã khóa học -->
+                <td>@item.MaPT</td>
+                <td>@(item.NgayGD.HasValue ? item.NgayGD.Value.ToString("dd/MM/yyyy") : "Không xác định")</td> <!-- Ngày giao dịch -->
+                <td>@item.SoTien?.ToString("N0") VND</td> <!-- Số tiền học phí -->
+                <td>@student.SoDT</td> <!-- Số điện thoại học viên -->
+                <td>@student.Email</td> <!-- Email học viên -->
+                <td>
+                    <a href="@Url.Action("RemoveFromCart", "HocVien", new { courseId = item.MaKH })" class="btn btn-danger">Xóa</a>
+                </td>
+            </tr>
                 }
             }
         </tbody>

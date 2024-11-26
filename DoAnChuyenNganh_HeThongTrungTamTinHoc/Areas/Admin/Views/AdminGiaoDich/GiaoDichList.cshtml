@@ -71,19 +71,19 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>@item.NgayGD.ToString("dd/MM/yyyy")</td>
-                        <td>@item.SoTien.ToString("N0")</td>
-                        <td>@item.SoDT</td>
-                        <td>@item.Email</td>
-                        <td>@item.HocVien.HoTen</td>
-                        <td>@item.PhuongThucThanhToan.TenPT</td>
-                        <td>@item.KhoaHoc.TenKH</td>
-                        <td>
-                            <a href="@Url.Action("GiaoDichEdit", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-light-primary btn-sm">Sửa</a>
-                            <a href="@Url.Action("GiaoDichDelete", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-danger btn-sm">Xóa</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>@(item.NgayGD.HasValue ? item.NgayGD.Value.ToString("dd/MM/yyyy") : "Không xác định")</td> <!-- Ngày giao dịch -->
+                    <td>@item.SoTien?.ToString("N0") VND</td> <!-- Số tiền học phí -->
+                    <td>@item.SoDT</td>
+                    <td>@item.Email</td>
+                    <td>@item.HocVien.HoTen</td>
+                    <td>@item.PhuongThucThanhToan.TenPT</td>
+                    <td>@item.KhoaHoc.TenKH</td>
+                    <td>
+                        <a href="@Url.Action("GiaoDichEdit", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-light-primary btn-sm">Sửa</a>
+                        <a href="@Url.Action("GiaoDichDelete", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-danger btn-sm">Xóa</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

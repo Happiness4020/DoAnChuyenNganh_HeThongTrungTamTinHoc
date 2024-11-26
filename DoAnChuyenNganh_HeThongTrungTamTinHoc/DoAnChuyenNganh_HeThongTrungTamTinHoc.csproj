@@ -328,6 +328,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\LichHocView.cs" />
     <Compile Include="Services\LichDayService.cs" />
     <Compile Include="Models\BinhLuanKhoaHoc.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
@@ -395,6 +396,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\HocVienViewModel.cs" />
     <Compile Include="ViewModels\KhoaHocViewModel.cs" />
+    <Compile Include="ViewModels\LichHocViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
