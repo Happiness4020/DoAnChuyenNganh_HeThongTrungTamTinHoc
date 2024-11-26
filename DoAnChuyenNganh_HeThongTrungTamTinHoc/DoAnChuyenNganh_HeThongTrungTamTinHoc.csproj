@@ -394,8 +394,11 @@
     </Compile>
     <Compile Include="Models\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BinhLuanViewModel.cs" />
     <Compile Include="ViewModels\HocVienViewModel.cs" />
+    <Compile Include="ViewModels\KhoaHocNoiBatViewModel.cs" />
     <Compile Include="ViewModels\KhoaHocViewModel.cs" />
+    <Compile Include="ViewModels\LichDayViewModel.cs" />
     <Compile Include="ViewModels\LichHocViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
