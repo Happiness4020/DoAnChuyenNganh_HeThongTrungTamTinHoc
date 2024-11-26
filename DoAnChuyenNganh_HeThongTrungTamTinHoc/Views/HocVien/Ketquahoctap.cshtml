@@ -9,34 +9,35 @@
 
 @if (Model != null && Model.Any())
 {
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Mã Lớp</th>
-            <th>Điểm Kiểm Tra Lần 1</th>
-            <th>Điểm Kiểm Tra Lần 2</th>
-            <th>Điểm Kiểm Tra Lần 3</th>
-            <th>Điểm Trung Bình</th>
-            <th>Số Buổi Vắng</th>
-            <th>Đã Kết Thúc</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-<tr>
-    <td>@item.MaLH</td>
-    <td>@(item.DiemKiemTraLan1 ?? 0)</td>
-    <td>@(item.DiemKiemTraLan2 ?? 0)</td>
-    <td>@(item.DiemKiemTraLan3 ?? 0)</td>
-    <td>@(item.DiemTrungBinh ?? 0)</td>
-    <td>@item.Sobuoivang</td>
-    <td>@(item.Daketthuc ? "Đã kết thúc" : "Đang học")</td>
-</tr>}
-    </tbody>
-</table> }
-            else
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Mã Lớp</th>
+                <th>Điểm Kiểm Tra Lần 1</th>
+                <th>Điểm Kiểm Tra Lần 2</th>
+                <th>Điểm Kiểm Tra Lần 3</th>
+                <th>Điểm Trung Bình</th>
+                <th>Số Buổi Vắng</th>
+                <th>Đã Kết Thúc</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
             {
-<div class="alert alert-warning">
-    Không có kết quả học tập nào để hiển thị.
-</div>}
+                <tr>
+                    <td>@item.MaLH</td>
+                    <td>@(item.DiemKiemTraLan1 ?? 0)</td>
+                    <td>@(item.DiemKiemTraLan2 ?? 0)</td>
+                    <td>@(item.DiemKiemTraLan3 ?? 0)</td>
+                    <td>@(item.DiemTrungBinh ?? 0)</td>
+                    <td>@item.Sobuoivang</td>
+                    <td>@(item.Daketthuc ? "Đã kết thúc" : "Đang học")</td>
+                </tr>
+}
+        </tbody>
+    </table> }
+else
+{
+    <div class="alert alert-warning">
+        Không có kết quả học tập nào để hiển thị.
+    </div>}

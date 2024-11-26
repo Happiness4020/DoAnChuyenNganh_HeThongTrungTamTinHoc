@@ -30,7 +30,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LienHe> LienHe { get; set; }
-        public virtual LopHoc LopHoc { get; set; }
         public virtual KhoaHoc KhoaHoc { get; set; }
+        public virtual LopHoc LopHoc { get; set; }
     }
 }

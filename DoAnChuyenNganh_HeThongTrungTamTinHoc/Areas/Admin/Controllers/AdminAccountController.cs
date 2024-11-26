@@ -5,9 +5,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Text;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
+    [AdminAuthorize]
     public class AdminAccountController : Controller
     {
         // GET: Admin/Account
@@ -44,6 +46,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 if (taikhoan != null)
                 {
                     ModelState.AddModelError("TenDangNhap", "Tài khoản đã tồn tại!!");
+                    return View();
+                }
+
+
+                if (string.IsNullOrEmpty(tk.QuyenHan))
+                {
+                    ModelState.AddModelError("QuyenHan", "Vui lòng chọn quyền hạn");
                     return View();
                 }
 

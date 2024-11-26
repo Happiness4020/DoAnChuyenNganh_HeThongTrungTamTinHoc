@@ -1,0 +1,49 @@
+﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels.KhoaHocViewModel>
+@{
+    ViewBag.Title = "DanhSachHocVienThamGiaKhoaHoc";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+
+<h2>Danh sách các khóa học</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã Khóa Học</th>
+            <th>Tên Khóa Học</th>
+            <th>Số Học Viên</th>
+            <th>Trạng Thái</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MaKH</td>
+                <td>@item.TenKH</td>
+                <td>@item.SoHocVien</td>
+                <td>
+                    @if (item.MoLop)
+                    {
+                        <span class="text-success">Có thể mở lớp</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Chưa đủ học viên</span>
+                    }
+                </td>
+                <td>
+                    @if (item.MoLop)
+                    {
+                        <a href="@Url.Action("LopHocAdd", "AdminLopHoc", new { area = "Admin", MaKH = item.MaKH , tenKhoaHoc = item.TenKH, siSo = item.SoHocVien , trangThai = false})" class="btn btn-primary">
+                            Mở lớp
+                        </a> }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

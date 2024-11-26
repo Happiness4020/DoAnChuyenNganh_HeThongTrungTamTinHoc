@@ -21,6 +21,8 @@
                 @using (Html.BeginForm("KhoaHocAdd", "AdminKhoaHoc", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <form>
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <input type="hidden" name="MaKH" value="@ViewBag.MaKH" />
                         <input type="hidden" name="LoaiKH" value="Offline" />
                         <div class="row my-2">

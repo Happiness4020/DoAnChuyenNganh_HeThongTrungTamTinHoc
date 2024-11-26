@@ -46,6 +46,10 @@
 <br />
 <a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("LichDayAdd", "AdminLichDay")">Thêm Lịch Dạy</a>
 
+<form action="@Url.Action("PhanLichDay", "AdminLichDay")" method="post">
+    <button type="submit" class="btn btn-outline-primary">Phân Lịch Dạy</button>
+</form>
+
 <form class="d-flex mb-3 mt-2" action="@Url.Action("LichDayList", "AdminLichDay")">
     <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm lịch dạy" aria-label="Search" style="max-width: 400px;">
     <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>

@@ -8,7 +8,12 @@
     <h2 class="fw-bold text-center" style="color: #0066b3;">@ViewBag.Title</h2>
     <div class="row align-items-center">
         <div class="col-md-4 text-center mb-3 mb-md-0">
-            <img src="~/AnhHocVien/@Model.Anh" alt="Ảnh giảng viên" class="img-fluid rounded-circle" style="max-width: 100%; height: auto;" />
+            <div class="d-flex flex-column align-items-center">
+                <img src="~/AnhHocVien/@Model.Anh" alt="Ảnh giảng viên" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
+                <button type="button" class="btn btn-sm btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#changePhotoModal">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+            </div>
         </div>
         <div class="col-md-8">
             <div class="row">
@@ -28,9 +33,109 @@
                     <p class="mb-0"><strong>Bằng cấp:</strong> @Model.BangCapGV</p>
                 </div>
                 <div class="col-12 col-sm-6 mb-2">
+                    <p class="mb-0"><strong>Lĩnh vực đào tạo:</strong> @Model.LinhVucDaoTao</p>
+                </div>
+                <div class="col-12 col-sm-6 mb-2">
+                    <p class="mb-0"><strong>Ngày vào làm:</strong> @Model.NgayVaoLam.ToShortDateString()</p>
+                </div>
+                <div class="col-12 col-sm-6 mb-2">
                     <p class="mb-0"><strong>Lương:</strong> @Model.Luong</p>
                 </div>
             </div>
         </div>
     </div>
+    <div class="text-center mt-4">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateInfoModal">
+            Cập nhật thông tin
+        </button>
+    </div>
 </section>
+
+<div class="modal fade" id="changePhotoModal" tabindex="-1" aria-labelledby="changePhotoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePhotoModalLabel" style="color: #0066b3;">Thay đổi ảnh giảng viên</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="changePhotoForm" method="post" action="@Url.Action("CapNhatAnhGiangVien", "GiangVien")" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="newPhoto" class="form-label">Chọn ảnh mới</label>
+                        <input type="file" class="form-control" id="newPhoto" name="Anh" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lưu ảnh</button>
+                </form>
+            </div>
+            <div>
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateInfoModal" tabindex="-1" aria-labelledby="updateInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateInfoModalLabel" style="color: #0066b3">Cập nhật thông tin giảng viên</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateInfoForm" method="post" action="@Url.Action("CapNhatThongTinGiaoVien", "GiangVien")">
+                    <div class="mb-3">
+                        <label for="updateHoTen" class="form-label">Họ tên</label>
+                        <input type="text" class="form-control" id="updateHoTen" name="HoTen" value="@Model.HoTen" required readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="updateEmail" name="Email" value="@Model.Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateSoDT" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="updateSoDT" name="SoDT" value="@Model.SoDT" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateDiaChi" class="form-label">Địa chỉ</label>
+                        <input type="text" class="form-control" id="updateDiaChi" name="DiaChi" value="@Model.DiaChi" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateBangCap" class="form-label">Bằng cấp</label>
+                        <input type="text" class="form-control" id="updateBangCap" name="BangCapGV" value="@Model.BangCapGV" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateLinhVucDaoTao" class="form-label">Lĩnh vực đào tạo</label>
+                        <input type="text" class="form-control" id="updateLinhVucDaoTao" name="LinhVucDaoTao" value="@Model.LinhVucDaoTao" required readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateLinhVucDaoTao" class="form-label">Ngày vào làm</label>
+                        <input type="text" class="form-control" id="updateNgayVaoLam" name="NgayVaoLam" value="@Model.NgayVaoLam.ToShortDateString()" required readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateLuong" class="form-label">Lương</label>
+                        <input type="number" class="form-control" id="updateLuong" name="Luong" value="@Model.Luong" readonly>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                </form>
+                <div class="mt-2">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                    }
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
