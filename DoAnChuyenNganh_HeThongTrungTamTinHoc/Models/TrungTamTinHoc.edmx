@@ -7,12 +7,10 @@
     <Schema Namespace="QL_TrungTamTinHocModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BinhLuanKhoaHoc">
           <Key>
-            <PropertyRef Name="MaBinhLuan" />
             <PropertyRef Name="MaHV" />
             <PropertyRef Name="MaKH" />
             <PropertyRef Name="NgayBinhLuan" />
           </Key>
-          <Property Name="MaBinhLuan" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="MaHV" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="MaKH" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="NoiDung" Type="nvarchar(max)" />
@@ -1108,12 +1106,10 @@
         </Association>
         <EntityType Name="BinhLuanKhoaHoc">
           <Key>
-            <PropertyRef Name="MaBinhLuan" />
             <PropertyRef Name="MaHV" />
             <PropertyRef Name="MaKH" />
             <PropertyRef Name="NgayBinhLuan" />
           </Key>
-          <Property Name="MaBinhLuan" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="MaHV" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="MaKH" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1336,7 +1332,6 @@
                 <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
                 <ScalarProperty Name="MaKH" ColumnName="MaKH" />
                 <ScalarProperty Name="MaHV" ColumnName="MaHV" />
-                <ScalarProperty Name="MaBinhLuan" ColumnName="MaBinhLuan" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

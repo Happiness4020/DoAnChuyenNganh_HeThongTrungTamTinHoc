@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_Main.cshtml";
     var userName = Context.Request.Cookies["NguoiDung"];
 }
+@using System.Web.Mvc
+@using System.Web.Mvc.Html
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
@@ -20,10 +22,10 @@
         transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    #khoahocs:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
+        #khoahocs:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
 
     .card-title {
         font-weight: 600;
@@ -80,11 +82,12 @@
         <div class="col-md-6 d-flex align-items-center p-3 shadow-sm" style="background-color: #0066b3;">
             <div class="card-body">
                 <h5 class="card-title mb-2 text-white" style="font-weight: 600; font-size: 1.8em;">@Model.TenKH</h5>
-                <p class="card-text mb-2 text-white">Chương trình học: <a href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@Model.ChuongTrinhHoc.MaChuongTrinh" class="text-info">@Html.DisplayFor(model => model.ChuongTrinhHoc.TenChuongTrinh)</a></p>
-                <p class="card-text mb-2 text-white">Ngày khai giảng: <span class="text-warning">@Html.DisplayFor(model => model.NgayBatDau)</span></p>
-                <p class="card-text mb-2 text-white">Ngày kết thúc: <span class="text-warning">@Html.DisplayFor(model => model.NgayKetThuc)</span></p>
-                <p class="card-text mb-2 text-white">Học phí: <span class="text-info">@Html.DisplayFor(model => model.HocPhi)</span></p>
-                <p class="card-text mb-2 text-white">Loại khóa học: <span class="text-info">@Html.DisplayFor(model => model.LoaiKH)</span></p>
+                <p class="card-text mb-2 text-white">Chương trình học: <a href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@Model.ChuongTrinhHoc.MaChuongTrinh" class="text-warning">@Html.DisplayFor(model => model.ChuongTrinhHoc.TenChuongTrinh)</a></p>
+                <p class="card-text mb-2 text-white">Ngày khai giảng: <span class="text-warning">@Html.DisplayFor(model => model.NgayBatDau.Date)</span></p>
+                <p class="card-text mb-2 text-white">Ngày kết thúc: <span class="text-warning">@Html.DisplayFor(model => model.NgayKetThuc.Date)</span></p>
+                <p class="card-text mb-2 text-white">Số buổi học: <span class="text-warning">@Html.DisplayFor(model => model.Sobuoihoc)</span></p>
+                <p class="card-text mb-2 text-white">Học phí: <span class="text-warning">@Html.DisplayFor(model => model.HocPhi)</span></p>
+                <p class="card-text mb-2 text-white">Loại khóa học: <span class="text-warning">@Html.DisplayFor(model => model.LoaiKH)</span></p>
                 <div class="mt-4">
                     <a href="@Url.Action("DangKyKhoaHoc", "HocPhi", new { id = Model.MaKH })" class="btn btn-danger text-white px-4 py-2" style="font-weight: bold;">Đăng ký</a>
                 </div>
@@ -146,93 +149,84 @@
                 <form method="get" action="/KhoaHoc/ChiTietKhoaHoc/@Model.MaKH" class="d-inline">
                     <label for="sort_by" class="me-2 fw-bold" style="color: orangered;">Sắp xếp:</label>
                     <select name="sort_by" id="sortBy" class="form-select d-inline w-auto" onchange="this.form.submit()">
-                        <option value="datetime_asc" @(ViewBag.SortBy == "datetime_asc" ? "selected" : "")>Cũ nhất</option>
                         <option value="datetime_desc" @(ViewBag.SortBy == "datetime_desc" ? "selected" : "")>Mới nhất</option>
+                        <option value="datetime_asc" @(ViewBag.SortBy == "datetime_asc" ? "selected" : "")>Cũ nhất</option>
                     </select>
                 </form>
             </div>
 
-            @foreach (var binhluan in ViewBag.BinhLuans)
-            {
-                <div class="card mb-3 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <img src="~/AnhHocVien/@binhluan.HocVien.Anh" style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;" class="rounded-circle border" />
-                            <h5 class="card-title" style="color: #0066b3">@binhluan.HocVien.HoTen</h5>
-                        </div>
-                        <p class="card-text mt-1">@binhluan.NoiDung</p>
-                        <span class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">Ngày đăng: @binhluan.NgayBinhLuan</span>
-
-                        @if (binhluan.HocVien.MaHV == Session["MaHV"]?.ToString())
-                        {
-                    <div class="mt-2 d-flex gap-2">
-                            <div class="text-center mt-4">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateCommentModal">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
+            <div id="danhSachBinhLuan">
+                @foreach (var binhluan in ViewBag.BinhLuans)
+                {
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <img src="~/AnhHocVien/@binhluan.HocVien.Anh" style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;" class="rounded-circle border" />
+                                <h5 class="card-title" style="color: #0066b3">@binhluan.HocVien.HoTen</h5>
                             </div>
-                            <div class="text-center mt-4">
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
+                            <p class="card-text mt-1">@binhluan.NoiDung</p>
+                            <span class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">Ngày đăng: @binhluan.NgayBinhLuan</span>
+                            @if (Session["MaHV"]?.ToString() == binhluan.MaHV)
+                            {
+                                <div class="d-flex gap-2 mt-1">
+                                    <button type="button" class="btn btn-secondary">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <button data-bs-toggle="modal"
+                                            data-bs-target="#deleteCommentModal"
+                                            class="btn btn-danger">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            }
                         </div>
-                        }
                     </div>
-                </div>
 
-                <div class="modal fade" id="updateCommentModal" tabindex="-1" aria-labelledby="updateCommentModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="updateCommentModalLabel" style="color: #0066b3">Cập nhật thông tin giảng viên</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="updateCommentForm" method="post" action="@Url.Action("SuaBinhLuan", "KhoaHoc", new { MaKH = Model.MaKH, MaBinhLuan = binhluan.MaBinhLuan})">
-                                    <div class="mb-3">
-                                        <div class="form-group">
-                                            <label for="editCommentContent">Nội dung bình luận</label>
-                                            <textarea class="form-control" id="editCommentContent" name="NoiDung" rows="3">@binhluan.NoiDung</textarea>
-                                        </div>
+                    <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteCommentModalLabel" style="color: #0066b3">Xóa bình luận</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Bạn có chắc muốn xóa bình luận này không</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <form id="xoaBinhLuanForm" method="post" action="@Url.Action("XoaBinhLuan", "KhoaHoc", new { MaKH = Model.MaKH, NgayBinhLuan = binhluan.NgayBinhLuan })">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-primary">
+                                                Xóa
+                                        </button>
+                                    </form>
+                                    <div class="mt-2">
+                                        @if (TempData["SuccessMessage"] != null)
+                                        {
+                                            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                                        }
+                                        @if (TempData["ErrorMessage"] != null)
+                                        {
+                                            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                                        }
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Lưu</button>
-                                </form>
-                                <div class="mt-2">
-                                    @if (TempData["SuccessMessage"] != null)
-                                    {
-                                        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-                                    }
-                                    @if (TempData["ErrorMessage"] != null)
-                                    {
-                                        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
 
-                <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteCommentModalLabel" style="color: #0066b3">Xóa bình luận</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="deleteCommentForm"  action="@Url.Action("XoaBinhLuan", "KhoaHoc", new { MaBinhLuan = binhluan.MaBinhLuan, MaKH = Model.MaKH })" method="post">
-                                <div class="mb-3">
-                                    <h5>Bạn có chắc chắn muốn xóa bình luận không?</h5>
-                                </div>
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fa-solid fa-trash"></i> Xóa
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
             }
         </div>
     </div>
@@ -283,13 +277,50 @@
     </div>
 
     <div class="container-fluid text-center mb-2">
-        <a href="#" class="btn btn-primary">Xem tất cả bình luận</a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tatCaBinhLuanModal">Xem tất cả bình luận</button>
+        <div class="modal fade" id="tatCaBinhLuanModal" tabindex="-1" aria-labelledby="tatCaBinhLuanModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tatCaBinhLuanModalLabel" style="color: #0066b3">Tất cả bình luận</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="danhSachBinhLuan">
+                            @if (ViewBag.TatCaBinhLuan.Count == 0)
+                            {
+                                <h3>Chưa có bình luận nào</h3>
+                            }
+                            else
+                            {
+                                foreach (var binhluan in ViewBag.TatCaBinhLuan)
+                                {
+                                    <div class="card mb-3 shadow-sm">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <img src="~/AnhHocVien/@binhluan.HocVien.Anh" style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;" class="rounded-circle border" />
+                                                <h5 class="card-title" style="color: #0066b3">@binhluan.HocVien.HoTen</h5>
+                                            </div>
+                                            <p class="card-text mt-1 text-start">@binhluan.NoiDung</p>
+                                            <span class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">Ngày đăng: @binhluan.NgayBinhLuan</span>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div id="binhluan-thongbao" class="alert mt-2" style="display: none;"></div>
 
     <div class="row">
         <div class="col-12">
             <h4 class="mb-3" style="color: orangered;">Thêm bình luận</h4>
-            <form action="@Url.Action("ThemBinhLuan", "KhoaHoc")" method="post">
+            <form id="formThemBinhLuan" action="@Url.Action("ThemBinhLuan", "KhoaHoc")" method="post">
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="MaKH" value="@Model.MaKH" />
                 <input type="hidden" name="MaHV" value="@userName" />
                 <div class="mb-3">
@@ -299,37 +330,12 @@
             </form>
         </div>
     </div>
-
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success mt-3">
-            @TempData["SuccessMessage"]
-        </div>
-    }
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger mt-3">
-            @TempData["ErrorMessage"]
-        </div>
-    }
 </div>
 
 <script>
-    var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 4,
-        spaceBetween: 20,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        breakpoints: {
-            1024: { slidesPerView: 4 },
-            768: { slidesPerView: 2 },
-            640: { slidesPerView: 1 },
-        },
-    });
+    function scroll() {
+        document.getElementById('danhSachBinhLuan').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
 </script>

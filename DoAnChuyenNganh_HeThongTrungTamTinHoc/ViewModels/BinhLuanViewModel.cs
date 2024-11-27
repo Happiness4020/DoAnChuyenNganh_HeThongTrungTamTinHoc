@@ -7,7 +7,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels
 {
     public class BinhLuanViewModel
     {
-        public string MaBinhLuan { get; set; }
         public string MaHV { get; set; }
         public string MaKH { get; set; }
         public string NoiDung { get; set; }

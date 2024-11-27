@@ -28,25 +28,6 @@
         font-weight: 600;
         margin-bottom: 15px;
     }
-
-    #backToTopBtn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        display: none;
-        background-color: orangered;
-        color: white;
-        border: none;
-        border-radius: 100px;
-        padding: 10px;
-        font-size: 15px;
-        cursor: pointer;
-        z-index: 1000;
-    }
-
-    #backToTopBtn:hover {
-        background-color: darkred;
-    }
 </style>
 
 <div class="container-fluid p-0">
@@ -167,10 +148,6 @@
     </div>
 </div>
 
-<button onclick="scrollToTop()" id="backToTopBtn" title="Quay về đầu trang">
-    <i class="fa-solid fa-up-long"></i>
-</button>
-
 <script>
     var swiper = new Swiper('.swiper-container', {
         slidesPerView: 3,
@@ -189,20 +166,4 @@
             640: { slidesPerView: 1 },
         },
     });
-
-    window.onscroll = function () {
-        var btn = document.getElementById("backToTopBtn");
-        if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
-            btn.style.display = "block";
-        } else {
-            btn.style.display = "none";
-        }
-    };
-
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
 </script>
