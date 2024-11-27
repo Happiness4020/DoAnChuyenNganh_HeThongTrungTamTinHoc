@@ -35,6 +35,49 @@
             width: 100%;
             padding-left: 3px;
         }
+
+        #fixedBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        #backToTopBtn {
+            background-color: orangered;
+            color: white;
+            border: none;
+            border-radius: 100px;
+            padding: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        #chatBotBtn {
+            background-color: mediumseagreen;
+            color: white;
+            border: none;
+            border-radius: 100px;
+            padding: 10px;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        #backToTopBtn:hover {
+            background-color: darkred;
+        }
+
+        #chatBotBtn:hover {
+            background-color: orangered;
+        }
+
+        .modal {
+            z-index: 9999 !important;
+        }
+        .modal-backdrop {
+            z-index: 9998 !important;
+        }
     </style>
 </head>
 <body class="d-flex flex-column h-100 w-100">
@@ -122,9 +165,30 @@
 
     <main class="min-vh-100" style="background-color: #fff">
         @RenderBody()
+        <div id="fixedBtn" class="d-flex flex-column gap-2">
+            <button id="chatBotBtn" data-bs-toggle="modal" data-bs-target="#chatBotModal">
+                <i class="fa-solid fa-comment"></i>
+            </button>
+            <button onclick="scrollToTop()" id="backToTopBtn" title="Quay về đầu trang">
+                <i class="fa-solid fa-up-long"></i>
+            </button>
+            <div class="modal fade" id="chatBotModal" tabindex="-1"  aria-labelledby="chatBotModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="chatBotModalLabel" style="color: #0066b3">Trò chuyện với tôi</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h1>Đây là chatbot</h1>
+                        </div>
+                        <div class="modal-footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-
-    <footer class="left-0 text-white" style="background-color: #0066b3; position: relative; bottom: 0; width: 100%; height: auto;">
+    <footer class="left-0 text-white" style="background-color: #0066b3; position: relative; bottom: 0; width: 100%; height: auto; z-index: -1">
         <div class="pt-10 pb-10">
             <div class="container mt-3 mb-2">
                 <div class="row">
@@ -161,6 +225,23 @@
             </div>
         </div>
     </footer>
+    <script>
+        window.onscroll = function () {
+            var btn = document.getElementById("backToTopBtn");
+            if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>

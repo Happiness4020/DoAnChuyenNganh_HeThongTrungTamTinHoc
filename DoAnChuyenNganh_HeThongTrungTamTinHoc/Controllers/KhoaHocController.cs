@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 
@@ -44,14 +46,21 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return View(khoahocs);
         }
 
-        public ActionResult ChiTietKhoaHoc(string id, int page = 1, string sort_by = "time_asc")
+        public ActionResult ChiTietKhoaHoc(string id, int page = 1, string sort_by = "datetime_asc")
         {
             KhoaHoc kh = db.KhoaHoc.Where(t => t.MaKH == id).FirstOrDefault();
 
             var binhluans = db.BinhLuanKhoaHoc
                      .Where(bl => bl.MaKH == id)
-                     .OrderBy(bl => bl.NgayBinhLuan)
+                     .OrderByDescending(bl => bl.NgayBinhLuan)
                      .ToList();
+
+            var tatcabinhluan = db.BinhLuanKhoaHoc
+                    .Where(bl => bl.MaKH == id)
+                    .OrderByDescending(bl => bl.NgayBinhLuan)
+                    .ToList();
+
+            ViewBag.TatCaBinhLuan = tatcabinhluan; 
 
             if (sort_by == "datetime_asc")
             {
@@ -84,77 +93,89 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ThemBinhLuan(string MaKH, string NoiDung)
-        {
-            string mahv = Session["MaHV"]?.ToString();
-            ViewBag.MAHV = mahv;
-
-            if (string.IsNullOrEmpty(mahv))
-            {
-                TempData["ErrorMessage"] = "Vui lòng đăng nhập để thêm bình luận.";
-                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
-            }
-            if(string.IsNullOrEmpty(NoiDung))
-            {
-                TempData["ErrorMessage"] = "Bạn chưa nhập nội dung của bình luận!!!";
-            }    
-
-            try
-            {
-                BinhLuanKhoaHoc binhluan = new BinhLuanKhoaHoc
-                {
-                    MaBinhLuan = Utility.TaoMaNgauNhien("BL", 6),
-                    MaHV = mahv,
-                    MaKH = MaKH,
-                    NoiDung = NoiDung,
-                    NgayBinhLuan = DateTime.Now
-                };
-
-                db.BinhLuanKhoaHoc.Add(binhluan);
-                db.SaveChanges();
-            }
-            catch
-            {
-                TempData["ErrorMessage"] = "Có lỗi xảy ra khi thêm bình luận!! Hãy thử lại sau.";
-                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
-            }
-            return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
-        }
-
-        [HttpPost]
-        public ActionResult XoaBinhLuan(string MaBinhLuan, string MaKH)
         {
             try
             {
                 string mahv = Session["MaHV"]?.ToString();
-                var binhluan = db.BinhLuanKhoaHoc.FirstOrDefault(b => b.MaBinhLuan == MaBinhLuan && b.MaHV == mahv);
+                ViewBag.MAHV = mahv;
+
+                if (string.IsNullOrEmpty(mahv))
+                {
+                    TempData["ErrorMessage"] = "Vui lòng đăng nhập để bình luận!!!";
+                }
+                if (string.IsNullOrEmpty(NoiDung))
+                {
+                    TempData["ErrorMessage"] = "Bạn chưa nhập nội dung bình luận!!!";
+                }
+
+                DateTime truncatedToSecond = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
+                BinhLuanKhoaHoc binhluan = new BinhLuanKhoaHoc
+                {
+                    MaHV = mahv,
+                    MaKH = MaKH,
+                    NoiDung = NoiDung,
+                    NgayBinhLuan = truncatedToSecond
+                };
+
+                db.BinhLuanKhoaHoc.Attach(binhluan);
+                db.BinhLuanKhoaHoc.Add(binhluan);
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Đăng bình luận thành công";
+                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi đăng bình luận!!! Hãy thử lại sau";
+                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult XoaBinhLuan(DateTime NgayBinhLuan, string MaKH)
+        {
+            try
+            {
+                string mahv = Session["MaHV"]?.ToString();
+                var binhluan = db.BinhLuanKhoaHoc
+                        .Where(b => b.MaHV == mahv && b.MaKH == MaKH)
+                        .ToList()
+                        .FirstOrDefault(b => b.NgayBinhLuan.Date == NgayBinhLuan.Date &&
+                                             b.NgayBinhLuan.Hour == NgayBinhLuan.Hour &&
+                                             b.NgayBinhLuan.Minute == NgayBinhLuan.Minute &&
+                                             b.NgayBinhLuan.Second == NgayBinhLuan.Second);
 
                 if (binhluan != null)
                 {
                     db.BinhLuanKhoaHoc.Remove(binhluan);
                     db.SaveChanges();
-                    TempData["SuccessMessage"] = "Xóa bình luận thành công!!!";
+                    TempData["SuccessMessage"] = "Xóa bình luận thành công";
+                    return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Bình luận không tồn tại!!!";
+                    TempData["ErrorMessage"] = "Bình luận không tồn tại hoặc có thể đã bị xóa!!!";
+                    return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
                 }
             }
-            catch (Exception)
+            catch (DbUpdateConcurrencyException ex)
             {
-                TempData["ErrorMessage"] = "Có lỗi xảy ra khi xóa bình luận!!!";
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi xóa bình luận!!!. Hãy thử lại sau";
+                return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
             }
-
-            return RedirectToAction("ChiTietKhoaHoc", new { id = MaKH });
         }
 
         [HttpPost]
-        public ActionResult SuaBinhLuan(string MaBinhLuan,string MaKH, string NoiDung)
+        public ActionResult SuaBinhLuan(string MaKH, string NoiDung)
         {
             try
             {
                 string mahv = Session["MaHV"]?.ToString();
-                var binhluan = db.BinhLuanKhoaHoc.FirstOrDefault(b => b.MaBinhLuan == MaBinhLuan && b.MaHV == mahv);
+                var binhluan = db.BinhLuanKhoaHoc.FirstOrDefault(b => b.MaHV == mahv);
                 if (binhluan != null)
                 {
                     binhluan.NoiDung = NoiDung;
@@ -209,7 +230,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
             catch
             {
-                return khoahocs = null;
+                return new List<KhoaHocNoiBatViewModel>();
             }
         }
     }
