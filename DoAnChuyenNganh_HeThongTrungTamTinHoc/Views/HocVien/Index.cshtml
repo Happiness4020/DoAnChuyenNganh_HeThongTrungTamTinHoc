@@ -1,37 +1,163 @@
-﻿
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.HocVien
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Thông tin học viên";
     Layout = "~/Views/Shared/_HocVien.cshtml";
 }
+
 <style>
-    .table-header
-    {
+    .table-header {
         background-color: #0066b3;
+        color: white;
     }
 
-    th {
-        background-color: #0066b3;
+    th, td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .profile-image {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .success-message, .error-message {
+        margin-top: 20px;
+    }
+
+    .modal-backdrop.show {
+        opacity: 0.8;
+    }
+
+    .alert {
+        display: none;
+    }
+
+    /* Đảm bảo Modal hiển thị tốt */
+    .modal-dialog {
+        max-width: 800px;
     }
 </style>
 
-<div class="container-fluid d-flex flex-column h-100">
-    <div class="p-3">
-        <section id="profile">
-            <h2 class="" style="color: #0066b3">Thông tin học viên</h2>
-            <table class="table table-bordered table-hover">
-                <thead class="table-header">
+<div class="container mt-4">
+    <h2 class="text-center" style="color: #0066b3;">Thông tin học viên</h2>
+
+    <!-- Hiển thị thông báo -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success success-message text-center" style="display:block;">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    else if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger error-message text-center" style="display:block;">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Thông tin học viên -->
+    <div class="card mt-4 p-3">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="~/AnhHocVien/@(System.IO.File.Exists(Server.MapPath("~/AnhHocVien/" + Model.Anh)) ? Model.Anh : "noimage.jpg")" alt="Ảnh học viên" class="profile-image">
+                <!-- Form cập nhật ảnh học viên -->
+                <form method="post" action="@Url.Action("CapNhatAnhHocVien", "HocVien")" enctype="multipart/form-data" class="mt-3">
+                    <input type="file" name="Anh" class="form-control mb-2" accept="image/*" required>
+                    <button type="submit" class="btn btn-primary btn-sm">Cập nhật ảnh</button>
+                </form>
+            </div>
+            <div class="col-md-8">
+                <table class="table table-borderless">
                     <tr>
-                        <th>Ảnh học viên</th>
-                        <th>Mã học viên</th>
-                        <th>Tên học viên</th>
-                        <th>Email</th>
+                        <th>Mã học viên:</th>
+                        <td>@Model.MaHV</td>
                     </tr>
-                </thead>
-                <tbody id="thongTinHocVien">
-                </tbody>
-            </table>
-        </section>
+                    <tr>
+                        <th>Họ tên:</th>
+                        <td>@Model.HoTen</td>
+                    </tr>
+                    <tr>
+                        <th>Ngày sinh:</th>
+                        <td>@Model.NgaySinh</td>
+                    </tr>
+                    <tr>
+                        <th>Giới tính:</th>
+                        <td>@Model.GioiTinh</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <th>Số điện thoại:</th>
+                        <td>@Model.SoDT</td>
+                    </tr>
+                    <tr>
+                        <th>Địa chỉ:</th>
+                        <td>@Model.DiaChi</td>
+                    </tr>
+                </table>
+                <div class="text-end">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateInfoModal">
+                        Cập nhật thông tin
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-    <script src="~/Javascript/HocVien.js"></script>
 </div>
 
+<!-- Modal cập nhật thông tin -->
+<div class="modal fade" id="updateInfoModal" tabindex="-1" aria-labelledby="updateInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateInfoModalLabel" style="color: #0066b3;">Cập nhật thông tin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="@Url.Action("CapNhatThongTinHocVien", "HocVien")">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label for="updateHoTen" class="form-label">Họ tên</label>
+                        <input type="text" class="form-control" id="updateHoTen" name="HoTen" value="@Model.HoTen" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateNgaySinh" class="form-label">Ngày sinh</label>
+                        <input type="date" class="form-control" id="updateNgaySinh" name="NgaySinh" value="@Model.NgaySinh?.ToString(" yyyy-MM-dd")" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateGioiTinh" class="form-label">Giới tính</label>
+                        <select class="form-control" id="updateGioiTinh" name="GioiTinh">
+                            <option value="Nam" @(Model.GioiTinh == "Nam" ? "selected" : "")>Nam</option>
+                            <option value="Nữ" @(Model.GioiTinh == "Nữ" ? "selected" : "")>Nữ</option>
+                            <option value="Khác" @(Model.GioiTinh == "Khác" ? "selected" : "")>Khác</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="updateEmail" name="Email" value="@Model.Email" required placeholder="Nhập email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateSoDT" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="updateSoDT" name="SoDT" value="@Model.SoDT" pattern="^\d{10,15}$" title="Số điện thoại phải có 10-15 chữ số" required placeholder="Nhập số điện thoại">
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateDiaChi" class="form-label">Địa chỉ</label>
+                        <input type="text" class="form-control" id="updateDiaChi" name="DiaChi" value="@Model.DiaChi" required placeholder="Nhập địa chỉ">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Lưu thay đổi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tự động ẩn thông báo sau 5 giây
+    setTimeout(function () {
+        $('.alert').fadeOut('slow');
+    }, 5000);
+</script>

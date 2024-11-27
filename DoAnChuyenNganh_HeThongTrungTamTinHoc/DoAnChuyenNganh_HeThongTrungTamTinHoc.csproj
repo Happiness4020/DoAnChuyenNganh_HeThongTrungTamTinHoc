@@ -389,10 +389,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\LichHocView.cs" />
+    <Compile Include="Services\LichDayService.cs" />
     <Compile Include="Models\BinhLuanKhoaHoc.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
-    <Compile Include="Services\LichDayService.cs" />
     <Compile Include="Models\ChiTiet_HocVien_LopHoc.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
@@ -458,6 +459,8 @@
     <Compile Include="ViewModels\HocVienViewModel.cs" />
     <Compile Include="ViewModels\KhoaHocNoiBatViewModel.cs" />
     <Compile Include="ViewModels\KhoaHocViewModel.cs" />
+    <Compile Include="ViewModels\LichDayViewModel.cs" />
+    <Compile Include="ViewModels\LichHocViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
