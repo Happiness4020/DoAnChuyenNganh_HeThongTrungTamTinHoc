@@ -1,0 +1,91 @@
+﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.GiaoDichHocPhi>
+
+@{
+    ViewBag.Title = "Quản lý Giao Dịch Học Phí";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<style>
+    .custom-table {
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+        .custom-table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+            .custom-table thead th {
+                font-weight: bold;
+                text-transform: uppercase;
+                padding: 12px 15px;
+            }
+
+        .custom-table tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .custom-table tbody td {
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+
+    .table-responsive {
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+    }
+</style>
+
+<h2 style="color: #0066b3">@ViewBag.Title</h2>
+
+<a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
+<br />
+<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("GiaoDichAdd", "AdminGiaoDich")">Thêm Giao Dịch</a>
+
+<form class="d-flex mb-3 mt-2" action="@Url.Action("GiaoDichList", "AdminGiaoDich")">
+    <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm giao dịch" aria-label="Search" style="max-width: 400px;">
+    <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>
+    <a class="btn btn-danger ms-2" href="@Url.Action("GiaoDichList", "AdminGiaoDich")">Hủy</a>
+</form>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Giao Dịch Học Phí</h2>
+    <div class="table-responsive">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>Ngày Giao Dịch</th>
+                    <th>Số Tiền</th>
+                    <th>Số Điện Thoại</th>
+                    <th>Email</th>
+                    <th>Học Viên</th>
+                    <th>Phương Thức Thanh Toán</th>
+                    <th>Khóa Học</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.NgayGD</td>
+                        <td>@item.SoTien</td>
+                        <td>@item.SoDT</td>
+                        <td>@item.Email</td>
+                        <td>@item.HocVien.HoTen</td>
+                        <td>@item.PhuongThucThanhToan.TenPT</td>
+                        <td>@item.KhoaHoc.TenKH</td>
+                        <td>
+                            <a href="@Url.Action("GiaoDichEdit", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-light-primary btn-sm">Sửa</a>
+                            <a href="@Url.Action("GiaoDichDelete", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

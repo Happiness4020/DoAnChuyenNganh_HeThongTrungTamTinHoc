@@ -1,0 +1,115 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TaiKhoan
+@{
+    ViewBag.Title = "Thêm tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <div class="row g-0 mt-1 mb-0">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="card-body p-0 text-dark">
+                <h2 style="color: #0066b3">@ViewBag.Title</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row g-0 mt-1">
+        <div class="col-md-12">
+            <div class="card-body text-dark p-0">
+                @using (Html.BeginForm("AccountAdd", "AdminAccount", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.TenDangNhap, "Tên đăng nhập")
+                            @Html.TextBoxFor(model => model.TenDangNhap, new { placeholder = "Tên đăng nhập", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TenDangNhap, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.MatKhau, "Mật khẩu")
+                            @Html.TextBoxFor(model => model.MatKhau, new { placeholder = "Mật khẩu", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.QuyenHan, "Quyền hạn")
+                            @Html.DropDownListFor(model => model.QuyenHan, new List<SelectListItem>()
+                               {
+                                    new SelectListItem {Text = "Giáo viên", Value = "Giáo viên"},
+                                    new SelectListItem {Text = "Học viên", Value = "Học viên"},
+                               }, "Chọn quyền hạn", new { id = "quyenHanDropdown", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.QuyenHan, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.MaHV, "Mã học viên")
+                            <br />
+                            @Html.DropDownListFor(model => model.MaHV, new SelectList(ViewBag.Hocviens ?? new List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.HocVien>(), "MaHV", "MaHV"), "Chọn mã học viên", new { id = "maHocVienDropdown", @class = "form-control" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.MaHV, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.MaGV, "Mã giáo viên")
+                            <br />
+                            @Html.DropDownListFor(model => model.MaGV, new SelectList(ViewBag.Giaoviens ?? new List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.GiaoVien>(), "MaGV", "MaGV"), "Chọn giáo viên", new { id = "maGiaoVienDropdown", @class = "form-control" })
+                            <br />
+                            @Html.ValidationMessageFor(model => model.MaGV, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row my-2 mt-3 mb-3">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary">Thêm tài khoản</button> &nbsp;
+                            <a href="/Admin/AdminAccount/AccountList" class="btn btn-danger">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const quyenHanDropdown = document.getElementById("quyenHanDropdown");
+        const maHocVienDropdown = document.getElementById("maHocVienDropdown");
+        const maGiaoVienDropdown = document.getElementById("maGiaoVienDropdown");
+
+        // Hàm cập nhật trạng thái chọn lựa mã học viên và giáo viên
+        function updateDropdownState() {
+            const selectedRole = quyenHanDropdown.value;
+            if (selectedRole === "Học viên") {
+                maHocVienDropdown.disabled = false;
+                maGiaoVienDropdown.disabled = true;
+                maGiaoVienDropdown.value = "";  // Xóa lựa chọn mã giáo viên nếu đã chọn
+            } else if (selectedRole === "Giáo viên") {
+                maGiaoVienDropdown.disabled = false;
+                maHocVienDropdown.disabled = true;
+                maHocVienDropdown.value = "";  // Xóa lựa chọn mã học viên nếu đã chọn
+            } else {
+                maHocVienDropdown.disabled = true;
+                maGiaoVienDropdown.disabled = true;
+                maHocVienDropdown.value = "";
+                maGiaoVienDropdown.value = "";
+            }
+        }
+
+        // Gọi hàm updateDropdownState khi thay đổi quyền hạn
+        quyenHanDropdown.addEventListener("change", updateDropdownState);
+
+        // Gọi hàm updateDropdownState khi tải trang để thiết lập trạng thái ban đầu
+        updateDropdownState();
+    });
+</script>

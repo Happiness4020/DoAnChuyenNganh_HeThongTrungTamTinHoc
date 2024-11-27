@@ -1,0 +1,105 @@
+﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.KhoaHoc>
+@{
+    ViewBag.Title = "Đăng ký học phần";
+    Layout = "~/Views/Shared/_HocVien.cshtml";
+}
+
+<h2>Đăng ký học phần</h2>
+
+<style>
+    .search-section {
+        background: url('/images/background.jpg') no-repeat center center;
+        background-size: cover;
+        color: white;
+        padding: 60px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .search-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 74, 158, 0.8);
+        z-index: 1;
+    }
+
+    .search-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .search-box {
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+    }
+
+    .fixed-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+</style>
+
+<!-- Thông báo nếu có -->
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+<div class="search-section">
+    <div class="search-overlay"></div>
+    <div class="container text-center search-content">
+        <h1 class="fw-bold">Tìm khóa học bạn quan tâm</h1>
+        <p>Học chắc từ nền tảng<br>Ứng dụng hiệu quả CNTT vào thực tế cuộc sống</p>
+        <div class="d-flex justify-content-center mt-4">
+            <form class="d-flex mb-3 mt-2 search-box input-group" action="~/HocVien/Dangkihocphan" method="get">
+                <input class="form-control" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm khóa học" aria-label="Search" style="max-width: 600px; font-weight: 700;">
+                <button class="btn btn-outline-light mx-1" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+                <a class="btn btn-danger border-0" href="~/HocVien/Dangkihocphan">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid border p-2" style="background-color: lightgray">
+    <h2 style="color: #0066b3">Tất cả khóa học</h2>
+    <div class="row mt-3">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 d-flex mb-4">
+                <div class="card mb-4 mx-auto shadow-sm h-100 w-100" style="max-width: 300px;">
+                    <div class="card-body d-flex flex-column">
+                        @if (!string.IsNullOrEmpty(item.Anh))
+                        {
+                            <a href="#">
+                                <img src="~/images/@item.Anh" alt="Khóa học" class="card-img-top fixed-image" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#">
+                                <img src="~/images/noimage.jpg" alt="Khóa học" class="card-img-top fixed-image" />
+                            </a>
+                        }
+                        <h5 class="card-title flex-grow-1 mt-2"><a href="#" class="text-decoration-none" style="color: #0066b3">@item.TenKH</a></h5>
+                        <p class="card-text flex-grow-1">@item.MoTa</p>
+                        <h4>Học phí: @item.HocPhi VND</h4>
+
+                        <!-- Nút giỏ hàng cho người dùng đã đăng nhập -->
+                        <a href="@Url.Action("AddToCart", "HocVien", new { courseId = item.MaKH })" class="btn btn-outline-primary mt-2">
+                            <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

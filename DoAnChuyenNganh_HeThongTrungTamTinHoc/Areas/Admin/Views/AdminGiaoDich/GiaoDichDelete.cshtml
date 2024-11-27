@@ -1,0 +1,52 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.GiaoDichHocPhi
+
+@{
+    ViewBag.Title = "GiaoDichDelete";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<h3>Bạn có chắc chắn muốn xóa giao dịch này?</h3>
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <form class="p-4 mt-0" style="max-width: 100%" action="/Admin/AdminGiaoDich/GiaoDichDeleteConfirmed/@Model.MaGD" method="post">
+        <input type="hidden" name="Id" value="@Model.MaGD" />
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Ngày giao dịch</dt>
+            <dd>@Model.NgayGD?.ToString("dd/MM/yyyy")</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Số tiền</dt>
+            <dd>@Model.SoTien?.ToString("N0")</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Số điện thoại</dt>
+            <dd>@Model.SoDT</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Email</dt>
+            <dd>@Model.Email</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Học viên</dt>
+            <dd>@Model.HocVien.HoTen</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Phương thức thanh toán</dt>
+            <dd>@Model.PhuongThucThanhToan.TenPT</dd>
+            &nbsp;
+            &nbsp;
+            <dt>Khóa học</dt>
+            <dd>@Model.KhoaHoc.TenKH</dd>
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Xóa" class="btn btn-default" /> |
+                <a class="btn btn-danger ms-2" href="@Url.Action("Index", "AdminGiaoDich")">Quay lại</a>
+            </div>
+        }
+    </form>
+</div>

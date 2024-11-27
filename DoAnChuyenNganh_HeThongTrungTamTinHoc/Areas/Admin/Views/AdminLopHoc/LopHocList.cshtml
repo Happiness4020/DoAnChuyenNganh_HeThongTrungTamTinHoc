@@ -1,0 +1,154 @@
+﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LopHoc>
+
+@{
+    ViewBag.Title = "Danh Sách Lớp Học";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<style>
+    .custom-table {
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+        .custom-table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+            .custom-table thead th {
+                font-weight: bold;
+                text-transform: uppercase;
+                padding: 12px 15px;
+            }
+
+        .custom-table tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .custom-table tbody td {
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+
+    .table-responsive {
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+    }
+</style>
+
+<h2 style="color: #0066b3">@ViewBag.Title</h2>
+
+<a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
+<br />
+@*<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("LopHocAdd", "AdminLopHoc")">Thêm Lớp Học</a>*@
+
+<form class="d-flex mb-3 mt-2" action="@Url.Action("LopHocList", "AdminLopHoc")">
+    <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm lớp học" aria-label="Search" style="max-width: 400px;">
+    <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>
+    <a class="btn btn-danger ms-2" href="@Url.Action("LopHocList", "AdminLopHoc")">Hủy</a>
+</form>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Lớp Học</h2>
+    <div class="table-responsive">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>Tên lớp</th>
+                    <th>Giờ bắt đầu</th>
+                    <th>Giờ kết thúc</th>
+                    <th>Giáo viên</th>
+                    <th>Khóa học</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.TenLop)</td>
+                        <td>@Html.DisplayFor(modelItem => item.GioBatDau)</td>
+                        <td>@Html.DisplayFor(modelItem => item.GioKetThuc)</td>
+                        <td>@Html.DisplayFor(modelItem => item.GiaoVien.HoTen)</td>
+                        <td>@Html.DisplayFor(modelItem => item.KhoaHoc.TenKH)</td>
+                        <td>
+                            @if (item.TrangThai)
+                            {
+                                <span style="color: green; font-weight: bold;">Đã mở lớp</span>
+                                <a href="@Url.Action("PhanLichHocChoHocVien", "AdminLopHoc", new { maLH = item.MaLH, ngayBatDau = item.KhoaHoc.NgayBatDau, ngayKetThuc = item.KhoaHoc.NgayKetThuc, soBuoiHoc = item.KhoaHoc.Sobuoihoc  })" class="btn btn-outline-primary btn-sm">Phân Lịch Học</a>
+                            }
+                            else
+                            {
+                                <span style="color: red; font-weight: bold;">Chưa mở lớp</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("LopHocEdit", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
+                            <a href="@Url.Action("LopHocDelete", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container-fluid d-flex justify-content-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @{
+                int trangtruoc = ViewBag.Page - 1;
+                int trangsau = ViewBag.Page + 1;
+                int totalPages = ViewBag.TotalPages;
+                int startPage = Math.Max(ViewBag.Page - 2, 1); // Hiển thị từ trang trước 2 trang
+                int endPage = Math.Min(ViewBag.Page + 2, totalPages); // Hiển thị đến trang sau 2 trang
+            }
+
+            <!-- Nút quay lại -->
+            <li class="page-item @(ViewBag.Page == 1 ? "disabled" : "")">
+                <a class="page-link" href="?page=@trangtruoc&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder" tabindex="-1"><</a>
+            </li>
+
+            <!-- Hiển thị trang đầu nếu cần -->
+            @if (startPage > 1)
+            {
+                <li class="page-item"><a class="page-link" href="?page=1&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">1</a></li>
+                if (startPage > 2)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+            }
+
+            <!-- Hiển thị các trang trong khoảng startPage đến endPage -->
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                    <a class="page-link" href="?page=@i&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@i</a>
+                </li>
+            }
+
+            <!-- Hiển thị trang cuối nếu cần -->
+            @if (endPage < totalPages)
+            {
+                if (endPage < totalPages - 1)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+                <li class="page-item"><a class="page-link" href="?page=@totalPages&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@totalPages</a></li>
+            }
+
+            <!-- Nút tiến -->
+            <li class="page-item @(ViewBag.Page == totalPages ? "disabled" : "")">
+                <a class="page-link" href="?page=@trangsau&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+

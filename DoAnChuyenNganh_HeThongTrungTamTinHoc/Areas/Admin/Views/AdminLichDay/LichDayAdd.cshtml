@@ -1,0 +1,84 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LichDay
+
+@{
+    ViewBag.Title = "Thêm lịch dạy";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <div class="row g-0 mt-1 mb-0">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="card-body p-0 text-dark">
+                <h2 style="color: #0066b3">@ViewBag.Title</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-0 mt-1">
+        <div class="col-md-12">
+            <div class="card-body text-dark p-0">
+                @using (Html.BeginForm("LichDayAdd", "AdminLichDay", new { area = "Admin" }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <input type="hidden" name="MaLichDay" value="@ViewBag.MaLichDay" />
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.MaGV, "Giáo Viên")
+                            @Html.DropDownListFor(model => model.MaGV, (SelectList)ViewBag.GiaoVienList, "-- Chọn giáo viên --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MaGV, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.MaLH, "Lớp Học")
+                            @Html.DropDownListFor(model => model.MaLH, (SelectList)ViewBag.LopHocList, "-- Chọn lớp học --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MaLH, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.NgayDay, "Ngày Dạy")
+                            @Html.EditorFor(model => model.NgayDay, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                            @Html.ValidationMessageFor(model => model.NgayDay, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.GioBatDau, "Giờ Bắt Đầu")
+                            @Html.EditorFor(model => model.GioBatDau, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                            @Html.ValidationMessageFor(model => model.GioBatDau, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.GioKetThuc, "Giờ Kết Thúc")
+                            @Html.EditorFor(model => model.GioKetThuc, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                            @Html.ValidationMessageFor(model => model.GioKetThuc, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2 mt-3 mb-3">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary">Thêm lịch dạy</button> &nbsp;
+                            <a href="/Admin/AdminLichDay/LichDayList" class="btn btn-danger">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

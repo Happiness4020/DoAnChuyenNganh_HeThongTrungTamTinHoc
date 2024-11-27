@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<style>
+    .container-fluid {
+        border-radius: 10px; /* Bo góc cho khung */
+    }
+
+    .noiDung {
+        background-color: #ffffff; /* Nền trắng cho phần nội dung */
+        padding: 20px; /* Khoảng cách cho phần nội dung */
+        border-radius: 10px; /* Bo góc cho nội dung */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ */
+        margin-bottom: 30px;
+    }
+</style>
+
+<nav aria-label="breadcrumb" class="breadcrumb mx-2">
+    @Html.MvcSiteMap().SiteMapPath()
+</nav>
+
+<div class="container-fluid border" style="margin-top: 250px; background-color: #f8f9fa;">
+    <div class="container text-center">
+        <h3 class="text-danger mb-4 mt-2">Thông tin liên hệ</h3>
+        <div class="noiDung">
+            <p class="lead">Chào các bạn, cám ơn bạn đã quan tâm các khóa học tại Trung Tâm Tin Học Trường Đại học Công Thương Thành phố Hồ Chí Minh</p>
+            <br />
+            <p>
+                Xin vui lòng liên hệ với chúng tôi để được tư vấn và ghi danh các khóa học:<br />
+                <span class="fw-bold">Trụ sở chính:</span> 140 Lê Trọng Tấn, Phường Tây Thạnh, Quận Tân Phú, Thành phố Hồ Chí Minh<br />
+            </p>
+            <p>
+                Vui lòng liên hệ với chúng tôi qua số <span class="fw-bold">0869 016 079</span> để được giải đáp mọi thắc mắc và hỗ trợ thông tin về các khóa học, hoặc gửi mail về địa chỉ: <span class="fw-bold">its@hufi.edu.vn</span>
+            </p>
+            <p>
+                Các yêu cầu liên quan đến việc hợp tác đào tạo theo yêu cầu cơ quan doanh nghiệp, phát triển phần mềm, cung cấp giải pháp và thiết bị CNTT, tư vấn các dự án CNTT,... vui lòng liên hệ email <span class="fw-bold">its@hufi.edu.vn</span>
+            </p>
+        </div>
+    </div>
+</div>
+

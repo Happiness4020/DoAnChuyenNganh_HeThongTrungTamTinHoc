@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Cơ cấu tổ chức của Trung tâm Tin học HUIT";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<style>
+    .lightbox-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .lightbox-image {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 8px;
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 1001;
+    }
+</style>
+
+<nav aria-label="breadcrumb" class="breadcrumb mx-2">
+    @Html.MvcSiteMap().SiteMapPath()
+</nav>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="container" style="max-width: 800px; padding: 20px; background-color: #ededed; border-radius: 8px;">
+        <div class="col-md-12">
+            <h2 class="text-center" style="color: orangered">@ViewBag.Title</h2>
+            <div class="text-center">
+                <img src="~/images/sodotochuc.png" alt="Location Image" class="img-fluid lightbox-trigger" style="max-width: 100%; height: auto; border-radius: 8px;">
+                <p style="color: orangered" class="fw-bold mt-1"><em>Sơ đồ tổ chức Trung tâm Tin học HUIT</em></p>
+            </div>
+            <div class="text-center">
+                <img src="~/images/giamdoc.png" alt="Giám đốc HUIT" class="img-fluid lightbox-trigger" style="max-width: 100%; height: auto; border-radius: 8px;">
+                <p style="color: orangered" class="fw-bold mt-1"><em>Giám đốc Trung tâm Tin học HUIT</em></p>
+            </div>
+            <div class="text-center">
+                <img src="~/images/phogiamdoc.jpg" alt="Phó giám đốc HUIT" class="img-fluid lightbox-trigger" style="max-width: 100%; height: auto; border-radius: 8px;">
+                <p style="color: orangered" class="fw-bold mt-1"><em>Phó giám đốc Trung tâm Tin học HUIT</em></p>
+            </div>
+            <h2 class="text-center" style="color: orangered">Tập thể các thành viên của Trung tâm Tin học HUIT</h2>
+
+            <div class="text-center">
+                <img src="~/images/tapthettth.jpg" alt="Tập thể HUIT" class="img-fluid lightbox-trigger" style="max-width: 100%; height: auto; border-radius: 8px;">
+                <p style="color: orangered" class="fw-bold mt-1"><em>Tập thể các thành viên của Trung tâm Tin học HUIT</em></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="lightbox-overlay" class="lightbox-overlay">
+    <span class="lightbox-close" onclick="closeLightbox()">×</span>
+    <img id="lightbox-image" class="lightbox-image" src="" alt="Ảnh phóng to">
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var images = document.querySelectorAll(".lightbox-trigger");
+
+        images.forEach(function (img) {
+            img.addEventListener("click", function () {
+                document.getElementById("lightbox-image").src = img.src;
+                document.getElementById("lightbox-overlay").style.display = "flex";
+            });
+        });
+    });
+
+    function closeLightbox() {
+        document.getElementById("lightbox-overlay").style.display = "none";
+    }
+</script>
+

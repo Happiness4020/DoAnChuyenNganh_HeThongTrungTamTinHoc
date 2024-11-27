@@ -1,5 +1,4 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -43,7 +42,90 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis, Version=4.12.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.12.0-3.final\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=4.12.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.4.12.0-3.final\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcSiteMapProvider, Version=4.6.26.0, Culture=neutral, PublicKeyToken=1923abe4657913cc, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcSiteMapProvider.MVC5.Core.4.6.26\lib\net45\MvcSiteMapProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcSiteMapProvider.WebActivator, Version=4.6.26.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcSiteMapProvider.MVC5.4.6.26\lib\net45\MvcSiteMapProvider.WebActivator.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=112.1.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.112.1.0\lib\net471\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SendGrid, Version=9.29.3.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\SendGrid.9.29.3\lib\net452\SendGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="StarkbankEcdsa, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b2e6337a5d77bfbc, processorArchitecture=MSIL">
+      <HintPath>..\packages\starkbank-ecdsa.1.3.3\lib\net452\StarkbankEcdsa.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.9.0.0-rc.2.24473.5\lib\net462\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.9.0.0-rc.2.24473.5\lib\net462\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.9.0.0-rc.2.24473.5\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=8.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.8.0.4\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -53,6 +135,24 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.3.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -60,34 +160,74 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web.Razor">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Webpages">
-      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Webpages.Deployment">
-      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Webpages.Razor">
-      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Helpers">
-      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0.1\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AnhHocVien\HVZR4WC8UE.jpg" />
+    <Content Include="AnhHocVien\image1.jpg" />
+    <Content Include="AnhHocVien\image2.jpg" />
+    <Content Include="AnhHocVien\image3.jpg" />
+    <Content Include="AnhHocVien\image4.jpg" />
+    <Content Include="AnhHocVien\image5.jpg" />
+    <Content Include="AnhHocVien\image6.jpg" />
+    <Content Include="AnhHocVien\noimage.jpg" />
+    <Content Include="AnhKhoaHoc\12-2.png" />
+    <Content Include="AnhKhoaHoc\banner-bg2.jpg" />
+    <Content Include="AnhKhoaHoc\chieu-sinh31522-8.png" />
+    <Content Include="AnhKhoaHoc\chucnangnhiemvu.jpg" />
+    <Content Include="AnhKhoaHoc\Chuyen-vien-thiet-ke-Do-hoa-va-Web.jpg" />
+    <Content Include="AnhKhoaHoc\cocautochuc.jpg" />
+    <Content Include="AnhKhoaHoc\dao-tao-theo-yeu-cau.png" />
+    <Content Include="AnhKhoaHoc\fundamentals-of-python-python-co-ban-version-2024.jpg" />
+    <Content Include="AnhKhoaHoc\giamdoc.png" />
+    <Content Include="AnhKhoaHoc\home.png" />
+    <Content Include="AnhKhoaHoc\huongdanthanhtoan.png" />
+    <Content Include="AnhKhoaHoc\kh1.jpg" />
+    <Content Include="AnhKhoaHoc\kh10 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh10.jpg" />
+    <Content Include="AnhKhoaHoc\kh11 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh11.jpg" />
+    <Content Include="AnhKhoaHoc\kh12.jpg" />
+    <Content Include="AnhKhoaHoc\kh13.jpg" />
+    <Content Include="AnhKhoaHoc\kh14.jpg" />
+    <Content Include="AnhKhoaHoc\kh15.jpg" />
+    <Content Include="AnhKhoaHoc\kh16.jpg" />
+    <Content Include="AnhKhoaHoc\kh17.jpg" />
+    <Content Include="AnhKhoaHoc\kh18.jpg" />
+    <Content Include="AnhKhoaHoc\kh19.jpg" />
+    <Content Include="AnhKhoaHoc\kh2.jpg" />
+    <Content Include="AnhKhoaHoc\kh20.jpg" />
+    <Content Include="AnhKhoaHoc\kh21.jpg" />
+    <Content Include="AnhKhoaHoc\kh3.jpg" />
+    <Content Include="AnhKhoaHoc\kh4.jpg" />
+    <Content Include="AnhKhoaHoc\kh5.jpg" />
+    <Content Include="AnhKhoaHoc\kh6 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh6.jpg" />
+    <Content Include="AnhKhoaHoc\kh7 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh7.jpg" />
+    <Content Include="AnhKhoaHoc\kh8 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh8.jpg" />
+    <Content Include="AnhKhoaHoc\kh9 - Copy.jpg" />
+    <Content Include="AnhKhoaHoc\kh9.jpg" />
+    <Content Include="AnhKhoaHoc\KHAD3.jpg" />
+    <Content Include="AnhKhoaHoc\KHFTS.jpg" />
+    <Content Include="AnhKhoaHoc\KHLGC.jpg" />
+    <Content Include="AnhKhoaHoc\KHY8J.jpg" />
+    <Content Include="AnhKhoaHoc\kh_android.jpg" />
+    <Content Include="AnhKhoaHoc\kiem-thu-phan-mem-co-ban.jpg" />
+    <Content Include="AnhKhoaHoc\lap-trinh-vien-co-ban-java.jpg" />
+    <Content Include="AnhKhoaHoc\Lap-trinh-vien-NET.jpg" />
+    <Content Include="AnhKhoaHoc\lichsuhinhthanh.jpg" />
+    <Content Include="AnhKhoaHoc\logo-da-thong-bao-bo-cong-thuong-mau-xanh.png" />
+    <Content Include="AnhKhoaHoc\phogiamdoc.jpg" />
+    <Content Include="AnhKhoaHoc\phongmay.jpg" />
+    <Content Include="AnhKhoaHoc\school.png" />
+    <Content Include="AnhKhoaHoc\sodotochuc.png" />
+    <Content Include="AnhKhoaHoc\SQL-for-Data-Analytics.jpg" />
+    <Content Include="AnhKhoaHoc\sv_logo_dashboard.png" />
+    <Content Include="AnhKhoaHoc\tapthettth.jpg" />
     <Content Include="Areas\Images\user.jpg" />
     <Content Include="Areas\Script\logo.svg" />
     <Content Include="Areas\Script\styles.min.css" />
@@ -108,9 +248,49 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Css\GiangVien.css" />
+    <Content Include="Css\LichDay.css" />
     <Content Include="Global.asax" />
+    <Content Include="images\chucnangnhiemvu.jpg" />
+    <Content Include="images\cocautochuc.jpg" />
+    <Content Include="images\giamdoc.png" />
     <Content Include="images\home.png" />
+    <Content Include="images\huongdanthanhtoan.png" />
+    <Content Include="images\kh1.jpg" />
+    <Content Include="images\kh10.jpg" />
+    <Content Include="images\kh11.jpg" />
+    <Content Include="images\kh12.jpg" />
+    <Content Include="images\kh2.jpg" />
+    <Content Include="images\kh3.jpg" />
+    <Content Include="images\kh4.jpg" />
+    <Content Include="images\kh5.jpg" />
+    <Content Include="images\kh6.jpg" />
+    <Content Include="images\kh7.jpg" />
+    <Content Include="images\kh8.jpg" />
+    <Content Include="images\kh9.jpg" />
+    <Content Include="images\lichsuhinhthanh.jpg" />
+    <Content Include="images\logo-da-thong-bao-bo-cong-thuong-mau-xanh.png" />
+    <Content Include="images\noimage.jpg" />
+    <Content Include="images\phogiamdoc.jpg" />
+    <Content Include="images\phongmay.jpg" />
     <Content Include="images\school.png" />
+    <Content Include="images\sodotochuc.png" />
+    <Content Include="images\sv_logo_dashboard.png" />
+    <Content Include="images\tapthettth.jpg" />
+    <Content Include="Javascript\GiangVien.js" />
+    <Content Include="Javascript\HocVien.js" />
+    <Content Include="Models\TrungTamTinHoc.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
+      <LastGenOutput>TrungTamTinHoc.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\TrungTamTinHoc.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
+      <LastGenOutput>TrungTamTinHoc.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -122,13 +302,104 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminAccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminBinhLuanController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminChuongTrinhHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminGiangVienController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminGiaoDichController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminHocVienController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminKhoaHocController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminLichDayController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminLichHocController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminLopHocController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminPhuongThucThanhToanController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BinhLuanController.cs" />
+    <Compile Include="Controllers\ChuongTrinhHocController.cs" />
+    <Compile Include="Controllers\GiangVienController.cs" />
+    <Compile Include="Controllers\GioiThieuController.cs" />
+    <Compile Include="Controllers\HocVienController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KhoaHocController.cs" />
+    <Compile Include="Controllers\LienHeController.cs" />
+    <Compile Include="Filter\AdminAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\LichHocView.cs" />
+    <Compile Include="Services\LichDayService.cs" />
+    <Compile Include="Models\BinhLuanKhoaHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChiTiet_HocVien_LopHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChuongTrinhHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DangNhap.cs" />
+    <Compile Include="Models\GiaoDichHocPhi.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GiaoVien.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HocVien.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\KhoaHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LichDay.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LichHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LienHe.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LopHoc.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MaHVorMaGVAttribute.cs" />
+    <Compile Include="Models\NguoiQuanLy.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PhuongThucThanhToan.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TaiKhoan.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TaiLieuHocTap.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TrungTamTinHoc.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrungTamTinHoc.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TrungTamTinHoc.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TrungTamTinHoc.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BinhLuanViewModel.cs" />
+    <Compile Include="ViewModels\HocVienViewModel.cs" />
+    <Compile Include="ViewModels\KhoaHocNoiBatViewModel.cs" />
+    <Compile Include="ViewModels\KhoaHocViewModel.cs" />
+    <Compile Include="ViewModels\LichDayViewModel.cs" />
+    <Compile Include="ViewModels\LichHocViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -155,6 +426,60 @@
     <Content Include="Areas\Script\tabler-icons\fonts\tabler-icons.ttf" />
     <Content Include="Areas\Script\tabler-icons\fonts\tabler-icons.woff" />
     <Content Include="Areas\Script\tabler-icons\fonts\tabler-icons.woff2" />
+    <Content Include="Areas\Admin\Views\AdminAccount\AccountList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminAccount\AccountAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHocVien\HocVienList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHocVien\HocVienAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHocVien\HocVienDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHocVien\HocVienEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminAccount\AccountDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminAccount\AccountEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiangVien\GiangVienEdit.cshtml" />
+    <Content Include="Mvc.sitemap" />
+    <EntityDeploy Include="Models\TrungTamTinHoc.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TrungTamTinHoc.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\TrungTamTinHoc.edmx.diagram">
+      <DependentUpon>TrungTamTinHoc.edmx</DependentUpon>
+    </Content>
+    <Content Include="Areas\Admin\Views\AdminChuongTrinhHoc\ChuongTrinhHocList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChuongTrinhHoc\ChuongTrinhHocAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChuongTrinhHoc\ChuongTrinhHocDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChuongTrinhHoc\ChuongTrinhHocEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminKhoaHoc\KhoaHocEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminBinhLuan\BinhLuanList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminBinhLuan\BinhLuanDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichDay\LichDayList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichDay\LichDayAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichDay\LichDayDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichDay\LichDayEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichHoc\LichHocAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichHoc\LichHocDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichHoc\LichHocEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLichHoc\LichHocList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminPhuongThucThanhToan\PhuongThucThanhToanAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminPhuongThucThanhToan\PhuongThucThanhToanDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminPhuongThucThanhToan\PhuongThucThanhToanEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminPhuongThucThanhToan\PhuongThucThanhToanList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichDelete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichList.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminKhoaHoc\DanhSachHocVienThamGiaKhoaHoc.cshtml" />
+    <None Include="MvcSiteMapSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
@@ -163,7 +488,41 @@
     <Content Include="Scripts\bootstrap.esm.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
-    <Content Include="Views\Shared\_LayoutPage.cshtml" />
+    <Content Include="Views\Shared\_Main.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_HocVien.cshtml" />
+    <Content Include="Views\Shared\_GiangVien.cshtml" />
+    <Content Include="Views\GiangVien\Index.cshtml" />
+    <Content Include="Views\Account\DangNhap.cshtml" />
+    <Content Include="Views\Account\DangKy.cshtml" />
+    <Content Include="Views\GioiThieu\Index.cshtml" />
+    <Content Include="Views\LienHe\Index.cshtml" />
+    <Content Include="Views\GiangVien\LichDay.cshtml" />
+    <Content Include="Views\HocVien\Index.cshtml" />
+    <Content Include="Views\Home\HuongDanThanhToan.cshtml" />
+    <Content Include="Views\KhoaHoc\Index.cshtml" />
+    <Content Include="Views\KhoaHoc\ChiTietKhoaHoc.cshtml" />
+    <Content Include="Views\ChuongTrinhHoc\KhoaHocTheoChuongTrinh.cshtml" />
+    <Content Include="Views\GioiThieu\LichSu.cshtml" />
+    <Content Include="Views\GioiThieu\ChucNang.cshtml" />
+    <Content Include="Views\GioiThieu\ToChuc.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapTitleHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapPathHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModelList.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\MetaRobotsHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
+    <Content Include="Views\HocVien\Dangkihocphan.cshtml" />
+    <Content Include="Views\HocVien\HocPhi.cshtml" />
+    <Content Include="Views\HocVien\Ketquahoctap.cshtml" />
+    <Content Include="Views\HocVien\LichHoc.cshtml" />
+    <Content Include="Views\GiangVien\DanhSachHocVien.cshtml" />
+    <Content Include="Views\GiangVien\DanhSachLopHoc.cshtml" />
+    <Content Include="Views\GiangVien\ChiTietLopHoc.cshtml" />
+    <Content Include="Views\Account\Error404.cshtml" />
+    <Content Include="Views\HocVien\ThongTinThanhToan.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -175,7 +534,15 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\DangKy\" />
-    <Folder Include="Models\" />
+    <Folder Include="Areas\Admin\Views\DemDSLopHoc\" />
+    <Folder Include="Views\BinhLuan\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.11.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.11.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -202,11 +569,12 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
