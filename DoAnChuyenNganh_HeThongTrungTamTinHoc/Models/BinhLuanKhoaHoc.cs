@@ -14,7 +14,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     
     public partial class BinhLuanKhoaHoc
     {
-        public string MaBinhLuan { get; set; }
         public string MaHV { get; set; }
         public string MaKH { get; set; }
         public string NoiDung { get; set; }
