@@ -52,83 +52,92 @@
         <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>
         <a class="btn btn-danger ms-2" href="@Url.Action("GiangVienList", "AdminGiangVien")">Hủy</a>
     </form>
-
-    <div class="container mt-5">
-        <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Giảng Viên</h2>
-        <div class="table-responsive">
-            <table class="table custom-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Họ tên</th>
-                        <th>Ngày vào làm</th>
-                        <th>Bằng cấp</th>
-                        <th>Lĩnh vực đào tạo</th>
-                        <th>Email</th>
-                        <th>SĐT</th>
-                        <th>Địa chỉ</th>
-                        <th>Lương</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var giangVien in Model)
-                    {
+    <div class="d-flex justify-content-between mb-3">
+        <form class="d-inline">
+            <label for="sortOrder" class="me-2 fw-bold">Sắp xếp:</label>
+            <select name="sortOrder" id="sortOrder" class="form-select d-inline w-auto" onchange="this.form.submit()">
+                <option value="ten" @(ViewBag.SortOrder == "ten" ? "selected" : "")>Tên giảng viên</option>
+                <option value="magiangvien" @(ViewBag.SortOrder == "magiangvien" ? "selected" : "")>Mã giảng viên</option>
+                <option value="ngaysinh" @(ViewBag.SortOrder == "linhvuc" ? "selected" : "")>Lĩnh vực</option>
+            </select>
+        </form>
+     </div>
+        <div class="container mt-5">
+            <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Giảng Viên</h2>
+            <div class="table-responsive">
+                <table class="table custom-table">
+                    <thead>
                         <tr>
-                            <td>@giangVien.MaGV</td>
-                            <td>@giangVien.HoTen</td>
-                            <td>@giangVien.NgayVaoLam.ToString("dd/MM/yyyy")</td>
-                            <td>@giangVien.BangCapGV</td>
-                            <td>@giangVien.LinhVucDaoTao</td>
-                            <td>@giangVien.Email</td>
-                            <td>@giangVien.SoDT</td>
-                            <td>@giangVien.DiaChi</td>
-                            <td>@giangVien.Luong</td>
-                            <td><a href="/Admin/AdminGiangVien/GiangVienEdit/@giangVien.MaGV" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a></td>
-                            <td><a href="/Admin/AdminGiangVien/GiangVienDelete/@giangVien.MaGV" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a></td>
+                            <th>ID</th>
+                            <th>Họ tên</th>
+                            <th>Ngày vào làm</th>
+                            <th>Bằng cấp</th>
+                            <th>Lĩnh vực đào tạo</th>
+                            <th>Email</th>
+                            <th>SĐT</th>
+                            <th>Địa chỉ</th>
+                            <th>Lương</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var giangVien in Model)
+                        {
+                            <tr>
+                                <td>@giangVien.MaGV</td>
+                                <td>@giangVien.HoTen</td>
+                                <td>@giangVien.NgayVaoLam.ToString("dd/MM/yyyy")</td>
+                                <td>@giangVien.BangCapGV</td>
+                                <td>@giangVien.LinhVucDaoTao</td>
+                                <td>@giangVien.Email</td>
+                                <td>@giangVien.SoDT</td>
+                                <td>@giangVien.DiaChi</td>
+                                <td>@giangVien.Luong</td>
+                                <td><a href="/Admin/AdminGiangVien/GiangVienEdit/@giangVien.MaGV" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a></td>
+                                <td><a href="/Admin/AdminGiangVien/GiangVienDelete/@giangVien.MaGV" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container-fluid d-flex justify-content-center">
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            @{
-                int trangtruoc = ViewBag.Page - 1;
-                if (trangtruoc <= 0)
-                {
-                    trangtruoc = 1;
+    <div class="container-fluid d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                @{
+                    int trangtruoc = ViewBag.Page - 1;
+                    if (trangtruoc <= 0)
+                    {
+                        trangtruoc = 1;
+                    }
+                    int trangsau = ViewBag.Page + 1;
+                    if (trangsau > ViewBag.NoOfPage)
+                    {
+                        trangsau = ViewBag.NoOfPage;
+                    }
                 }
-                int trangsau = ViewBag.Page + 1;
-                if (trangsau > ViewBag.NoOfPage)
+                <li class="page-item">
+                    <a class="page-link" href="/Admin/AdminGiangVien/GiangVienList?page=@trangtruoc"><</a>
+                </li>
+                @for (int i = 0; i < ViewBag.NoOfPage; i++)
                 {
-                    trangsau = ViewBag.NoOfPage;
+                    if (i + 1 == ViewBag.Page)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" href="/Admin/AdminGiangVien/GiangVienList?page=@(i + 1)">@(i + 1)</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item" DS_Sach>
+                            <a class="page-link" href="/Admin/AdminGiangVien/GiangVienList?page=@(i + 1)">@(i + 1)</a>
+                        </li>
+                    }
                 }
-            }
-            <li class="page-item">
-                <a class="page-link" href="/Admin/AdminGiangVien/GiangVienList?page=@trangtruoc"><</a>
-            </li>
-            @for (int i = 0; i < ViewBag.NoOfPage; i++)
-            {
-                if (i + 1 == ViewBag.Page)
-                {
-                    <li class="page-item active">
-                        <a class="page-link" href="/Admin/AdminGiangVien/GiangVienList?page=@(i + 1)">@(i + 1)</a>
-                    </li>
-                }
-                else
-                {
-                    <li class="page-item" DS_Sach>
-                        <a class="page-link" href="/Admin/AdminGiangVien/GiangVienList?page=@(i + 1)">@(i + 1)</a>
-                    </li>
-                }
-            }
-            <li class="page-item">
-                <a class="page-link" href="/Admin/AdminGiangVien/GiangVienList?page=@trangsau">></a>
-            </li>
-        </ul>
-    </nav>
-</div>
+                <li class="page-item">
+                    <a class="page-link" href="/Admin/AdminGiangVien/GiangVienList?page=@trangsau">></a>
+                </li>
+            </ul>
+        </nav>
+    </div>

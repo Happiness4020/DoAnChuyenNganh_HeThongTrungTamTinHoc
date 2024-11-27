@@ -411,7 +411,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         }
 
         [HttpPost]
-        public ActionResult CapNhatThongTinHocVien(HocVien thontinhocvien)
+        public ActionResult CapNhatThongTinHocVien(HocVien thongtinhocvien)
         {
             if (ModelState.IsValid)
             {
@@ -428,12 +428,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                 if (hocvien != null)
                 {
-                    hocvien.HoTen = thontinhocvien.HoTen;
-                    hocvien.NgaySinh = thontinhocvien.NgaySinh;
-                    hocvien.GioiTinh = thontinhocvien.GioiTinh;
-                    hocvien.Email = thontinhocvien.Email;
-                    hocvien.SoDT = thontinhocvien.SoDT;
-                    hocvien.DiaChi = thontinhocvien.DiaChi;
+                    hocvien.HoTen = thongtinhocvien.HoTen;
+                    hocvien.NgaySinh = thongtinhocvien.NgaySinh;
+                    hocvien.GioiTinh = thongtinhocvien.GioiTinh;
+                    hocvien.Email = thongtinhocvien.Email;
+                    hocvien.SoDT = thongtinhocvien.SoDT;
+                    hocvien.DiaChi = thongtinhocvien.DiaChi;
 
                     db.SaveChanges();
 
