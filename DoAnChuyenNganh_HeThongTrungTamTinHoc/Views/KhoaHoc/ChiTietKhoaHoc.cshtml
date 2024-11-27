@@ -161,32 +161,82 @@
                             <h5 class="card-title" style="color: #0066b3">@binhluan.HocVien.HoTen</h5>
                         </div>
                         <p class="card-text mt-1">@binhluan.NoiDung</p>
-                        <span class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">Ngày đăng: @binhluan.NgayBinhLuan.ToString("dd/MM/yyyy")</span>
+                        <span class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">Ngày đăng: @binhluan.NgayBinhLuan</span>
+
                         @if (binhluan.HocVien.MaHV == Session["MaHV"]?.ToString())
                         {
-                            <div class="dropdown position-absolute" style="top: 15px; right: 15px;">
-                                <button class="btn btn-link text-muted p-0" type="button" id="dropdownMenuButton@binhluan.Id" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-ellipsis"></i>
+                    <div class="mt-2 d-flex gap-2">
+                            <div class="text-center mt-4">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateCommentModal">
+                                    <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton@binhluan.HocVien.MaHV">
-                                    <li>
-                                        <a class="dropdown-item" href="/KhoaHoc/SuaBinhLuan/@binhluan.HocVien.MaHV">
-                                            <i class="bi bi-pencil-square"></i> Chỉnh sửa
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <button class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteCommentModal@binhluan.HocVien.MaHV">
-                                            <i class="bi bi-trash"></i> Xóa
-                                        </button>
-                                    </li>
-                                </ul>
                             </div>
+                            <div class="text-center mt-4">
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCommentModal">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
                         }
                     </div>
                 </div>
+
+                <div class="modal fade" id="updateCommentModal" tabindex="-1" aria-labelledby="updateCommentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateCommentModalLabel" style="color: #0066b3">Cập nhật thông tin giảng viên</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="updateCommentForm" method="post" action="@Url.Action("SuaBinhLuan", "KhoaHoc", new { MaKH = Model.MaKH, MaBinhLuan = binhluan.MaBinhLuan})">
+                                    <div class="mb-3">
+                                        <div class="form-group">
+                                            <label for="editCommentContent">Nội dung bình luận</label>
+                                            <textarea class="form-control" id="editCommentContent" name="NoiDung" rows="3">@binhluan.NoiDung</textarea>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                </form>
+                                <div class="mt-2">
+                                    @if (TempData["SuccessMessage"] != null)
+                                    {
+                                        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                                    }
+                                    @if (TempData["ErrorMessage"] != null)
+                                    {
+                                        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteCommentModalLabel" style="color: #0066b3">Xóa bình luận</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="deleteCommentForm"  action="@Url.Action("XoaBinhLuan", "KhoaHoc", new { MaBinhLuan = binhluan.MaBinhLuan, MaKH = Model.MaKH })" method="post">
+                                <div class="mb-3">
+                                    <h5>Bạn có chắc chắn muốn xóa bình luận không?</h5>
+                                </div>
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash"></i> Xóa
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             }
         </div>
     </div>
+
 
     <div class="container-fluid d-flex justify-content-center">
         <nav aria-label="Page navigation">
@@ -204,7 +254,7 @@
                     }
                 }
                 <li class="page-item">
-                    <a class="page-link" href="/KhoaHoc/ChiTietKhoaHoc/@Model.MaKH?page=@trangtruoc&sort_by=@ViewBag.SortBy" aria-label="Previous">
+                    <a class="page-link" href="@Url.Action("ChiTietKhoaHoc", "KhoaHoc", new { id = Model.MaKH, page = trangtruoc, sort_by = ViewBag.SortBy })" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -224,7 +274,7 @@
                     }
                 }
                 <li class="page-item">
-                    <a class="page-link" href="/KhoaHoc/ChiTietKhoaHoc/@Model.MaKH?page=@trangsau&sort_by=@ViewBag.SortBy" aria-label="Next">
+                    <a class="page-link" href="@Url.Action("ChiTietKhoaHoc", "KhoaHoc", new { id = Model.MaKH, page = trangsau, sort_by = ViewBag.SortBy })" aria-label="Previous">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -266,8 +316,8 @@
 
 <script>
     var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 4, // Số lượng item hiển thị cùng lúc
-        spaceBetween: 20, // Khoảng cách giữa các slide
+        slidesPerView: 4,
+        spaceBetween: 20,
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',

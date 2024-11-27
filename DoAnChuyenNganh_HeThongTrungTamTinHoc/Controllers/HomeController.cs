@@ -35,6 +35,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                  hv => hv.MaHV,
                  (bl, hv) => new BinhLuanViewModel
                  {
+                     MaBinhLuan = bl.MaBinhLuan,
                      MaHV = bl.MaHV,
                      MaKH = bl.MaKH,
                      NoiDung = bl.NoiDung,

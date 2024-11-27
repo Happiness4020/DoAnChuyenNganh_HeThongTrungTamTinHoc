@@ -40,9 +40,9 @@
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaKH__70DDC3D8" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaPT__71D1E811" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.BinhLuanKhoaHoc" Width="1.5" PointX="9" PointY="11.5" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__BinhLuanKh__MaHV__0B91BA14" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__BinhLuanKh__MaKH__0C85DE4D" />
-      </Diagram>
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__BinhLuanKh__MaHV__787EE5A0" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__BinhLuanKh__MaKH__797309D9" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
