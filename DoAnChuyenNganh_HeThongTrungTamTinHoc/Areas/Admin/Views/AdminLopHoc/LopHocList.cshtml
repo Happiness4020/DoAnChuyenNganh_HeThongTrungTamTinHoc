@@ -80,7 +80,7 @@
                             @if (item.TrangThai)
                             {
                                 <span style="color: green; font-weight: bold;">Đã mở lớp</span>
-                                <a href="@Url.Action("PhanLichHocChoHocVien", "AdminLopHoc", new { maLH = item.MaLH, ngayBatDau = item.KhoaHoc.NgayBatDau, ngayKetThuc = item.KhoaHoc.NgayKetThuc, soBuoiHoc = item.KhoaHoc.Sobuoihoc  })" class="btn btn-outline-primary btn-sm">Phân Lịch Học</a>
+                                <a href="@Url.Action("PhanLichHocChoHocVien", "AdminLopHoc", new { maLH = item.MaLH, soBuoiHoc = item.KhoaHoc.Sobuoihoc  })" class="btn btn-outline-primary btn-sm">Phân Lịch Học</a>
                             }
                             else
                             {

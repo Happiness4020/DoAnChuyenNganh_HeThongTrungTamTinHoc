@@ -103,6 +103,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         //    ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
                         //    return View();
                         //}
+                        if (taikhoan.MatKhau != tk.MatKhau)
+                        {
+                            ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
+                            return View();
+                        }
 
                         FormsAuthentication.SetAuthCookie(taikhoan.TenDangNhap, false);
 
