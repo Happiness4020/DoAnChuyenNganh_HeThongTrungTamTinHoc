@@ -18,7 +18,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;  // Đảm bảo bạn đã thêm using này
 
-namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
+namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers 
 {
     public class HocVienController : Controller
     {
@@ -50,17 +50,27 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
             return RedirectToAction("DangNhap", "Account");
         }
+
+             
         public ActionResult LichHoc()
         {
+            // Lấy mã học viên từ Session
+            string maHV = Session["MaHV"]?.ToString();
+            if (string.IsNullOrEmpty(maHV))
+            {
+                // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
+                return RedirectToAction("Login", "HocVien");
+            }
+
             using (var db = new TrungTamTinHocEntities())
             {
-                // Lấy ngày hiện tại             
-
-                // Truy vấn dữ liệu từ các bảng liên quan, chỉ lấy các trường cần thiết
+                // Truy vấn dữ liệu, chỉ lấy lịch học của học viên hiện tại
                 var lichHoc = (from lh in db.LichHoc.AsNoTracking()
                                join lop in db.LopHoc.AsNoTracking() on lh.MaLH equals lop.MaLH
                                join gv in db.GiaoVien.AsNoTracking() on lop.MaGV equals gv.MaGV
-                               join kh in db.KhoaHoc.AsNoTracking() on lop.MaKH equals kh.MaKH                               
+                               join kh in db.KhoaHoc.AsNoTracking() on lop.MaKH equals kh.MaKH
+                               join ct in db.ChiTiet_HocVien_LopHoc.AsNoTracking() on lop.MaLH equals ct.MaLH
+                               where ct.MaHV == maHV // Chỉ lấy dữ liệu của học viên đăng nhập
                                select new
                                {
                                    MaLop = lop.MaLH,
@@ -68,19 +78,21 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                                    GioBatDau = lh.GioBatDau,
                                    GioKetThuc = lh.GioKetThuc,
                                    TenGV = gv.HoTen,
+                                   NgayHoc = lh.NgayHoc,
                                    NgayBatDau = kh.NgayBatDau,
                                    NgayKetThuc = kh.NgayKetThuc
-                               }).ToList();
+                               }).Distinct().ToList(); // Loại bỏ dữ liệu bị lặp
 
-                // Thực hiện chuyển đổi sang LichHocView sau khi dữ liệu đã được tải về bộ nhớ
-                var lichHocViewList = lichHoc.Select(x => new LichHocView
+                // Chuyển dữ liệu sang ViewModel
+                var lichHocViewList = lichHoc.Select(x => new LichHocViewModel
                 {
                     MaLop = x.MaLop,
                     TenLop = x.TenLop,
-                    GioBatDau = x.GioBatDau.ToString("hh:mm"),
-                    GioKetThuc = x.GioKetThuc.ToString("hh:mm"),
+                    GioBatDau = x.GioBatDau.ToString(@"hh\:mm"), // Format TimeSpan
+                    GioKetThuc = x.GioKetThuc.ToString(@"hh\:mm"),
                     TenGV = x.TenGV,
-                    NgayBatDau = x.NgayBatDau.ToString("dd/MM/yyyy"),
+                    NgayHoc = x.NgayHoc.ToString("dd/MM/yyyy"),
+                    NgayBatDau = x.NgayBatDau.ToString("dd/MM/yyyy"), // Format Date
                     NgayKetThuc = x.NgayKetThuc.ToString("dd/MM/yyyy")
                 }).ToList();
 
@@ -403,40 +415,38 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult CapNhatThongTinHocVien(HocVien thongtinhocvien)
         {
-            if (ModelState.IsValid)
+
+            string mahv = Session["MaHV"]?.ToString();
+
+            // Kiểm tra nếu không có MaHV trong session
+            if (string.IsNullOrEmpty(mahv))
             {
-                string mahv = Session["MaHV"]?.ToString();
+                TempData["ErrorMessage"] = "Mã học viên không tồn tại!";
+                return RedirectToAction("Index");
+            }
+            
+            var hocvien = db.HocVien.Where(hv => hv.MaHV == mahv).FirstOrDefault();
 
-                // Kiểm tra nếu không có MaHV trong session
-                if (string.IsNullOrEmpty(mahv))
-                {
-                    TempData["ErrorMessage"] = "Mã học viên không tồn tại!";
-                    return RedirectToAction("Index");
-                }
+            if (hocvien != null)
+            {
+                hocvien.HoTen = thongtinhocvien.HoTen;
+                hocvien.NgaySinh = thongtinhocvien.NgaySinh;
+                hocvien.GioiTinh = thongtinhocvien.GioiTinh;
+                hocvien.Email = thongtinhocvien.Email;
+                hocvien.SoDT = thongtinhocvien.SoDT;
+                hocvien.DiaChi = thongtinhocvien.DiaChi;
 
-                var hocvien = db.HocVien.Where(hv => hv.MaHV == mahv).FirstOrDefault();
 
-                if (hocvien != null)
-                {
-                    hocvien.HoTen = thongtinhocvien.HoTen;
-                    hocvien.NgaySinh = thongtinhocvien.NgaySinh;
-                    hocvien.GioiTinh = thongtinhocvien.GioiTinh;
-                    hocvien.Email = thongtinhocvien.Email;
-                    hocvien.SoDT = thongtinhocvien.SoDT;
-                    hocvien.DiaChi = thongtinhocvien.DiaChi;
+                db.SaveChanges();
 
-                    db.SaveChanges();
-
-                    TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Không tìm thấy học viên với mã đã cung cấp!";
-                }
+                TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy học viên với mã đã cung cấp!";
             }
 
-            TempData["ErrorMessage"] = "Dữ liệu không hợp lệ!";
             return RedirectToAction("Index");
         }
 
