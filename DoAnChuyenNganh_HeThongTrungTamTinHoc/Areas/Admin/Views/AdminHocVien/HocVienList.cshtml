@@ -52,93 +52,114 @@
     <button class="btn btn-outline-primary ms-2" type="submit">Tìm</button>
     <a class="btn btn-danger ms-2" href="@Url.Action("HocVienList", "AdminHocVien")">Hủy</a>
 </form>
-
-<div class="container mt-5">
-    <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách học viên</h2>
-    <div class="table-responsive">
-        <table class="table custom-table">
-            <thead>
-                <tr>
-                    <th>Mã học viên</th>
-                    <th>Họ tên</th>
-                    <th>Ảnh</th>
-                    <th>Ngày sinh</th>
-                    <th>Giới tính</th>
-                    <th>Email</th>
-                    <th>Số điện thoại</th>
-                    <th>Địa chỉ</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var hocvien in Model)
-                {
+<div class="d-flex justify-content-between mb-3">
+    <form class="d-inline">
+        <label for="sortOrder" class="me-2 fw-bold">Sắp xếp:</label>
+        <select name="sortOrder" id="sortOrder" class="form-select d-inline w-auto" onchange="this.form.submit()">
+            <option value="tenhocvien" @(ViewBag.SortOrder == "tenhocvien" ? "selected" : "")>Tên học viên</option>
+            <option value="mahocvien" @(ViewBag.SortOrder == "mahocvien" ? "selected" : "")>Mã học viên</option>
+            <option value="ngaysinh" @(ViewBag.SortOrder == "ngaysinh" ? "selected" : "")>Ngày sinh</option>
+        </select>
+    </form>
+</div>
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách học viên</h2>
+        <div class="table-responsive">
+            <table class="table custom-table">
+                <thead>
                     <tr>
-                        <td>@hocvien.MaHV</td>
-                        <td>@hocvien.HoTen</td>
-                        <td>
-                            @{ var imagePath = Server.MapPath($"~/AnhHocVien/{hocvien.Anh}");
-                                if (System.IO.File.Exists(imagePath) && hocvien.Anh != null)
-                                {
-                                    <img src="~/AnhHocVien/@hocvien.Anh" width="150px" />
-                                }
-                                else
-                                {
-                                    <img src="~/AnhHocVien/noimage.jpg" width="150px" />
-                                }
-                            }
-                        </td>
-                        <td>@hocvien.NgaySinh.ToString("dd/MM/yyyy")</td>
-                        <td>@hocvien.GioiTinh</td>
-                        <td>@hocvien.Email</td>
-                        <td>@hocvien.SoDT</td>
-                        <td>@hocvien.DiaChi</td>
-                        <td><a href="/Admin/AdminHocVien/HocVienEdit/@hocvien.MaHV" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a></td>
-                        <td><a href="/Admin/AdminHocVien/HocVienDelete/@hocvien.MaHV" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a></td>
+                        <th>Mã học viên</th>
+                        <th>Họ tên</th>
+                        <th>Ảnh</th>
+                        <th>Ngày sinh</th>
+                        <th>Giới tính</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Địa chỉ</th>
                     </tr>
-                 }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var hocvien in Model)
+                    {
+                        <tr>
+                            <td>@hocvien.MaHV</td>
+                            <td>@hocvien.HoTen</td>
+                            <td>
+                                @{ var imagePath = Server.MapPath($"~/AnhHocVien/{hocvien.Anh}");
+                                    if (System.IO.File.Exists(imagePath) && hocvien.Anh != null)
+                                    {
+                                        <img src="~/AnhHocVien/@hocvien.Anh" width="150px" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/AnhHocVien/noimage.jpg" width="150px" />
+                                    }
+                                }
+                            </td>
+                            <td>@hocvien.NgaySinh.ToString("dd/MM/yyyy")</td>
+                            <td>@hocvien.GioiTinh</td>
+                            <td>@hocvien.Email</td>
+                            <td>@hocvien.SoDT</td>
+                            <td>@hocvien.DiaChi</td>
+                            <td><a href="/Admin/AdminHocVien/HocVienEdit/@hocvien.MaHV" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a></td>
+                            <td><a href="/Admin/AdminHocVien/HocVienDelete/@hocvien.MaHV" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<div class="container-fluid d-flex justify-content-center">
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            @{
-                int trangtruoc = ViewBag.Page - 1;
-                if (trangtruoc <= 0)
-                {
-                    trangtruoc = 1;
+    <!-- Phân trang -->
+    <div class="container-fluid d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                @{
+                    int trangtruoc = ViewBag.Page - 1;
+                    int trangsau = ViewBag.Page + 1;
+                    int totalPages = ViewBag.totalPages;
+                    int startPage = Math.Max(ViewBag.Page - 2, 1); // Hiển thị từ trang trước 2 trang
+                    int endPage = Math.Min(ViewBag.Page + 2, totalPages); // Hiển thị đến trang sau 2 trang
                 }
-                int trangsau = ViewBag.Page + 1;
-                if (trangsau > ViewBag.NoOfPage)
+
+                <!-- Nút quay lại -->
+                <li class="page-item @(ViewBag.Page == 1 ? "disabled" : "")">
+                    <a class="page-link" href="?page=@trangtruoc&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder" tabindex="-1"><</a>
+                </li>
+
+                <!-- Hiển thị trang đầu nếu cần -->
+                @if (startPage > 1)
                 {
-                    trangsau = ViewBag.NoOfPage;
+                    <li class="page-item"><a class="page-link" href="?page=1&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">1</a></li>
+                    if (startPage > 2)
+                    {
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    }
                 }
-            }
-            <li class="page-item">
-                <a class="page-link" href="/Admin/AdminHocVien/HocVienList?page=@trangtruoc"><</a>
-            </li>
-            @for (int i = 0; i < ViewBag.NoOfPage; i++)
-            {
-                if (i + 1 == ViewBag.Page)
+
+                <!-- Hiển thị các trang trong khoảng startPage đến endPage -->
+                @for (int i = startPage; i <= endPage; i++)
                 {
-                    <li class="page-item active">
-                        <a class="page-link" href="/Admin/AdminHocVien/HocVienList?page=@(i + 1)">@(i + 1)</a>
+                    <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                        <a class="page-link" href="?page=@i&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@i</a>
                     </li>
                 }
-                else
-                {
-                    <li class="page-item" DS_Sach>
-                        <a class="page-link" href="/Admin/AdminHocVien/HocVienList?page=@(i + 1)">@(i + 1)</a>
-                    </li>
-                }
-            }
-            <li class="page-item">
-                <a class="page-link" href="/Admin/AdminHocVien/HocVienList?page=@trangsau">></a>
-            </li>
-        </ul>
-    </nav>
-</div>
 
+                <!-- Hiển thị trang cuối nếu cần -->
+                @if (endPage < totalPages)
+                {
+                    if (endPage < totalPages - 1)
+                    {
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    }
+                    <li class="page-item"><a class="page-link" href="?page=@totalPages&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@totalPages</a></li>
+                }
+
+                <!-- Nút tiến -->
+                <li class="page-item @(ViewBag.Page == totalPages ? "disabled" : "")">
+                    <a class="page-link" href="?page=@trangsau&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 

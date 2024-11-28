@@ -16,22 +16,52 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
         string magv = Utility.TaoMaNgauNhien("GV", 8);
         // GET: Admin/AdminGiangVien
-        public ActionResult GiangVienList(string search = "", int page = 1, int pageSize = 10)
+        public ActionResult GiangVienList(string search = "", string sortOrder = "ten", int page = 1, int pageSize = 10)
         {
+            // Lấy danh sách giảng viên từ cơ sở dữ liệu
+            var giangviensQuery = db.GiaoVien.AsQueryable();
 
-            List<GiaoVien> giangviens = db.GiaoVien.Where(e => e.HoTen.Contains(search)).ToList();
+            // Tìm kiếm theo tên giảng viên
+            if (!string.IsNullOrEmpty(search))
+            {
+                giangviensQuery = giangviensQuery.Where(gv => gv.HoTen.Contains(search));
+            }
+
+            // Sắp xếp danh sách giảng viên theo tiêu chí được chọn
+            switch (sortOrder)
+            {
+                case "ten":
+                    giangviensQuery = giangviensQuery.OrderBy(gv => gv.HoTen);
+                    break;
+                case "magiangvien":
+                    giangviensQuery = giangviensQuery.OrderBy(gv => gv.MaGV);
+                    break;
+                case "linhvuc":
+                    giangviensQuery = giangviensQuery.OrderBy(gv => gv.LinhVucDaoTao);
+                    break;
+                default:
+                    giangviensQuery = giangviensQuery.OrderBy(gv => gv.HoTen);
+                    break;
+            }
+
+            // Tính toán phân trang
+            int totalRecords = giangviensQuery.Count();
+            int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            int skipRecords = (page - 1) * pageSize;
+
+            // Lấy dữ liệu giảng viên theo trang
+            var giangviens = giangviensQuery.Skip(skipRecords).Take(pageSize).ToList();
+
+            // Lưu các giá trị vào ViewBag để sử dụng trong View
             ViewBag.Search = search;
-            // phân trang
-            int NoOfRecordPerPage = 7;
-            int NoOfPage = (int)Math.Ceiling((double)giangviens.Count / NoOfRecordPerPage);
-            int NoOfRecordToSkip = (page - 1) * NoOfRecordPerPage;
-
+            ViewBag.SortOrder = sortOrder;
             ViewBag.Page = page;
-            ViewBag.NoOfPage = NoOfPage;
-            giangviens = giangviens.Skip(NoOfRecordToSkip).Take(NoOfRecordPerPage).ToList();
+            ViewBag.TotalPages = totalPages;
+
             return View(giangviens);
         }
-        
+
+
         public ActionResult GiangVienAdd()
         {
             ViewBag.MaGV = magv;

@@ -38,7 +38,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public virtual DbSet<TaiLieuHocTap> TaiLieuHocTap { get; set; }
         public virtual DbSet<KhoaHoc> KhoaHoc { get; set; }
         public virtual DbSet<LopHoc> LopHoc { get; set; }
-        public virtual DbSet<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
         public virtual DbSet<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
+        public virtual DbSet<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
     }
 }

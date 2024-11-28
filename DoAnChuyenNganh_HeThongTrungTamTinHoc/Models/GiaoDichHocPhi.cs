@@ -22,6 +22,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public Nullable<double> SoTien { get; set; }
         public string SoDT { get; set; }
         public string Email { get; set; }
+        public string TrangThai { get; set; }
     
         public virtual HocVien HocVien { get; set; }
         public virtual KhoaHoc KhoaHoc { get; set; }

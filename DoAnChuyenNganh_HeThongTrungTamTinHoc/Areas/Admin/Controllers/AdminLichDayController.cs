@@ -3,32 +3,47 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Services;
-using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
     [AdminAuthorize]
     public class AdminLichDayController : Controller
     {
-        // Kết nối đến cơ sở dữ liệu
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
         private static Random random = new Random();
         private string maLichDay = Utility.TaoMaNgauNhien("LD", 5);
 
         // Danh sách Lịch dạy
-        public async Task<ActionResult> LichDayList(string search = "")
+        public ActionResult LichDayList(string search = "", int page = 1, int pageSize = 10, string sortOrder = "")
         {
-            List<LichDay> lichDays = await db.LichDay
+            List<LichDay> lichDays = db.LichDay
                 .Where(ld => ld.GiaoVien.HoTen.Contains(search) || ld.LopHoc.MaLH.Contains(search))
-                .ToListAsync();
+                .ToList();
 
             ViewBag.Search = search;
+
+            int NoOfRecordPerPage = 7;
+            int NoOfPage = (int)Math.Ceiling((double)lichDays.Count / NoOfRecordPerPage);
+            int NoOfRecordToSkip = (page - 1) * NoOfRecordPerPage;
+
+            ViewBag.Page = page;
+            ViewBag.NoOfPage = NoOfPage;
+            lichDays = lichDays.Skip(NoOfRecordToSkip).Take(NoOfRecordPerPage).ToList();
+
+            switch (sortOrder)
+            {
+                case "magiaovien":
+                    lichDays = lichDays.OrderBy(e => e.MaGV).ToList();
+                    break;
+                case "malophoc":
+                    lichDays = lichDays.OrderBy(e => e.MaLH).ToList();
+                    break;
+            }
+
             return View(lichDays);
         }
 
@@ -42,11 +57,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> LichDayAdd(LichDay lichDay)
+        public ActionResult LichDayAdd(LichDay lichDay)
         {
             if (ModelState.IsValid)
             {
-                var existingLichDay = await db.LichDay.FirstOrDefaultAsync(ld => ld.MaLichDay == lichDay.MaLichDay);
+                var existingLichDay = db.LichDay.FirstOrDefault(ld => ld.MaLichDay == lichDay.MaLichDay);
                 if (existingLichDay != null)
                 {
                     ModelState.AddModelError("MaLichDay", "Mã lịch dạy đã tồn tại!");
@@ -55,7 +70,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
                 lichDay.MaLichDay = maLichDay;
                 db.LichDay.Add(lichDay);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("LichDayList");
             }
 
@@ -64,30 +79,29 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View();
         }
 
-
         // Xóa Lịch dạy
-        public async Task<ActionResult> LichDayDelete(string id)
+        public ActionResult LichDayDelete(string id)
         {
-            LichDay lichDay = await db.LichDay.FirstOrDefaultAsync(ld => ld.MaLichDay == id);
+            LichDay lichDay = db.LichDay.FirstOrDefault(ld => ld.MaLichDay == id);
             return View(lichDay);
         }
 
         [HttpPost]
-        public async Task<ActionResult> LichDayDeleteConfirmed(string id)
+        public ActionResult LichDayDeleteConfirmed(string id)
         {
-            var lichDay = await db.LichDay.FirstOrDefaultAsync(ld => ld.MaLichDay == id);
+            var lichDay = db.LichDay.FirstOrDefault(ld => ld.MaLichDay == id);
             if (lichDay != null)
             {
                 db.LichDay.Remove(lichDay);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
             }
             return RedirectToAction("LichDayList");
         }
 
         // Chỉnh sửa Lịch dạy
-        public async Task<ActionResult> LichDayEdit(string id)
+        public ActionResult LichDayEdit(string id)
         {
-            var lichDay = await db.LichDay.FirstOrDefaultAsync(ld => ld.MaLichDay == id);
+            var lichDay = db.LichDay.FirstOrDefault(ld => ld.MaLichDay == id);
             if (lichDay == null)
             {
                 return HttpNotFound();
@@ -99,12 +113,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> LichDayEdit(LichDay lichDay)
+        public ActionResult LichDayEdit(LichDay lichDay)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(lichDay).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("LichDayList");
             }
 
@@ -120,12 +134,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             {
                 var lichhocs = db.LichHoc.ToList();
 
-                if(lichhocs != null)
+                if (lichhocs != null)
                 {
                     foreach (var lich in lichhocs)
                     {
                         string maLD = Utility.TaoMaNgauNhien("LD", 5);
-                        // Kiểm tra xem đã có lịch dạy nào cho lớp, ngày và giờ này chưa
+
                         bool lichDayTonTai = db.LichDay.Any(ld =>
                             ld.MaLH == lich.MaLH &&
                             ld.NgayDay == lich.NgayHoc.Date &&
@@ -134,8 +148,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
                         if (!lichDayTonTai)
                         {
-                            // Lấy thông tin lớp học từ bảng LopHoc
-                            var ttLopHoc = db.LopHoc.Where(lh => lh.MaLH == lich.MaLH).FirstOrDefault();
+                            var ttLopHoc = db.LopHoc.FirstOrDefault(lh => lh.MaLH == lich.MaLH);
 
                             if (ttLopHoc != null)
                             {
@@ -153,10 +166,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                             }
                         }
                     }
-                }    
+                }
                 return RedirectToAction("LichDayList");
             }
-            catch(DbEntityValidationException ex)
+            catch (DbEntityValidationException ex)
             {
                 foreach (var validationError in ex.EntityValidationErrors)
                 {

@@ -46,13 +46,23 @@
 <br />
 <a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("LichHocAdd", "AdminLichHoc")">Thêm Lịch Học</a>
 
-<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("PhanLichHoc", "AdminLichHoc")">Phân Lịch Học</a>
-
 <form class="d-flex mb-3 mt-2" action="@Url.Action("LichHocList", "AdminLichHoc")">
     <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm lịch học" aria-label="Search" style="max-width: 400px;">
     <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>
     <a class="btn btn-danger ms-2" href="@Url.Action("LichHocList", "AdminLichHoc")">Hủy</a>
 </form>
+
+<div class="d-flex justify-content-between mb-3">
+    <form class="d-inline">
+        <label for="sortOrder" class="me-2 fw-bold">Sắp xếp:</label>
+        <select name="sortOrder" id="sortOrder" class="form-select d-inline w-auto" onchange="this.form.submit()">
+            <option value="ngayhoc" @(ViewBag.SortOrder == "ngayhoc" ? "selected" : "")>Ngày học</option>
+            <option value="tenhocvien" @(ViewBag.SortOrder == "tenhocvien" ? "selected" : "")>Tên học viên</option>
+            <option value="malophoc" @(ViewBag.SortOrder == "malophoc" ? "selected" : "")>Mã lớp học</option>
+        </select>
+    </form>
+</div>
+
 
 <div class="container mt-5">
     <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Lịch Học</h2>
@@ -60,13 +70,11 @@
         <table class="table custom-table">
             <thead>
                 <tr>
-                    <th>Ngày học</th>
-                    <th>Điểm danh</th>
+                    <th>Ngày</th>
+                    <th>Học Viên</th>
+                    <th>Lớp học</th>
                     <th>Giờ bắt đầu</th>
                     <th>Giờ kết thúc</th>
-                    <th>Học viên</th>
-                    <th>Lớp học</th>
-                    <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,13 +82,14 @@
                 {
                     <tr>
                         <td>@item.NgayHoc.ToString("dd/MM/yyyy")</td>
-                        <td>@item.DiemDanh</td>
-                        <td>@item.GioBatDau</td>
-                        <td>@item.GioKetThuc</td>
                         <td>@item.HocVien.HoTen</td>
                         <td>@item.LopHoc.TenLop</td>
+                        <td>@item.GioBatDau</td>
+                        <td>@item.GioKetThuc</td>
                         <td>
                             <a href="@Url.Action("LichHocEdit", "AdminLichHoc", new { id = item.MaLichHoc })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
+                        </td>
+                        <td>
                             <a href="@Url.Action("LichHocDelete", "AdminLichHoc", new { id = item.MaLichHoc })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
                         </td>
                     </tr>
@@ -89,3 +98,66 @@
         </table>
     </div>
 </div>
+
+<script>
+    $(function () {
+        $("#sortOrder").change(function () {
+            $("#myform").submit(); // Gửi form khi thay đổi giá trị
+        });
+    });
+</script>
+
+<div class="container-fluid d-flex justify-content-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @{
+                int trangtruoc = ViewBag.Page - 1;
+                int trangsau = ViewBag.Page + 1;
+                int totalPages = ViewBag.TotalPages;
+                int startPage = Math.Max(ViewBag.Page - 2, 1); // Hiển thị từ trang trước 2 trang
+                int endPage = Math.Min(ViewBag.Page + 2, totalPages); // Hiển thị đến trang sau 2 trang
+            }
+
+            <!-- Nút quay lại -->
+            <li class="page-item @(ViewBag.Page == 1 ? "disabled" : "")">
+                <a class="page-link" href="?page=@trangtruoc&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder" tabindex="-1"><</a>
+            </li>
+
+            <!-- Hiển thị trang đầu nếu cần -->
+            @if (startPage > 1)
+            {
+                <li class="page-item"><a class="page-link" href="?page=1&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">1</a></li>
+                if (startPage > 2)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+            }
+
+            <!-- Hiển thị các trang trong khoảng startPage đến endPage -->
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                    <a class="page-link" href="?page=@i&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@i</a>
+                </li>
+            }
+
+            <!-- Hiển thị trang cuối nếu cần -->
+            @if (endPage < totalPages)
+            {
+                if (endPage < totalPages - 1)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+                <li class="page-item"><a class="page-link" href="?page=@totalPages&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@totalPages</a></li>
+            }
+
+            <!-- Nút tiến -->
+            <li class="page-item @(ViewBag.Page == totalPages ? "disabled" : "")">
+                <a class="page-link" href="?page=@trangsau&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+
