@@ -170,12 +170,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         }
 
         [HttpPost]
-        public ActionResult SuaBinhLuan(string MaKH, string NoiDung)
+        public ActionResult SuaBinhLuan(string MaKH, string NoiDung, DateTime NgayBinhLuan)
         {
             try
             {
                 string mahv = Session["MaHV"]?.ToString();
-                var binhluan = db.BinhLuanKhoaHoc.FirstOrDefault(b => b.MaHV == mahv);
+                var binhluan = db.BinhLuanKhoaHoc.FirstOrDefault(b => b.MaHV == mahv && b.NgayBinhLuan == NgayBinhLuan);
                 if (binhluan != null)
                 {
                     binhluan.NoiDung = NoiDung;
