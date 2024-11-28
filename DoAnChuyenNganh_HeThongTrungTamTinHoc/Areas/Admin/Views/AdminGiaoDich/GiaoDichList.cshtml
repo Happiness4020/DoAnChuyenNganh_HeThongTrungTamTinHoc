@@ -71,19 +71,26 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>@(item.NgayGD.HasValue ? item.NgayGD.Value.ToString("dd/MM/yyyy") : "Không xác định")</td> <!-- Ngày giao dịch -->
-                    <td>@item.SoTien?.ToString("N0") VND</td> <!-- Số tiền học phí -->
-                    <td>@item.SoDT</td>
-                    <td>@item.Email</td>
-                    <td>@item.HocVien.HoTen</td>
-                    <td>@item.PhuongThucThanhToan.TenPT</td>
-                    <td>@item.KhoaHoc.TenKH</td>
-                    <td>
-                        <a href="@Url.Action("GiaoDichEdit", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-light-primary btn-sm">Sửa</a>
-                        <a href="@Url.Action("GiaoDichDelete", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-danger btn-sm">Xóa</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>@item.NgayGD</td>
+                        <td>@item.SoTien</td>
+                        <td>@item.SoDT</td>
+                        <td>@item.Email</td>
+                        <td>@item.HocVien.HoTen</td>
+                        <td>@item.PhuongThucThanhToan.TenPT</td>
+                        <td>@item.KhoaHoc.TenKH</td>
+                        <td>
+                            @if (item.TrangThai == "Chờ duyệt")
+                            {
+                                <a href="@Url.Action("DuyetGiaoDich", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-success btn-sm">Duyệt</a>
+                                <a href="@Url.Action("TuChoiGiaoDich", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-danger btn-sm">Từ chối</a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Đã xử lý</span>
+                            }
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

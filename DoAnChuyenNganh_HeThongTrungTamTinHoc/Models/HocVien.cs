@@ -18,14 +18,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public HocVien()
         {
-            this.BinhLuanKhoaHoc = new HashSet<BinhLuanKhoaHoc>();
             this.ChiTiet_HocVien_LopHoc = new HashSet<ChiTiet_HocVien_LopHoc>();
-            this.GiaoDichHocPhi = new HashSet<GiaoDichHocPhi>();
             this.LichHoc = new HashSet<LichHoc>();
             this.LienHe = new HashSet<LienHe>();
             this.TaiKhoan = new HashSet<TaiKhoan>();
+            this.GiaoDichHocPhi = new HashSet<GiaoDichHocPhi>();
+            this.BinhLuanKhoaHoc = new HashSet<BinhLuanKhoaHoc>();
         }
-    
+
         public string MaHV { get; set; }
         [Required(ErrorMessage = "Bạn phải nhập đầy đủ họ tên")]
         [RegularExpression("^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ ]*$")]
@@ -45,7 +45,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ")]
         public string Email { get; set; }
 
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Điện thoại chỉ nhập số nguyên")]
+        [RegularExpression(@"^(03|05|07|08|09)[0-9]{8}$", ErrorMessage = "Số điện thoại phải bắt đầu bằng 03, 05, 07, 08, hoặc 09 và phải có 10 chữ số")]
         [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải là 10 số")]
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         [Required(ErrorMessage = "Bạn phải nhập số điện thoại")]
@@ -55,16 +55,16 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string DiaChi { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LichHoc> LichHoc { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LienHe> LienHe { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TaiKhoan> TaiKhoan { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
     }
 }

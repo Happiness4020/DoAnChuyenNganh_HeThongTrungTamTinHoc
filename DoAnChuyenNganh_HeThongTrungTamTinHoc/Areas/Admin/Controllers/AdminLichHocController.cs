@@ -4,8 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
@@ -19,15 +17,43 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
         private static Random random = new Random();
         private string malh = Utility.TaoMaNgauNhien("LH", 3);
+
         // GET: Admin/AdminLichHoc
-        public async Task<ActionResult> LichHocList()
+        public ActionResult LichHocList(string search = "", int page = 1, int pageSize = 10, string sortOrder = "ngayhoc")
         {
-            var lichHoc = db.LichHoc.Include(l => l.HocVien).Include(l => l.LopHoc);
-            return View(await lichHoc.ToListAsync());
+            List<LichHoc> lichHocs = db.LichHoc
+                .Where(lh => lh.HocVien.HoTen.Contains(search) || lh.LopHoc.MaLH.Contains(search))
+                .ToList();
+
+            ViewBag.Search = search; // Giữ giá trị tìm kiếm
+            ViewBag.SortOrder = sortOrder; // Giữ giá trị sắp xếp
+
+            switch (sortOrder)
+            {
+                case "tenhocvien":
+                    lichHocs = lichHocs.OrderBy(lh => lh.HocVien.HoTen).ToList();
+                    break;
+                case "malophoc":
+                    lichHocs = lichHocs.OrderBy(lh => lh.LopHoc.MaLH).ToList();
+                    break;
+                case "ngayhoc":
+                default:
+                    lichHocs = lichHocs.OrderBy(lh => lh.NgayHoc).ToList();
+                    break;
+            }
+
+            int totalRecords = lichHocs.Count;
+            int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            int recordsToSkip = (page - 1) * pageSize;
+
+            ViewBag.Page = page;
+            ViewBag.TotalPages = totalPages;
+
+            lichHocs = lichHocs.Skip(recordsToSkip).Take(pageSize).ToList();
+
+            return View(lichHocs);
         }
 
-
-       
         public ActionResult LichHocAdd()
         {
             ViewBag.MaLichHoc = malh;
@@ -36,24 +62,22 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View();
         }
 
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> LichHocAdd(LichHoc lichHoc)
+        public ActionResult LichHocAdd(LichHoc lichHoc)
         {
-            // Kiểm tra xem lịch học của học viên này trong lớp này đã tồn tại hay chưa
             var existingLichHoc = db.LichHoc
                 .FirstOrDefault(l => l.MaHV == lichHoc.MaHV && l.MaLH == lichHoc.MaLH);
 
             if (existingLichHoc != null)
             {
-                // Thêm thông báo lỗi nếu đã tồn tại
                 ModelState.AddModelError("", "Lịch học của học viên này cho lớp này đã tồn tại.");
             }
+
             if (ModelState.IsValid)
             {
                 db.LichHoc.Add(lichHoc);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("LichHocList");
             }
 
@@ -62,74 +86,66 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(lichHoc);
         }
 
-        
         public ActionResult LichHocEdit(string id)
         {
-            LichHoc lichHoc = db.LichHoc.FirstOrDefault(ld => ld.MaLichHoc == id);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
+            LichHoc lichHoc = db.LichHoc.FirstOrDefault(ld => ld.MaLichHoc == id);
+
             if (lichHoc == null)
             {
                 return HttpNotFound();
             }
+
             ViewBag.MaHVList = new SelectList(db.HocVien, "MaHV", "HoTen", lichHoc.MaHV);
             ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenLop", lichHoc.MaLH);
             return View(lichHoc);
         }
 
-       
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> LichHocEdit(LichHoc lichHoc)
+        public ActionResult LichHocEdit(LichHoc lichHoc)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(lichHoc).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("LichHocList");
             }
-            else
-            {
-                ViewBag.MaHVList = new SelectList(db.HocVien, "MaHV", "HoTen", lichHoc.MaHV);
-                ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenLop", lichHoc.MaLH);
-                return View(lichHoc);
-            }    
-            
+
+            ViewBag.MaHVList = new SelectList(db.HocVien, "MaHV", "HoTen", lichHoc.MaHV);
+            ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenLop", lichHoc.MaLH);
+            return View(lichHoc);
         }
 
-        
-        public async Task<ActionResult> LichHocDelete(string id)
+        public ActionResult LichHocDelete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LichHoc lichHoc = await db.LichHoc.FirstOrDefaultAsync(ld => ld.MaLichHoc == id);
+
+            LichHoc lichHoc = db.LichHoc.FirstOrDefault(ld => ld.MaLichHoc == id);
+
             if (lichHoc == null)
             {
                 return HttpNotFound();
             }
+
             return View(lichHoc);
         }
 
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> LichHocDelete(string id, LichHoc lichHoc)
+        public ActionResult LichHocDelete(string id, LichHoc lichHoc)
         {
             lichHoc = db.LichHoc.FirstOrDefault(ld => ld.MaLichHoc == id);
             db.LichHoc.Remove(lichHoc);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
             return RedirectToAction("LichHocList");
         }
-
-
-
-
-
     }
 }

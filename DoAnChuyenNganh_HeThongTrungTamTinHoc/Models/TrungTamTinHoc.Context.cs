@@ -25,7 +25,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
         public virtual DbSet<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
         public virtual DbSet<ChuongTrinhHoc> ChuongTrinhHoc { get; set; }
         public virtual DbSet<GiaoVien> GiaoVien { get; set; }
@@ -39,6 +38,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public virtual DbSet<TaiLieuHocTap> TaiLieuHocTap { get; set; }
         public virtual DbSet<KhoaHoc> KhoaHoc { get; set; }
         public virtual DbSet<LopHoc> LopHoc { get; set; }
+        public virtual DbSet<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
         public virtual DbSet<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
     }
 }

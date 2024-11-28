@@ -1,6 +1,7 @@
-﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LichHocView>
+﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels.LichHocViewModel>
+
 @{
-    ViewBag.Title = "LichHoc";
+    ViewBag.Title = "Lịch Học";
     Layout = "~/Views/Shared/_HocVien.cshtml";
 }
 
@@ -37,6 +38,12 @@
             line-height: 1.5;
             background-color: #28a745;
         }
+
+        .no-data {
+            color: #6c757d;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body class="d-flex flex-column h-100 w-100">
@@ -49,11 +56,12 @@
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Ca học</th>
+                        <th>Mã Lớp</th>
                         <th>Tên Lớp</th>
                         <th>Giờ Bắt Đầu</th>
                         <th>Giờ Kết Thúc</th>
                         <th>Giáo Viên</th>
+                        <th>Ngày Học</th>
                         <th>Ngày Bắt Đầu</th>
                         <th>Ngày Kết Thúc</th>
                     </tr>
@@ -63,21 +71,22 @@
                     {
                         foreach (var item in Model)
                         {
-                            <tr>
-                                <td>@item.MaLop</td>
-                                <td>@item.TenLop</td>
-                                <td><i class="fas fa-clock"></i> @item.GioBatDau</td>
-                                <td><i class="fas fa-clock"></i> @item.GioKetThuc</td>
-                                <td><i class="fas fa-user"></i> @item.TenGV</td>
-                                <td>@item.NgayBatDau</td>
-                                <td>@item.NgayKetThuc</td>
-                            </tr>
+                    <tr>
+                        <td>@item.MaLop</td>
+                        <td>@item.TenLop</td>
+                        <td><i class="fas fa-clock"></i> @item.GioBatDau</td>
+                        <td><i class="fas fa-clock"></i> @item.GioKetThuc</td>
+                        <td><i class="fas fa-user"></i> @item.TenGV</td>
+                        <td>@item.NgayHoc</td>
+                        <td>@item.NgayBatDau</td>
+                        <td>@item.NgayKetThuc</td>
+                    </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="7" class="text-center">Không có dữ liệu lịch học</td>
+                            <td colspan="7" class="text-center no-data">Không có dữ liệu lịch học</td>
                         </tr>
                     }
                 </tbody>

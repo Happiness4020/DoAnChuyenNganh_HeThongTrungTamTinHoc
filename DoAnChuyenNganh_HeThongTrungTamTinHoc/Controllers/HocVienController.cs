@@ -18,7 +18,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;  // Đảm bảo bạn đã thêm using này
 
-namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
+namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers 
 {
     public class HocVienController : Controller
     {
@@ -50,17 +50,27 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
             return RedirectToAction("DangNhap", "Account");
         }
+
+             
         public ActionResult LichHoc()
         {
+            // Lấy mã học viên từ Session
+            string maHV = Session["MaHV"]?.ToString();
+            if (string.IsNullOrEmpty(maHV))
+            {
+                // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
+                return RedirectToAction("Login", "HocVien");
+            }
+
             using (var db = new TrungTamTinHocEntities())
             {
-                // Lấy ngày hiện tại             
-
-                // Truy vấn dữ liệu từ các bảng liên quan, chỉ lấy các trường cần thiết
+                // Truy vấn dữ liệu, chỉ lấy lịch học của học viên hiện tại
                 var lichHoc = (from lh in db.LichHoc.AsNoTracking()
                                join lop in db.LopHoc.AsNoTracking() on lh.MaLH equals lop.MaLH
                                join gv in db.GiaoVien.AsNoTracking() on lop.MaGV equals gv.MaGV
-                               join kh in db.KhoaHoc.AsNoTracking() on lop.MaKH equals kh.MaKH                               
+                               join kh in db.KhoaHoc.AsNoTracking() on lop.MaKH equals kh.MaKH
+                               join ct in db.ChiTiet_HocVien_LopHoc.AsNoTracking() on lop.MaLH equals ct.MaLH
+                               where ct.MaHV == maHV // Chỉ lấy dữ liệu của học viên đăng nhập
                                select new
                                {
                                    MaLop = lop.MaLH,
@@ -68,19 +78,21 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                                    GioBatDau = lh.GioBatDau,
                                    GioKetThuc = lh.GioKetThuc,
                                    TenGV = gv.HoTen,
+                                   NgayHoc = lh.NgayHoc,
                                    NgayBatDau = kh.NgayBatDau,
                                    NgayKetThuc = kh.NgayKetThuc
-                               }).ToList();
+                               }).Distinct().ToList(); // Loại bỏ dữ liệu bị lặp
 
-                // Thực hiện chuyển đổi sang LichHocView sau khi dữ liệu đã được tải về bộ nhớ
-                var lichHocViewList = lichHoc.Select(x => new LichHocView
+                // Chuyển dữ liệu sang ViewModel
+                var lichHocViewList = lichHoc.Select(x => new LichHocViewModel
                 {
                     MaLop = x.MaLop,
                     TenLop = x.TenLop,
-                    GioBatDau = x.GioBatDau.ToString("hh:mm"),
-                    GioKetThuc = x.GioKetThuc.ToString("hh:mm"),
+                    GioBatDau = x.GioBatDau.ToString(@"hh\:mm"), // Format TimeSpan
+                    GioKetThuc = x.GioKetThuc.ToString(@"hh\:mm"),
                     TenGV = x.TenGV,
-                    NgayBatDau = x.NgayBatDau.ToString("dd/MM/yyyy"),
+                    NgayHoc = x.NgayHoc.ToString("dd/MM/yyyy"),
+                    NgayBatDau = x.NgayBatDau.ToString("dd/MM/yyyy"), // Format Date
                     NgayKetThuc = x.NgayKetThuc.ToString("dd/MM/yyyy")
                 }).ToList();
 
@@ -359,7 +371,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult XacNhanThanhToan()
         {
-            // Lấy giỏ hàng từ session
             var cart = Session["Cart"] as List<GiaoDichHocPhi>;
 
             if (cart == null || !cart.Any())
@@ -374,7 +385,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 {
                     foreach (var item in cart)
                     {
-                        // Tạo một giao dịch học phí mới và lưu vào cơ sở dữ liệu
                         db.GiaoDichHocPhi.Add(new GiaoDichHocPhi
                         {
                             MaHV = item.MaHV,
@@ -383,23 +393,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                             NgayGD = DateTime.Now,
                             SoTien = item.SoTien,
                             SoDT = item.SoDT,
-                            Email = item.Email
+                            Email = item.Email,
+                            TrangThai = "Chờ duyệt" // Cập nhật trạng thái chờ duyệt
                         });
-
-                        // Gửi email xác nhận thanh toán
-                        SendEmailInternal(cart, cart.FirstOrDefault()?.Email);
                     }
 
-                    // Lưu thay đổi vào cơ sở dữ liệu
                     db.SaveChanges();
-
-                    // Gửi email với thông tin giỏ hàng
-                    SendEmailInternal(cart, cart.FirstOrDefault().Email);
-
-                    // Xóa giỏ hàng sau khi thanh toán thành công
                     Session["Cart"] = null;
-
-                    TempData["Message"] = "Hãy xác nhận chính xác thông tin chuyển khoản trước khi ấn thanh toán. Mọi sai xót xin hãy liên hệ lại với nhân viên của chúng tôi!";
+                    TempData["Message"] = "Thanh toán của bạn đang chờ duyệt.";
                 }
             }
             catch (Exception ex)
@@ -410,11 +411,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return RedirectToAction("HocPhi");
         }
 
+
         [HttpPost]
-        public ActionResult CapNhatThongTinHocVien(HocVien thontinhocvien)
+        public ActionResult CapNhatThongTinHocVien(HocVien thongtinhocvien)
         {
-            if (ModelState.IsValid)
-            {
+
                 string mahv = Session["MaHV"]?.ToString();
 
                 // Kiểm tra nếu không có MaHV trong session
@@ -428,12 +429,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                 if (hocvien != null)
                 {
-                    hocvien.HoTen = thontinhocvien.HoTen;
-                    hocvien.NgaySinh = thontinhocvien.NgaySinh;
-                    hocvien.GioiTinh = thontinhocvien.GioiTinh;
-                    hocvien.Email = thontinhocvien.Email;
-                    hocvien.SoDT = thontinhocvien.SoDT;
-                    hocvien.DiaChi = thontinhocvien.DiaChi;
+                    hocvien.HoTen = thongtinhocvien.HoTen;
+                    hocvien.NgaySinh = thongtinhocvien.NgaySinh;
+                    hocvien.GioiTinh = thongtinhocvien.GioiTinh;
+                    hocvien.Email = thongtinhocvien.Email;
+                    hocvien.SoDT = thongtinhocvien.SoDT;
+                    hocvien.DiaChi = thongtinhocvien.DiaChi;
+
 
                     db.SaveChanges();
 
@@ -444,9 +446,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 {
                     TempData["ErrorMessage"] = "Không tìm thấy học viên với mã đã cung cấp!";
                 }
-            }
-
-            TempData["ErrorMessage"] = "Dữ liệu không hợp lệ!";
+     
             return RedirectToAction("Index");
         }
 

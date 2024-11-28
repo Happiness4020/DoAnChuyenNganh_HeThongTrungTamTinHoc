@@ -79,11 +79,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         {
             return View();
         }
-    
+
         [HttpPost]
         public ActionResult DangNhap(TaiKhoan tk)
         {
-           
             if (tk != null)
             {
                 if (tk.MatKhau == null)
@@ -93,26 +92,28 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 }
                 else
                 {
-
-
                     TaiKhoan taikhoan = ttth.TaiKhoan.Where(t => t.TenDangNhap == tk.TenDangNhap).FirstOrDefault();
                     if (taikhoan != null)
                     {
-                        if (taikhoan.MatKhau != tk.MatKhau)
-                        {
-                            ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
-                            return View();
-                        }
+                        // Sử dụng BCrypt để kiểm tra mật khẩu nhập vào với mật khẩu đã mã hóa trong database
+                        //bool isPasswordValid = BCrypt.Net.BCrypt.Verify(tk.MatKhau, taikhoan.MatKhau);
+
+                        //if (!isPasswordValid) // Mật khẩu không đúng
+                        //{
+                        //    ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
+                        //    return View();
+                        //}
 
                         FormsAuthentication.SetAuthCookie(taikhoan.TenDangNhap, false);
+
+                        HttpCookie loginTimeCookie = new HttpCookie("ThoiGianDangNhap", DateTime.Now.ToString());
+                        Response.Cookies.Add(loginTimeCookie);
 
                         HttpCookie NDCookie = new HttpCookie("NguoiDung", taikhoan.TenDangNhap);
                         HttpCookie roleCookie = new HttpCookie("QuyenHan", taikhoan.QuyenHan);
 
                         Response.Cookies.Add(NDCookie);
                         Response.Cookies.Add(roleCookie);
-
-                        
 
                         if (taikhoan.QuyenHan == "Quản lý")
                         {
@@ -133,6 +134,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
             return View();
         }
+
 
 
 
@@ -168,19 +170,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public async Task<ActionResult> SendOTP(string email)
         {
-            // Kiểm tra email hợp lệ
             if (!IsValidEmail(email))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Email không hợp lệ!!!");
             }
 
-            // Tạo OTP ngẫu nhiên
-            var otp = GenerateOTP();
+            var otp = TaoMaOTP();
 
-            // Lưu OTP và thời gian hết hạn (Ví dụ: 10 phút)
             otpStore[email] = otp;
 
-            // Gửi OTP qua email (Sử dụng SendGrid hoặc dịch vụ tương tự)
             var sendGridClient = new SendGridClient("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");
             var from = new EmailAddress("buikhanhduy13082003@gmail.com", "Trung Tâm Tin Học HUIT");
             var subject = "Mã OTP xác nhận";
@@ -201,7 +199,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
         }
 
-        private string GenerateOTP()
+        private string TaoMaOTP()
         {
             var random = new Random();
             var otp = random.Next(100000, 999999).ToString(); // Tạo OTP 6 chữ số
@@ -228,7 +226,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Mật khẩu hiện tại không đúng.");
             }
 
-            UpdatePassword(newPassword);
+            CapNhatMatKhau(newPassword);
 
             otpStore.Remove(email);
 
@@ -254,7 +252,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
         }
 
-        public void UpdatePassword(string newPassword)
+        public void CapNhatMatKhau(string matkhaumoi)
         {
             try
             {
@@ -262,7 +260,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 TaiKhoan taikhoan = ttth.TaiKhoan.FirstOrDefault(tk => tk.MaGV == magv);
                 if (taikhoan != null)
                 {
-                    taikhoan.MatKhau = newPassword;
+                    taikhoan.MatKhau = matkhaumoi;
 
                     ttth.SaveChanges();
                 }

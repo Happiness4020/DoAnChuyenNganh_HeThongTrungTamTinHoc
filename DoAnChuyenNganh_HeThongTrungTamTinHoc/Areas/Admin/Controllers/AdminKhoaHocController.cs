@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
@@ -21,48 +19,60 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         private string makh = Utility.TaoMaNgauNhien("KH", 3);
 
         // GET: Admin/AdminKhoaHoc
-        public async Task<ActionResult> KhoaHocList(string search = "", int page = 1, int pageSize = 10)
+        public ActionResult KhoaHocList(string search = "", int page = 1, int pageSize = 10, string sortOrder = "tenkh")
         {
-            var khoahoc = await ttth.KhoaHoc
+            var khoahoc = ttth.KhoaHoc
                 .Where(kh => kh.TenKH.Contains(search))
-                .ToListAsync();
+                .ToList();
 
-            ViewBag.Search = search;
+            ViewBag.Search = search; // Giữ giá trị tìm kiếm
+            ViewBag.SortOrder = sortOrder; // Giữ giá trị sắp xếp
 
-            // phân trang
-            int NoOfRecordPerPage = 7;
-            int NoOfPage = (int)Math.Ceiling((double)khoahoc.Count / NoOfRecordPerPage);
-            int NoOfRecordToSkip = (page - 1) * NoOfRecordPerPage;
+            // Sắp xếp theo sortOrder
+            switch (sortOrder)
+            {
+                case "tenkh":
+                    khoahoc = khoahoc.OrderBy(kh => kh.TenKH).ToList();
+                    break;
+                case "ngaybatdau":
+                    khoahoc = khoahoc.OrderBy(kh => kh.NgayBatDau).ToList();
+                    break;
+                case "hocphi":
+                    khoahoc = khoahoc.OrderBy(kh => kh.HocPhi).ToList();
+                    break;
+                default:
+                    khoahoc = khoahoc.OrderBy(kh => kh.TenKH).ToList();
+                    break;
+            }
+
+            // Phân trang
+            int totalRecords = khoahoc.Count;
+            int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            int recordsToSkip = (page - 1) * pageSize;
 
             ViewBag.Page = page;
-            ViewBag.NoOfPage = NoOfPage;
-            khoahoc = khoahoc.Skip(NoOfRecordToSkip).Take(NoOfRecordPerPage).ToList();
+            ViewBag.TotalPages = totalPages;
 
+            khoahoc = khoahoc.Skip(recordsToSkip).Take(pageSize).ToList();
 
             return View(khoahoc);
         }
 
-        public async Task<ActionResult> DanhSachHocVienThamGiaKhoaHoc()
+        public ActionResult DanhSachHocVienThamGiaKhoaHoc()
         {
-            // Lấy tất cả các khóa học
-            var khoaHocList = await ttth.KhoaHoc.ToListAsync();
-
-            // Dùng ViewModel để hiển thị khóa học cùng số học viên đăng ký
+            var khoaHocList = ttth.KhoaHoc.ToList();
             var khoaHocViewModelList = new List<KhoaHocViewModel>();
 
             foreach (var khoaHoc in khoaHocList)
             {
-                // Đếm số học viên đã đăng ký khóa học này
-                var soHocVien = await ttth.GiaoDichHocPhi
-                                        .Where(gd => gd.MaKH == khoaHoc.MaKH)
-                                        .Select(gd => gd.MaHV)
-                                        .Distinct()
-                                        .CountAsync();
+                var soHocVien = ttth.GiaoDichHocPhi
+                                    .Where(gd => gd.MaKH == khoaHoc.MaKH)
+                                    .Select(gd => gd.MaHV)
+                                    .Distinct()
+                                    .Count();
 
-                // Kiểm tra điều kiện mở lớp
                 bool moLop = soHocVien >= 20;
 
-                // Thêm vào ViewModel
                 var khoaHocViewModel = new KhoaHocViewModel
                 {
                     MaKH = khoaHoc.MaKH,
@@ -77,27 +87,26 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(khoaHocViewModelList);
         }
 
-
-        public async Task<ActionResult> KhoaHocAdd()
+        public ActionResult KhoaHocAdd()
         {
-            ViewBag.MaChuongTrinh = new SelectList(await ttth.ChuongTrinhHoc.ToListAsync(), "MaChuongTrinh", "TenChuongTrinh");
+            ViewBag.MaChuongTrinh = new SelectList(ttth.ChuongTrinhHoc.ToList(), "MaChuongTrinh", "TenChuongTrinh");
             ViewBag.MaKH = makh;
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> KhoaHocAdd(KhoaHoc khoahoc, HttpPostedFileBase imageFile)
+        public ActionResult KhoaHocAdd(KhoaHoc khoahoc, HttpPostedFileBase imageFile)
         {
             if (string.IsNullOrEmpty(khoahoc.MaChuongTrinh))
             {
                 ModelState.AddModelError("MaChuongTrinh", "Vui lòng chọn chương trình");
             }
 
-            ViewBag.MaChuongTrinh = new SelectList(await ttth.ChuongTrinhHoc.ToListAsync(), "MaChuongTrinh", "TenChuongTrinh");
+            ViewBag.MaChuongTrinh = new SelectList(ttth.ChuongTrinhHoc.ToList(), "MaChuongTrinh", "TenChuongTrinh");
 
             if (ModelState.IsValid)
             {
-                var existingKhoaHoc = await ttth.KhoaHoc.FirstOrDefaultAsync(kh => kh.MaKH == khoahoc.MaKH);
+                var existingKhoaHoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == khoahoc.MaKH);
                 if (existingKhoaHoc != null)
                 {
                     ModelState.AddModelError("MaKH", "Mã khóa học đã tồn tại!");
@@ -125,16 +134,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 }
 
                 ttth.KhoaHoc.Add(khoahoc);
-                await ttth.SaveChangesAsync();
+                ttth.SaveChanges();
                 return RedirectToAction("KhoaHocList");
             }
             return View();
         }
 
-
-        public async Task<ActionResult> KhoaHocDelete(string id)
+        public ActionResult KhoaHocDelete(string id)
         {
-            var khoahoc = await ttth.KhoaHoc.FirstOrDefaultAsync(kh => kh.MaKH == id);
+            var khoahoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == id);
             if (khoahoc == null)
             {
                 return HttpNotFound("Không tìm thấy khóa học.");
@@ -143,34 +151,34 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> KhoaHocDelete(string id, KhoaHoc khoahoc)
+        public ActionResult KhoaHocDelete(string id, KhoaHoc khoahoc)
         {
-            khoahoc = await ttth.KhoaHoc.FirstOrDefaultAsync(kh => kh.MaKH == id);
+            khoahoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == id);
             if (khoahoc != null)
             {
                 ttth.KhoaHoc.Remove(khoahoc);
-                await ttth.SaveChangesAsync();
+                ttth.SaveChanges();
             }
             return RedirectToAction("KhoaHocList");
         }
 
-        public async Task<ActionResult> KhoaHocEdit(string id)
+        public ActionResult KhoaHocEdit(string id)
         {
-            var khoahoc = await ttth.KhoaHoc.FirstOrDefaultAsync(kh => kh.MaKH == id);
+            var khoahoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == id);
             if (khoahoc == null)
             {
                 return HttpNotFound("Không tìm thấy khóa học.");
             }
-            ViewBag.MaChuongTrinhList = new SelectList(await ttth.ChuongTrinhHoc.ToListAsync(), "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);
+            ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc.ToList(), "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);
             return View(khoahoc);
         }
 
         [HttpPost]
-        public async Task<ActionResult> KhoaHocEdit(KhoaHoc khoahoc, HttpPostedFileBase imageFile)
+        public ActionResult KhoaHocEdit(KhoaHoc khoahoc, HttpPostedFileBase imageFile)
         {
             if (ModelState.IsValid)
             {
-                var kh = await ttth.KhoaHoc.FirstOrDefaultAsync(k => k.MaKH == khoahoc.MaKH);
+                var kh = ttth.KhoaHoc.FirstOrDefault(k => k.MaKH == khoahoc.MaKH);
                 if (kh == null)
                 {
                     ModelState.AddModelError("", "Không tìm thấy khóa học.");
@@ -193,7 +201,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
                     {
                         ModelState.AddModelError("Anh", "Chỉ chấp nhận hình ảnh JPG hoặc PNG và không lớn hơn 2MB.");
-                        ViewBag.MaChuongTrinhList = new SelectList(await ttth.ChuongTrinhHoc.ToListAsync(), "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);
+                        ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc.ToList(), "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);
                         return View(khoahoc);
                     }
 
@@ -203,11 +211,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     kh.Anh = fileName;
                 }
 
-                await ttth.SaveChangesAsync();
+                ttth.SaveChanges();
                 return RedirectToAction("KhoaHocList");
             }
 
-            ViewBag.MaChuongTrinhList = new SelectList(await ttth.ChuongTrinhHoc.ToListAsync(), "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);
+            ViewBag.MaChuongTrinhList = new SelectList(ttth.ChuongTrinhHoc.ToList(), "MaChuongTrinh", "TenChuongTrinh", khoahoc.MaChuongTrinh);
             return View(khoahoc);
         }
     }

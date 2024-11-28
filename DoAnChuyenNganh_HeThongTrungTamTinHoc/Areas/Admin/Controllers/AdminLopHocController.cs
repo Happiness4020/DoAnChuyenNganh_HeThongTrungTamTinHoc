@@ -21,21 +21,43 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         private string malh = Utility.TaoMaNgauNhien("LH", 3);
 
 
-        public async Task<ActionResult> LopHocList()
+        public ActionResult LopHocList(string search = "", int page = 1, int pageSize = 10)
         {
-            var lopHoc = db.LopHoc.Include(l => l.GiaoVien).Include(l => l.KhoaHoc);
+            var lopHocQuery = db.LopHoc.Include(l => l.GiaoVien).Include(l => l.KhoaHoc);
 
+            // Lọc dữ liệu nếu có từ khóa tìm kiếm
+            if (!string.IsNullOrEmpty(search))
+            {
+                lopHocQuery = lopHocQuery.Where(l => l.TenLop.Contains(search) || l.GiaoVien.HoTen.Contains(search) || l.KhoaHoc.TenKH.Contains(search));
+            }
+
+            var lopHoc = lopHocQuery.ToList();
+
+            // Lấy số học viên đã đăng ký cho mỗi khóa học
             foreach (var item in lopHoc)
             {
-                // Lấy số học viên đã đăng ký cho mỗi khóa học
-                item.SiSo = await db.GiaoDichHocPhi
+                item.SiSo = db.GiaoDichHocPhi
                     .Where(gd => gd.MaKH == item.MaKH)
                     .Select(gd => gd.MaHV)
                     .Distinct()
-                    .CountAsync();
+                    .Count();
             }
-            return View(await lopHoc.ToListAsync());
+
+            // Tính toán phân trang
+            int totalRecords = lopHoc.Count;
+            int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            int recordsToSkip = (page - 1) * pageSize;
+
+            ViewBag.Page = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.Search = search;
+
+            // Lấy dữ liệu cho trang hiện tại
+            var paginatedLopHoc = lopHoc.Skip(recordsToSkip).Take(pageSize).ToList();
+
+            return View(paginatedLopHoc);
         }
+
 
         public ActionResult LopHocAdd(string MaKH, string tenKhoaHoc, int siSo, bool trangThai)
         {
@@ -52,21 +74,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> LopHocAdd(LopHoc lopHoc, string MaKH)
+        public ActionResult LopHocAdd(LopHoc lopHoc, string MaKH)
         {
-            // Kiểm tra lớp học với tên lớp và giáo viên đã tồn tại chưa
-            bool gv = await db.LopHoc
-                .AnyAsync(l => l.TenLop == lopHoc.TenLop && l.MaGV == lopHoc.MaGV);
-
+            bool gv = db.LopHoc.Any(l => l.TenLop == lopHoc.TenLop && l.MaGV == lopHoc.MaGV);
             if (gv)
             {
-                // Nếu tồn tại thì thêm lỗi vào ModelState và hiển thị thông báo
                 ModelState.AddModelError("TenLop", "Lớp học này đã tồn tại với giáo viên đã chọn.");
             }
 
-            bool lopHocdatontai = await db.LopHoc
-               .AnyAsync(l => l.TenLop == lopHoc.TenLop);
-
+            bool lopHocdatontai = db.LopHoc.Any(l => l.TenLop == lopHoc.TenLop);
             if (lopHocdatontai)
             {
                 ModelState.AddModelError("TenLop", "Lớp học này đã tồn tại.");
@@ -74,12 +90,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                // Nếu không tồn tại thì tiếp tục thêm lớp học
                 lopHoc.MaLH = malh;
 
                 var hocVienDaDangKy = LayDanhSachHocVienDaDangKy(MaKH);
-
-                // Thêm học viên vào lớp học mới, bỏ qua những học viên đã có trong lớp khác
                 foreach (var maHV in hocVienDaDangKy)
                 {
                     var hocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHV);
@@ -93,30 +106,24 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     }
                 }
 
-
                 db.LopHoc.Add(lopHoc);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
 
-                // Tìm khóa học có mã MaKH để cập nhật trạng thái
                 var khoaHoc = db.KhoaHoc.Find(MaKH);
                 if (khoaHoc != null)
                 {
-                    // Cập nhật trạng thái của khóa học sang "Đã mở lớp"
                     lopHoc.TrangThai = true;
                     db.Entry(lopHoc).State = EntityState.Modified;
                     db.SaveChanges();
                 }
 
-                // Xóa học viên đã đăng ký khóa học khỏi bảng GiaoDichHocPhi
                 var giaoDichs = db.GiaoDichHocPhi.Where(gd => gd.MaKH == MaKH).ToList();
                 foreach (var gd in giaoDichs)
                 {
-                    // Xóa từng giao dịch học phí liên quan đến khóa học
                     db.GiaoDichHocPhi.Remove(gd);
                 }
 
-                // Lưu thay đổi vào cơ sở dữ liệu sau khi xóa học viên
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("LopHocList");
             }
 
@@ -125,14 +132,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(lopHoc);
         }
 
-
-        public async Task<ActionResult> LopHocEdit(string id)
+        public ActionResult LopHocEdit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LopHoc lopHoc = await db.LopHoc.FindAsync(id);
+            LopHoc lopHoc = db.LopHoc.Find(id);
             if (lopHoc == null)
             {
                 return HttpNotFound();
@@ -142,15 +148,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(lopHoc);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> LopHocEdit(LopHoc lopHoc)
+        public ActionResult LopHocEdit(LopHoc lopHoc)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(lopHoc).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("LopHocList");
             }
             ViewBag.MaGVList = new SelectList(db.GiaoVien, "MaGV", "HoTen", lopHoc.MaGV);
@@ -158,13 +163,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(lopHoc);
         }
 
-        public async Task<ActionResult> LopHocDelete(string id)
+        public ActionResult LopHocDelete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LopHoc lopHoc = await db.LopHoc.FindAsync(id);
+            LopHoc lopHoc = db.LopHoc.Find(id);
             if (lopHoc == null)
             {
                 return HttpNotFound();
@@ -174,47 +179,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> LopHocDeleteConfirmed(string id)
+        public ActionResult LopHocDeleteConfirmed(string id)
         {
-            LopHoc lopHoc = await db.LopHoc.FindAsync(id);
+            LopHoc lopHoc = db.LopHoc.Find(id);
             db.LopHoc.Remove(lopHoc);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
             return RedirectToAction("LopHocList");
-        }
-
-
-        public async Task<ActionResult> HienSoHocVienDangKy(string maKH)
-        {
-            if (maKH == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            // Lấy danh sách học viên đăng ký khóa học
-            var soHocVien = await db.GiaoDichHocPhi
-                                    .Where(gd => gd.MaKH == maKH)
-                                    .Select(gd => gd.MaHV)
-                                    .Distinct()
-                                    .CountAsync();
-
-            // Kiểm tra điều kiện mở lớp học
-            bool moLop = soHocVien >= 20;
-
-            // Tạo thông báo
-            string message = moLop
-                ? "Khóa học đủ số lượng và có thể mở lớp."
-                : $"Khóa học hiện có {soHocVien} học viên đăng ký. Cần thêm {20 - soHocVien} học viên nữa để mở lớp.";
-
-            // Trả về kết quả
-            ViewBag.Message = message;
-            ViewBag.SoHocVien = soHocVien;
-
-            var khoaHoc = await db.KhoaHoc.FindAsync(maKH);
-            if (khoaHoc == null)
-            {
-                return HttpNotFound();
-            }
-            return View(khoaHoc);
         }
 
 
@@ -230,10 +200,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         }
 
 
-        public async Task<ActionResult> PhanLichHocChoHocVien(string maLH, DateTime ngayBatDau, DateTime ngayKetThuc, int soBuoiHoc)
+        public ActionResult PhanLichHocChoHocVien(string maLH, DateTime ngayBatDau, DateTime ngayKetThuc, int soBuoiHoc)
         {
             // Bước 1: Kiểm tra lớp học tồn tại không
-            var lopHoc = await db.LopHoc.FindAsync(maLH);
+            var lopHoc = db.LopHoc.Find(maLH);
             if (lopHoc == null)
             {
                 return HttpNotFound("Lớp học không tồn tại.");
@@ -270,6 +240,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 foreach (var ngayHoc in dsNgayHoc)
                 {
                     string malichhoc = Utility.TaoMaNgauNhien("LH", 4);
+
                     // Tạo bản ghi lịch học cho học viên
                     var lichHoc = new LichHoc
                     {
@@ -288,12 +259,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
 
             // Lưu lịch học cho tất cả học viên
-            await db.SaveChangesAsync();
+            db.SaveChanges();
 
             // Trả về thông báo thành công
             ViewBag.Message = $"Đã phân lịch học cho {danhSachHocVien.Count} học viên trong lớp {lopHoc.TenLop}.";
             return RedirectToAction("LopHocList");
         }
+
 
 
     }

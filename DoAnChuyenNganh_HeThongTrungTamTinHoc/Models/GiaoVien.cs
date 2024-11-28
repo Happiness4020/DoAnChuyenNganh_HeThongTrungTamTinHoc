@@ -20,10 +20,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         {
             this.LichDay = new HashSet<LichDay>();
             this.LienHe = new HashSet<LienHe>();
-            this.LopHoc = new HashSet<LopHoc>();
             this.TaiKhoan = new HashSet<TaiKhoan>();
+            this.LopHoc = new HashSet<LopHoc>();
         }
-    
+
         public string MaGV { get; set; }
         [Display(Name = "Nhập họ tên")]
         [Required(ErrorMessage = "Bạn phải nhập họ tên")]
@@ -48,7 +48,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Display(Name = "Nhập lĩnh vực đào tạo")]
         [Required(ErrorMessage = "Bạn phải nhập lĩnh vực đào tạo")]
         public string LinhVucDaoTao { get; set; }
- 
+
 
         [Display(Name = "Nhập email")]
         [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ.Email hợp lệ ví dụ: abc@gmail.com")]
@@ -56,7 +56,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string Email { get; set; }
 
 
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Điện thoại chỉ nhập số nguyên")]
+        [RegularExpression(@"^(03|05|07|08|09)[0-9]{8}$", ErrorMessage = "Số điện thoại phải bắt đầu bằng 03, 05, 07, 08, hoặc 09 và phải có 10 chữ số")]
         [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải là 10 số")]
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         [Display(Name = "Nhập số điện thoại")]
@@ -73,15 +73,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Required(ErrorMessage = "Bạn phải nhập lương")]
         public double Luong { get; set; }
 
-
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LichDay> LichDay { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LienHe> LienHe { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LopHoc> LopHoc { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TaiKhoan> TaiKhoan { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LopHoc> LopHoc { get; set; }
     }
 }

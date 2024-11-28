@@ -18,6 +18,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         public ActionResult Index()
         {
             string magv = Session["MaGV"]?.ToString();
+            if (string.IsNullOrEmpty(magv))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã giảng viên!!!");
+            }
             ViewBag.MaGV = magv;
 
             var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();

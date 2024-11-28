@@ -7,6 +7,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels
 {
     public class LichHocViewModel
     {
+
          // Mã lớp học
         public string MaLop { get; set; }
 
@@ -21,6 +22,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels
 
         // Tên giáo viên dạy lớp
         public string TenGV { get; set; }
+
+        // Ngày Học 
+        public string NgayHoc { get; set; }
 
         // Ngày bắt đầu lớp học
         public string NgayBatDau { get; set; }

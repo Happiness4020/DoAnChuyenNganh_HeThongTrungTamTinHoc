@@ -15,7 +15,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 
     public partial class TaiKhoan
     {
-        [Key]
         public int MaTK { get; set; }
         [Display(Name = "Nhập tên đăng nhập")]
         [Required(ErrorMessage = "Bạn phải nhập tên đăng nhập")]

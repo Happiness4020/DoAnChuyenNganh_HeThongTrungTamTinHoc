@@ -16,7 +16,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     public partial class LichDay
     {
         public string MaLichDay { get; set; }
-
         [Required(ErrorMessage = " Bạn phải nhập giáo viên ")]
         public string MaGV { get; set; }
 
@@ -31,6 +30,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 
         [Required(ErrorMessage = " Bạn phải nhập giờ kết thúc ")]
         public System.TimeSpan GioKetThuc { get; set; }
+
         public virtual GiaoVien GiaoVien { get; set; }
         public virtual LopHoc LopHoc { get; set; }
     }

@@ -90,7 +90,7 @@
                         <td>
                             <a href="@Url.Action("LopHocEdit", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
                             <a href="@Url.Action("LopHocDelete", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
-                            
+
                         </td>
                     </tr>
                 }
@@ -98,3 +98,57 @@
         </table>
     </div>
 </div>
+
+<div class="container-fluid d-flex justify-content-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @{
+                int trangtruoc = ViewBag.Page - 1;
+                int trangsau = ViewBag.Page + 1;
+                int totalPages = ViewBag.TotalPages;
+                int startPage = Math.Max(ViewBag.Page - 2, 1); // Hiển thị từ trang trước 2 trang
+                int endPage = Math.Min(ViewBag.Page + 2, totalPages); // Hiển thị đến trang sau 2 trang
+            }
+
+            <!-- Nút quay lại -->
+            <li class="page-item @(ViewBag.Page == 1 ? "disabled" : "")">
+                <a class="page-link" href="?page=@trangtruoc&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder" tabindex="-1"><</a>
+            </li>
+
+            <!-- Hiển thị trang đầu nếu cần -->
+            @if (startPage > 1)
+            {
+                <li class="page-item"><a class="page-link" href="?page=1&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">1</a></li>
+                if (startPage > 2)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+            }
+
+            <!-- Hiển thị các trang trong khoảng startPage đến endPage -->
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                    <a class="page-link" href="?page=@i&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@i</a>
+                </li>
+            }
+
+            <!-- Hiển thị trang cuối nếu cần -->
+            @if (endPage < totalPages)
+            {
+                if (endPage < totalPages - 1)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+                <li class="page-item"><a class="page-link" href="?page=@totalPages&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@totalPages</a></li>
+            }
+
+            <!-- Nút tiến -->
+            <li class="page-item @(ViewBag.Page == totalPages ? "disabled" : "")">
+                <a class="page-link" href="?page=@trangsau&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+

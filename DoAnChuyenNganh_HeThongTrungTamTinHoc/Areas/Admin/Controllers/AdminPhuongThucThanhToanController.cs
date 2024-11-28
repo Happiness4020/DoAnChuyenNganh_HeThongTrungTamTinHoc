@@ -17,9 +17,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
     {
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
 
-        public async Task<ActionResult> PhuongThucThanhToanList()
+        public ActionResult PhuongThucThanhToanList()
         {
-            return View(await db.PhuongThucThanhToan.ToListAsync());
+            var pt = db.PhuongThucThanhToan.ToList();
+            return View(pt);
         }
 
 
