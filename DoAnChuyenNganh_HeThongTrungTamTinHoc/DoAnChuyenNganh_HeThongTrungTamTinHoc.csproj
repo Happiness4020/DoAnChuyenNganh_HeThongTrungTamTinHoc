@@ -387,6 +387,7 @@
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BinhLuanController.cs" />
+    <Compile Include="Controllers\ChatBotController.cs" />
     <Compile Include="Controllers\ChuongTrinhHocController.cs" />
     <Compile Include="Controllers\GiangVienController.cs" />
     <Compile Include="Controllers\GioiThieuController.cs" />
@@ -547,6 +548,7 @@
     <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichEdit.cshtml" />
     <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichList.cshtml" />
     <Content Include="Areas\Admin\Views\AdminKhoaHoc\DanhSachHocVienThamGiaKhoaHoc.cshtml" />
+    <Content Include="CredentialsKey\kd-jceq-b8b55cc8f937.json" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -662,6 +664,7 @@
     <Folder Include="Areas\Admin\Views\DangKy\" />
     <Folder Include="Areas\Admin\Views\DemDSLopHoc\" />
     <Folder Include="Views\BinhLuan\" />
+    <Folder Include="Views\ChatBot\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.11.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
