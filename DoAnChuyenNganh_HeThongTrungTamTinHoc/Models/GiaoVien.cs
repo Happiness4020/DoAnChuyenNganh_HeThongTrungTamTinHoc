@@ -56,7 +56,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string Email { get; set; }
 
 
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Điện thoại chỉ nhập số nguyên")]
+        [RegularExpression(@"^(03|05|07|08|09)[0-9]{8}$", ErrorMessage = "Số điện thoại phải bắt đầu bằng 03, 05, 07, 08, hoặc 09 và phải có 10 chữ số")]
         [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải là 10 số")]
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         [Display(Name = "Nhập số điện thoại")]
