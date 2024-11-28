@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.Web;
+@{
     var userName = Context.Request.Cookies["NguoiDung"];
     var role = Context.Request.Cookies["QuyenHan"];
 }
@@ -22,17 +23,17 @@
             color: #0066b3;
         }
 
-        .nav-link:hover {
-            color: orangered;
-        }
+            .nav-link:hover {
+                color: orangered;
+            }
 
         .dropdown-item {
             width: 100%;
         }
 
-        .dropdown-item:hover {
-            background-color: lightgray;
-        }
+            .dropdown-item:hover {
+                background-color: lightgray;
+            }
     </style>
 </head>
 
