@@ -25,24 +25,31 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 .ToList();
 
             ViewBag.Search = search;
+            ViewBag.SortOrder = sortOrder;
 
-            int NoOfRecordPerPage = 7;
-            int NoOfPage = (int)Math.Ceiling((double)lichDays.Count / NoOfRecordPerPage);
-            int NoOfRecordToSkip = (page - 1) * NoOfRecordPerPage;
-
-            ViewBag.Page = page;
-            ViewBag.NoOfPage = NoOfPage;
-            lichDays = lichDays.Skip(NoOfRecordToSkip).Take(NoOfRecordPerPage).ToList();
-
+            // Sắp xếp theo sortOrder
             switch (sortOrder)
             {
-                case "magiaovien":
-                    lichDays = lichDays.OrderBy(e => e.MaGV).ToList();
+                case "magv":
+                    lichDays = lichDays.OrderBy(kh => kh.MaGV).ToList();
                     break;
-                case "malophoc":
-                    lichDays = lichDays.OrderBy(e => e.MaLH).ToList();
+                case "tengv":
+                    lichDays = lichDays.OrderBy(kh => kh.GiaoVien.HoTen).ToList();
+                    break;
+                default:
+                    lichDays = lichDays.OrderBy(kh => kh.NgayDay).ToList();
                     break;
             }
+
+            // Phân trang
+            int totalRecords = lichDays.Count;
+            int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            int recordsToSkip = (page - 1) * pageSize;
+
+            ViewBag.Page = page;
+            ViewBag.TotalPages = totalPages;
+
+            lichDays = lichDays.Skip(recordsToSkip).Take(pageSize).ToList();
 
             return View(lichDays);
         }

@@ -62,8 +62,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View();
                 }
 
-                // Mã hóa mật khẩu bằng BCrypt
-                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(tk.MatKhau);
+                //// Mã hóa mật khẩu bằng BCrypt
+                //string hashedPassword = BCrypt.Net.BCrypt.HashPassword(tk.MatKhau);
 
                 if (!string.IsNullOrEmpty(tk.MaHV))
                 {
@@ -78,7 +78,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     {
                         MaHV = tk.MaHV,
                         TenDangNhap = tk.TenDangNhap,
-                        MatKhau = hashedPassword, // Lưu mật khẩu đã mã hóa bằng BCrypt
+                        MatKhau = tk.MatKhau, // Lưu mật khẩu đã mã hóa bằng BCrypt
                         QuyenHan = tk.QuyenHan,
                         MaGV = null
                     };
@@ -96,7 +96,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     {
                         MaGV = tk.MaGV,
                         TenDangNhap = tk.TenDangNhap,
-                        MatKhau = hashedPassword, // Lưu mật khẩu đã mã hóa bằng BCrypt
+                        MatKhau = tk.MatKhau, // Lưu mật khẩu đã mã hóa bằng BCrypt
                         QuyenHan = tk.QuyenHan,
                         MaHV = null
                     };

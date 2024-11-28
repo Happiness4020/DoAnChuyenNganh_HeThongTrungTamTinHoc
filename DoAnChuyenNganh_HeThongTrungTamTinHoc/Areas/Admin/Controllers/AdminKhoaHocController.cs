@@ -66,7 +66,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             foreach (var khoaHoc in khoaHocList)
             {
                 var soHocVien = ttth.GiaoDichHocPhi
-                                    .Where(gd => gd.MaKH == khoaHoc.MaKH)
+                                    .Where(gd => gd.MaKH == khoaHoc.MaKH && gd.TrangThai == "Đã duyệt")
                                     .Select(gd => gd.MaHV)
                                     .Distinct()
                                     .Count();

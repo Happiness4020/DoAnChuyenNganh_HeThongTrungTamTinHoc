@@ -169,11 +169,14 @@
                             @if (Session["MaHV"]?.ToString() == binhluan.MaHV)
                             {
                                 <div class="d-flex gap-2 mt-1">
-                                    <button type="button" class="btn btn-secondary">
+                                    <button type="button" 
+                                            class="btn btn-secondary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editCommentModal-@binhluan.NgayBinhLuan.Ticks">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                     <button data-bs-toggle="modal"
-                                            data-bs-target="#deleteCommentModal"
+                                            data-bs-target="#deleteCommentModal-@binhluan.NgayBinhLuan.Ticks"
                                             class="btn btn-danger">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
@@ -182,7 +185,31 @@
                         </div>
                     </div>
 
-                    <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="editCommentModal-@binhluan.NgayBinhLuan.Ticks" tabindex="-1" aria-labelledby="editCommentModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editCommentModalLabel" style="color: #0066b3">Xóa bình luận</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    @Html.AntiForgeryToken()
+                                    <div class="mb-3">
+                                        <textarea class="form-control" id="NoiDung-@binhluan.NgayBinhLuan.Ticks" name="NoiDung" rows="4" required placeholder="Nhập bình luận tại đây">@binhluan.NoiDung</textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <form id="suaBinhLuanForm-@binhluan.NgayBinhLuan.Ticks" method="post" action="@Url.Action("SuaBinhLuan", "KhoaHoc", new { MaKH = Model.MaKH, NgayBinhLuan = binhluan.NgayBinhLuan })">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa-solid fa-pen-to-square"></i> Lưu
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="deleteCommentModal-@binhluan.NgayBinhLuan.Ticks" tabindex="-1" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -193,26 +220,27 @@
                                     <p>Bạn có chắc muốn xóa bình luận này không</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <form id="xoaBinhLuanForm" method="post" action="@Url.Action("XoaBinhLuan", "KhoaHoc", new { MaKH = Model.MaKH, NgayBinhLuan = binhluan.NgayBinhLuan })">
+                                    <form id="xoaBinhLuanForm-@binhluan.NgayBinhLuan.Ticks" method="post" action="@Url.Action("XoaBinhLuan", "KhoaHoc", new { MaKH = Model.MaKH, NgayBinhLuan = binhluan.NgayBinhLuan })">
                                         @Html.AntiForgeryToken()
-                                        <button type="submit" class="btn btn-primary">
-                                                Xóa
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </form>
-                                    <div class="mt-2">
-                                        @if (TempData["SuccessMessage"] != null)
-                                        {
-                                            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-                                        }
-                                        @if (TempData["ErrorMessage"] != null)
-                                        {
-                                            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-                                        }
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <script>
+                        document.getElementById('suaBinhLuanForm-@binhluan.NgayBinhLuan.Ticks').addEventListener('submit', function (e) {
+                            // Lấy giá trị từ textarea
+                            const noiDung = document.getElementById('NoiDung-@binhluan.NgayBinhLuan.Ticks').value;
+
+                            // Gán giá trị vào URL action
+                            const actionUrl = this.getAttribute('action');
+                            const updatedUrl = `${actionUrl}&NoiDung=${encodeURIComponent(noiDung)}`;
+                            this.setAttribute('action', updatedUrl);
+                        });
+                    </script>
                 }
 
             </div>
@@ -339,3 +367,4 @@
         });
     }
 </script>
+
