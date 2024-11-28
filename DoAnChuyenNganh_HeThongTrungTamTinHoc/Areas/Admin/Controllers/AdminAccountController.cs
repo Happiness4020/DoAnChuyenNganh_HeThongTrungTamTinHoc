@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Text;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
+using BCrypt.Net;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
@@ -49,7 +50,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View();
                 }
 
-
                 if (string.IsNullOrEmpty(tk.QuyenHan))
                 {
                     ModelState.AddModelError("QuyenHan", "Vui lòng chọn quyền hạn");
@@ -61,6 +61,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     ModelState.AddModelError("", "Vui lòng chọn mã học viên hoặc mã giáo viên!!!");
                     return View();
                 }
+
+                // Mã hóa mật khẩu bằng BCrypt
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(tk.MatKhau);
 
                 if (!string.IsNullOrEmpty(tk.MaHV))
                 {
@@ -75,7 +78,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     {
                         MaHV = tk.MaHV,
                         TenDangNhap = tk.TenDangNhap,
-                        MatKhau = tk.MatKhau,
+                        MatKhau = hashedPassword, // Lưu mật khẩu đã mã hóa bằng BCrypt
                         QuyenHan = tk.QuyenHan,
                         MaGV = null
                     };
@@ -93,7 +96,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     {
                         MaGV = tk.MaGV,
                         TenDangNhap = tk.TenDangNhap,
-                        MatKhau = tk.MatKhau,
+                        MatKhau = hashedPassword, // Lưu mật khẩu đã mã hóa bằng BCrypt
                         QuyenHan = tk.QuyenHan,
                         MaHV = null
                     };
