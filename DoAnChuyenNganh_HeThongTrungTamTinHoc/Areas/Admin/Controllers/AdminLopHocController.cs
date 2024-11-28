@@ -92,6 +92,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             {
                 lopHoc.MaLH = malh;
 
+                // Lấy 20 học viên đầu tiên đăng ký khóa học
                 var hocVienDaDangKy = LayDanhSachHocVienDaDangKy(MaKH);
                 foreach (var maHV in hocVienDaDangKy)
                 {
@@ -117,13 +118,36 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     db.SaveChanges();
                 }
 
-                var giaoDichs = db.GiaoDichHocPhi.Where(gd => gd.MaKH == MaKH).ToList();
+                // Xóa giao dịch học phí của 20 học viên đã thêm vào lớp
+                var giaoDichs = db.GiaoDichHocPhi
+                                  .Where(gd => hocVienDaDangKy.Contains(gd.MaHV) && gd.MaKH == MaKH)
+                                  .ToList();
+
                 foreach (var gd in giaoDichs)
                 {
                     db.GiaoDichHocPhi.Remove(gd);
                 }
 
                 db.SaveChanges();
+
+                // Kiểm tra nếu còn học viên dư, giữ lại họ để chờ mở lớp tiếp theo
+                var hocVienConLai = db.GiaoDichHocPhi
+                                      .Where(gd => gd.MaKH == MaKH)
+                                      .OrderBy(gd => gd.NgayGD)
+                                      .Skip(20) // Bỏ qua 20 người đầu tiên
+                                      .ToList();
+
+                if (hocVienConLai.Count >= 20)
+                {
+                    // Nếu có đủ 20 học viên tiếp theo, mở lớp tiếp theo
+                    return RedirectToAction("LopHocAdd", new { MaKH = MaKH });
+                }
+                else
+                {
+                    // Nếu chưa đủ 20 học viên, chờ cho đến khi đủ
+                    ViewBag.Message = "Lớp đã được mở, các học viên dư sẽ chờ đến khi đủ 20 người để mở lớp tiếp theo.";
+                }
+
                 return RedirectToAction("LopHocList");
             }
 
@@ -131,6 +155,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             ViewBag.MaKHList = new SelectList(db.KhoaHoc, "MaKH", "TenKH", lopHoc.MaKH);
             return View(lopHoc);
         }
+
 
         public ActionResult LopHocEdit(string id)
         {
@@ -189,18 +214,21 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
 
 
-        public List<string> LayDanhSachHocVienDaDangKy(string maKH)
+        public List<string> LayDanhSachHocVienDaDangKy(string maKH, int soLuongCanLay = 20)
         {
-            // Lấy danh sách các mã học viên đã đăng ký khóa học
+            // Lấy danh sách các mã học viên đã đăng ký khóa học và giới hạn 20 người đầu tiên
             var danhSachHocVien = db.GiaoDichHocPhi
-                                     .Where(gd => gd.MaKH == maKH)
+                                     .Where(gd => gd.MaKH == maKH && gd.TrangThai == "Đã duyệt")
+                                     .OrderBy(gd => gd.NgayGD) // Sắp xếp theo ngày đăng ký
                                      .Select(gd => gd.MaHV)
+                                     .Take(soLuongCanLay) // Lấy tối đa 20 học viên
                                      .ToList();
             return danhSachHocVien;
         }
 
 
-        public ActionResult PhanLichHocChoHocVien(string maLH, DateTime ngayBatDau, DateTime ngayKetThuc, int soBuoiHoc)
+
+        public ActionResult PhanLichHocChoHocVien(string maLH, int soBuoiHoc)
         {
             // Bước 1: Kiểm tra lớp học tồn tại không
             var lopHoc = db.LopHoc.Find(maLH);
@@ -208,6 +236,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             {
                 return HttpNotFound("Lớp học không tồn tại.");
             }
+
+            // Lấy thông tin khóa học
+            var khoaHoc = db.KhoaHoc.Find(lopHoc.MaKH);
+            if (khoaHoc == null)
+            {
+                return HttpNotFound("Khóa học không tồn tại.");
+            }
+
+            DateTime ngayBatDau = khoaHoc.NgayBatDau;
 
             // Bước 2: Lấy danh sách học viên đã đăng ký vào lớp học
             var danhSachHocVien = db.ChiTiet_HocVien_LopHoc
@@ -225,14 +262,19 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             List<DateTime> dsNgayHoc = new List<DateTime>();
             DateTime ngayHienTai = ngayBatDau;
 
-            while (ngayHienTai <= ngayKetThuc && dsNgayHoc.Count < soBuoiHoc)
+            // Tính lịch học dựa trên số buổi học yêu cầu
+            while (dsNgayHoc.Count < soBuoiHoc)
             {
                 if (ngayHocTrongTuan.Contains(ngayHienTai.DayOfWeek))
                 {
                     dsNgayHoc.Add(ngayHienTai);
                 }
-                ngayHienTai = ngayHienTai.AddDays(1);
+                ngayHienTai = ngayHienTai.AddDays(1); // Tăng thêm một ngày
             }
+
+            // Ngày kết thúc sẽ là ngày của buổi học cuối cùng
+            DateTime ngayKetThuc = khoaHoc.NgayKetThuc;
+
 
             // Bước 4: Phân lịch học cho từng học viên
             foreach (var maHV in danhSachHocVien)
@@ -249,8 +291,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         MaHV = maHV,
                         NgayHoc = ngayHoc,
                         DiemDanh = true,
-                        GioBatDau = lopHoc.GioBatDau,  // Giả định giờ bắt đầu là 8:00 AM
-                        GioKetThuc = lopHoc.GioKetThuc // Giả định giờ kết thúc là 11:00 AM
+                        GioBatDau = lopHoc.GioBatDau,  // Giả định giờ bắt đầu
+                        GioKetThuc = lopHoc.GioKetThuc // Giả định giờ kết thúc
                     };
 
                     // Thêm lịch học vào cơ sở dữ liệu
@@ -258,13 +300,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 }
             }
 
-            // Lưu lịch học cho tất cả học viên
+            // Lưu lịch học cho tất cả học viên và cập nhật ngày kết thúc
             db.SaveChanges();
 
             // Trả về thông báo thành công
             ViewBag.Message = $"Đã phân lịch học cho {danhSachHocVien.Count} học viên trong lớp {lopHoc.TenLop}.";
             return RedirectToAction("LopHocList");
         }
+
+
 
 
 
