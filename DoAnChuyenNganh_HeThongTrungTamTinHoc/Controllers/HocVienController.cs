@@ -416,37 +416,37 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         public ActionResult CapNhatThongTinHocVien(HocVien thongtinhocvien)
         {
 
-                string mahv = Session["MaHV"]?.ToString();
+            string mahv = Session["MaHV"]?.ToString();
 
-                // Kiểm tra nếu không có MaHV trong session
-                if (string.IsNullOrEmpty(mahv))
-                {
-                    TempData["ErrorMessage"] = "Mã học viên không tồn tại!";
-                    return RedirectToAction("Index");
-                }
+            // Kiểm tra nếu không có MaHV trong session
+            if (string.IsNullOrEmpty(mahv))
+            {
+                TempData["ErrorMessage"] = "Mã học viên không tồn tại!";
+                return RedirectToAction("Index");
+            }
+            
+            var hocvien = db.HocVien.Where(hv => hv.MaHV == mahv).FirstOrDefault();
 
-                var hocvien = db.HocVien.Where(hv => hv.MaHV == mahv).FirstOrDefault();
-
-                if (hocvien != null)
-                {
-                    hocvien.HoTen = thongtinhocvien.HoTen;
-                    hocvien.NgaySinh = thongtinhocvien.NgaySinh;
-                    hocvien.GioiTinh = thongtinhocvien.GioiTinh;
-                    hocvien.Email = thongtinhocvien.Email;
-                    hocvien.SoDT = thongtinhocvien.SoDT;
-                    hocvien.DiaChi = thongtinhocvien.DiaChi;
+            if (hocvien != null)
+            {
+                hocvien.HoTen = thongtinhocvien.HoTen;
+                hocvien.NgaySinh = thongtinhocvien.NgaySinh;
+                hocvien.GioiTinh = thongtinhocvien.GioiTinh;
+                hocvien.Email = thongtinhocvien.Email;
+                hocvien.SoDT = thongtinhocvien.SoDT;
+                hocvien.DiaChi = thongtinhocvien.DiaChi;
 
 
-                    db.SaveChanges();
+                db.SaveChanges();
 
-                    TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Không tìm thấy học viên với mã đã cung cấp!";
-                }
-     
+                TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy học viên với mã đã cung cấp!";
+            }
+
             return RedirectToAction("Index");
         }
 
