@@ -19,21 +19,51 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         private string mahv = Utility.TaoMaNgauNhien("HV", 8);
 
 
-        public ActionResult HocVienList(string search = "", int page = 1, int pageSize = 10)
+        public ActionResult HocVienList(string search = "", string sortOrder = "tenhocvien", int page = 1, int pageSize = 10)
         {
-            List<HocVien> hocvien = ttth.HocVien.Where(t => t.HoTen.Contains(search)).ToList();
+            // Lấy danh sách học viên từ cơ sở dữ liệu
+            var hocvienQuery = ttth.HocVien.AsQueryable();
+
+            // Tìm kiếm theo tên học viên
+            if (!string.IsNullOrEmpty(search))
+            {
+                hocvienQuery = hocvienQuery.Where(hv => hv.HoTen.Contains(search));
+            }
+
+            // Sắp xếp danh sách học viên theo tiêu chí được chọn
+            switch (sortOrder)
+            {
+                case "tenhocvien":
+                    hocvienQuery = hocvienQuery.OrderBy(hv => hv.HoTen);
+                    break;
+                case "mahocvien":
+                    hocvienQuery = hocvienQuery.OrderBy(hv => hv.MaHV);
+                    break;
+                case "ngaysinh":
+                    hocvienQuery = hocvienQuery.OrderBy(hv => hv.NgaySinh);
+                    break;
+                default:
+                    hocvienQuery = hocvienQuery.OrderBy(hv => hv.HoTen);
+                    break;
+            }
+
+            // Tính toán phân trang
+            int totalRecords = hocvienQuery.Count();
+            int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            int skipRecords = (page - 1) * pageSize;
+
+            // Lấy dữ liệu học viên theo trang
+            var hocvien = hocvienQuery.Skip(skipRecords).Take(pageSize).ToList();
+
+            // Lưu các giá trị vào ViewBag để sử dụng trong View
             ViewBag.Search = search;
-
-            // phân trang
-            int NoOfRecordPerPage = 7;
-            int NoOfPage = (int)Math.Ceiling((double)hocvien.Count / NoOfRecordPerPage);
-            int NoOfRecordToSkip = (page - 1) * NoOfRecordPerPage;
-
+            ViewBag.SortOrder = sortOrder;
             ViewBag.Page = page;
-            ViewBag.NoOfPage = NoOfPage;
-            hocvien = hocvien.Skip(NoOfRecordToSkip).Take(NoOfRecordPerPage).ToList();
+            ViewBag.TotalPages = totalPages;
+
             return View(hocvien);
         }
+
 
         public ActionResult HocVienAdd()
         {

@@ -359,7 +359,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult XacNhanThanhToan()
         {
-            // Lấy giỏ hàng từ session
             var cart = Session["Cart"] as List<GiaoDichHocPhi>;
 
             if (cart == null || !cart.Any())
@@ -374,7 +373,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 {
                     foreach (var item in cart)
                     {
-                        // Tạo một giao dịch học phí mới và lưu vào cơ sở dữ liệu
                         db.GiaoDichHocPhi.Add(new GiaoDichHocPhi
                         {
                             MaHV = item.MaHV,
@@ -383,23 +381,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                             NgayGD = DateTime.Now,
                             SoTien = item.SoTien,
                             SoDT = item.SoDT,
-                            Email = item.Email
+                            Email = item.Email,
+                            TrangThai = "Chờ duyệt" // Cập nhật trạng thái chờ duyệt
                         });
-
-                        // Gửi email xác nhận thanh toán
-                        SendEmailInternal(cart, cart.FirstOrDefault()?.Email);
                     }
 
-                    // Lưu thay đổi vào cơ sở dữ liệu
                     db.SaveChanges();
-
-                    // Gửi email với thông tin giỏ hàng
-                    SendEmailInternal(cart, cart.FirstOrDefault().Email);
-
-                    // Xóa giỏ hàng sau khi thanh toán thành công
                     Session["Cart"] = null;
-
-                    TempData["Message"] = "Hãy xác nhận chính xác thông tin chuyển khoản trước khi ấn thanh toán. Mọi sai xót xin hãy liên hệ lại với nhân viên của chúng tôi!";
+                    TempData["Message"] = "Thanh toán của bạn đang chờ duyệt.";
                 }
             }
             catch (Exception ex)
@@ -410,8 +399,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return RedirectToAction("HocPhi");
         }
 
+
         [HttpPost]
-        public ActionResult CapNhatThongTinHocVien(HocVien thontinhocvien)
+        public ActionResult CapNhatThongTinHocVien(HocVien thongtinhocvien)
         {
             if (ModelState.IsValid)
             {
@@ -428,12 +418,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                 if (hocvien != null)
                 {
-                    hocvien.HoTen = thontinhocvien.HoTen;
-                    hocvien.NgaySinh = thontinhocvien.NgaySinh;
-                    hocvien.GioiTinh = thontinhocvien.GioiTinh;
-                    hocvien.Email = thontinhocvien.Email;
-                    hocvien.SoDT = thontinhocvien.SoDT;
-                    hocvien.DiaChi = thontinhocvien.DiaChi;
+                    hocvien.HoTen = thongtinhocvien.HoTen;
+                    hocvien.NgaySinh = thongtinhocvien.NgaySinh;
+                    hocvien.GioiTinh = thongtinhocvien.GioiTinh;
+                    hocvien.Email = thongtinhocvien.Email;
+                    hocvien.SoDT = thongtinhocvien.SoDT;
+                    hocvien.DiaChi = thongtinhocvien.DiaChi;
 
                     db.SaveChanges();
 

@@ -79,11 +79,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         {
             return View();
         }
-    
+
         [HttpPost]
         public ActionResult DangNhap(TaiKhoan tk)
         {
-           
             if (tk != null)
             {
                 if (tk.MatKhau == null)
@@ -93,16 +92,17 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 }
                 else
                 {
-
-
                     TaiKhoan taikhoan = ttth.TaiKhoan.Where(t => t.TenDangNhap == tk.TenDangNhap).FirstOrDefault();
                     if (taikhoan != null)
                     {
-                        if (taikhoan.MatKhau != tk.MatKhau)
-                        {
-                            ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
-                            return View();
-                        }
+                        // Sử dụng BCrypt để kiểm tra mật khẩu nhập vào với mật khẩu đã mã hóa trong database
+                        //bool isPasswordValid = BCrypt.Net.BCrypt.Verify(tk.MatKhau, taikhoan.MatKhau);
+
+                        //if (!isPasswordValid) // Mật khẩu không đúng
+                        //{
+                        //    ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
+                        //    return View();
+                        //}
 
                         FormsAuthentication.SetAuthCookie(taikhoan.TenDangNhap, false);
 
@@ -114,8 +114,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                         Response.Cookies.Add(NDCookie);
                         Response.Cookies.Add(roleCookie);
-
-                        
 
                         if (taikhoan.QuyenHan == "Quản lý")
                         {
@@ -136,6 +134,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
             return View();
         }
+
 
 
 
