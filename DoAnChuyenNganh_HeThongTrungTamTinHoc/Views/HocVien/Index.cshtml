@@ -26,15 +26,11 @@
         margin-top: 20px;
     }
 
-    .modal-backdrop.show {
-        opacity: 0.8;
-    }
-
     .alert {
-        display: none;
+        display: block;
+        text-align: center;
     }
 
-    /* Đảm bảo Modal hiển thị tốt */
     .modal-dialog {
         max-width: 800px;
     }
@@ -46,13 +42,13 @@
     <!-- Hiển thị thông báo -->
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success success-message text-center" style="display:block;">
+        <div class="alert alert-success success-message">
             @TempData["SuccessMessage"]
         </div>
     }
     else if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger error-message text-center" style="display:block;">
+        <div class="alert alert-danger error-message">
             @TempData["ErrorMessage"]
         </div>
     }
@@ -62,7 +58,6 @@
         <div class="row">
             <div class="col-md-4 text-center">
                 <img src="~/AnhHocVien/@(System.IO.File.Exists(Server.MapPath("~/AnhHocVien/" + Model.Anh)) ? Model.Anh : "noimage.jpg")" alt="Ảnh học viên" class="profile-image">
-                Form cập nhật ảnh học viên
                 <form method="post" action="@Url.Action("CapNhatAnhHocVien", "HocVien")" enctype="multipart/form-data" class="mt-3">
                     <input type="file" name="Anh" class="form-control mb-2" accept="image/*" required>
                     <button type="submit" class="btn btn-primary btn-sm">Cập nhật ảnh</button>
@@ -80,7 +75,7 @@
                     </tr>
                     <tr>
                         <th>Ngày sinh:</th>
-                        <td>@Model.NgaySinh</td>
+                        <td>@Model.NgaySinh?.ToString("dd/MM/yyyy")</td>
                     </tr>
                     <tr>
                         <th>Giới tính:</th>
@@ -138,15 +133,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="updateEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="updateEmail" name="Email" value="@Model.Email" required placeholder="Nhập email">
+                        <input type="email" class="form-control" id="updateEmail" name="Email" value="@Model.Email" required>
                     </div>
                     <div class="mb-3">
                         <label for="updateSoDT" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="updateSoDT" name="SoDT" value="@Model.SoDT" pattern="^\d{10,15}$" title="Số điện thoại phải có 10-15 chữ số" required placeholder="Nhập số điện thoại">
+                        <input type="text" class="form-control" id="updateSoDT" name="SoDT" value="@Model.SoDT" pattern="^\d{10}$" title="Số điện thoại phải có 10 chữ số" required>
                     </div>
                     <div class="mb-3">
                         <label for="updateDiaChi" class="form-label">Địa chỉ</label>
-                        <input type="text" class="form-control" id="updateDiaChi" name="DiaChi" value="@Model.DiaChi" required placeholder="Nhập địa chỉ">
+                        <input type="text" class="form-control" id="updateDiaChi" name="DiaChi" value="@Model.DiaChi" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Lưu thay đổi</button>
                 </form>

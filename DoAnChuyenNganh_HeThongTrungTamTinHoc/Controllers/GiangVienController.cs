@@ -304,32 +304,63 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult CapNhatAnhGiangVien(HttpPostedFileBase Anh)
         {
-            if (Anh != null && Anh.ContentLength > 0)
+            try
             {
-                string magv = Session["MaGV"]?.ToString();
-                var giaoVien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
-
-                if (giaoVien != null)
+                if (Anh != null && Anh.ContentLength > 0)
                 {
-                    string fileName = Path.GetFileName(Anh.FileName);
-                    string path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
-                    Anh.SaveAs(path);
+                    string magv = Session["MaGV"]?.ToString();
+                    var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
 
-                    giaoVien.Anh = fileName;
-                    db.SaveChanges();
+                    if (giaovien != null)
+                    {
+                        var dinhdangchophep = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                        var dinhdanganh = Path.GetExtension(Anh.FileName).ToLower();
 
-                    TempData["SuccessMessage"] = "Cập nhật ảnh thành công!";
+                        if (!dinhdangchophep.Contains(dinhdanganh))
+                        {
+                            TempData["ErrorMessage"] = "Chỉ chấp nhận các định dạng ảnh: .jpg, .jpeg, .png, .gif";
+                            return RedirectToAction("Index");
+                        }
+
+                        if (Anh.ContentLength > 3 * 1024 * 1024) // 5MB
+                        {
+                            TempData["ErrorMessage"] = "Kích thước ảnh không được vượt quá 3MB!";
+                            return RedirectToAction("Index");
+                        }
+
+                        if (!string.IsNullOrEmpty(giaovien.Anh) && giaovien.Anh != "noimage.jpg")
+                        {
+                            string oldImagePath = Path.Combine(Server.MapPath("~/AnhHocVien"), giaovien.Anh);
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                        }
+
+                        string tenanh = magv + dinhdanganh;
+                        string duongdan = Path.Combine(Server.MapPath("~/AnhHocVien"), tenanh);
+                        Anh.SaveAs(duongdan);
+
+                        giaovien.Anh = tenanh;
+                        db.SaveChanges();
+
+                        TempData["SuccessMessage"] = "Cập nhật ảnh thành công!";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Không tìm thấy giảng viên!";
+                    }
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Không tìm thấy giảng viên!";
+                    TempData["ErrorMessage"] = "Vui lòng chọn một ảnh hợp lệ!";
                 }
             }
-            else
+            catch
             {
-                TempData["ErrorMessage"] = "Vui lòng chọn một ảnh hợp lệ!";
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật ảnh!!!";
+                return RedirectToAction("Index");
             }
-
             return RedirectToAction("Index");
         }
     }

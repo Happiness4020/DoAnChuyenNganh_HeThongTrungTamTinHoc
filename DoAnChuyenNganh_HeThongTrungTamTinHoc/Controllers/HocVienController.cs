@@ -34,6 +34,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 // Lấy MaHV từ session
                 string maHV = Session["MaHV"].ToString();
 
+                ViewBag.MaHV = maHV;
                 // Tìm học viên từ cơ sở dữ liệu dựa trên MaHV
                 var hocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHV);
 
@@ -415,36 +416,39 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult CapNhatThongTinHocVien(HocVien thongtinhocvien)
         {
-
-            string mahv = Session["MaHV"]?.ToString();
-
-            // Kiểm tra nếu không có MaHV trong session
-            if (string.IsNullOrEmpty(mahv))
+            if (ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Mã học viên không tồn tại!";
-                return RedirectToAction("Index");
-            }
-            
-            var hocvien = db.HocVien.Where(hv => hv.MaHV == mahv).FirstOrDefault();
+                string mahv = Session["MaHV"]?.ToString();
+                if (string.IsNullOrEmpty(mahv))
+                {
+                    TempData["ErrorMessage"] = "Mã học viên không tồn tại!";
+                    return RedirectToAction("Index");
+                }
 
-            if (hocvien != null)
-            {
-                hocvien.HoTen = thongtinhocvien.HoTen;
-                hocvien.NgaySinh = thongtinhocvien.NgaySinh;
-                hocvien.GioiTinh = thongtinhocvien.GioiTinh;
-                hocvien.Email = thongtinhocvien.Email;
-                hocvien.SoDT = thongtinhocvien.SoDT;
-                hocvien.DiaChi = thongtinhocvien.DiaChi;
+                var hocvien = db.HocVien.Where(hv => hv.MaHV == mahv).FirstOrDefault();
 
+                if (hocvien != null)
+                {
+                    hocvien.HoTen = thongtinhocvien.HoTen;
+                    hocvien.NgaySinh = thongtinhocvien.NgaySinh;
+                    hocvien.GioiTinh = thongtinhocvien.GioiTinh;
+                    hocvien.Email = thongtinhocvien.Email;
+                    hocvien.SoDT = thongtinhocvien.SoDT;
+                    hocvien.DiaChi = thongtinhocvien.DiaChi;
 
-                db.SaveChanges();
+                    db.SaveChanges();
 
-                TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
-                return RedirectToAction("Index");
+                    TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy học viên!";
+                }
             }
             else
             {
-                TempData["ErrorMessage"] = "Không tìm thấy học viên với mã đã cung cấp!";
+                TempData["ErrorMessage"] = "Dữ liệu không hợp lệ!";
             }
 
             return RedirectToAction("Index");
@@ -453,78 +457,67 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult CapNhatAnhHocVien(HttpPostedFileBase Anh)
         {
-            // Kiểm tra xem người dùng đã đăng nhập hay chưa
-            string mahv = Session["MaHV"]?.ToString();
-            if (string.IsNullOrEmpty(mahv))
+            if (Anh != null && Anh.ContentLength > 0)
             {
-                TempData["ErrorMessage"] = "Bạn chưa đăng nhập hoặc phiên làm việc đã hết hạn!";
-                return RedirectToAction("Login");
-            }
+                string mahv = Session["MaHV"]?.ToString();
+                if (string.IsNullOrEmpty(mahv))
+                {
+                    TempData["ErrorMessage"] = "Bạn chưa đăng nhập hoặc phiên làm việc đã hết hạn!";
+                    return RedirectToAction("Login");
+                }
 
-            // Kiểm tra nếu không có tệp ảnh nào được chọn hoặc tệp có kích thước không hợp lệ
-            if (Anh == null || Anh.ContentLength <= 0)
-            {
-                TempData["ErrorMessage"] = "Vui lòng chọn một ảnh hợp lệ!";
-                return RedirectToAction("Index");
-            }
+                var hocvien = db.HocVien.Where(hv => hv.MaHV == mahv).FirstOrDefault();
 
-            // Kiểm tra định dạng ảnh hợp lệ
-            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            var fileExtension = Path.GetExtension(Anh.FileName).ToLower();
-            if (!allowedExtensions.Contains(fileExtension))
-            {
-                TempData["ErrorMessage"] = "Chỉ chấp nhận các định dạng ảnh: .jpg, .jpeg, .png, .gif";
-                return RedirectToAction("Index");
-            }
+                if (hocvien != null)
+                {
+                    // Kiểm tra định dạng và kích thước file trước khi lưu
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var fileExtension = Path.GetExtension(Anh.FileName).ToLower();
 
-            // Kiểm tra kích thước ảnh (không quá 5MB)
-            if (Anh.ContentLength > 5 * 1024 * 1024) // 5MB
-            {
-                TempData["ErrorMessage"] = "Kích thước ảnh không được vượt quá 5MB!";
-                return RedirectToAction("Index");
-            }
+                    if (!allowedExtensions.Contains(fileExtension))
+                    {
+                        TempData["ErrorMessage"] = "Chỉ chấp nhận các định dạng ảnh: .jpg, .jpeg, .png, .gif";
+                        return RedirectToAction("Index");
+                    }
 
-            try
-            {
-                // Tìm kiếm học viên trong cơ sở dữ liệu
-                var hocvien = db.HocVien.FirstOrDefault(hv => hv.MaHV == mahv);
-                if (hocvien == null)
+                    if (Anh.ContentLength > 5 * 1024 * 1024) // 5MB
+                    {
+                        TempData["ErrorMessage"] = "Kích thước ảnh không được vượt quá 5MB!";
+                        return RedirectToAction("Index");
+                    }
+
+                    string fileName = Path.GetFileNameWithoutExtension(Anh.FileName) + fileExtension;
+                    string path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
+
+                    Anh.SaveAs(path);
+
+                    if (!string.IsNullOrEmpty(hocvien.Anh) && hocvien.Anh != "noimage.jpg")
+                    {
+                        string oldImagePath = Path.Combine(Server.MapPath("~/AnhHocVien"), hocvien.Anh);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    hocvien.Anh = fileName;
+                    db.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Cập nhật ảnh thành công!";
+                }
+                else
                 {
                     TempData["ErrorMessage"] = "Không tìm thấy học viên!";
-                    return RedirectToAction("Index");
                 }
-
-                // Tạo tên tệp ngẫu nhiên để tránh trùng lặp
-                string fileName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + fileExtension;
-                string path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
-
-                // Lưu ảnh mới
-                Anh.SaveAs(path);
-
-                // Xóa ảnh cũ nếu không phải là ảnh mặc định
-                if (!string.IsNullOrEmpty(hocvien.Anh) && hocvien.Anh != "noimage.jpg")
-                {
-                    string oldImagePath = Path.Combine(Server.MapPath("~/AnhHocVien"), hocvien.Anh);
-                    if (System.IO.File.Exists(oldImagePath))
-                    {
-                        System.IO.File.Delete(oldImagePath);
-                    }
-                }
-
-                // Cập nhật thông tin ảnh trong cơ sở dữ liệu
-                hocvien.Anh = fileName;
-                db.SaveChanges();
-
-                TempData["SuccessMessage"] = "Cập nhật ảnh thành công!";
             }
-            catch (Exception ex)
+            else
             {
-                // Xử lý lỗi nếu có
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi khi cập nhật ảnh: " + ex.Message;
+                TempData["ErrorMessage"] = "Vui lòng chọn một ảnh hợp lệ!";
             }
 
             return RedirectToAction("Index");
         }
+
 
 
 
