@@ -31,7 +31,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [RegularExpression("^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ ]*$")]
         public string HoTen { get; set; }
 
-        [Required(ErrorMessage = "Bạn phải chọn ảnh")]
         public string Anh { get; set; }
 
         [Display(Name = "Ngày sinh")]
