@@ -11,7 +11,7 @@
             <div class="d-flex flex-column align-items-center">
                 <img src="~/AnhHocVien/@Model.Anh" alt="Ảnh giảng viên" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
                 <button type="button" class="btn btn-sm btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#changePhotoModal">
-                    <i class="fa-solid fa-pen-to-square"></i>
+                    <i class="fa-solid fa-camera"></i> Thay đổi ảnh
                 </button>
             </div>
         </div>
@@ -46,8 +46,18 @@
     </div>
     <div class="text-center mt-4">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateInfoModal">
-            Cập nhật thông tin
+            <i class="fa-solid fa-pen-to-square"></i> Cập nhật thông tin
         </button>
+    </div>
+    <div class="my-2">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
     </div>
 </section>
 
@@ -66,16 +76,6 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Lưu ảnh</button>
                 </form>
-            </div>
-            <div>
-                @if (TempData["SuccessMessage"] != null)
-                {
-                    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-                }
-                @if (TempData["ErrorMessage"] != null)
-                {
-                    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-                }
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="updateLinhVucDaoTao" class="form-label">Lĩnh vực đào tạo</label>
-                        <input type="text" class="form-control" id="updateLinhVucDaoTao" name="LinhVucDaoTao" value="@Model.LinhVucDaoTao" required readonly>
+                        <input type="text" class="form-control" id="updateLinhVucDaoTao" name="LinhVucDaoTao" value="@Model.LinhVucDaoTao" required>
                     </div>
                     <div class="mb-3">
                         <label for="updateLinhVucDaoTao" class="form-label">Ngày vào làm</label>
@@ -122,18 +122,10 @@
                         <label for="updateLuong" class="form-label">Lương</label>
                         <input type="number" class="form-control" id="updateLuong" name="Luong" value="@Model.Luong" readonly>
                     </div>
-                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-regular fa-floppy-disk"></i> Lưu thay đổi
+                    </button>
                 </form>
-                <div class="mt-2">
-                    @if (TempData["SuccessMessage"] != null)
-                    {
-                        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-                    }
-                    @if (TempData["ErrorMessage"] != null)
-                    {
-                        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-                    }
-                </div>
             </div>
         </div>
     </div>
