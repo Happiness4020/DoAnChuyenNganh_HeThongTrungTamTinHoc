@@ -59,7 +59,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         {
             ViewBag.MaLichDay = maLichDay;
             ViewBag.GiaoVienList = new SelectList(db.GiaoVien, "MaGV", "HoTen");
-            ViewBag.LopHocList = new SelectList(db.LopHoc, "MaLH", "TenLop");
+            ViewBag.LopHocList = new SelectList(db.LopHoc, "MaLH", "TenPhong");
             return View();
         }
 
@@ -82,7 +82,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
 
             ViewBag.GiaoVienList = new SelectList(db.GiaoVien, "MaGV", "HoTen");
-            ViewBag.LopHocList = new SelectList(db.LopHoc, "MaLH", "TenLop");
+            ViewBag.LopHocList = new SelectList(db.LopHoc, "MaLH", "TenPhong");
             return View();
         }
 
@@ -115,7 +115,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
 
             ViewBag.GiaoVienList = new SelectList(db.GiaoVien, "MaGV", "HoTen", lichDay.MaGV);
-            ViewBag.LopHocList = new SelectList(db.LopHoc, "MaLH", "TenLop", lichDay.MaLH);
+            ViewBag.LopHocList = new SelectList(db.LopHoc, "MaLH", "TenPhong", lichDay.MaLH);
             return View(lichDay);
         }
 
@@ -130,7 +130,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
 
             ViewBag.GiaoVienList = new SelectList(db.GiaoVien, "MaGV", "HoTen", lichDay.MaGV);
-            ViewBag.LopHocList = new SelectList(db.LopHoc, "MaLH", "TenLop", lichDay.MaLH);
+            ViewBag.LopHocList = new SelectList(db.LopHoc, "MaLH", "TenPhong", lichDay.MaLH);
             return View(lichDay);
         }
 

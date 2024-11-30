@@ -65,19 +65,28 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             foreach (var khoaHoc in khoaHocList)
             {
-                var soHocVien = ttth.GiaoDichHocPhi
-                                    .Where(gd => gd.MaKH == khoaHoc.MaKH && gd.TrangThai == "Đã duyệt")
-                                    .Select(gd => gd.MaHV)
-                                    .Distinct()
-                                    .Count();
+                var hocVienDaThamGia = ttth.ChiTiet_HocVien_LopHoc
+                                           .Where(ct => ct.LopHoc.MaKH == khoaHoc.MaKH)
+                                           .Select(ct => ct.MaHV)
+                                           .Distinct();
 
-                bool moLop = soHocVien >= 20;
+                var hocVienDangKy = ttth.GiaoDichHocPhi
+                                        .Where(gd => gd.MaKH == khoaHoc.MaKH && gd.TrangThai == "Đã duyệt")
+                                        .Select(gd => gd.MaHV)
+                                        .Distinct()
+                                        .ToList();
+
+                var hocVienConLai = hocVienDangKy.Except(hocVienDaThamGia).ToList();
+
+                int soHocVienConLai = hocVienConLai.Count;
+
+                bool moLop = soHocVienConLai >= 20;
 
                 var khoaHocViewModel = new KhoaHocViewModel
                 {
                     MaKH = khoaHoc.MaKH,
                     TenKH = khoaHoc.TenKH,
-                    SoHocVien = soHocVien,
+                    SoHocVien = soHocVienConLai,
                     MoLop = moLop
                 };
 

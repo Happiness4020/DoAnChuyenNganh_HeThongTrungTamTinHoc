@@ -165,30 +165,42 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         return HttpNotFound();
                     }
 
-                    List<GiaoDichHocPhi> cart = Session["Cart"] as List<GiaoDichHocPhi> ?? new List<GiaoDichHocPhi>();
+                    // Kiểm tra xem học viên đã đăng ký khóa học này chưa
+                    var daDangKy = db.GiaoDichHocPhi.Any(gd => gd.MaHV == maHocVien && gd.MaKH == courseId);
 
-                    var existingCourse = cart.FirstOrDefault(c => c.MaKH == course.MaKH);
-                    if (existingCourse == null)
+                    if (daDangKy)
                     {
-                        cart.Add(new GiaoDichHocPhi
-                        {
-                            MaHV = hocVien.MaHV,
-                            MaKH = course.MaKH,
-                            MaPT = 1,
-                            NgayGD = DateTime.Now,
-                            SoTien = course.HocPhi,
-                            SoDT = hocVien.SoDT,
-                            Email = hocVien.Email
-                        });
-
-                        TempData["Message"] = "Khóa học đã được thêm vào giỏ hàng thành công!";
+                        TempData["ErrorMessage"] = "Bạn đã đăng ký khóa học này. Không thể đăng ký lại.";
+                        return RedirectToAction("Dangkihocphan");
                     }
                     else
                     {
-                        TempData["Message"] = "Khóa học đã có trong giỏ hàng.";
-                    }
+                        // Thêm vào giỏ hàng
+                        List<GiaoDichHocPhi> cart = Session["Cart"] as List<GiaoDichHocPhi> ?? new List<GiaoDichHocPhi>();
 
-                    Session["Cart"] = cart;
+                        var existingCourse = cart.FirstOrDefault(c => c.MaKH == course.MaKH);
+                        if (existingCourse == null)
+                        {
+                            cart.Add(new GiaoDichHocPhi
+                            {
+                                MaHV = hocVien.MaHV,
+                                MaKH = course.MaKH,
+                                MaPT = 1,
+                                NgayGD = DateTime.Now,
+                                SoTien = course.HocPhi,
+                                SoDT = hocVien.SoDT,
+                                Email = hocVien.Email
+                            });
+
+                            TempData["Message"] = "Khóa học đã được thêm vào giỏ hàng thành công!";
+                        }
+                        else
+                        {
+                            TempData["Message"] = "Khóa học đã có trong giỏ hàng.";
+                        }
+
+                        Session["Cart"] = cart;
+                    }
                 }
             }
             catch (Exception ex)
@@ -198,6 +210,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
             return RedirectToAction("HocPhi");
         }
+
+
         public ActionResult HocPhi()
         {
             using (var db = new TrungTamTinHocEntities())
@@ -489,5 +503,59 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
             return RedirectToAction("Index");
         }
+
+
+        public ActionResult LichSuGiaoDich()
+        {
+            string maHV = Session["MaHV"]?.ToString();
+            if (string.IsNullOrEmpty(maHV))
+            {
+                return RedirectToAction("Login", "HocVien");
+            }
+            using (var db = new TrungTamTinHocEntities())
+            {
+                var lichsugiaodich = (from gd in db.GiaoDichHocPhi.AsNoTracking()
+                                      join kh in db.KhoaHoc.AsNoTracking() on gd.MaKH equals kh.MaKH
+                                      join pt in db.PhuongThucThanhToan.AsNoTracking() on gd.MaPT equals pt.MaPT
+                                      join hv in db.HocVien.AsNoTracking() on gd.MaHV equals hv.MaHV
+
+                                      where gd.MaHV == maHV
+                                      select new
+                                      {
+                                          MaHocVien = gd.MaHV,
+                                          TenHocVien = hv.HoTen,
+                                          MaKhoaHoc = gd.MaKH,
+                                          TenKhoaHoc = kh.TenKH,
+                                          TenPhuongThuc = pt.TenPT,
+                                          NgayGiaoDich = gd.NgayGD,
+                                          SoTien = gd.SoTien,
+                                          SDT = gd.SoDT,
+                                          Email = gd.Email,
+                                          TrangThai = gd.TrangThai
+                                      }).Distinct().ToList();
+                var lichsuGDViewList = lichsugiaodich.Select(x => new LichSuGiaoDichViewModel
+                {
+                    MaHV = x.MaHocVien,
+                    TenHocVien = x.TenHocVien,
+                    MaKH = x.MaKhoaHoc,
+                    TenKhoaHoc = x.TenKhoaHoc,
+                    TenPhuongThuc = x.TenPhuongThuc,
+                    NgayGD = x.NgayGiaoDich?.ToString("dd/MM/yyyy") ?? "N/A",
+                    SoTien = x.SoTien ?? 0.0,
+                    SoDT = x.SDT,
+                    Email = x.Email,
+                    TrangThai = x.TrangThai,
+
+                }).ToList();
+
+                ViewBag.HocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHV);
+
+                return View(lichsuGDViewList);
+            }
+        }
+
     }
+
+
+
 }
