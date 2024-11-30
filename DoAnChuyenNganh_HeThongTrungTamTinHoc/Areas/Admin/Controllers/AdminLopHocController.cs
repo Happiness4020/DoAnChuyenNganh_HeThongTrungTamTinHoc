@@ -34,15 +34,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             var lopHoc = lopHocQuery.ToList();
 
-            // Lấy số học viên đã đăng ký cho mỗi khóa học
-            foreach (var item in lopHoc)
-            {
-                item.SiSo = db.GiaoDichHocPhi
-                    .Where(gd => gd.MaKH == item.MaKH)
-                    .Select(gd => gd.MaHV)
-                    .Distinct()
-                    .Count();
-            }
+            //// Lấy số học viên đã đăng ký cho mỗi khóa học
+            //foreach (var item in lopHoc)
+            //{
+            //    item.SiSo = db.GiaoDichHocPhi
+            //        .Where(gd => gd.MaKH == item.MaKH)
+            //        .Select(gd => gd.MaHV)
+            //        .Distinct()
+            //        .Count();
+            //}
 
             // Tính toán phân trang
             int totalRecords = lopHoc.Count;

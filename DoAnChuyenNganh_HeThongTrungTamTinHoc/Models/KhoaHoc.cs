@@ -11,8 +11,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class KhoaHoc
+    using System.ComponentModel.DataAnnotations;
+
+    public partial class KhoaHoc : IValidatableObject
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public KhoaHoc()
@@ -25,16 +26,36 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         }
     
         public string MaKH { get; set; }
+        [Required(ErrorMessage = "Tên khóa học không được để trống")]
+        [StringLength(100, ErrorMessage = "Tên khóa học không được vượt quá 100 ký tự")]
         public string TenKH { get; set; }
+
+        [Required(ErrorMessage = "Mô tả không được để trống")]
         public string MoTa { get; set; }
         public string Anh { get; set; }
+
+        [Display(Name = "Ngày bắt đầu")]
+        [Required(ErrorMessage = "Bạn phải nhập ngày bắt đầu")]
         public System.DateTime NgayBatDau { get; set; }
-        public Nullable<System.DateTime> NgayKetThuc { get; set; }
+
+        [Display(Name = "Ngày kết thúc")]
+        [Required(ErrorMessage = "Bạn phải nhập ngày kết thúc")]
+        public System.DateTime NgayKetThuc { get; set; }
+
+        [Required(ErrorMessage = "Bạn phải nhập số buổi học")]
         public int Sobuoihoc { get; set; }
+
+        [Required(ErrorMessage = "Bạn phải chọn chương trình học")]
         public string MaChuongTrinh { get; set; }
+
+        [Range(0, double.MaxValue, ErrorMessage = "Học phí phải là số dương")]
+        [Required(ErrorMessage = "Bạn phải nhập học phí")]
         public double HocPhi { get; set; }
+
+        [Required(ErrorMessage = "Bạn phải nhập loại khóa học")]
+        [StringLength(50, ErrorMessage = "Loại khóa học không được vượt quá 50 ký tự")]
         public string LoaiKH { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
         public virtual ChuongTrinhHoc ChuongTrinhHoc { get; set; }
@@ -46,5 +67,28 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public virtual ICollection<NguoiQuanLy> NguoiQuanLy { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TaiLieuHocTap> TaiLieuHocTap { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            // Số tháng tối thiểu giữa ngày bắt đầu và ngày kết thúc
+            int soThangQuyDinh = 3;
+
+            if (NgayKetThuc <= NgayBatDau)
+            {
+                yield return new ValidationResult(
+                    "Ngày kết thúc phải lớn hơn ngày bắt đầu.",
+                    new[] { "NgayKetThuc" }
+                );
+            }
+
+            // Kiểm tra nếu ngày kết thúc cách ngày bắt đầu ít nhất số tháng quy định
+            if (NgayKetThuc < NgayBatDau.AddMonths(soThangQuyDinh))
+            {
+                yield return new ValidationResult(
+                    $"Ngày kết thúc phải cách ngày bắt đầu ít nhất {soThangQuyDinh} tháng.",
+                    new[] { "NgayKetThuc" }
+                );
+            }
+        }
     }
 }
