@@ -8,31 +8,48 @@
     .table-header {
         background-color: #0066b3;
         color: white;
+        font-weight: bold;
     }
 
     th, td {
-        text-align: center;
+        text-align: left;
         vertical-align: middle;
+        padding: 10px 15px;
+    }
+
+    .profile-card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
     }
 
     .profile-image {
-        width: 120px;
-        height: 120px;
+        width: 150px;
+        height: 150px;
         object-fit: cover;
         border-radius: 50%;
+        border: 3px solid #0066b3;
+        margin-bottom: 15px;
     }
 
-    .success-message, .error-message {
-        margin-top: 20px;
+    .btn-primary {
+        background-color: #0066b3;
+        border-color: #0066b3;
+    }
+
+        .btn-primary:hover {
+            background-color: #00509d;
+        }
+
+    .modal-content {
+        border-radius: 15px;
     }
 
     .alert {
         display: block;
         text-align: center;
-    }
-
-    .modal-dialog {
-        max-width: 800px;
+        font-weight: bold;
     }
 </style>
 
@@ -54,11 +71,11 @@
         </div>
     }
 
-    <div class="card shadow-sm mt-4 p-4">
+    <div class="profile-card">
         <div class="row">
             <div class="col-md-4 text-center">
-                <img src="~/AnhHocVien/@(System.IO.File.Exists(Server.MapPath("~/AnhHocVien/" + Model.Anh)) ? Model.Anh : "noimage.jpg")" alt="Ảnh học viên" class="img-fluid rounded-circle mb-3 profile-image" style="width: 150px; height: 150px; object-fit: cover;">
-
+                <img src="~/AnhHocVien/@(System.IO.File.Exists(Server.MapPath("~/AnhHocVien/" + Model.Anh)) ? Model.Anh : "noimage.jpg")"
+                     alt="Ảnh học viên" class="profile-image">
                 <form id="changePhotoForm" method="post" action="@Url.Action("CapNhatAnhHocVien", "HocVien")" enctype="multipart/form-data" class="mt-3">
                     <div class="mb-3">
                         <label for="newPhoto" class="form-label">Chọn ảnh mới</label>
@@ -69,51 +86,49 @@
                     </button>
                 </form>
             </div>
-  
             <div class="col-md-8">
-                <table class="table table-borderless">
+                <table class="table table-bordered">
                     <tr>
-                        <th>Mã học viên:</th>
+                        <th class="table-header">Mã học viên:</th>
                         <td>@Model.MaHV</td>
                     </tr>
                     <tr>
-                        <th>Họ tên:</th>
+                        <th class="table-header">Họ tên:</th>
                         <td>@Model.HoTen</td>
                     </tr>
                     <tr>
-                        <th>Ngày sinh:</th>
+                        <th class="table-header">Ngày sinh:</th>
                         <td>@Model.NgaySinh.ToString("dd/MM/yyyy")</td>
                     </tr>
                     <tr>
-                        <th>Giới tính:</th>
+                        <th class="table-header">Giới tính:</th>
                         <td>@Model.GioiTinh</td>
                     </tr>
                     <tr>
-                        <th>Email:</th>
+                        <th class="table-header">Email:</th>
                         <td>@Model.Email</td>
                     </tr>
                     <tr>
-                        <th>Số điện thoại:</th>
+                        <th class="table-header">Số điện thoại:</th>
                         <td>@Model.SoDT</td>
                     </tr>
                     <tr>
-                        <th>Địa chỉ:</th>
+                        <th class="table-header">Địa chỉ:</th>
                         <td>@Model.DiaChi</td>
                     </tr>
                 </table>
-
-
             </div>
         </div>
     </div>
+
     <div class="text-center mt-4">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateInfoModal">
             <i class="fa-solid fa-pen-to-square"></i> Cập nhật thông tin
         </button>
     </div>
-
 </div>
 
+<!-- Modal cập nhật thông tin -->
 <div class="modal fade" id="updateInfoModal" tabindex="-1" aria-labelledby="updateInfoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -140,18 +155,6 @@
                             <option value="Khác" @(Model.GioiTinh == "Khác" ? "selected" : "")>Khác</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label for="updateEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="updateEmail" name="Email" value="@Model.Email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="updateSoDT" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="updateSoDT" name="SoDT" value="@Model.SoDT" pattern="^(03|05|07|08|09)\d{8}$" title="Số điện thoại phải có 10 chữ số" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="updateDiaChi" class="form-label">Địa chỉ</label>
-                        <input type="text" class="form-control" id="updateDiaChi" name="DiaChi" value="@Model.DiaChi" required>
-                    </div>
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="fa-regular fa-floppy-disk"></i> Lưu thay đổi
                     </button>
@@ -160,7 +163,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     setTimeout(function () {

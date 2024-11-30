@@ -671,6 +671,7 @@
     <Content Include="protos\google\api\auth.proto" />
     <Content Include="protos\google\api\annotations.proto" />
     <Content Include="Views\KhoaHoc\DangKyKhoaHoc.cshtml" />
+    <Content Include="Views\HocVien\LichSuGiaoDich.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
