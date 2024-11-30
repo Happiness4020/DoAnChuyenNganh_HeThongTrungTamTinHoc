@@ -290,9 +290,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         MaLH = maLH,
                         MaHV = maHV,
                         NgayHoc = ngayHoc,
-                        DiemDanh = true,
-                        GioBatDau = lopHoc.GioBatDau,  // Giả định giờ bắt đầu
-                        GioKetThuc = lopHoc.GioKetThuc // Giả định giờ kết thúc
+                        DiemDanh = false,
+                        GioBatDau = lopHoc.GioBatDau,  
+                        GioKetThuc = lopHoc.GioKetThuc 
                     };
 
                     // Thêm lịch học vào cơ sở dữ liệu
