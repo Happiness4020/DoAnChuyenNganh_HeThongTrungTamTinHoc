@@ -110,6 +110,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                                      .Where(c => c.MaHV == maHocVien)
                                      .ToList();
 
+                var kq = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaHV == maHocVien);
+                if(kq != null)
+                {
+                    var lop = db.LopHoc.FirstOrDefault(l => l.MaLH == kq.MaLH);
+                    ViewBag.Lop = lop;
+                }    
+
                 var hocvien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHocVien);
                 ViewBag.HocVien = hocvien;
 

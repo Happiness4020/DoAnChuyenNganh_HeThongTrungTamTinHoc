@@ -4,11 +4,14 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 {
@@ -19,13 +22,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         // GET: KhoaHoc
         public ActionResult Index(string search = "", int page = 1, string sort_by = "price_asc")
         {
-            var khs = db.KhoaHoc;
-            List<KhoaHoc> khoahocs = db.KhoaHoc.Where(e => e.TenKH.Contains(search)).ToList();
-            ViewBag.Search = search;
             List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
             ViewBag.ChuongTrinhHocs = cths;
 
-            // Sắp xếp
+            var khs = db.KhoaHoc;
+            List<KhoaHoc> khoahocs = db.KhoaHoc.Where(e => e.TenKH.Contains(search)).ToList();
+            ViewBag.Search = search;
+
             if (sort_by == "price_asc")
             {
                 khoahocs = khoahocs.OrderBy(c => c.HocPhi).ToList();
@@ -231,6 +234,88 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             catch
             {
                 return new List<KhoaHocNoiBatViewModel>();
+            }
+        }
+
+        public ActionResult DangKyKhoaHoc(string makh)
+        {
+            List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
+            ViewBag.ChuongTrinhHocs = cths;
+
+            KhoaHoc kh = db.KhoaHoc.Where(t => t.MaKH == makh).FirstOrDefault();
+
+            ViewBag.MaKH = makh;
+
+            return View(kh);
+        }
+        [HttpPost]
+        public async Task<ActionResult> DangKyKhoaHoc(string makh, DangKyKhoaHocViewModel model)
+        {
+            string mahv = Utility.TaoMaNgauNhien("HV", 8);
+            HocVien hocvien = db.HocVien.FirstOrDefault(hv => hv.MaHV == mahv);
+
+            if (hocvien != null)
+            {
+                TempData["ErrorMessage"] = "Học viên đã tồn tại";
+                return RedirectToAction("DangKyKhoaHoc", new { MaKH = makh });
+            }
+
+            var emailtontai = db.HocVien.FirstOrDefault(hv => hv.Email == model.Email);
+            if (emailtontai != null)
+            {
+                TempData["ErrorMessage"] = "Email đã được sử dụng!!! Hãy dùng một email khác";
+                return RedirectToAction("DangKyKhoaHoc", new { MaKH = makh });
+            }
+
+            var sodttontai = db.HocVien.FirstOrDefault(hv => hv.SoDT == model.SoDT);
+            if (emailtontai != null)
+            {
+                TempData["ErrorMessage"] = "Số điện thoại đã được sử dụng!!! Hãy dùng một số điện thoại khác";
+                return RedirectToAction("DangKyKhoaHoc", new { MaKH = makh });
+            }
+
+            hocvien = new HocVien
+            {
+                MaHV = mahv,
+                Anh = "noimage.jpg",
+                HoTen = model.HoTen,
+                NgaySinh = model.NgaySinh,
+                GioiTinh = model.GioiTinh,
+                Email = model.Email,
+                SoDT = model.SoDT,
+                DiaChi = model.DiaChi,
+            };
+
+            db.HocVien.Attach(hocvien);
+            db.HocVien.Add(hocvien);
+            db.SaveChanges();
+
+            await GuiMaHV(model.Email, mahv);
+
+            TempData["SuccessMessage"] = "Đăng ký khóa học thành công. Hãy sử dụng mã học viên đã được gửi đến email của bạn để đăng ký tài khoản";
+            return RedirectToAction("DangKyKhoaHoc", new { MaKH = makh });
+        }
+
+        public async Task<ActionResult> GuiMaHV(string email, string mahv)
+        {
+            var sendGridClient = new SendGridClient("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");
+            var from = new EmailAddress("buikhanhduy13082003@gmail.com", "Trung Tâm Tin Học HUIT");
+            var subject = "Mã học viên";
+            var to = new EmailAddress(email);
+            var plainTextContent = $"Mã học viên của bạn là: {mahv}";
+            var htmlContent = $"<strong>Mã học viên của bạn là: {mahv}</strong>" +
+                $"<p>Hãy dùng mã học viên của bạn để đăng ký tài khoản trên website của Trung tâm Tin học HUIT. Tài khoản học viên giúp bạn cập nhật thông tin học, các thông tin cá nhân và kết quả học tập của bạn.</p>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+
+            var response = await sendGridClient.SendEmailAsync(msg);
+
+            if (response.StatusCode == HttpStatusCode.Accepted)
+            {
+                return Json(new { message = "Mã OTP đã được gửi đến email của bạn." });
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Gửi email thất bại. Vui lòng thử lại sau.");
             }
         }
     }
