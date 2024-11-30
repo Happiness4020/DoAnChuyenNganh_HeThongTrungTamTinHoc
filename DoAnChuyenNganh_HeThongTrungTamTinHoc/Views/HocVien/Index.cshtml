@@ -26,48 +26,50 @@
         margin-top: 20px;
     }
 
-    .modal-backdrop.show {
-        opacity: 0.8;
-    }
-
     .alert {
-        display: none;
+        display: block;
+        text-align: center;
     }
 
-    /* Đảm bảo Modal hiển thị tốt */
     .modal-dialog {
         max-width: 800px;
     }
 </style>
 
 <div class="container mt-4">
-    <h2 class="text-center" style="color: #0066b3;">Thông tin học viên</h2>
+    <h2 class="text-center mb-4" style="color: #0066b3;">Thông tin học viên</h2>
 
-    <!-- Hiển thị thông báo -->
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success success-message text-center" style="display:block;">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
     else if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger error-message text-center" style="display:block;">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
 
-    <!-- Thông tin học viên -->
-    <div class="card mt-4 p-3">
+    <div class="card shadow-sm mt-4 p-4">
         <div class="row">
             <div class="col-md-4 text-center">
-                <img src="~/AnhHocVien/@(System.IO.File.Exists(Server.MapPath("~/AnhHocVien/" + Model.Anh)) ? Model.Anh : "noimage.jpg")" alt="Ảnh học viên" class="profile-image">
-                 Form cập nhật ảnh học viên 
-                <form method="post" action="@Url.Action("CapNhatAnhHocVien", "HocVien")" enctype="multipart/form-data" class="mt-3">
-                    <input type="file" name="Anh" class="form-control mb-2" accept="image/*" required>
-                    <button type="submit" class="btn btn-primary btn-sm">Cập nhật ảnh</button>
+                <img src="~/AnhHocVien/@(System.IO.File.Exists(Server.MapPath("~/AnhHocVien/" + Model.Anh)) ? Model.Anh : "noimage.jpg")" alt="Ảnh học viên" class="img-fluid rounded-circle mb-3 profile-image" style="width: 150px; height: 150px; object-fit: cover;">
+
+                <form id="changePhotoForm" method="post" action="@Url.Action("CapNhatAnhHocVien", "HocVien")" enctype="multipart/form-data" class="mt-3">
+                    <div class="mb-3">
+                        <label for="newPhoto" class="form-label">Chọn ảnh mới</label>
+                        <input type="file" name="Anh" class="form-control mb-2" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm w-100">
+                        <i class="fa-solid fa-camera"></i> Cập nhật ảnh
+                    </button>
                 </form>
             </div>
+  
             <div class="col-md-8">
                 <table class="table table-borderless">
                     <tr>
@@ -80,7 +82,7 @@
                     </tr>
                     <tr>
                         <th>Ngày sinh:</th>
-                        <td>@Model.NgaySinh</td>
+                        <td>@Model.NgaySinh.ToString("dd/MM/yyyy")</td>
                     </tr>
                     <tr>
                         <th>Giới tính:</th>
@@ -99,22 +101,24 @@
                         <td>@Model.DiaChi</td>
                     </tr>
                 </table>
-                <div class="text-end">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateInfoModal">
-                        Cập nhật thông tin
-                    </button>
-                </div>
+
+
             </div>
         </div>
     </div>
+    <div class="text-center mt-4">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateInfoModal">
+            <i class="fa-solid fa-pen-to-square"></i> Cập nhật thông tin
+        </button>
+    </div>
+
 </div>
 
-<!-- Modal cập nhật thông tin -->
 <div class="modal fade" id="updateInfoModal" tabindex="-1" aria-labelledby="updateInfoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateInfoModalLabel" style="color: #0066b3;">Cập nhật thông tin</h5>
+                <h5 class="modal-title" id="updateInfoModalLabel" style="color: #0066b3;">Cập nhật thông tin học viên</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -126,7 +130,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="updateNgaySinh" class="form-label">Ngày sinh</label>
-                        <input type="date" class="form-control" id="updateNgaySinh" name="NgaySinh" value="@Model.NgaySinh?.ToString(" yyyy-MM-dd")" required>
+                        <input type="date" class="form-control" id="updateNgaySinh" name="NgaySinh" value="@Model.NgaySinh.ToString("yyyy-MM-dd")" required>
                     </div>
                     <div class="mb-3">
                         <label for="updateGioiTinh" class="form-label">Giới tính</label>
@@ -138,25 +142,27 @@
                     </div>
                     <div class="mb-3">
                         <label for="updateEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="updateEmail" name="Email" value="@Model.Email" required placeholder="Nhập email">
+                        <input type="email" class="form-control" id="updateEmail" name="Email" value="@Model.Email" required>
                     </div>
                     <div class="mb-3">
                         <label for="updateSoDT" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="updateSoDT" name="SoDT" value="@Model.SoDT" pattern="^\d{10,15}$" title="Số điện thoại phải có 10-15 chữ số" required placeholder="Nhập số điện thoại">
+                        <input type="text" class="form-control" id="updateSoDT" name="SoDT" value="@Model.SoDT" pattern="^(03|05|07|08|09)\d{8}$" title="Số điện thoại phải có 10 chữ số" required>
                     </div>
                     <div class="mb-3">
                         <label for="updateDiaChi" class="form-label">Địa chỉ</label>
-                        <input type="text" class="form-control" id="updateDiaChi" name="DiaChi" value="@Model.DiaChi" required placeholder="Nhập địa chỉ">
+                        <input type="text" class="form-control" id="updateDiaChi" name="DiaChi" value="@Model.DiaChi" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Lưu thay đổi</button>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fa-regular fa-floppy-disk"></i> Lưu thay đổi
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+
 <script>
-    // Tự động ẩn thông báo sau 5 giây
     setTimeout(function () {
         $('.alert').fadeOut('slow');
     }, 5000);

@@ -20,7 +20,7 @@
             {
                 foreach (var item in Model)
                 {
-                    <a href="@Url.Action("DanhSachHocVien", "GiangVien", new { malh = item.MaLH, ngayday = item.NgayDay.ToShortDateString() })" class="text-decoration-none">
+                    <a href="@Url.Action("DanhSachHocVien", "GiangVien", new { malh = item.MaLH, ngayday = item.NgayDay.ToString("yyyy/MM/dd") })" class="text-decoration-none">
 
                         <table class="table table-bordered table-hover">
                             <thead class="table-primary">
@@ -35,9 +35,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>@item.LopHoc.TenLop</strong></td>
+                                    <td><strong>@item.LopHoc.TenPhong</strong></td>
                                     <td>@item.MaLH</td>
-                                    <td style="color: orange">@item.NgayDay.ToShortDateString()</td>
+                                    <td style="color: orange">@item.NgayDay.ToString("yyyy/MM/dd")</td>
                                     <td style="color: orangered">@item.GioBatDau</td>
                                     <td style="color: orangered">@item.GioKetThuc</td>
                                     <td>@item.GiaoVien.HoTen</td>

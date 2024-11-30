@@ -56,18 +56,16 @@
     <a class="btn btn-danger ms-2" href="@Url.Action("LichDayList", "AdminLichDay")">Hủy</a>
 </form>
 
-<p>
-    @using (Html.BeginForm("LichDayList", "AdminLichDay", FormMethod.Get, new { id = "myform" }))
-    {
-        @Html.DropDownList("sortOrder", new SelectList(
-        new List<SelectListItem>
-        {
-            new SelectListItem{Text = "Sắp xếp theo giảng viên", Value = "magiaovien"},
-            new SelectListItem{Text = "Sắp xếp theo lớp học", Value = "malophoc"}
-        }, "Value", "Text"
-    ), "Chọn thứ tự sắp xếp..")
-    }
-</p>
+<div class="d-flex justify-content-between mb-3">
+    <form class="d-inline">
+        <label for="sortOrder" class="me-2 fw-bold">Sắp xếp:</label>
+        <select name="sortOrder" id="sortOrder" class="form-select d-inline w-auto" onchange="this.form.submit()">
+            <option value="ngaybatdau" @(ViewBag.SortOrder == "magv" ? "selected" : "")>Mã giáo viên</option>
+            <option value="tenkh" @(ViewBag.SortOrder == "tengv" ? "selected" : "")>Tên giáo viên</option>
+            <option value="hocphi" @(ViewBag.SortOrder == "hocphi" ? "selected" : "")>Học phí</option>
+        </select>
+    </form>
+</div>
 
 <div class="container mt-5">
     <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Lịch Dạy</h2>
@@ -88,7 +86,7 @@
                     <tr>
                         <td>@item.NgayDay.ToString("dd/MM/yyyy")</td>
                         <td>@item.GiaoVien.HoTen</td>
-                        <td>@item.LopHoc.TenLop</td>
+                        <td>@item.LopHoc.TenPhong</td>
                         <td>@item.GioBatDau</td>
                         <td>@item.GioKetThuc</td>
                         <td>
@@ -102,4 +100,57 @@
             </tbody>
         </table>
     </div>
+</div>
+
+<!-- Phân trang -->
+<div class="container-fluid d-flex justify-content-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @{
+                int trangtruoc = ViewBag.Page - 1;
+                int trangsau = ViewBag.Page + 1;
+                int totalPages = ViewBag.totalPages;
+                int startPage = Math.Max(ViewBag.Page - 2, 1); // Hiển thị từ trang trước 2 trang
+                int endPage = Math.Min(ViewBag.Page + 2, totalPages); // Hiển thị đến trang sau 2 trang
+            }
+
+            <!-- Nút quay lại -->
+            <li class="page-item @(ViewBag.Page == 1 ? "disabled" : "")">
+                <a class="page-link" href="?page=@trangtruoc&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder" tabindex="-1"><</a>
+            </li>
+
+            <!-- Hiển thị trang đầu nếu cần -->
+            @if (startPage > 1)
+            {
+                <li class="page-item"><a class="page-link" href="?page=1&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">1</a></li>
+                if (startPage > 2)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+            }
+
+            <!-- Hiển thị các trang trong khoảng startPage đến endPage -->
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                    <a class="page-link" href="?page=@i&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@i</a>
+                </li>
+            }
+
+            <!-- Hiển thị trang cuối nếu cần -->
+            @if (endPage < totalPages)
+            {
+                if (endPage < totalPages - 1)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+                <li class="page-item"><a class="page-link" href="?page=@totalPages&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@totalPages</a></li>
+            }
+
+            <!-- Nút tiến -->
+            <li class="page-item @(ViewBag.Page == totalPages ? "disabled" : "")">
+                <a class="page-link" href="?page=@trangsau&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">></a>
+            </li>
+        </ul>
+    </nav>
 </div>

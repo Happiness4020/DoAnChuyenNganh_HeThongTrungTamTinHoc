@@ -18,20 +18,19 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public HocVien()
         {
-            this.ChiTiet_HocVien_LopHoc = new HashSet<ChiTiet_HocVien_LopHoc>();
+            this.BinhLuanKhoaHoc = new HashSet<BinhLuanKhoaHoc>();
+            this.GiaoDichHocPhi = new HashSet<GiaoDichHocPhi>();
             this.LichHoc = new HashSet<LichHoc>();
             this.LienHe = new HashSet<LienHe>();
             this.TaiKhoan = new HashSet<TaiKhoan>();
-            this.GiaoDichHocPhi = new HashSet<GiaoDichHocPhi>();
-            this.BinhLuanKhoaHoc = new HashSet<BinhLuanKhoaHoc>();
+            this.ChiTiet_HocVien_LopHoc = new HashSet<ChiTiet_HocVien_LopHoc>();
         }
-
+    
         public string MaHV { get; set; }
         [Required(ErrorMessage = "Bạn phải nhập đầy đủ họ tên")]
         [RegularExpression("^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ ]*$")]
         public string HoTen { get; set; }
 
-        [Required(ErrorMessage = "Bạn phải chọn ảnh")]
         public string Anh { get; set; }
 
         [Display(Name = "Ngày sinh")]
@@ -55,7 +54,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public string DiaChi { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
+        public virtual ICollection<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LichHoc> LichHoc { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -63,8 +64,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TaiKhoan> TaiKhoan { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
+        public virtual ICollection<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
     }
 }

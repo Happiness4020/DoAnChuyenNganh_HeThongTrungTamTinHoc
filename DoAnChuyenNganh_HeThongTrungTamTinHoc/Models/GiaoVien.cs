@@ -20,10 +20,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         {
             this.LichDay = new HashSet<LichDay>();
             this.LienHe = new HashSet<LienHe>();
-            this.TaiKhoan = new HashSet<TaiKhoan>();
             this.LopHoc = new HashSet<LopHoc>();
+            this.TaiKhoan = new HashSet<TaiKhoan>();
         }
-
+    
         public string MaGV { get; set; }
         [Display(Name = "Nhập họ tên")]
         [Required(ErrorMessage = "Bạn phải nhập họ tên")]
@@ -78,8 +78,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LienHe> LienHe { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TaiKhoan> TaiKhoan { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LopHoc> LopHoc { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TaiKhoan> TaiKhoan { get; set; }
     }
 }

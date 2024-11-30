@@ -3,6 +3,8 @@ using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -89,9 +91,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
 
             ViewBag.Email = giaovien.Email;
-            ViewBag.TenLop = lop.TenLop;
+            ViewBag.TenLop = lop.TenPhong;
             ViewBag.MaLH = malh;
-            ViewBag.NgayDay = ngayday.ToShortDateString();
+            ViewBag.NgayDay = ngayday.ToString("yyyy/MM/dd");
             return View(hocviens);
         }
 
@@ -137,7 +139,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 DiemKiemTraLan3 = (float)ctlh.DiemKiemTraLan3,
                 DiemTrungBinh = (float)ctlh.DiemTrungBinh,
                 Sobuoivang = ctlh.Sobuoivang,
-                Daketthuc = ctlh.Daketthuc
+                KetQua = ctlh.KetQua
             })
             .ToList();
 
@@ -155,7 +157,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
 
             ViewBag.Email = giaovien.Email;
-            ViewBag.TenLop = lop.TenLop;
+            ViewBag.TenLop = lop.TenPhong;
             ViewBag.MaLop = malh;
 
             return View(hocVienList);
@@ -188,9 +190,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         hocvien.DiemKiemTraLan1 = Math.Round((double)hv.DiemKiemTraLan1, 2);
                         hocvien.DiemKiemTraLan2 = Math.Round((double)hv.DiemKiemTraLan2, 2);
                         hocvien.DiemKiemTraLan3 = Math.Round((double)hv.DiemKiemTraLan3, 2);
-                        hocvien.Daketthuc = hv.Daketthuc;
+                        hocvien.KetQua = hv.KetQua;
 
                         db.SaveChanges();
+                        TempData["SuccessMessage"] = "Cập nhật điểm thành công!";
                     }
                     catch (Exception ex)
                     {
@@ -198,138 +201,179 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         hocvien.DiemKiemTraLan2 = diemKTL2Cu;
                         hocvien.DiemKiemTraLan3 = diemKTL3Cu;
 
-                        TempData["ErrorMessage"] = $"Lỗi khi cập nhật: {ex.Message}";
+                        TempData["ErrorMessage"] = $"Lỗi khi cập nhật điểm: {ex.Message}";
                         return RedirectToAction("ChiTietLopHoc", new { malh = malh });
                     }
                 }
             }
-
-            db.SaveChanges();
-
             return RedirectToAction("ChiTietLopHoc", new { malh = malh });
         }
 
         [HttpPost]
         public ActionResult DiemDanh(string malh, string ngayday, Dictionary<string, bool> diemDanh)
         {
-            if (string.IsNullOrEmpty(malh) || string.IsNullOrEmpty(ngayday) || diemDanh == null)
+            try
             {
-                TempData["Error"] = "Thông tin điểm danh không hợp lệ!!!";
-                return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
-            }
-
-            DateTime ngayHoc;
-            if (!DateTime.TryParse(ngayday, out ngayHoc))
-            {
-                TempData["Error"] = "Ngày học không hợp lệ!!!";
-                return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
-            }
-
-            foreach (var item in diemDanh)
-            {
-                string maHV = item.Key;
-                bool vangHoc = item.Value;
-
-                var lichHoc = db.LichHoc.FirstOrDefault(l => l.MaHV == maHV && l.MaLH == malh && l.NgayHoc == ngayHoc);
-
-                if (lichHoc != null)
+                if (string.IsNullOrEmpty(malh) || string.IsNullOrEmpty(ngayday) || diemDanh == null)
                 {
-                    if (vangHoc)
-                    {
-                        if (!lichHoc.DiemDanh)
-                        {
-                            var chiTiet = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaLH == malh && ct.MaHV == maHV);
-                            if (chiTiet != null)
-                            {
-                                chiTiet.Sobuoivang++;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (lichHoc.DiemDanh)
-                        {
-                            var chiTiet = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaLH == malh && ct.MaHV == maHV);
-                            if (chiTiet != null)
-                            {
-                                chiTiet.Sobuoivang = Math.Max(0, chiTiet.Sobuoivang - 1);
-                            }
-                        }
-                    }
-
-                    lichHoc.DiemDanh = vangHoc ? true : false;
+                    TempData["ErrorMessage"] = "Thông tin điểm danh không hợp lệ!!!";
+                    return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
                 }
+
+                DateTime ngayHoc;
+                if (!DateTime.TryParse(ngayday, out ngayHoc))
+                {
+                    TempData["ErrorMessage"] = "Ngày học không hợp lệ!!!";
+                    return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
+                }
+
+                foreach (var item in diemDanh)
+                {
+                    string maHV = item.Key;
+                    bool vangHoc = item.Value;
+
+                    var lichHoc = db.LichHoc.FirstOrDefault(l => l.MaHV == maHV && l.MaLH == malh && l.NgayHoc == ngayHoc);
+
+                    if (lichHoc != null)
+                    {
+                        if (vangHoc)
+                        {
+                            if (!lichHoc.DiemDanh)
+                            {
+                                var chiTiet = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaLH == malh && ct.MaHV == maHV);
+                                if (chiTiet != null)
+                                {
+                                    chiTiet.Sobuoivang++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (lichHoc.DiemDanh)
+                            {
+                                var chiTiet = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaLH == malh && ct.MaHV == maHV);
+                                if (chiTiet != null)
+                                {
+                                    chiTiet.Sobuoivang = Math.Max(0, chiTiet.Sobuoivang - 1);
+                                }
+                            }
+                        }
+
+                        lichHoc.DiemDanh = vangHoc ? true : false;
+                    }
+                }
+
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Cập nhật điểm danh thành công!";
             }
-
-            db.SaveChanges();
-
-            TempData["Success"] = "Cập nhật điểm danh thành công!";
+            catch
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi điểm danh!!! Hãy thử lại sau";
+                return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
+            }
             return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
         }
 
         [HttpPost]
         public ActionResult CapNhatThongTinGiaoVien(GiaoVien thontingiaovien)
         {
-            if (ModelState.IsValid)
+            try
             {
-                string magv = Session["MaGV"]?.ToString();
-                var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
-
-                if (giaovien != null)
+                if (ModelState.IsValid)
                 {
-                    giaovien.HoTen = thontingiaovien.HoTen;
-                    giaovien.Email = thontingiaovien.Email;
-                    giaovien.SoDT = thontingiaovien.SoDT;
-                    giaovien.DiaChi = thontingiaovien.DiaChi;
-                    giaovien.BangCapGV = thontingiaovien.BangCapGV;
-                    giaovien.LinhVucDaoTao = thontingiaovien.LinhVucDaoTao;
-                    giaovien.NgayVaoLam = thontingiaovien.NgayVaoLam;
-                    giaovien.Luong = thontingiaovien.Luong;
+                    string magv = Session["MaGV"]?.ToString();
+                    var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
 
-                    db.SaveChanges();
+                    if (giaovien != null)
+                    {
+                        giaovien.HoTen = thontingiaovien.HoTen;
+                        giaovien.Email = thontingiaovien.Email;
+                        giaovien.SoDT = thontingiaovien.SoDT;
+                        giaovien.DiaChi = thontingiaovien.DiaChi;
+                        giaovien.BangCapGV = thontingiaovien.BangCapGV;
+                        giaovien.LinhVucDaoTao = thontingiaovien.LinhVucDaoTao;
+                        giaovien.NgayVaoLam = thontingiaovien.NgayVaoLam;
+                        giaovien.Luong = thontingiaovien.Luong;
 
-                    TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
-                    return RedirectToAction("Index");
+                        db.SaveChanges();
+
+                        TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Không tìm thấy giảng viên!";
+                    }
                 }
-                else
-                {
-                    TempData["ErrorMessage"] = "Không tìm thấy giảng viên!";
-                }
+                return RedirectToAction("Index");
             }
-
-            TempData["ErrorMessage"] = "Dữ liệu không hợp lệ!";
-            return RedirectToAction("Index");
+            catch
+            {
+                TempData["ErrorMessage"] = "Dữ liệu không hợp lệ!!!";
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]
         public ActionResult CapNhatAnhGiangVien(HttpPostedFileBase Anh)
         {
-            if (Anh != null && Anh.ContentLength > 0)
+            try
             {
-                string magv = Session["MaGV"]?.ToString();
-                var giaoVien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
-
-                if (giaoVien != null)
+                if (Anh != null && Anh.ContentLength > 0)
                 {
-                    string fileName = Path.GetFileName(Anh.FileName);
-                    string path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
-                    Anh.SaveAs(path);
+                    string magv = Session["MaGV"]?.ToString();
 
-                    giaoVien.Anh = fileName;
-                    db.SaveChanges();
+                    if (string.IsNullOrEmpty(magv))
+                    {
+                        TempData["ErrorMessage"] = "Không tìm thấy mã giáo viên!!!";
+                        return RedirectToAction("Index");
+                    }
 
-                    TempData["SuccessMessage"] = "Cập nhật ảnh thành công!";
+                    var dinhdangchophep = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var dinhdanganh = Path.GetExtension(Anh.FileName).ToLower();
+
+                    if (!dinhdangchophep.Contains(dinhdanganh))
+                    {
+                        TempData["ErrorMessage"] = "Chỉ chấp nhận các định dạng ảnh: .jpg, .jpeg, .png, .gif";
+                        return RedirectToAction("Index");
+                    }
+
+                    if (Anh.ContentLength > 3 * 1024 * 1024) // 5MB
+                    {
+                        TempData["ErrorMessage"] = "Kích thước ảnh không được vượt quá 3MB!";
+                        return RedirectToAction("Index");
+                    }
+
+                    string tenanh = magv + dinhdanganh;
+                    string duongdan = Path.Combine(Server.MapPath("~/AnhHocVien"), tenanh);
+                    Anh.SaveAs(duongdan);
+
+
+                    try
+                    {
+                        var query = "UPDATE GiaoVien SET Anh = @Anh WHERE MaGV = @MaGV";
+                        db.Database.ExecuteSqlCommand(query,
+                            new SqlParameter("@Anh", tenanh),
+                            new SqlParameter("@MaGV", magv));
+
+                        TempData["SuccessMessage"] = "Cập nhật ảnh thành công!";
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật ảnh: " + ex.Message;
+                    }
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Không tìm thấy giảng viên!";
+                    TempData["ErrorMessage"] = "Vui lòng chọn một ảnh hợp lệ!";
                 }
             }
-            else
+            catch
             {
-                TempData["ErrorMessage"] = "Vui lòng chọn một ảnh hợp lệ!";
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật ảnh: ";
+                return RedirectToAction("Index");
             }
-
             return RedirectToAction("Index");
         }
     }
