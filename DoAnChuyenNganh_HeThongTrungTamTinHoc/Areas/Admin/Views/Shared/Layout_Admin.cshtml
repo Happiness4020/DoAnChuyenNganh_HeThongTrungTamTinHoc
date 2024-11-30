@@ -275,10 +275,13 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                                     <div class="message-body">
-                                        <span class="btn btn-close-white mx-3 mt-2 d-block shadow-none primary-hover-bg">Chào, <strong>@userName.Value</strong></span>
+                                        <span class="btn btn-close-white mx-3 mt-2 d-block shadow-none primary-hover-bg">
+                                            Chào, <strong>@userName.Value</strong> 
+                                        </span>
                                     </div>
+
                                     <div class="message-body">
-                                        <a href="/Account/DangXuat" class="btn btn-outline-primary mx-3 mt-2 d-block shadow-none">Đăng xuất</a>
+                                        <a href="/Account/DangXuat" class="btn btn-outline-primary mx-3 mt-2 d-block shadow-none" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?')">Đăng xuất</a>
                                     </div>
                                 </div>
                             </li>

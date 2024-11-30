@@ -5,83 +5,66 @@
 }
 
 <style>
-    .dangky-body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        background-color: #f0f2f5;
-        margin: 0;
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
     }
 
-    .register-card {
-        width: 100%;
-        max-width: 500px;
-        background-color: #0066b3;
-        border-radius: 8px;
-        padding: 40px 25px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    }
-
-        .register-card h2 {
-            color: white;
-            font-weight: 600;
-            margin-bottom: 25px;
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
 
-    .form-control {
-        border-radius: 6px;
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
     }
 
-    .btn-submit {
-        background-color: #ffffff;
-        color: #0066b3;
-        font-weight: bold;
-        border-radius: 6px;
-        width: 48%;
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .form-floating label {
+        color: #6c757d;
     }
 
-    .btn-back {
-        background-color: orangered;
-        color: #fff;
-        font-weight: bold;
-        border-radius: 6px;
-        width: 48%;
-    }
 </style>
 
-<div class="dangky-body">
-    <div class="card register-card">
+
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px; border-radius: 15px;">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold text-primary">@ViewBag.Title</h3>
+        </div>
         @using (Html.BeginForm("DangKy", "Account", FormMethod.Post))
         {
-            @*@Html.AntiForgeryToken()*@
-            <div class="text-center">
-                <h2>@ViewBag.Title</h2>
-            </div>
             <div>
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.MaHV, new { @style = "color: white;" })
-                    @Html.TextBoxFor(model => model.MaHV, new { placeholder = "Mã học viên..", @class = "form-control" })
+                <div class="form-floating mb-3">
+                    @Html.TextBoxFor(model => model.MaHV, new { @class = "form-control", placeholder = "Mã học viên", id = "floatingMaHV" })
+                    @Html.LabelFor(model => model.MaHV, "Mã học viên", new { @for = "floatingMaHV" })
                     @Html.ValidationMessageFor(model => model.MaHV, "", new { @class = "text-danger" })
                 </div>
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.TenDangNhap, new { @style = "color: white;" })
-                    @Html.TextBoxFor(model => model.TenDangNhap, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
+
+                <div class="form-floating mb-3">
+                    @Html.TextBoxFor(model => model.TenDangNhap, new { @class = "form-control", placeholder = "Tên đăng nhập", id = "floatingTenDangNhap" })
+                    @Html.LabelFor(model => model.TenDangNhap, "Tên đăng nhập", new { @for = "floatingTenDangNhap" })
                     @Html.ValidationMessageFor(model => model.TenDangNhap, "", new { @class = "text-danger" })
                 </div>
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.MatKhau, new { @style = "color: white;" })
-                    @Html.PasswordFor(model => model.MatKhau, new { placeholder = "Mật khẩu..", @class = "form-control" })
+
+                <div class="form-floating mb-3">
+                    @Html.PasswordFor(model => model.MatKhau, new { @class = "form-control", placeholder = "Mật khẩu", id = "floatingMatKhau" })
+                    @Html.LabelFor(model => model.MatKhau, "Mật khẩu", new { @for = "floatingMatKhau" })
                     @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
                 </div>
-                <div class="mb-3">
-                    @Html.Label("retypePassword", "Nhập lại mật khẩu", new { @style = "color: white;" })
-                    @Html.Password("retypePassword", "", new { placeholder = "Nhập lại mật khẩu..", @class = "form-control" })
+
+                <div class="form-floating mb-3">
+                    @Html.Password("retypePassword", "", new { @class = "form-control", placeholder = "Nhập lại mật khẩu", id = "floatingRetypePassword" })
+                    @Html.Label("retypePassword", "Nhập lại mật khẩu", new { @for = "floatingRetypePassword" })
                     @Html.ValidationMessage("retypePassword", "", new { @class = "text-danger" })
                 </div>
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-submit">Đăng ký</button>
-                    <a href="/Home/Index" class="btn btn-back">Quay lại</a>
+
+                <div class="text-center mt-4 d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary w-48 py-2 fw-bold">Đăng ký</button>
+                    <a href="/Home/Index" class="btn btn-secondary w-48 py-2 fw-bold">Quay lại</a>
                 </div>
             </div>
         }
