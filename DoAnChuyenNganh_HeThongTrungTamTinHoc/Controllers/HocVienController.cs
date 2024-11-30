@@ -68,7 +68,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                                select new
                                {
                                    MaLop = lop.MaLH,
-                                   TenLop = lop.TenLop,
+                                   TenLop = lop.TenPhong,
                                    GioBatDau = lh.GioBatDau,
                                    GioKetThuc = lh.GioKetThuc,
                                    TenGV = gv.HoTen,

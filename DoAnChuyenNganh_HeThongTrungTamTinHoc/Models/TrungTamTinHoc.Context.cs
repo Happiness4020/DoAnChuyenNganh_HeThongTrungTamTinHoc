@@ -25,20 +25,20 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
+        public virtual DbSet<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
         public virtual DbSet<ChuongTrinhHoc> ChuongTrinhHoc { get; set; }
+        public virtual DbSet<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
         public virtual DbSet<GiaoVien> GiaoVien { get; set; }
         public virtual DbSet<HocVien> HocVien { get; set; }
+        public virtual DbSet<KhoaHoc> KhoaHoc { get; set; }
         public virtual DbSet<LichDay> LichDay { get; set; }
         public virtual DbSet<LichHoc> LichHoc { get; set; }
         public virtual DbSet<LienHe> LienHe { get; set; }
+        public virtual DbSet<LopHoc> LopHoc { get; set; }
         public virtual DbSet<NguoiQuanLy> NguoiQuanLy { get; set; }
         public virtual DbSet<PhuongThucThanhToan> PhuongThucThanhToan { get; set; }
         public virtual DbSet<TaiKhoan> TaiKhoan { get; set; }
         public virtual DbSet<TaiLieuHocTap> TaiLieuHocTap { get; set; }
-        public virtual DbSet<KhoaHoc> KhoaHoc { get; set; }
-        public virtual DbSet<LopHoc> LopHoc { get; set; }
-        public virtual DbSet<BinhLuanKhoaHoc> BinhLuanKhoaHoc { get; set; }
-        public virtual DbSet<GiaoDichHocPhi> GiaoDichHocPhi { get; set; }
+        public virtual DbSet<ChiTiet_HocVien_LopHoc> ChiTiet_HocVien_LopHoc { get; set; }
     }
 }

@@ -91,7 +91,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
 
             ViewBag.Email = giaovien.Email;
-            ViewBag.TenLop = lop.TenLop;
+            ViewBag.TenLop = lop.TenPhong;
             ViewBag.MaLH = malh;
             ViewBag.NgayDay = ngayday.ToString("yyyy/MM/dd");
             return View(hocviens);
@@ -139,7 +139,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 DiemKiemTraLan3 = (float)ctlh.DiemKiemTraLan3,
                 DiemTrungBinh = (float)ctlh.DiemTrungBinh,
                 Sobuoivang = ctlh.Sobuoivang,
-                Daketthuc = ctlh.Daketthuc
+                KetQua = ctlh.KetQua
             })
             .ToList();
 
@@ -157,7 +157,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
 
             ViewBag.Email = giaovien.Email;
-            ViewBag.TenLop = lop.TenLop;
+            ViewBag.TenLop = lop.TenPhong;
             ViewBag.MaLop = malh;
 
             return View(hocVienList);
@@ -190,7 +190,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         hocvien.DiemKiemTraLan1 = Math.Round((double)hv.DiemKiemTraLan1, 2);
                         hocvien.DiemKiemTraLan2 = Math.Round((double)hv.DiemKiemTraLan2, 2);
                         hocvien.DiemKiemTraLan3 = Math.Round((double)hv.DiemKiemTraLan3, 2);
-                        hocvien.Daketthuc = hv.Daketthuc;
+                        hocvien.KetQua = hv.KetQua;
 
                         db.SaveChanges();
                         TempData["SuccessMessage"] = "Cập nhật điểm thành công!";
