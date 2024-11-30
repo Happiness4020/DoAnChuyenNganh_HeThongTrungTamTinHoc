@@ -26,7 +26,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     
         public string MaLH { get; set; }
         [Required(ErrorMessage = " Bạn phải nhập tên lớp học ")]
-        public string TenLop { get; set; }
+        public string TenPhong { get; set; }
 
         [Required(ErrorMessage = " Bạn phải nhập mã khóa học ")]
         public string MaKH { get; set; }
