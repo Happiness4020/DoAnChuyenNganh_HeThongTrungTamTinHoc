@@ -59,14 +59,17 @@
             <div class="col-md-4 text-center">
                 <img src="~/AnhHocVien/@(System.IO.File.Exists(Server.MapPath("~/AnhHocVien/" + Model.Anh)) ? Model.Anh : "noimage.jpg")" alt="Ảnh học viên" class="img-fluid rounded-circle mb-3 profile-image" style="width: 150px; height: 150px; object-fit: cover;">
 
-                <form method="post" action="@Url.Action("CapNhatAnhHocVien", "HocVien")" enctype="multipart/form-data" class="mt-3">
-                    <input type="file" name="Anh" class="form-control mb-2" accept="image/*" required>
+                <form id="changePhotoForm" method="post" action="@Url.Action("CapNhatAnhHocVien", "HocVien")" enctype="multipart/form-data" class="mt-3">
+                    <div class="mb-3">
+                        <label for="newPhoto" class="form-label">Chọn ảnh mới</label>
+                        <input type="file" name="Anh" class="form-control mb-2" accept="image/*" required>
+                    </div>
                     <button type="submit" class="btn btn-primary btn-sm w-100">
                         <i class="fa-solid fa-camera"></i> Cập nhật ảnh
                     </button>
                 </form>
             </div>
-
+  
             <div class="col-md-8">
                 <table class="table table-borderless">
                     <tr>
@@ -79,7 +82,7 @@
                     </tr>
                     <tr>
                         <th>Ngày sinh:</th>
-                        <td>@Model.NgaySinh.ToString("yyyy-MM-dd")</td>
+                        <td>@Model.NgaySinh.ToString("dd/MM/yyyy")</td>
                     </tr>
                     <tr>
                         <th>Giới tính:</th>
@@ -99,14 +102,16 @@
                     </tr>
                 </table>
 
-                <div class="text-end mt-3">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateInfoModal">
-                        <i class="fa-solid fa-pen-to-square"></i> Cập nhật thông tin
-                    </button>
-                </div>
+
             </div>
         </div>
     </div>
+    <div class="text-center mt-4">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateInfoModal">
+            <i class="fa-solid fa-pen-to-square"></i> Cập nhật thông tin
+        </button>
+    </div>
+
 </div>
 
 <div class="modal fade" id="updateInfoModal" tabindex="-1" aria-labelledby="updateInfoModalLabel" aria-hidden="true">

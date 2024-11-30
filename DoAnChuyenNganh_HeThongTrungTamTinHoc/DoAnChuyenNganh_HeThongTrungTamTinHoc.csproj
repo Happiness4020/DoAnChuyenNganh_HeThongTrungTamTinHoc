@@ -235,6 +235,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AnhHocVien\2bbnzbl5.jpg" />
+    <Content Include="AnhHocVien\33wxznr3.jpg" />
+    <Content Include="AnhHocVien\Anhmomo.jpg" />
+    <Content Include="AnhHocVien\Anhnganhang1.jpg" />
+    <Content Include="AnhHocVien\Anhnganhang2.jpg" />
+    <Content Include="AnhHocVien\Anhnganhang3.jpg" />
+    <Content Include="AnhHocVien\AnhViettelMoney.jpg" />
+    <Content Include="AnhHocVien\AnhZalo.jpg" />
+    <Content Include="AnhHocVien\GV001.jpg" />
+    <Content Include="AnhHocVien\GV001.png" />
+    <Content Include="AnhHocVien\GV008.jpg" />
+    <Content Include="AnhHocVien\HV001.jpg" />
+    <Content Include="AnhHocVien\HVTTAE2AET.jpg" />
+    <Content Include="AnhHocVien\HVUPJS976T.jpg" />
     <Content Include="AnhHocVien\HVZR4WC8UE.jpg" />
     <Content Include="AnhHocVien\image1.jpg" />
     <Content Include="AnhHocVien\image2.jpg" />
@@ -242,7 +256,11 @@
     <Content Include="AnhHocVien\image4.jpg" />
     <Content Include="AnhHocVien\image5.jpg" />
     <Content Include="AnhHocVien\image6.jpg" />
+    <Content Include="AnhHocVien\jdygfkf0.jpg" />
+    <Content Include="AnhHocVien\n3b40lo2.jpg" />
     <Content Include="AnhHocVien\noimage.jpg" />
+    <Content Include="AnhHocVien\pjiz5usv.jpg" />
+    <Content Include="AnhHocVien\xbzwj55h.jpg" />
     <Content Include="AnhKhoaHoc\12-2.png" />
     <Content Include="AnhKhoaHoc\banner-bg2.jpg" />
     <Content Include="AnhKhoaHoc\chieu-sinh31522-8.png" />

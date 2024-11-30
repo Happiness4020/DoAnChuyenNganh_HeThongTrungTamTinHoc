@@ -93,7 +93,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             ViewBag.Email = giaovien.Email;
             ViewBag.TenLop = lop.TenLop;
             ViewBag.MaLH = malh;
-            ViewBag.NgayDay = ngayday.ToShortDateString();
+            ViewBag.NgayDay = ngayday.ToString("yyyy/MM/dd");
             return View(hocviens);
         }
 

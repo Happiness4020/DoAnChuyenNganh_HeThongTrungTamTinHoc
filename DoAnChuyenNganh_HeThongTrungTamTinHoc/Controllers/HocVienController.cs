@@ -85,8 +85,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     GioKetThuc = x.GioKetThuc.ToString(@"hh\:mm"),
                     TenGV = x.TenGV,
                     NgayHoc = x.NgayHoc.ToString("dd/MM/yyyy"),
-                    NgayBatDau = x.NgayBatDau.ToString("dd/MM/yyyy"),
-                    NgayKetThuc = x.NgayKetThuc.ToString("dd/MM/yyyy")
+                    //NgayBatDau = x.NgayBatDau.ToString("dd/MM/yyyy"),
+                    //NgayKetThuc = x.NgayKetThuc.ToString("dd/MM/yyyy")
                 }).ToList();
 
                 ViewBag.HocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHV);
