@@ -490,6 +490,7 @@
     <Compile Include="ViewModels\KhoaHocViewModel.cs" />
     <Compile Include="ViewModels\LichDayViewModel.cs" />
     <Compile Include="ViewModels\LichHocViewModel.cs" />
+    <Compile Include="ViewModels\LichSuGiaoDichViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
