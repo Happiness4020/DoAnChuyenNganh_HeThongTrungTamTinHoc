@@ -100,7 +100,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="updateSoDT" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="updateSoDT" name="SoDT" value="@Model.SoDT" required>
+                        <input type="text" class="form-control" id="updateSoDT" name="SoDT" pattern="^(03|05|07|08|09)\d{8}$" value="@Model.SoDT" required>
                     </div>
                     <div class="mb-3">
                         <label for="updateDiaChi" class="form-label">Địa chỉ</label>

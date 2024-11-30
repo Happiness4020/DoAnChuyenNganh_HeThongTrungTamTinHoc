@@ -64,12 +64,16 @@
         <h1 class="fw-bold">Tìm khóa học bạn quan tâm</h1>
         <p>Học chắc từ nền tảng<br>Ứng dụng hiệu quả CNTT vào thực tế cuộc sống</p>
         <div class="d-flex justify-content-center mt-4">
-            <form class="d-flex mb-3 mt-2 search-box input-group" action="@Url.Action("Index", "KhoaHoc")">
-                <input class="form-control" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm khóa học" aria-label="Search" style="max-width: 600px; font-weight: 700;">
-                <button class="btn btn-outline-light mx-1" type="submit" id="search" name="search" value="@ViewBag.Search" aria-label="Search">
-                    <i class="fa fa-solid fa-search"></i>
-                </button>
-                <a class="btn btn-danger border-0" href="@Url.Action("Index", "KhoaHoc")">Hủy</a>
+            <form class="g-2 mb-3 mt-2 search-box d-flex" action="@Url.Action("Index", "KhoaHoc")">
+                <div class="">
+                    <input class="form-control" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm khóa học" aria-label="Search" style="font-weight: 700;">
+                </div>
+                <div class="d-flex mx-2">
+                    <button class="btn btn-outline-light me-2" type="submit" id="search" name="search" value="@ViewBag.Search" aria-label="Search">
+                        <i class="fa fa-solid fa-search"></i>
+                    </button>
+                    <a class="btn btn-danger border-0" href="@Url.Action("Index", "KhoaHoc")">Hủy</a>
+                </div>
             </form>
         </div>
     </div>
@@ -93,7 +97,7 @@
                     }
                 }
                 <li class="page-item">
-                    <a class="page-link" href="/KhoaHoc/Index?page=@trangtruoc&sort_by=@ViewBag.SortBy" aria-label="Previous">
+                    <a class="page-link" href="@Url.Action("Index", "KhoaHoc", new { page = trangtruoc, sort_by = ViewBag.SortBy, search = ViewBag.Search })" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -102,18 +106,18 @@
                     if (i + 1 == ViewBag.Page)
                     {
                         <li class="page-item active">
-                            <a class="page-link" href="/KhoaHoc/Index?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                            <a class="page-link" href="@Url.Action("Index", "KhoaHoc", new { search = ViewBag.Search, page = i + 1, sort_by = ViewBag.SortBy })">@(i + 1)</a>
                         </li>
                     }
                     else
                     {
                         <li class="page-item">
-                            <a class="page-link" href="/KhoaHoc/Index?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                            <a class="page-link" href="@Url.Action("Index", "KhoaHoc", new { search = ViewBag.Search, page = i + 1, sort_by = ViewBag.SortBy })">@(i + 1)</a>
                         </li>
                     }
                 }
                 <li class="page-item">
-                    <a class="page-link" href="/KhoaHoc/Index?page=@trangsau&sort_by=@ViewBag.SortBy" aria-label="Next">
+                    <a class="page-link" href="@Url.Action("Index", "KhoaHoc", new { page = trangsau, sort_by = ViewBag.SortBy, search = ViewBag.Search})" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -132,6 +136,17 @@
             </select>
         </form>
     </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Search) || ViewBag.MinPrice != null || ViewBag.MaxPrice != null)
+    {
+        <div class="alert alert-info">
+            Kết quả tìm kiếm:
+            @if (!string.IsNullOrEmpty(ViewBag.Search))
+            {
+                <span>"<strong>@ViewBag.Search</strong>"</span>
+            }
+        </div>
+    }
  
     <div class="row mt-3">
         @foreach (var item in Model)
@@ -151,7 +166,7 @@
                                 <img src="~/images/noimage.jpg" alt="Khóa học" class="card-img-top fixed-image" />
                             </a>
                         }
-                        <h5 class="card-title flex-grow-1 mt-2"><a href="/KhoaHoc/ChiTietKhoaHoc/@item.MaKH" class="text-decoration-none" style="color: #0066b3">@Html.DisplayFor(model => item.TenKH)</a></h5>
+                        <h5 class="card-title flex-grow-1 mt-2"><a href="@Url.Action("ChiTietKhoaHoc", "KhoaHoc", new { id = item.MaKH })" class="text-decoration-none" style="color: #0066b3">@Html.DisplayFor(model => item.TenKH)</a></h5>
                         <span class="card-text flex-grow-1">Ngày khai giảng: @Html.DisplayFor(model => item.NgayBatDau)</span>
                         <h4>Học phí: @Html.DisplayFor(model => item.HocPhi) VND</h4>
                     </div>
@@ -163,7 +178,7 @@
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center pagination-custom">
                 <li class="page-item">
-                    <a class="page-link" href="/KhoaHoc/Index?page=@trangtruoc&sort_by=@ViewBag.SortBy" aria-label="Previous">
+                    <a class="page-link" href="@Url.Action("Index", "KhoaHoc", new { page = trangtruoc, sort_by = ViewBag.SortBy, search = ViewBag.Search })" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -172,18 +187,18 @@
                     if (i + 1 == ViewBag.Page)
                     {
                         <li class="page-item active">
-                            <a class="page-link" href="/KhoaHoc/Index?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                            <a class="page-link" href="@Url.Action("Index", "KhoaHoc", new { search = ViewBag.Search, page = i + 1, sort_by = ViewBag.SortBy })">@(i + 1)</a>
                         </li>
                     }
                     else
                     {
                         <li class="page-item">
-                            <a class="page-link" href="/KhoaHoc/Index?page=@(i + 1)&sort_by=@ViewBag.SortBy">@(i + 1)</a>
+                            <a class="page-link" href="@Url.Action("Index", "KhoaHoc", new { search = ViewBag.Search, page = i + 1, sort_by = ViewBag.SortBy })">@(i + 1)</a>
                         </li>
                     }
                 }
                 <li class="page-item">
-                    <a class="page-link" href="/KhoaHoc/Index?page=@trangsau&sort_by=@ViewBag.SortBy" aria-label="Next">
+                    <a class="page-link" href="@Url.Action("Index", "KhoaHoc", new { page = trangsau, sort_by = ViewBag.SortBy, search = ViewBag.Search })" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

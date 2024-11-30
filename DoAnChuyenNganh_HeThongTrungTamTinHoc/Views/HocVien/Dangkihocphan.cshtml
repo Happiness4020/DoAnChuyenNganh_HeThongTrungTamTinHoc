@@ -3,9 +3,6 @@
     ViewBag.Title = "Đăng ký học phần";
     Layout = "~/Views/Shared/_HocVien.cshtml";
 }
-
-<h2>Đăng ký học phần</h2>
-
 <style>
     .search-section {
         background: url('/images/background.jpg') no-repeat center center;
@@ -70,7 +67,7 @@
 </div>
 
 <div class="container-fluid border p-2" style="background-color: lightgray">
-    <h2 style="color: #0066b3">Tất cả khóa học</h2>
+    <h2 class="text-center" style="color: orangered">Tất cả khóa học</h2>
     <div class="row mt-3">
         @foreach (var item in Model)
         {

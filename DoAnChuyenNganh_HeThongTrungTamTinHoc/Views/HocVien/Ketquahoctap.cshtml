@@ -5,46 +5,79 @@
 
 @model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.ChiTiet_HocVien_LopHoc>
 
-<div class="text-center">
+<div class="text-center mt-3">
     <h2 class="mb-4" style="color: #0066b3;">@ViewBag.Title của học viên <span style="color: orangered;">@ViewBag.HocVien.HoTen</span></h2>
 </div>
 
 @if (Model != null && Model.Any())
 {
+    bool canhbao = Model.Any(hocvien => hocvien.Sobuoivang == 3);
+    if (canhbao)
+    {
+        <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="color: orangered" id="warningModalLabel">
+                            <i class="fa-solid fa-circle-exclamation"></i> Cảnh báo
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn đã vắng mặt trong <strong style="color: orangered">3 buổi học</strong> của lớp <strong>@ViewBag.Lop.TenLop</strong>!!! Nghỉ quá 3 buổi sẽ bị buộc thôi học.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đã hiểu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Mã Lớp</th>
+                    <th>Tên lớp Lớp</th>
                     <th>Điểm Kiểm Tra Lần 1</th>
                     <th>Điểm Kiểm Tra Lần 2</th>
                     <th>Điểm Kiểm Tra Lần 3</th>
                     <th>Điểm Trung Bình</th>
                     <th>Số Buổi Vắng</th>
-                    <th>Đã Kết Thúc</th>
+                    <th>Kết quả</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.MaLH</td>
+                        <td>@ViewBag.Lop.TenLop</td>
                         <td>@(item.DiemKiemTraLan1 ?? 0)</td>
                         <td>@(item.DiemKiemTraLan2 ?? 0)</td>
                         <td>@(item.DiemKiemTraLan3 ?? 0)</td>
                         <td>@(item.DiemTrungBinh ?? 0)</td>
                         <td>@item.Sobuoivang</td>
-                        <td>@(item.Daketthuc ? "Đã kết thúc" : "Đang học")</td>
+                        <td>@item.Daketthuc</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    if (canhbao)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var warningModal = new bootstrap.Modal(document.getElementById('warningModal'));
+                warningModal.show();
+            });
+        </script>
+    }
 }
 else
 {
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        Bạn chưa tham gia khóa học nào!
+    <div class="alert alert-danger alert-dismissible fade show mx-5" role="alert">
+        Hiện thời bạn chưa có kết quả học tập!!!
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
