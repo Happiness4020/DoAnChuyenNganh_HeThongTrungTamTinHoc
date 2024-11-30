@@ -489,6 +489,7 @@
     <Compile Include="ViewModels\KhoaHocViewModel.cs" />
     <Compile Include="ViewModels\LichDayViewModel.cs" />
     <Compile Include="ViewModels\LichHocViewModel.cs" />
+    <Compile Include="ViewModels\LichSuGiaoDichViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -668,6 +669,7 @@
     <Content Include="protos\google\api\backend.proto" />
     <Content Include="protos\google\api\auth.proto" />
     <Content Include="protos\google\api\annotations.proto" />
+    <Content Include="Views\HocVien\LichSuGiaoDich.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

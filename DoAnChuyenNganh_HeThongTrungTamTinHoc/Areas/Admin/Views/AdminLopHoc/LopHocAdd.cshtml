@@ -47,7 +47,7 @@
                         <div class="col-3"></div>
                         <div class="col-6">
                             @Html.LabelFor(model => model.SiSo, "Sỉ Số")
-                            @Html.EditorFor(model => model.SiSo, new { htmlAttributes = new { @class = "form-control", @value = ViewBag.SiSo } })
+                            @Html.EditorFor(model => model.SiSo, new { htmlAttributes = new { @class = "form-control", @value = 20 } })
                             @Html.ValidationMessageFor(model => model.SiSo, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -83,8 +83,10 @@
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @Html.Label("Trạng Thái Khóa Học")
-                            <input type="text" class="form-control" value="@(ViewBag.TrangThai ? "Đã mở lớp" : "Chưa mở lớp")" readonly /> 
+                            @Html.LabelFor(model => model.TrangThai, "Trạng thái lớp")
+                            <input type="text" class="form-control"
+                                   value="@(ViewBag.TrangThai != null && (bool)ViewBag.TrangThai ? "Đã mở lớp" : "Chưa mở lớp")"
+                                   readonly />
                         </div>
                     </div>
 
