@@ -83,13 +83,13 @@
             <div class="card-body">
                 <h5 class="card-title mb-2 text-white" style="font-weight: 600; font-size: 1.8em;">@Model.TenKH</h5>
                 <p class="card-text mb-2 text-white">Chương trình học: <a href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@Model.ChuongTrinhHoc.MaChuongTrinh" class="text-warning">@Html.DisplayFor(model => model.ChuongTrinhHoc.TenChuongTrinh)</a></p>
-                <p class="card-text mb-2 text-white">Ngày khai giảng: <span class="text-warning">@Html.DisplayFor(model => model.NgayBatDau.Date)</span></p>
-                <p class="card-text mb-2 text-white">Ngày kết thúc: <span class="text-warning">@Html.DisplayFor(model => model.NgayKetThuc.Date)</span></p>
+                <p class="card-text mb-2 text-white">Ngày khai giảng: <span class="text-warning">@Html.DisplayFor(model => model.NgayBatDau)</span></p>
+                <p class="card-text mb-2 text-white">Ngày kết thúc: <span class="text-warning">@Html.DisplayFor(model => model.NgayKetThuc)</span></p>
                 <p class="card-text mb-2 text-white">Số buổi học: <span class="text-warning">@Html.DisplayFor(model => model.Sobuoihoc)</span></p>
                 <p class="card-text mb-2 text-white">Học phí: <span class="text-warning">@Html.DisplayFor(model => model.HocPhi)</span></p>
                 <p class="card-text mb-2 text-white">Loại khóa học: <span class="text-warning">@Html.DisplayFor(model => model.LoaiKH)</span></p>
                 <div class="mt-4">
-                    <a href="@Url.Action("DangKyKhoaHoc", "HocPhi", new { id = Model.MaKH })" class="btn btn-danger text-white px-4 py-2" style="font-weight: bold;">Đăng ký</a>
+                    <a href="@Url.Action("DangKyKhoaHoc", "KhoaHoc", new { MaKH = Model.MaKH })" class="btn btn-danger text-white px-4 py-2" style="font-weight: bold;">Đăng ký</a>
                 </div>
             </div>
         </div>

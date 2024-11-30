@@ -170,7 +170,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return View();
         }
 
-        private static readonly Dictionary<string, string> otpStore = new Dictionary<string, string>(); // Lưu trữ OTP tạm thời
+        private static readonly Dictionary<string, string> otpStore = new Dictionary<string, string>();
 
         [HttpPost]
         public async Task<ActionResult> SendOTP(string email)
