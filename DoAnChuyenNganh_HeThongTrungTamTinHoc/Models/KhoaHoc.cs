@@ -40,7 +40,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 
         [Display(Name = "Ngày kết thúc")]
         [Required(ErrorMessage = "Bạn phải nhập ngày kết thúc")]
-        public System.DateTime NgayKetThuc { get; set; }
+        public Nullable<System.DateTime> NgayKetThuc { get; set; }
 
         [Required(ErrorMessage = "Bạn phải nhập số buổi học")]
         public int Sobuoihoc { get; set; }
