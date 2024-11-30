@@ -42,6 +42,14 @@
 
 <h2 style="color: #0066b3">@ViewBag.Title</h2>
 
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @ViewBag.Message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
 <br />
 @*<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("LopHocAdd", "AdminLopHoc")">Thêm Lớp Học</a>*@
@@ -64,6 +72,7 @@
                     <th>Giáo viên</th>
                     <th>Khóa học</th>
                     <th>Trạng thái</th>
+                    <th>Thứ trong tuần</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -71,7 +80,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => item.TenLop)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TenPhong)</td>
                         <td>@Html.DisplayFor(modelItem => item.GioBatDau)</td>
                         <td>@Html.DisplayFor(modelItem => item.GioKetThuc)</td>
                         <td>@Html.DisplayFor(modelItem => item.GiaoVien.HoTen)</td>

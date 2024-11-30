@@ -19,7 +19,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels
         public float? DiemKiemTraLan3 { get; set; }
         public float? DiemTrungBinh { get; set; }
         public int Sobuoivang { get; set; }
-        public bool Daketthuc { get; set; }
+        public string KetQua { get; set; }
         public bool DiemDanh { get; set; }
     }
 }

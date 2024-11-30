@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 using System.Text;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
+using System.Data.SqlClient;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
@@ -28,20 +29,20 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             // Lọc dữ liệu nếu có từ khóa tìm kiếm
             if (!string.IsNullOrEmpty(search))
             {
-                lopHocQuery = lopHocQuery.Where(l => l.TenLop.Contains(search) || l.GiaoVien.HoTen.Contains(search) || l.KhoaHoc.TenKH.Contains(search));
+                lopHocQuery = lopHocQuery.Where(l => l.TenPhong.Contains(search) || l.GiaoVien.HoTen.Contains(search) || l.KhoaHoc.TenKH.Contains(search));
             }
 
             var lopHoc = lopHocQuery.ToList();
 
-            // Lấy số học viên đã đăng ký cho mỗi khóa học
-            foreach (var item in lopHoc)
-            {
-                item.SiSo = db.GiaoDichHocPhi
-                    .Where(gd => gd.MaKH == item.MaKH)
-                    .Select(gd => gd.MaHV)
-                    .Distinct()
-                    .Count();
-            }
+            //// Lấy số học viên đã đăng ký cho mỗi khóa học
+            //foreach (var item in lopHoc)
+            //{
+            //    item.SiSo = db.GiaoDichHocPhi
+            //        .Where(gd => gd.MaKH == item.MaKH)
+            //        .Select(gd => gd.MaHV)
+            //        .Distinct()
+            //        .Count();
+            //}
 
             // Tính toán phân trang
             int totalRecords = lopHoc.Count;
@@ -76,13 +77,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LopHocAdd(LopHoc lopHoc, string MaKH)
         {
-            bool gv = db.LopHoc.Any(l => l.TenLop == lopHoc.TenLop && l.MaGV == lopHoc.MaGV);
+            bool gv = db.LopHoc.Any(l => l.TenPhong == lopHoc.TenPhong && l.MaGV == lopHoc.MaGV);
             if (gv)
             {
                 ModelState.AddModelError("TenLop", "Lớp học này đã tồn tại với giáo viên đã chọn.");
             }
 
-            bool lopHocdatontai = db.LopHoc.Any(l => l.TenLop == lopHoc.TenLop);
+            bool lopHocdatontai = db.LopHoc.Any(l => l.TenPhong == lopHoc.TenPhong);
             if (lopHocdatontai)
             {
                 ModelState.AddModelError("TenLop", "Lớp học này đã tồn tại.");
@@ -257,8 +258,33 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 return Content("Không có học viên trong lớp này.");
             }
 
-            // Bước 3: Xác định lịch học cho lớp (ngày học trong tuần - thứ 2, 4, 6)
-            List<DayOfWeek> ngayHocTrongTuan = new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Friday };
+            // Bước 3: Tính ngày kết thúc khóa học dựa vào số buổi học và ngày bắt đầu
+            DateTime ngayKetThuc = db.Database.SqlQuery<DateTime>(
+                "SELECT dbo.TinhNgayKetThuc(@NgayBatDau, @SoBuoiHoc, @ThuHoc)",
+                new SqlParameter("@NgayBatDau", ngayBatDau),
+                new SqlParameter("@SoBuoiHoc", soBuoiHoc),
+                new SqlParameter("@ThuHoc", lopHoc.ThuHoc)  // Thêm tham số ThuHoc từ thông tin lớp học
+            ).FirstOrDefault();
+
+            // Cập nhật ngày kết thúc vào khóa học nếu chưa có
+            if (khoaHoc.NgayKetThuc == null || khoaHoc.NgayKetThuc != ngayKetThuc)
+            {
+                khoaHoc.NgayKetThuc = ngayKetThuc;
+                db.SaveChanges();  // Lưu thay đổi vào cơ sở dữ liệu
+            }
+
+            // Bước 4: Xác định lịch học cho lớp dựa trên thông tin @ThuHoc
+            List<DayOfWeek> ngayHocTrongTuan = new List<DayOfWeek>();
+
+            if (lopHoc.ThuHoc == "2-4-6")
+            {
+                ngayHocTrongTuan = new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Friday };
+            }
+            else if (lopHoc.ThuHoc == "3-5-7")
+            {
+                ngayHocTrongTuan = new List<DayOfWeek> { DayOfWeek.Tuesday, DayOfWeek.Thursday, DayOfWeek.Saturday };
+            }
+
             List<DateTime> dsNgayHoc = new List<DateTime>();
             DateTime ngayHienTai = ngayBatDau;
 
@@ -272,11 +298,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 ngayHienTai = ngayHienTai.AddDays(1); // Tăng thêm một ngày
             }
 
-            // Ngày kết thúc sẽ là ngày của buổi học cuối cùng
-            DateTime ngayKetThuc = khoaHoc.NgayKetThuc;
-
-
-            // Bước 4: Phân lịch học cho từng học viên
+            // Bước 5: Phân lịch học cho từng học viên
             foreach (var maHV in danhSachHocVien)
             {
                 foreach (var ngayHoc in dsNgayHoc)
@@ -291,8 +313,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         MaHV = maHV,
                         NgayHoc = ngayHoc,
                         DiemDanh = false,
-                        GioBatDau = lopHoc.GioBatDau,  
-                        GioKetThuc = lopHoc.GioKetThuc 
+                        GioBatDau = lopHoc.GioBatDau,
+                        GioKetThuc = lopHoc.GioKetThuc
                     };
 
                     // Thêm lịch học vào cơ sở dữ liệu
@@ -304,7 +326,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             db.SaveChanges();
 
             // Trả về thông báo thành công
-            ViewBag.Message = $"Đã phân lịch học cho {danhSachHocVien.Count} học viên trong lớp {lopHoc.TenLop}.";
+            ViewBag.Message = $"Đã phân lịch học cho {danhSachHocVien.Count} học viên trong lớp {lopHoc.TenPhong}.";
             return RedirectToAction("LopHocList");
         }
 

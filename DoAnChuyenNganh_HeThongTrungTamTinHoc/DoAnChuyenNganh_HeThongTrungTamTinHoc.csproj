@@ -416,11 +416,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\GiaoDichHocPhi.cs">
-      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\LichHocView.cs" />
-    <Compile Include="Services\LichDayService.cs" />
     <Compile Include="Models\BinhLuanKhoaHoc.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
@@ -430,7 +425,9 @@
     <Compile Include="Models\ChuongTrinhHoc.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DangNhap.cs" />
+    <Compile Include="Models\GiaoDichHocPhi.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GiaoVien.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
@@ -446,13 +443,13 @@
     <Compile Include="Models\LichHoc.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\LichHocView.cs" />
     <Compile Include="Models\LienHe.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LopHoc.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MaHVorMaGVAttribute.cs" />
     <Compile Include="Models\NguoiQuanLy.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
@@ -465,6 +462,9 @@
     <Compile Include="Models\TaiLieuHocTap.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
+    <Compile Include="Services\LichDayService.cs" />
+    <Compile Include="Models\DangNhap.cs" />
+    <Compile Include="Models\MaHVorMaGVAttribute.cs" />
     <Compile Include="Models\TrungTamTinHoc.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

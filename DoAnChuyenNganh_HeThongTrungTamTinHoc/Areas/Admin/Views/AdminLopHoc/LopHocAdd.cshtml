@@ -27,9 +27,9 @@
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @Html.LabelFor(model => model.TenLop, "Tên Lớp")
-                            @Html.EditorFor(model => model.TenLop, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.TenLop, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.TenPhong, "Tên Lớp")
+                            @Html.EditorFor(model => model.TenPhong, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TenPhong, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -88,18 +88,18 @@
                         </div>
                     </div>
 
-                    @*<div class="row my-2">
+                    <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @Html.LabelFor(model => model.TrangThai, "Trạng Thái")
-                            @Html.DropDownListFor(model => model.TrangThai, new List<SelectListItem>()
+                            @Html.LabelFor(model => model.ThuHoc, "Thứ trong tuần")
+                            @Html.DropDownListFor(model => model.ThuHoc, new List<SelectListItem>()
                                {
-                                    new SelectListItem {Text = "Chưa mở lớp", Value = "false"},
-                                    new SelectListItem {Text = "Đã mở lớp", Value = "true"},
-                               }, "Chọn trạng thái", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
+                                    new SelectListItem {Text = "2-4-6", Value = "2-4-6"},
+                                    new SelectListItem {Text = "3-5-7", Value = "3-5-7"},
+                               }, "Chọn thứ trong tuần", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ThuHoc, "", new { @class = "text-danger" })
                         </div>
-                    </div>*@
+                    </div>
 
                     <div class="row my-2 mt-3 mb-3">
                         <div class="col-3"></div>
