@@ -71,8 +71,8 @@
                     <th>Giờ kết thúc</th>
                     <th>Giáo viên</th>
                     <th>Khóa học</th>
-                    <th>Trạng thái</th>
                     <th>Thứ trong tuần</th>
+                    <th>Trạng thái</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -85,6 +85,7 @@
                         <td>@Html.DisplayFor(modelItem => item.GioKetThuc)</td>
                         <td>@Html.DisplayFor(modelItem => item.GiaoVien.HoTen)</td>
                         <td>@Html.DisplayFor(modelItem => item.KhoaHoc.TenKH)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ThuHoc)</td>
                         <td>
                             @if (item.TrangThai)
                             {

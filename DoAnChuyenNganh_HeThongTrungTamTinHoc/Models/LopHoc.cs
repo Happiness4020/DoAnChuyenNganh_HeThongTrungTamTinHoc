@@ -45,6 +45,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
 
         [Required(ErrorMessage = " Bạn phải nhập trạng thái ")]
         public bool TrangThai { get; set; }
+
+        [Required(ErrorMessage = " Bạn phải chọn thứ trong tuần")]
         public string ThuHoc { get; set; }
     
         public virtual GiaoVien GiaoVien { get; set; }
