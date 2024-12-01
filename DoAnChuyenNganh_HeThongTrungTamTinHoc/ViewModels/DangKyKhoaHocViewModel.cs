@@ -13,5 +13,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels
         public string Email { get; set; }
         public string SoDT { get; set; }
         public string DiaChi { get; set; }
+        public string PaymentStatus { get; internal set; }
     }
 }

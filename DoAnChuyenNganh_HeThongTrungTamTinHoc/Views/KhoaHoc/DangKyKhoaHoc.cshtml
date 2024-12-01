@@ -19,12 +19,12 @@
             </div>
             <div class="col-md-6 d-flex align-items-center p-3 shadow-sm" style="background-color: #0066b3;">
                 <div class="card-body">
-                    <h5 class="card-title mb-2 text-white" style="font-weight: 600; font-size: 1.8em;">@Model.TenKH</h5>
+                    <h5 class="card-title mb-2 text-white" id="tenkh" style="font-weight: 600; font-size: 1.8em;">@Model.TenKH</h5>
                     <p class="card-text mb-2 text-white">Chương trình học: <span class="text-warning">@Html.DisplayFor(model => model.ChuongTrinhHoc.TenChuongTrinh)</span></p>
                     <p class="card-text mb-2 text-white">Ngày khai giảng: <span class="text-warning">@Html.DisplayFor(model => model.NgayBatDau)</span></p>
                     <p class="card-text mb-2 text-white">Ngày kết thúc: <span class="text-warning">@Html.DisplayFor(model => model.NgayKetThuc)</span></p>
                     <p class="card-text mb-2 text-white">Số buổi học: <span class="text-warning">@Html.DisplayFor(model => model.Sobuoihoc)</span></p>
-                    <p class="card-text mb-2 text-white">Học phí: <span class="text-warning">@Html.DisplayFor(model => model.HocPhi)</span></p>
+                    <p class="card-text mb-2 text-white" id="hocphi">Học phí: <span class="text-warning">@Html.DisplayFor(model => model.HocPhi)</span></p>
                     <p class="card-text mb-2 text-white">Loại khóa học: <span class="text-warning">@Html.DisplayFor(model => model.LoaiKH)</span></p>
                 </div>
             </div>
@@ -42,7 +42,7 @@
 <div class="container-fluid mb-5">
     <div class="container mt-5">
         <h2 class="text-center mb-4">Thông Tin Học Viên</h2>
-        <form id="formDangKy" action="@Url.Action("DangKyKhoaHoc", "KhoaHoc")" method="post" enctype="multipart/form-data" class="border p-4 rounded shadow">
+        <form id="formDangKy" class="border p-4 rounded shadow">
             <input type="hidden" name="MaKH" value="@Model.MaKH" />
             <div class="mb-3">
                 <label for="HoTen" class="form-label">Họ Tên</label>
@@ -78,10 +78,15 @@
                 <textarea class="form-control" id="diaChi" name="DiaChi" rows="3" required placeholder="Nhập địa chỉ"></textarea>
             </div>
 
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary me-2">Xác nhận</button>
-                <button type="reset" class="btn btn-secondary">Xóa</button>
+            <div class="container">
+                <h3 style="color: #0066b3">Thanh toán ngay với <i class="fa-brands fa-cc-stripe"></i></h3>
+                <button type="button" id="btnCheckout" class="btn btn-primary">
+                    <i class="fa-brands fa-cc-stripe"></i> Thanh Toán
+                </button>
             </div>
+
+            <input type="hidden" id="paymentStatus" name="PaymentStatus" value="false" />
+
         </form>
     </div>
 </div>
@@ -101,12 +106,28 @@
     }
 </div>
 
-<script>document.getElementById("formDangKy").addEventListener("submit", function (e) {
-        const inputNgaySinh = document.getElementById("ngaySinh");
-        const ngaySinh = new Date(inputNgaySinh.value);
+<script src="https://js.stripe.com/v3/"></script>
 
-        if (!isNaN(ngaySinh)) {
-            const formattedDate = `${ngaySinh.getFullYear()}/${(ngaySinh.getMonth() + 1).toString().padStart(2, '0')}/${ngaySinh.getDate().toString().padStart(2, '0')}`;
-            inputNgaySinh.value = formattedDate;
+<script>
+    document.getElementById("btnCheckout").addEventListener("click", function () {
+    var formData = new FormData(document.getElementById("formDangKy"));
+
+    fetch("@Url.Action("DangKyKhoaHoc", "KhoaHoc", new { makh = Model.MaKH })", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.sessionId) {
+            var stripe = Stripe("pk_test_51PhnwG2KZcPzxihVAIYjp6TV5aZXdbHvsV1JV4nNuXPyM5lZGRKFU9FJBfcWO8PzTsMnqoVNsE5lmHPhvPBafqnw00jIoSkjVE");
+            stripe.redirectToCheckout({ sessionId: data.sessionId });
+        } else {
+            alert("Có lỗi xảy ra: " + data.errorMessage);
         }
-    });</script>
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Không thể thực hiện thanh toán.");
+    });
+});
+</script>

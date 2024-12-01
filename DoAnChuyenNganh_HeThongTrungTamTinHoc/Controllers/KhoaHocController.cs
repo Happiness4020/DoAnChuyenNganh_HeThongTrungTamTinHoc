@@ -12,6 +12,8 @@ using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using Stripe;
+using Stripe.Checkout;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 {
@@ -245,55 +247,87 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             KhoaHoc kh = db.KhoaHoc.Where(t => t.MaKH == makh).FirstOrDefault();
 
             ViewBag.MaKH = makh;
+            ViewBag.PaymentSuccess = TempData["PaymentSuccess"] != null;
 
             return View(kh);
         }
         [HttpPost]
-        public async Task<ActionResult> DangKyKhoaHoc(string makh, DangKyKhoaHocViewModel model)
+        public ActionResult DangKyKhoaHoc(string makh, DangKyKhoaHocViewModel model)
         {
-            string mahv = Utility.TaoMaNgauNhien("HV", 8);
-            HocVien hocvien = db.HocVien.FirstOrDefault(hv => hv.MaHV == mahv);
-
-            if (hocvien != null)
+            if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Học viên đã tồn tại";
-                return RedirectToAction("DangKyKhoaHoc", new { MaKH = makh });
+                TempData["ErrorMessage"] = "Vui lòng điền đầy đủ thông tin!!!";
+                return RedirectToAction("DangKyKhoaHoc", new { makh = makh });
             }
 
-            var emailtontai = db.HocVien.FirstOrDefault(hv => hv.Email == model.Email);
-            if (emailtontai != null)
+            if (db.HocVien.Any(hv => hv.Email == model.Email))
             {
-                TempData["ErrorMessage"] = "Email đã được sử dụng!!! Hãy dùng một email khác";
-                return RedirectToAction("DangKyKhoaHoc", new { MaKH = makh });
+                TempData["ErrorMessage"] = "Email đã được sử dụng!!! Vui lòng dùng email khác";
+                return RedirectToAction("DangKyKhoaHoc", new { makh = makh });
             }
 
-            var sodttontai = db.HocVien.FirstOrDefault(hv => hv.SoDT == model.SoDT);
-            if (emailtontai != null)
+            if (db.HocVien.Any(hv => hv.SoDT == model.SoDT))
             {
-                TempData["ErrorMessage"] = "Số điện thoại đã được sử dụng!!! Hãy dùng một số điện thoại khác";
-                return RedirectToAction("DangKyKhoaHoc", new { MaKH = makh });
+                TempData["ErrorMessage"] = "Số điện thoại đã được sử dụng!!! Vui lòng dùng số khác";
+                return RedirectToAction("DangKyKhoaHoc", new { makh = makh });
             }
 
-            hocvien = new HocVien
+            TempData["DangKyKhoaHocData"] = model;
+            TempData.Keep("DangKyKhoaHocData");
+
+            try
             {
-                MaHV = mahv,
-                Anh = "noimage.jpg",
-                HoTen = model.HoTen,
-                NgaySinh = model.NgaySinh,
-                GioiTinh = model.GioiTinh,
-                Email = model.Email,
-                SoDT = model.SoDT,
-                DiaChi = model.DiaChi,
-            };
+                var khoaHoc = db.KhoaHoc.FirstOrDefault(k => k.MaKH == makh);
+                if (khoaHoc == null)
+                {
+                    TempData["ErrorMessage"] = "Khóa học không tồn tại.";
+                    return RedirectToAction("DangKyKhoaHoc", new { makh = makh });
+                }
 
-            db.HocVien.Attach(hocvien);
-            db.HocVien.Add(hocvien);
-            db.SaveChanges();
+                var stripeSecretKey = System.Configuration.ConfigurationManager.AppSettings["StripeSecretKey"];
+                StripeConfiguration.ApiKey = stripeSecretKey;
 
-            await GuiMaHV(model.Email, mahv);
+                var options = new SessionCreateOptions
+                {
+                    PaymentMethodTypes = new List<string> { "card" },
+                    LineItems = new List<SessionLineItemOptions>
+                {
+                    new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)khoaHoc.HocPhi,
+                            Currency = "vnd",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = khoaHoc.TenKH,
+                                Description = "Khóa học " + khoaHoc.LoaiKH,
+                                Metadata = new Dictionary<string, string>
+                                {
+                                    { "MaKH", khoaHoc.MaKH },
+                                    { "TenKH", khoaHoc.TenKH },
+                                    { "HocPhi", khoaHoc.HocPhi.ToString() },
+                                }
+                            },
+                        },
+                        Quantity = 1,
+                    },
+                },
+                    Mode = "payment",
+                    SuccessUrl = Url.Action("ThanhToanThanhCong", "KhoaHoc", new { makh = makh }, Request.Url.Scheme),
+                    CancelUrl = Url.Action("DangKyKhoaHoc", "KhoaHoc", new { makh = makh }, Request.Url.Scheme),
+                };
 
-            TempData["SuccessMessage"] = "Đăng ký khóa học thành công. Hãy sử dụng mã học viên đã được gửi đến email của bạn để đăng ký tài khoản";
-            return RedirectToAction("DangKyKhoaHoc", new { MaKH = makh });
+                var service = new SessionService();
+                Session session = service.Create(options);
+
+                return Json(new { sessionId = session.Id });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra trong quá trình thanh toán: " + ex.Message;
+                return RedirectToAction("DangKyKhoaHoc", new { makh = makh });
+            }
         }
 
         public async Task<ActionResult> GuiMaHV(string email, string mahv)
@@ -317,6 +351,49 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Gửi email thất bại. Vui lòng thử lại sau.");
             }
+        }
+        public async Task<ActionResult> ThanhToanThanhCong(string makh)
+        {
+            try
+            {
+                var khoaHoc = db.KhoaHoc.FirstOrDefault(k => k.MaKH == makh);
+                if (khoaHoc == null)
+                {
+                    TempData["ErrorMessage"] = "Khóa học không tồn tại!";
+                    return RedirectToAction("DangKyKhoaHoc", new { makh = makh });
+                }
+
+                if (TempData["DangKyKhoaHocData"] is DangKyKhoaHocViewModel model)
+                {
+                    string mahv = Utility.TaoMaNgauNhien("HV", 8);
+
+                    var hocvien = new HocVien
+                    {
+                        MaHV = mahv,
+                        Anh = "noimage.jpg",
+                        HoTen = model.HoTen,
+                        NgaySinh = model.NgaySinh,
+                        GioiTinh = model.GioiTinh,
+                        Email = model.Email,
+                        SoDT = model.SoDT,
+                        DiaChi = model.DiaChi,
+                    };
+
+                    db.HocVien.Add(hocvien);
+                    db.SaveChanges();
+
+                    await GuiMaHV(model.Email, mahv);
+
+                    TempData["SuccessMessage"] = "Thanh toán thành công, hãy sử dụng mã học viên được gửi đến email của bạn để đăng ký tài khoản.";
+                    return RedirectToAction("DangKyKhoaHoc", new { makh = makh });
+                }
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi đăng ký khóa học!!! Hãy thử lại sau";
+                return RedirectToAction("DangKyKhoaHoc", new { makh = makh });
+            }
+            return RedirectToAction("DangKyKhoaHoc", new { makh = makh });
         }
     }
 }
