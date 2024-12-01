@@ -314,7 +314,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     },
                 },
                     Mode = "payment",
-                    SuccessUrl = Url.Action("ThanhToanThanhCong", "KhoaHoc", new { makh = makh }, Request.Url.Scheme),
+                    SuccessUrl = Url.Action("ThanhToanThanhCong", "KhoaHoc", new { makh = makh, hocphi = khoaHoc.HocPhi }, Request.Url.Scheme),
                     CancelUrl = Url.Action("DangKyKhoaHoc", "KhoaHoc", new { makh = makh }, Request.Url.Scheme),
                 };
 
@@ -352,7 +352,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Gửi email thất bại. Vui lòng thử lại sau.");
             }
         }
-        public async Task<ActionResult> ThanhToanThanhCong(string makh)
+        public async Task<ActionResult> ThanhToanThanhCong(string makh, double hocphi)
         {
             try
             {
@@ -378,13 +378,27 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         SoDT = model.SoDT,
                         DiaChi = model.DiaChi,
                     };
-
                     db.HocVien.Add(hocvien);
-                    db.SaveChanges();
 
                     await GuiMaHV(model.Email, mahv);
 
-                    TempData["SuccessMessage"] = "Thanh toán thành công, hãy sử dụng mã học viên được gửi đến email của bạn để đăng ký tài khoản.";
+                    DateTime truncatedToSecond = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
+                    var giaodich = new GiaoDichHocPhi
+                    {
+                        MaHV = mahv,
+                        MaKH = makh,
+                        MaPT = 1,
+                        NgayGD = truncatedToSecond,
+                        SoTien = hocphi,
+                        SoDT = model.SoDT,
+                        Email = model.Email,
+                        TrangThai = "Chờ duyệt"
+                    };
+                    db.GiaoDichHocPhi.Add(giaodich);
+                    db.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Thanh toán thành công, hãy sử dụng mã học viên được gửi đến email " + model.Email + " để đăng ký tài khoản.";
                     return RedirectToAction("DangKyKhoaHoc", new { makh = makh });
                 }
             }

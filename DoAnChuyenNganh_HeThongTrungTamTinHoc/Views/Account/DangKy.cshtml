@@ -38,6 +38,7 @@
         @using (Html.BeginForm("DangKy", "Account", FormMethod.Post))
         {
             <div>
+                <span class="text-info">Lưu ý: Để có mã học viên, vui lòng đăng ký 1 khóa học!!!</span>
                 <div class="form-floating mb-3">
                     @Html.TextBoxFor(model => model.MaHV, new { @class = "form-control", placeholder = "Mã học viên", id = "floatingMaHV" })
                     @Html.LabelFor(model => model.MaHV, "Mã học viên", new { @for = "floatingMaHV" })
@@ -64,7 +65,7 @@
 
                 <div class="text-center mt-4 d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary w-48 py-2 fw-bold">Đăng ký</button>
-                    <a href="/Home/Index" class="btn btn-secondary w-48 py-2 fw-bold">Quay lại</a>
+                    <a href="/Account/DangNhap" class="btn btn-secondary w-48 py-2 fw-bold">Quay lại</a>
                 </div>
             </div>
         }
