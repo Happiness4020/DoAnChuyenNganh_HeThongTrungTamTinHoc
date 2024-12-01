@@ -4,38 +4,33 @@
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
-
-
-
-<div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="card login-card p-4" style="width: 400px; background-color: #0066b3; border-radius: 10px;">
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-lg p-4" style="width: 400px; border-radius: 10px;">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold text-primary">@ViewBag.Title</h3>
+        </div>
         @using (Html.BeginForm("DangNhap", "Account", FormMethod.Post))
         {
-            @*@Html.AntiForgeryToken()*@
-            <div class="text-center mb-4">
-                <h3 class="text-white">@ViewBag.Title</h3>
-            </div>
             <div>
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.TenDangNhap, new { @style = "color: white;" })
-                    @Html.TextBoxFor(model => model.TenDangNhap, new { placeholder = "Tên đăng nhập..", @class = "form-control" })
+                <div class="form-floating mb-3">
+                    @Html.TextBoxFor(model => model.TenDangNhap, new { placeholder = "Tên đăng nhập", @class = "form-control", @id = "floatingUsername" })
+                    @Html.LabelFor(model => model.TenDangNhap, "Tên đăng nhập", new { @class = "text-muted", @for = "floatingUsername" })
                     @Html.ValidationMessageFor(model => model.TenDangNhap, "", new { @class = "text-danger" })
                 </div>
-                <div class="mb-3">
-                    @Html.LabelFor(model => model.MatKhau, new { @style = "color: white;" })
-                    @Html.PasswordFor(model => model.MatKhau, new { placeholder = "Mật khẩu..", @class = "form-control" })
+                <div class="form-floating mb-3">
+                    @Html.PasswordFor(model => model.MatKhau, new { placeholder = "Mật khẩu", @class = "form-control", @id = "floatingPassword" })
+                    @Html.LabelFor(model => model.MatKhau, "Mật khẩu", new { @class = "text-muted", @for = "floatingPassword" })
                     @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
                 </div>
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-submit btn-primary w-100">Đăng nhập</button>
-                </div>
-                <div class="text-center mt-3">
-                    <a class="text-white text-decoration-none">Bạn chưa có tài khoản?</a>
-                    <a class="text-white" href="/Account/DangKy">Đăng ký ngay</a>
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Đăng nhập</button>
                 </div>
             </div>
         }
+        <div class="text-center mt-3">
+            <span class="text-muted">Bạn chưa có tài khoản?</span>
+            <a class="text-primary text-decoration-none fw-bold" href="/Account/DangKy">Đăng ký ngay</a>
+        </div>
     </div>
 </div>
-
 

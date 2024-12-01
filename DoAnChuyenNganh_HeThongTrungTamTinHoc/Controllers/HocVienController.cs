@@ -110,12 +110,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                                      .Where(c => c.MaHV == maHocVien)
                                      .ToList();
 
-                var kq = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaHV == maHocVien);
-                if(kq != null)
-                {
-                    var lop = db.LopHoc.FirstOrDefault(l => l.MaLH == kq.MaLH);
-                    ViewBag.Lop = lop;
-                }    
 
                 var hocvien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHocVien);
                 ViewBag.HocVien = hocvien;
@@ -221,7 +215,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     item.KhoaHoc = db.KhoaHoc.FirstOrDefault(k => k.MaKH == item.MaKH);
                     item.HocVien = db.HocVien.FirstOrDefault(h => h.MaHV == item.MaHV);
                 }
-
+                
                 var totalAmount = cart.Sum(t => t.SoTien);
                 ViewBag.TotalAmount = totalAmount;
 
@@ -383,6 +377,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     db.SaveChanges();
                     Session["Cart"] = null;
                     TempData["Message"] = "Thanh toán của bạn đang chờ duyệt.";
+                    return RedirectToAction("ThongTinThanhToan");
                 }
             }
             catch (Exception ex)
