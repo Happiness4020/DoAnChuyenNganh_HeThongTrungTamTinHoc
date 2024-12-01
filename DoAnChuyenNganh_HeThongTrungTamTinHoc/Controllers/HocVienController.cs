@@ -159,7 +159,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         return HttpNotFound();
                     }
 
-                    // Kiểm tra xem học viên đã đăng ký khóa học này chưa
                     var daDangKy = db.GiaoDichHocPhi.Any(gd => gd.MaHV == maHocVien && gd.MaKH == courseId);
 
                     if (daDangKy)
@@ -169,7 +168,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     }
                     else
                     {
-                        // Thêm vào giỏ hàng
                         List<GiaoDichHocPhi> cart = Session["Cart"] as List<GiaoDichHocPhi> ?? new List<GiaoDichHocPhi>();
 
                         var existingCourse = cart.FirstOrDefault(c => c.MaKH == course.MaKH);
@@ -229,7 +227,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         {
             var cart = Session["Cart"] as List<GiaoDichHocPhi>;
             return RedirectToAction("ThongTinThanhToan");
-
         }
 
         public ActionResult RemoveFromCart(string courseId)
