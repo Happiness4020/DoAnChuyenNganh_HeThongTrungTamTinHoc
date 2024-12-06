@@ -10,9 +10,11 @@ using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 using System.Web.Security;
 using System.Threading.Tasks;
 using System.Net;
+using System.Net.Mail;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using RestSharp;
+
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 {
@@ -275,5 +277,152 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 ModelState.AddModelError("MatKhau", "Lỗi xảy ra khi đổi mật khẩu!!");
             }
         }
+
+
+
+
+
+
+
+
+        ////////////////////////////////
+
+        [HttpGet]
+        public ActionResult Quenmatkhau()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Quenmatkhau(string MaHV, string MaGV, string Email)
+        {
+            try
+            { 
+            
+                TaiKhoan taiKhoan = null;
+
+                if (!string.IsNullOrEmpty(MaHV))
+                {
+                    var hocVien = ttth.HocVien.FirstOrDefault(hv => hv.MaHV == MaHV && hv.Email == Email);
+                    if (hocVien != null)
+                    {
+                        taiKhoan = ttth.TaiKhoan.FirstOrDefault(tk => tk.MaHV == MaHV);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(MaGV))
+                {
+                    var giaoVien = ttth.GiaoVien.FirstOrDefault(gv => gv.MaGV == MaGV && gv.Email == Email);
+                    if (giaoVien != null)
+                    {
+                        taiKhoan = ttth.TaiKhoan.FirstOrDefault(tk => tk.MaGV == MaGV);
+                    }
+                }
+
+                if (taiKhoan == null)
+                {
+                    ModelState.AddModelError("", "Thông tin bạn cung cấp không chính xác. Vui lòng kiểm tra lại.");
+                    return View();
+                }
+
+                var otp = TaoMaOTP();
+                otpStore[Email] = otp;
+
+                var sendGridClient = new SendGridClient("API_KEY");
+                var from = new EmailAddress("buikhanhduy13082003@gmail.com", "Trung Tâm Tin Học HUIT");
+                var to = new EmailAddress(Email);
+                var subject = "Mã OTP để đặt lại mật khẩu";
+                var plainTextContent = $"Mã OTP của bạn là: {otp}";
+                var htmlContent = $"<strong>Mã OTP của bạn là: {otp}</strong>";
+
+                var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+                var response = await sendGridClient.SendEmailAsync(msg);
+
+                if (response.StatusCode != HttpStatusCode.Accepted)
+                {
+                    ModelState.AddModelError("", "Gửi OTP thất bại. Vui lòng thử lại.");
+                    return View();
+                }
+
+                Session["Email"] = Email;
+                Session["MaTaiKhoan"] = taiKhoan.MaTK;
+
+                return RedirectToAction("NhapOTP");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Đã xảy ra lỗi: " + ex.Message);
+                return View();
+            }
+        }
+
+        public ActionResult NhapOTP()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult NhapOTP(string otp, string newPassword)
+        {
+            try
+            {
+                string email = Session["Email"]?.ToString();
+                string maTaiKhoanString = TempData["MaTaiKhoan"]?.ToString();
+
+                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(maTaiKhoanString))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Thông tin không hợp lệ.");
+                }
+
+                // Chuyển đổi MaTK từ string sang int
+                if (!int.TryParse(maTaiKhoanString, out int maTaiKhoan))
+                {
+                    ModelState.AddModelError("", "Mã tài khoản không hợp lệ.");
+                    return View();
+                }
+
+                if (!otpStore.ContainsKey(email) || otpStore[email] != otp)
+                {
+                    ModelState.AddModelError("", "Mã OTP không chính xác hoặc đã hết hạn.");
+                    return View();
+                }
+
+                // Cập nhật mật khẩu mới
+                var taiKhoan = ttth.TaiKhoan.FirstOrDefault(tk => tk.MaTK == maTaiKhoan);
+                if (taiKhoan != null)
+                {
+                    taiKhoan.MatKhau = newPassword;
+                    try
+                    {
+                        ttth.SaveChanges();
+                        Console.WriteLine("Cập nhật mật khẩu thành công.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Lỗi khi lưu thay đổi: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Tài khoản không tồn tại.");
+                }
+
+                otpStore.Remove(email);
+
+                TempData["SuccessMessage"] = "Mật khẩu của bạn đã được thay đổi thành công. Vui lòng đăng nhập lại.";
+                return RedirectToAction("DangNhap");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Đã xảy ra lỗi: " + ex.Message);
+                return View();
+            }
+        }
+
+        //private string TaoOTP()
+        //{
+        //    var random = new Random();
+        //    return random.Next(100000, 999999).ToString();
+        //}
+
     }
 }

@@ -5,21 +5,21 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Helpers;
 using System.Web.WebPages;
-using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models; // Đảm bảo rằng namespace này đúng với nơi định nghĩa TrungTamTinHocEntities
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 using System.Net;
 using System.Net.Mail;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Text;  // Dòng này cho StringBuilder
+using System.Text;
 using System.IO;
 using System.Web.Routing;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 using System.Data;
 using System.Data.SqlClient;
-using System.Configuration;  // Đảm bảo bạn đã thêm using này
+using System.Configuration;
 using System.Data.Entity;
 
-namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers 
+namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 {
     public class HocVienController : Controller
     {
@@ -35,7 +35,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                 ViewBag.MaHV = maHV;
 
-                var hocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHV);
+                var hocVien = db.HocVien.Where(hv => hv.MaHV == maHV).FirstOrDefault();
+
+                ViewBag.Email = hocVien.Email;
 
                 if (hocVien != null)
                 {
@@ -48,7 +50,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return RedirectToAction("DangNhap", "Account");
         }
 
-             
+
         public ActionResult LichHoc()
         {
             string maHV = Session["MaHV"]?.ToString();
@@ -85,8 +87,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     GioKetThuc = x.GioKetThuc.ToString(@"hh\:mm"),
                     TenGV = x.TenGV,
                     NgayHoc = x.NgayHoc.ToString("dd/MM/yyyy"),
-                    //NgayBatDau = x.NgayBatDau.ToString("dd/MM/yyyy"),
-                    //NgayKetThuc = x.NgayKetThuc.ToString("dd/MM/yyyy")
                 }).ToList();
 
                 ViewBag.HocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHV);
@@ -95,6 +95,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
 
         }
+
+
+
+
         public ActionResult Ketquahoctap()
         {
             using (var db = new TrungTamTinHocEntities())
@@ -111,12 +115,22 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                                      .ToList();
 
 
+                var kq = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaHV == maHocVien);
+                if (kq != null)
+                {
+                    var lop = db.LopHoc.FirstOrDefault(l => l.MaLH == kq.MaLH);
+                    ViewBag.Lop = lop;
+                }
                 var hocvien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHocVien);
                 ViewBag.HocVien = hocvien;
 
                 return View(ketQuaHocTap);
             }
         }
+
+
+
+
         public ActionResult Dangkihocphan(string search)
         {
             using (var db = new TrungTamTinHocEntities())
@@ -133,101 +147,143 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 return View(khoaHocList.ToList());
             }
         }
-        [HttpGet]
-        public ActionResult AddToCart(string courseId)
-        {
-            var maHocVien = Session["MaHV"]?.ToString();
 
-            if (string.IsNullOrEmpty(maHocVien))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            try
-            {
-                using (var db = new TrungTamTinHocEntities())
-                {
-                    var hocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHocVien);
-                    if (hocVien == null)
-                    {
-                        return HttpNotFound();
-                    }
-
-                    var course = db.KhoaHoc.FirstOrDefault(c => c.MaKH == courseId);
-                    if (course == null)
-                    {
-                        return HttpNotFound();
-                    }
-
-                    var daDangKy = db.GiaoDichHocPhi.Any(gd => gd.MaHV == maHocVien && gd.MaKH == courseId);
-
-                    if (daDangKy)
-                    {
-                        TempData["ErrorMessage"] = "Bạn đã đăng ký khóa học này. Không thể đăng ký lại.";
-                        return RedirectToAction("Dangkihocphan");
-                    }
-                    else
-                    {
-                        List<GiaoDichHocPhi> cart = Session["Cart"] as List<GiaoDichHocPhi> ?? new List<GiaoDichHocPhi>();
-
-                        var existingCourse = cart.FirstOrDefault(c => c.MaKH == course.MaKH);
-                        if (existingCourse == null)
-                        {
-                            cart.Add(new GiaoDichHocPhi
-                            {
-                                MaHV = hocVien.MaHV,
-                                MaKH = course.MaKH,
-                                MaPT = 1,
-                                NgayGD = DateTime.Now,
-                                SoTien = course.HocPhi,
-                                SoDT = hocVien.SoDT,
-                                Email = hocVien.Email
-                            });
-
-                            TempData["Message"] = "Khóa học đã được thêm vào giỏ hàng thành công!";
-                        }
-                        else
-                        {
-                            TempData["Message"] = "Khóa học đã có trong giỏ hàng.";
-                        }
-
-                        Session["Cart"] = cart;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Có lỗi xảy ra khi thêm khóa học vào giỏ hàng: " + ex.Message;
-            }
-
-            return RedirectToAction("HocPhi");
-        }
-
-
-        public ActionResult HocPhi()
-        {
-            using (var db = new TrungTamTinHocEntities())
-            {
-                var cart = Session["Cart"] as List<GiaoDichHocPhi> ?? new List<GiaoDichHocPhi>();
-
-                foreach (var item in cart)
-                {
-                    item.KhoaHoc = db.KhoaHoc.FirstOrDefault(k => k.MaKH == item.MaKH);
-                    item.HocVien = db.HocVien.FirstOrDefault(h => h.MaHV == item.MaHV);
-                }
-                
-                var totalAmount = cart.Sum(t => t.SoTien);
-                ViewBag.TotalAmount = totalAmount;
-
-                return View(cart);
-            }
-        }
         [HttpGet]
         public ActionResult ThanhToan()
         {
             var cart = Session["Cart"] as List<GiaoDichHocPhi>;
             return RedirectToAction("ThongTinThanhToan");
         }
+
+
+
+        public ActionResult ThongTinThanhToan()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult XacNhanThanhToan()
+        {
+            var cart = Session["Cart"] as List<GiaoDichHocPhi>;
+
+            if (cart == null || !cart.Any())
+            {
+                TempData["ErrorMessage"] = "Giỏ hàng của bạn đang trống.";
+                return RedirectToAction("HocPhi");
+            }
+
+            try
+            {
+                using (var db = new TrungTamTinHocEntities())
+                {
+                    foreach (var item in cart)
+                    {
+                        db.GiaoDichHocPhi.Add(new GiaoDichHocPhi
+                        {
+                            MaHV = item.MaHV,
+                            MaKH = item.MaKH,
+                            MaLH = item.MaLH,
+                            MaPT = 1,
+                            NgayGD = DateTime.Now,
+                            SoTien = item.SoTien,
+                            SoDT = item.SoDT,
+                            Email = item.Email,
+                            TrangThai = "Chờ duyệt"
+                        });
+                    }
+
+                    db.SaveChanges();
+                    Session["Cart"] = null;
+                    TempData["Message"] = "Thanh toán của bạn đang chờ duyệt.";
+                    return RedirectToAction("ThongTinThanhToan");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi thanh toán: " + ex.Message;
+            }
+
+            return RedirectToAction("HocPhi");
+        }
+
+
+
+
+        //[HttpGet]
+        //public ActionResult AddToCart(string courseId, string maLH)
+        //{
+        //    var maHocVien = Session["MaHV"]?.ToString();
+
+        //    if (string.IsNullOrEmpty(maHocVien))
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
+
+        //    try
+        //    {
+        //        using (var db = new TrungTamTinHocEntities())
+        //        {
+        //            var hocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHocVien);
+        //            if (hocVien == null)
+        //            {
+        //                return HttpNotFound();
+        //            }
+
+        //            var course = db.KhoaHoc.FirstOrDefault(c => c.MaKH == courseId);
+        //            if (course == null)
+        //            {
+        //                return HttpNotFound();
+        //            }
+
+        //            var daDangKy = db.GiaoDichHocPhi.Any(gd => gd.MaHV == maHocVien && gd.MaKH == courseId);
+
+        //            if (daDangKy)
+        //            {
+        //                TempData["ErrorMessage"] = "Bạn đã đăng ký khóa học này. Không thể đăng ký lại.";
+        //                return RedirectToAction("Dangkihocphan");
+        //            }
+        //            else
+        //            {
+        //                List<GiaoDichHocPhi> cart = Session["Cart"] as List<GiaoDichHocPhi> ?? new List<GiaoDichHocPhi>();
+
+        //                var existingCourse = cart.FirstOrDefault(c => c.MaKH == course.MaKH);
+        //                if (existingCourse == null)
+        //                {
+        //                    cart.Add(new GiaoDichHocPhi
+        //                    {
+        //                        MaHV = hocVien.MaHV,
+        //                        MaKH = course.MaKH,
+        //                        MaLH = maLH,
+        //                        MaPT = 1,
+        //                        NgayGD = DateTime.Now,
+        //                        SoTien = course.HocPhi,
+        //                        SoDT = hocVien.SoDT,
+        //                        Email = hocVien.Email
+        //                    });
+
+        //                    TempData["Message"] = "Khóa học đã được thêm vào giỏ hàng thành công!";
+        //                }
+        //                else
+        //                {
+        //                    TempData["Message"] = "Khóa học đã có trong giỏ hàng.";
+        //                }
+
+        //                Session["Cart"] = cart;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["ErrorMessage"] = "Có lỗi xảy ra khi thêm khóa học vào giỏ hàng: " + ex.Message;
+        //    }
+
+        //    return RedirectToAction("HocPhi");
+        //}
+
+
+
 
         public ActionResult RemoveFromCart(string courseId)
         {
@@ -244,10 +300,31 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return RedirectToAction("HocPhi");
         }
 
-        public ActionResult ThongTinThanhToan()
+
+        public ActionResult HocPhi()
         {
-            return View();
+            string magv = Session["MaHV"]?.ToString();
+            if (string.IsNullOrEmpty(magv))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã học viên!!!");
+            }
+            using (var db = new TrungTamTinHocEntities())
+            {
+                var cart = Session["Cart"] as List<GiaoDichHocPhi> ?? new List<GiaoDichHocPhi>();
+
+                foreach (var item in cart)
+                {
+                    item.KhoaHoc = db.KhoaHoc.FirstOrDefault(k => k.MaKH == item.MaKH);
+                    item.HocVien = db.HocVien.FirstOrDefault(h => h.MaHV == item.MaHV);
+                }
+
+                var totalAmount = cart.Sum(t => t.SoTien);
+                ViewBag.TotalAmount = totalAmount;
+
+                return View(cart);
+            }
         }
+
 
         private void SendEmailInternal(List<GiaoDichHocPhi> cart, string email)
         {
@@ -344,49 +421,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 throw new Exception("Không thể gửi email: " + ex.Message);
             }
         }
-        [HttpPost]
-        public ActionResult XacNhanThanhToan()
-        {
-            var cart = Session["Cart"] as List<GiaoDichHocPhi>;
 
-            if (cart == null || !cart.Any())
-            {
-                TempData["ErrorMessage"] = "Giỏ hàng của bạn đang trống.";
-                return RedirectToAction("HocPhi");
-            }
-
-            try
-            {
-                using (var db = new TrungTamTinHocEntities())
-                {
-                    foreach (var item in cart)
-                    {
-                        db.GiaoDichHocPhi.Add(new GiaoDichHocPhi
-                        {
-                            MaHV = item.MaHV,
-                            MaKH = item.MaKH,
-                            MaPT = 1,
-                            NgayGD = DateTime.Now,
-                            SoTien = item.SoTien,
-                            SoDT = item.SoDT,
-                            Email = item.Email,
-                            TrangThai = "Chờ duyệt"
-                        });
-                    }
-
-                    db.SaveChanges();
-                    Session["Cart"] = null;
-                    TempData["Message"] = "Thanh toán của bạn đang chờ duyệt.";
-                    return RedirectToAction("ThongTinThanhToan");
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Có lỗi xảy ra khi thanh toán: " + ex.Message;
-            }
-
-            return RedirectToAction("HocPhi");
-        }
 
 
         [HttpPost]
@@ -434,6 +469,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return RedirectToAction("Index");
         }
 
+
+
         [HttpPost]
         public ActionResult CapNhatAnhHocVien(HttpPostedFileBase Anh)
         {
@@ -476,7 +513,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                             new SqlParameter("@MaHV", mahv));
 
                         TempData["SuccessMessage"] = "Cập nhật ảnh thành công!";
-                        
+
                     }
                     catch (Exception ex)
                     {
@@ -546,8 +583,205 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
         }
 
+
+
+        public ActionResult DanhSachLopHocTheoKhoaHoc(string maKH)
+        {
+            var hocVienId = Session["MaHV"]?.ToString();
+
+            if (string.IsNullOrEmpty(hocVienId))
+            {
+                TempData["ErrorMessage"] = "Bạn phải đăng nhập để xem danh sách lớp học.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            var daDangKy = db.GiaoDichHocPhi.Any(gd => gd.MaHV == hocVienId && gd.MaKH == maKH);
+
+            if (daDangKy)
+            {
+                TempData["ErrorMessage"] = "Bạn đã đăng ký khóa học này. Không thể đăng ký lại.";
+                return RedirectToAction("Dangkihocphan");
+            }
+
+            // Lấy danh sách lớp học của khóa
+            var danhSachLop = db.LopHoc
+                .Where(l => l.MaKH == maKH && l.TrangThai == false)
+                .Select(l => new
+                {
+                    l,
+                    SoLuongHocVien = db.ChiTiet_HocVien_LopHoc.Count(ctl => ctl.MaLH == l.MaLH)
+                })
+                .ToList();
+
+            if (!danhSachLop.Any())
+            {
+                TempData["ErrorMessage"] = "Không có lớp học nào cho khóa học này.";
+                return RedirectToAction("Dangkihocphan");
+            }
+
+            // Lấy danh sách lớp học mà học viên đã đăng ký
+            var lopHocDaDangKy = db.ChiTiet_HocVien_LopHoc
+                .Where(ctl => ctl.MaHV == hocVienId)
+                .Select(ctl => ctl.LopHoc)
+                .ToList();
+
+
+            ViewBag.LopHocDaDangKy = lopHocDaDangKy;
+
+
+            // Loại bỏ các lớp trùng lịch (nếu có)
+            var danhSachLopKhongTrungLich = danhSachLop
+        .Where(d => !lopHocDaDangKy.Any(lhdk => lhdk.ThuHoc == d.l.ThuHoc &&
+                                                lhdk.GioBatDau < d.l.GioKetThuc &&
+                                                d.l.GioBatDau < lhdk.GioKetThuc))
+        .ToList();
+
+            ViewBag.TenKhoaHoc = db.KhoaHoc.Where(kh => kh.MaKH == maKH).Select(kh => kh.TenKH).FirstOrDefault();
+            ViewBag.MaKhoaHoc = maKH;
+
+            // Chuyển đổi dữ liệu thành danh sách lớp học view model
+            var danhSachLopModel = danhSachLopKhongTrungLich
+                .Select(d => new LopHocViewModel
+                {
+                    LopHoc = d.l,
+                    SoLuongHocVien = d.SoLuongHocVien
+                })
+                .ToList();
+
+            return View(danhSachLopModel);
+        }
+
+
+
+
+        [HttpPost]
+        public ActionResult DangKyLop(string maLH)
+        {
+            var hocVienId = Session["MaHV"]?.ToString();
+
+            if (string.IsNullOrEmpty(hocVienId))
+            {
+                TempData["Error"] = "Bạn phải đăng nhập để đăng ký lớp học.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            var hocVien = db.HocVien.Find(hocVienId);
+            var lopHoc = db.LopHoc.Find(maLH);
+
+
+
+            if (hocVien != null && lopHoc != null)
+            {
+                List<GiaoDichHocPhi> cart = Session["Cart"] as List<GiaoDichHocPhi> ?? new List<GiaoDichHocPhi>();
+
+                if (!cart.Any(x => x.MaLH == maLH))
+                {
+                    cart.Add(new GiaoDichHocPhi
+                    {
+                        MaHV = hocVien.MaHV,
+                        MaKH = lopHoc.MaKH,
+                        MaLH = maLH,
+                        MaPT = 1,
+                        NgayGD = DateTime.Now,
+                        SoTien = lopHoc.KhoaHoc.HocPhi,
+                        SoDT = hocVien.SoDT,
+                        Email = hocVien.Email,
+                        TrangThai = "Chờ duyệt"
+                    });
+
+                    TempData["Success"] = "Lớp học của khóa đã được thêm vào giỏ hàng.";
+                    Session["Cart"] = cart;
+                    return RedirectToAction("HocPhi");
+                }
+                else
+                {
+                    TempData["Error"] = "Lớp học của khóa đã có trong giỏ hàng.";
+                }
+            }
+            else
+            {
+                TempData["Error"] = "Lớp học của khóa không tồn tại.";
+            }
+
+            return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc?.MaKH });
+        }
+
+
+
+
+
+        [HttpGet]
+        public ActionResult Thaydoimatkhau()
+        {
+            string mahv = Session["MaHV"]?.ToString();
+            if (string.IsNullOrEmpty(mahv))
+            {
+                TempData["ErrorMessage"] = "Mã học viên không tồn tại!";
+                return RedirectToAction("Index");
+            }
+
+            // Trả về view cho người dùng nhập mật khẩu cũ và mật khẩu mới
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult Thaydoimatkhau(string matKhauCu, string matKhauMoi, string xacNhanMatKhauMoi)
+        {
+            string mahv = Session["MaHV"]?.ToString();
+            if (string.IsNullOrEmpty(mahv))
+            {
+                TempData["ErrorMessage"] = "Mã học viên không tồn tại!";
+                return RedirectToAction("Index");
+            }
+
+            // Lấy tài khoản của học viên từ cơ sở dữ liệu
+            var taikhoan = db.TaiKhoan.FirstOrDefault(hv => hv.MaHV == mahv);
+            if (taikhoan == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy tài khoản của học viên!";
+                return RedirectToAction("Index");
+            }
+
+            // Kiểm tra mật khẩu cũ
+            if (taikhoan.MatKhau != matKhauCu)
+            {
+                TempData["ErrorMessage"] = "Mật khẩu cũ không đúng!";
+                return View();
+            }
+
+            // Kiểm tra mật khẩu mới và xác nhận
+            if (matKhauMoi != xacNhanMatKhauMoi)
+            {
+                TempData["ErrorMessage"] = "Mật khẩu mới và xác nhận không khớp!";
+                return View();
+            }
+
+            // Cập nhật mật khẩu mới
+            taikhoan.MatKhau = matKhauMoi;
+
+            try
+            {
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Thay đổi mật khẩu thành công!";
+                return RedirectToAction("Index");
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+            {
+                foreach (var validationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                    }
+                }
+                TempData["ErrorMessage"] = "Có lỗi xảy ra trong quá trình cập nhật mật khẩu! Vui lòng thử lại.";
+                return View();
+            }
+        }
     }
 
-
-
 }
+
+
+

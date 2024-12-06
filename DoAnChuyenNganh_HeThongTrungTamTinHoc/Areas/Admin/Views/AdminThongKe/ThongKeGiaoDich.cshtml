@@ -1,0 +1,107 @@
+﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels.ThongKeGiaoDichViewModel>
+
+@{
+    ViewBag.Title = "Thống kê giao dịch";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<h2 class="text-center text-primary mt-4">@ViewBag.Title</h2>
+
+<!-- Form lọc dữ liệu -->
+<div class="card mt-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="fromDate" class="form-label">Từ ngày:</label>
+                <input type="date" id="fromDate" name="fromDate" value="@ViewBag.FromDate" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label for="toDate" class="form-label">Đến ngày:</label>
+                <input type="date" id="toDate" name="toDate" value="@ViewBag.ToDate" class="form-control" />
+            </div>
+            <div class="col-md-4 align-self-end">
+                <button type="submit" class="btn btn-primary w-100">Lọc</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Thông tin thống kê -->
+<div class="card mt-4">
+    <div class="card-body">
+        <h4 class="card-title">Thông tin thống kê:</h4>
+        <p><strong>Tổng tiền:</strong> @String.Format("{0:N0}", ViewBag.TongTien) VND</p>
+        <p><strong>Số người đăng ký:</strong> @ViewBag.SoNguoiDangKy</p>
+    </div>
+</div>
+
+<!-- Bảng thống kê -->
+<div class="table-responsive mt-4">
+    <table class="table table-striped table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>Tháng/Năm</th>
+                <th>Tổng tiền (VND)</th>
+                <th>Số người đăng ký</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ThangNam</td>
+                    <td>@String.Format("{0:N0}", item.TongTien)</td>
+                    <td>@item.SoNguoiDangKy</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Biểu đồ -->
+<div class="card mt-4">
+    <div class="card-body">
+        <h4 class="card-title">Biểu đồ thống kê</h4>
+        <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Dữ liệu biểu đồ
+    var labels = @Html.Raw(Json.Encode(Model.Select(t => t.ThangNam)));
+    var dataTongTien = @Html.Raw(Json.Encode(Model.Select(t => t.TongTien)));
+    var dataSoNguoiDangKy = @Html.Raw(Json.Encode(Model.Select(t => t.SoNguoiDangKy)));
+
+    // Cấu hình biểu đồ
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar', // Loại biểu đồ
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Tổng tiền (VND)',
+                    data: dataTongTien,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Số người đăng ký',
+                    data: dataSoNguoiDangKy,
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

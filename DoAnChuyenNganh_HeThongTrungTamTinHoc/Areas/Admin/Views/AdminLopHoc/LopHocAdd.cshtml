@@ -37,8 +37,7 @@
                         <div class="col-3"></div>
                         <div class="col-6">
                             @Html.LabelFor(model => model.MaKH, "Khóa Học")
-                            <input type="text" class="form-control" value="@ViewBag.TenKhoaHoc" readonly />
-                            <input type="hidden" name="MaKH" value="@ViewBag.MaKH" />
+                            @Html.DropDownListFor(model => model.MaKH, (SelectList)ViewBag.MaKHList, "-- Chọn khóa học --", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.MaKH, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -83,10 +82,13 @@
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @Html.LabelFor(model => model.TrangThai, "Trạng thái lớp")
-                            <input type="text" class="form-control"
-                                   value="@(ViewBag.TrangThai != null && (bool)ViewBag.TrangThai ? "Đã mở lớp" : "Chưa mở lớp")"
-                                   readonly />
+                            @Html.LabelFor(model => model.TrangThai, "Trạng thái mở lớp")
+                            @Html.DropDownListFor(model => model.TrangThai, new List<SelectListItem>()
+                               {
+                                    new SelectListItem {Text = "Đã mở lớp", Value = "true"},
+                                    new SelectListItem {Text = "Chưa mở lớp", Value = "false"},
+                               }, "Trạng thái mở lớp", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
                         </div>
                     </div>
 

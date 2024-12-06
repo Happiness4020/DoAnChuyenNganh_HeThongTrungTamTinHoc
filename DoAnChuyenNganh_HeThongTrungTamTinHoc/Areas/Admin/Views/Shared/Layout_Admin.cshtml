@@ -229,20 +229,7 @@
                         </li>
 
 
-                        @* --Phương thức thanh toán --*@
-                        <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link success-hover-bg"
-                               href="@Url.Action("PhuongThucThanhToanList", "AdminPhuongThucThanhToan")"
-                               aria-expanded="false">
-                                <span class="aside-icon p-2 bg-light-success rounded-3">
-                                    <i class="ti ti-article fs-7 text-success"></i>
-                                </span>
-                                <span class="hide-menu ms-2 ps-1 text-white">Phương thức thanh toán</span>
-                            </a>
-                        </li>
-
-
-                        @* -- Giảng viên --*@
+                        @* -- Giao dịch --*@
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link primary-hover-bg"
                                href="@Url.Action("GiaoDichList", "AdminGiaoDich")"
@@ -251,6 +238,19 @@
                                     <i class="ti ti-article fs-7 text-primary"></i>
                                 </span>
                                 <span class="hide-menu ms-2 ps-1 text-white">Giao dịch</span>
+                            </a>
+                        </li>
+
+
+                        @* -- Thống kê --*@
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link success-hover-bg"
+                               href="@Url.Action("ThongKeGiaoDich", "AdminThongKe")"
+                               aria-expanded="false">
+                                <span class="aside-icon p-2 bg-light-success rounded-3">
+                                    <i class="ti ti-article fs-7 text-success"></i>
+                                </span>
+                                <span class="hide-menu ms-2 ps-1 text-white">Thống kê</span>
                             </a>
                         </li>
                     </ul>

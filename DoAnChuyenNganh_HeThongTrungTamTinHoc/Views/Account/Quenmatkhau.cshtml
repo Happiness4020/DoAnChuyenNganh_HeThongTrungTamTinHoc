@@ -1,0 +1,40 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels.CapNhatTaiKhoanHVViewModel
+@{
+    ViewBag.Title = "Quên Mật Khẩu";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2>Quên Mật Khẩu</h2>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Quenmatkhau", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group mb-3">
+                            <label for="MaHV" class="form-label">Mã Học Viên:</label>
+                            @Html.TextBoxFor(m => m.MaHV, new { @class = "form-control form-control-lg", placeholder = "Nhập mã học viên nếu bạn là học viên" })
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="MaGV" class="form-label">Mã Giảng Viên:</label>
+                            @Html.TextBoxFor(m => m.MaGV, new { @class = "form-control form-control-lg", placeholder = "Nhập mã giảng viên nếu bạn là giảng viên" })
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="Email" class="form-label">Email:</label>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-lg", placeholder = "Nhập địa chỉ email" })
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg btn-block shadow-sm">Gửi Mã OTP</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

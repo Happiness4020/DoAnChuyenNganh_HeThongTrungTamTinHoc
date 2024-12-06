@@ -40,11 +40,34 @@
     }
 </style>
 
+<!-- Thông báo nếu có -->
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
 <h2 style="color: #0066b3">@ViewBag.Title</h2>
 
 <a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
-<br />
-<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("GiaoDichAdd", "AdminGiaoDich")">Thêm Giao Dịch</a>
+
+<!-- Sử dụng Bootstrap Grid để căn chỉnh các nút -->
+<div class="row mt-4 mb-3 justify-content-center">
+    <div class="col-md-3 mb-2">
+        <a class="btn btn-outline-primary w-100" href="@Url.Action("DuyetTatCaGiaoDich", "AdminGiaoDich")">Duyệt tất cả giao dịch</a>
+    </div>
+    <div class="col-md-3 mb-2">
+        <a class="btn btn-outline-danger w-100" href="@Url.Action("TuChoiTatCaGiaoDich", "AdminGiaoDich")">Từ chối tất cả giao dịch</a>
+    </div>
+</div>
 
 <form class="d-flex mb-3 mt-2" action="@Url.Action("GiaoDichList", "AdminGiaoDich")">
     <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm giao dịch" aria-label="Search" style="max-width: 400px;">

@@ -41,13 +41,7 @@
     }
 </style>
 
-<!-- Thông báo nếu có -->
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["Message"]
-    </div>
-}
+
 
 <!-- Thông báo nếu có -->
 @if (TempData["Message"] != null)
@@ -105,10 +99,13 @@
                         <p class="card-text flex-grow-1">@item.MoTa</p>
                         <h4>Học phí: @item.HocPhi VND</h4>
 
-                        <!-- Nút giỏ hàng cho người dùng đã đăng nhập -->
-                        <a href="@Url.Action("AddToCart", "HocVien", new { courseId = item.MaKH })" class="btn btn-outline-primary mt-2">
-                            <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
+                        <a href="@Url.Action("DanhSachLopHocTheoKhoaHoc", "HocVien", new { maKH = item.MaKH })" class="btn btn-outline-primary mt-2">
+                            <i class="fa fa-shopping-cart"></i> Đăng ký
                         </a>
+                        @*Nút giỏ hàng cho người dùng đã đăng nhập*@ 
+                        @*<a href="@Url.Action("AddToCart", "HocVien", new { courseId = item.MaKH })" class="btn btn-outline-primary mt-2">
+                            <i class="fa fa-shopping-cart"></i> Đăng ký
+                        </a>*@
                     </div>
                 </div>
             </div>

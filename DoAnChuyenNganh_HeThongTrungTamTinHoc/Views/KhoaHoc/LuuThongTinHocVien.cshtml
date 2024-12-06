@@ -1,8 +1,11 @@
 ﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.KhoaHoc
 @{
-    ViewBag.Title = "Đăng ký khóa học";
+    ViewBag.Title = "LuuThongTinHocVien";
     Layout = "~/Views/Shared/_Main.cshtml";
 }
+
+
+
 
 <div class="container-fluid py-5">
     <div class="card mb-3 mx-auto shadow-lg border-0" style="max-width: 1024px; border-radius: 12px; background-color: #f8f9fa;">
@@ -30,12 +33,13 @@
     </div>
 </div>
 
-
- Form đăng ký 
+<!-- Form đăng ký -->
 <div class="container my-5">
     <h3 class="text-center mb-4 text-primary fw-bold">Thông tin của bạn</h3>
-    <form id="formDangKy" class="border p-4 rounded shadow-lg bg-light">
-        <input type="hidden" name="MaKH" value="@Model.MaKH" />
+    <form id="formDangKy" class="border p-4 rounded shadow-lg bg-light" method="post" action="@Url.Action("LuuThongTinHocVien", "KhoaHoc")">
+        <input type="hidden" name="MaKH" value="@ViewBag.MaKH" />
+
+        <!-- Các trường thông tin người dùng -->
         <div class="mb-3">
             <label for="hoTen" class="form-label">Họ Tên</label>
             <input type="text" class="form-control" id="hoTen" name="HoTen" required placeholder="Nhập họ tên">
@@ -71,13 +75,12 @@
         </div>
 
         <div class="text-center mb-4">
-            <h4 class="text-primary fw-bold">Thanh toán ngay với <i class="fa-brands fa-cc-stripe"></i></h4>
-            <button type="button" id="btnCheckout" class="btn btn-primary btn-lg">
-                <i class="fa-brands fa-cc-stripe"></i> Thanh Toán
-            </button>
+            <button type="submit" class="btn btn-primary btn-lg">Lưu Thông Tin</button>
         </div>
 
-        <input type="hidden" id="paymentStatus" name="PaymentStatus" value="false" />
+        @*<a href="@Url.Action("DanhSachLopHocTheoKhoaHoc", "KhoaHoc", new { maKH = ViewBag.MaKH })" class="btn btn-outline-primary mt-2">
+            <i type="submit"  class="btn btn-primary btn-lg"></i> Đăng ký
+        </a>*@
     </form>
 </div>
 
@@ -97,28 +100,5 @@
     }
 </div>
 
-<script src="https://js.stripe.com/v3/"></script>
 
-<script>
-    document.getElementById("btnCheckout").addEventListener("click", function () {
-        var formData = new FormData(document.getElementById("formDangKy"));
 
-        fetch("@Url.Action("DangKyKhoaHoc", "KhoaHoc", new { makh = Model.MaKH })", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.sessionId) {
-                var stripe = Stripe("pk_test_51PhnwG2KZcPzxihVAIYjp6TV5aZXdbHvsV1JV4nNuXPyM5lZGRKFU9FJBfcWO8PzTsMnqoVNsE5lmHPhvPBafqnw00jIoSkjVE");
-                stripe.redirectToCheckout({ sessionId: data.sessionId });
-            } else {
-                alert("Có lỗi xảy ra: " + data.errorMessage);
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("Không thể thực hiện thanh toán.");
-        });
-    });
-</script>

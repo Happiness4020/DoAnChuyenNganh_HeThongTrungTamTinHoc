@@ -24,19 +24,28 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
         public ActionResult LopHocList(string search = "", int page = 1, int pageSize = 10)
         {
-            var lopHocQuery = db.LopHoc.Include(l => l.GiaoVien).Include(l => l.KhoaHoc);
-
+            var lopHocQuery = db.LopHoc
+                                .Include(l => l.GiaoVien)
+                                .Include(l => l.KhoaHoc)
+                                .Include(l => l.GiaoDichHocPhi); // Include để lấy danh sách học viên đăng ký
 
             if (!string.IsNullOrEmpty(search))
             {
-                lopHocQuery = lopHocQuery.Where(l => l.TenPhong.Contains(search) || l.GiaoVien.HoTen.Contains(search) || l.KhoaHoc.TenKH.Contains(search));
+                lopHocQuery = lopHocQuery.Where(l => l.TenPhong.Contains(search) ||
+                                                     l.GiaoVien.HoTen.Contains(search) ||
+                                                     l.KhoaHoc.TenKH.Contains(search));
             }
 
             var lopHoc = lopHocQuery.ToList();
 
+            // Đếm số học viên đã được duyệt trong từng lớp học
+            var lopHocWithStudentCount = lopHoc.Select(l => new
+            {
+                LopHoc = l,
+                SoHocVienDuocDuyet = l.GiaoDichHocPhi.Count(hv => hv.TrangThai == "Đã duyệt")
+            }).ToList();
 
-
-            int totalRecords = lopHoc.Count;
+            int totalRecords = lopHocWithStudentCount.Count;
             int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
             int recordsToSkip = (page - 1) * pageSize;
 
@@ -44,14 +53,64 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             ViewBag.TotalPages = totalPages;
             ViewBag.Search = search;
 
+            var paginatedLopHoc = lopHocWithStudentCount.Skip(recordsToSkip).Take(pageSize).ToList();
 
-            var paginatedLopHoc = lopHoc.Skip(recordsToSkip).Take(pageSize).ToList();
-
-            return View(paginatedLopHoc);
+            return View(paginatedLopHoc.Select(l => l.LopHoc).ToList()); // Truyền danh sách lớp học vào View
         }
 
 
-        public ActionResult LopHocAdd( LopHoc model ,string MaKH, string tenKhoaHoc, bool trangThai)
+
+
+        public ActionResult LopHocAdd()
+        {
+
+            //ViewBag.TrangThai = trangThai;
+            //ViewBag.TenKhoaHoc = db.KhoaHoc.Find(model.MaKH)?.TenKH;
+            //ViewBag.MaKH = model.MaKH;
+            ViewBag.MaLH = malh;
+            ViewBag.MaGVList = new SelectList(db.GiaoVien, "MaGV", "HoTen");
+            ViewBag.MaKHList = new SelectList(db.KhoaHoc, "MaKH", "TenKH");
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LopHocAdd(LopHoc lopHoc, string MaKH)
+        {
+            // Kiểm tra lớp học với tên lớp và giáo viên đã tồn tại chưa
+            bool gv = db.LopHoc.Any(l => l.TenPhong == lopHoc.TenPhong && l.MaGV == lopHoc.MaGV);
+
+            if (gv)
+            {
+                // Nếu tồn tại thì thêm lỗi vào ModelState và hiển thị thông báo
+                ModelState.AddModelError("TenPhong", "Lớp học này đã tồn tại với giáo viên đã chọn.");
+            }
+
+            bool lopHocdatontai = db.LopHoc.Any(l => l.TenPhong == lopHoc.TenPhong);
+
+            if (lopHocdatontai)
+            {
+                ModelState.AddModelError("TenPhong", "Lớp học này đã tồn tại.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Nếu không tồn tại thì tiếp tục thêm lớp học
+                lopHoc.MaLH = malh;
+                db.LopHoc.Add(lopHoc);
+                db.SaveChanges();
+                return RedirectToAction("LopHocList");
+            }
+
+            ViewBag.MaGVList = new SelectList(db.GiaoVien, "MaGV", "HoTen", lopHoc.MaGV);
+            ViewBag.MaKHList = new SelectList(db.KhoaHoc, "MaKH", "TenKH", lopHoc.MaKH);
+            return View(lopHoc);
+        }
+
+
+
+        public ActionResult LopHocAddGV( LopHoc model ,string MaKH, string tenKhoaHoc, bool trangThai)
         {
 
             ViewBag.TrangThai = trangThai;
@@ -66,7 +125,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LopHocAdd(LopHoc lopHoc, string MaKH)
+        public ActionResult LopHocAddGV(LopHoc lopHoc, string MaKH)
         {
             bool gv = db.LopHoc.Any(l => l.TenPhong == lopHoc.TenPhong && l.MaGV == lopHoc.MaGV);
             if (gv)
@@ -240,7 +299,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             if (danhSachHocVien.Count == 0)
             {
-                return Content("Không có học viên trong lớp này.");
+                TempData["ErrorMessage"] = "Không có học viên trong lớp này.";
+                return RedirectToAction("LopHocList");
             }
 
 
@@ -308,8 +368,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             db.SaveChanges();
 
-     
-            ViewBag.Message = $"Đã phân lịch học cho {danhSachHocVien.Count} học viên trong lớp {lopHoc.TenPhong}.";
+
+            TempData["SuccessMessage"] = $"Đã phân lịch học cho {danhSachHocVien.Count} học viên trong lớp {lopHoc.TenPhong}.";
             return RedirectToAction("LopHocList");
         }
 
