@@ -22,6 +22,7 @@
                         <tr>
                             <th>Mã Học Viên</th>
                             <th>Mã Khóa Học</th>
+                            <th>Mã lớp Học</th>
                             <th>Mã Phương Thức</th>
                             <th>Ngày Giao Dịch</th>
                             <th>Số Tiền</th>
@@ -41,6 +42,7 @@
                                 <tr>
                                     <td>@student.MaHV</td> <!-- Mã học viên -->
                                     <td>@course.MaKH</td> <!-- Mã khóa học -->
+                                    <td>@item.MaLH</td>
                                     <td>@item.MaPT</td>
                                     <td>@(item.NgayGD.HasValue ? item.NgayGD.Value.ToString("dd/MM/yyyy") : "Không xác định")</td> <!-- Ngày giao dịch -->
                                     <td>@string.Format("{0:N0} VND", item.SoTien)</td>

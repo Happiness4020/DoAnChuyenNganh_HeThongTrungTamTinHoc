@@ -1,0 +1,122 @@
+﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels.LopHocViewModel>
+@{
+    ViewBag.Title = "Danh sách lớp học";
+    Layout = "~/Views/Shared/_HocVien.cshtml";
+    var lopHocDaDangKy = ViewBag.LopHocDaDangKy as List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LopHoc>;
+}
+
+
+<!-- Thông báo nếu có -->
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">
+        Danh sách lớp học cho khóa học: <span style="color: orangered;">@ViewBag.TenKhoaHoc</span>
+    </h2>
+
+
+
+    @if (!Model.Any())
+    {
+        <div class="text-center">
+            <p>Hiện tại chưa có lớp học nào cho khóa học này.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th></th>
+                        <th><i class="fas fa-door-closed"></i> Phòng</th>
+                        <th><i class="fas fa-clock"></i> Giờ bắt đầu</th>
+                        <th><i class="fas fa-clock"></i> Giờ kết thúc</th>
+                        <th><i class="fas fa-calendar-alt"></i> Ca học</th>
+                        <th><i class="fas fa-chalkboard-teacher"></i> Giảng viên</th>
+                        <th><i class="fas fa-users"></i> Số lượng học viên</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        var lopVM = Model[i];
+                        var lop = lopVM.LopHoc;
+                        var soLuongHocVien = lopVM.SoLuongHocVien;
+
+                        var isConflicting = lopHocDaDangKy.Any(lhdk => lhdk.ThuHoc == lop.ThuHoc &&
+                                                                      lhdk.GioBatDau < lop.GioKetThuc &&
+                                                                      lop.GioBatDau < lhdk.GioKetThuc);
+
+                        <tr data-conflict="@isConflicting">
+                            <td>@(i + 1)</td>
+                            <td>@lop.TenPhong</td>
+                            <td>@lop.GioBatDau</td>
+                            <td>@lop.GioKetThuc</td>
+                            <td>@lop.ThuHoc</td>
+                            <td>@lop.GiaoVien.HoTen</td>
+                            <td>
+                                <span class="badge bg-dark">@soLuongHocVien/20</span>
+                            </td>
+                            <td>
+                                @if (soLuongHocVien < 20 && !isConflicting)
+                                {
+                                    <form action="@Url.Action("DangKyLop", "HocVien")" method="post" class="d-inline">
+                                        <input type="hidden" name="maLH" value="@lop.MaLH" />
+                                        <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Bạn có chắc chắn muốn đăng ký lớp này?');">
+                                            <i class="fas fa-pencil-alt"></i> Đăng ký
+                                        </button>
+                                    </form> }
+                                else if (isConflicting)
+                                {
+                                    <button class="btn btn-warning btn-sm" disabled>
+                                        <i class="fas fa-exclamation-triangle"></i> Trùng lịch
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger btn-sm" disabled>
+                                        <i class="fas fa-times"></i> Đã đủ học viên
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+
+
+<script>
+    function filterClasses() {
+        var checkbox = document.getElementById("chkKhongTrungLich");
+        var rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach(function (row) {
+            var isConflicting = row.getAttribute("data-conflict") === "true";
+
+            // Ẩn hoặc hiện hàng dựa trên checkbox
+            if (checkbox.checked && isConflicting) {
+                row.style.display = "none";
+            } else {
+                row.style.display = "";
+            }
+        });
+    }
+</script>

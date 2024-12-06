@@ -1,7 +1,6 @@
-﻿@using System.Web; 
+﻿@using System.Web;
 @{
     var userName = Context.Request.Cookies["NguoiDung"];
-    var role = Context.Request.Cookies["QuyenHan"];
 }
 
 <!DOCTYPE html>
@@ -34,6 +33,10 @@
             width: 100%;
             height: 260px;
             border: 0;
+        }
+
+        .dropdown-item:hover {
+            background-color: lightgray;
         }
     </style>
 </head>
@@ -80,8 +83,11 @@
                                 <span>Chào @(userName?.Value ?? "khách")!</span>
                             </a>
                             <ul class="dropdown-menu mt-4">
-                                <li> <a class="nav-link" href="@Url.Action("Index", "HocVien")">Thông tin cá nhân</a></li>
-                                <li> <a class="nav-link" href="@Url.Action("DangXuat", "Account")">Đăng xuất</a></li>
+                                <li><a class="nav-link" href="@Url.Action("Index", "HocVien")">Thông tin cá nhân</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Đổi mật khẩu</a>
+                                </li>
+                                <li><a class="nav-link" href="@Url.Action("DangXuat", "Account")">Đăng xuất</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -93,6 +99,50 @@
     <main class="p-0 min-vh-100" style="background-color: #fff">
         @RenderBody()
     </main>
+
+    <section>
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="changePasswordModalLabel" style="color:orangered">Đổi mật khẩu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="@Url.Action("SendOTP", "Account")" id="otpForm">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="@ViewBag.Email" required readonly>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary" id="sendOtpBtn">Gửi mã OTP</button>
+                            </div>
+                        </form>
+
+                        <form method="post" action="@Url.Action("VerifyOTPAndChangePassword", "Account")" id="otpVerificationForm" style="display:none;">
+                            <div class="mb-3">
+                                <label for="otp" class="form-label">Mã OTP</label>
+                                <input type="text" class="form-control" id="otp" name="otp" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                                <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmNewPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                                <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Xác nhận</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer class="custom-footer mt-auto py-4">
         <div class="container">
@@ -117,16 +167,84 @@
                         </dl>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="map">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.056848429508!2d106.62643781411664!3d10.80695806158611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752be27d8b4f4d%3A0x92dcba2950430867!2zVHLGsOG7nW5nIMSQYcyjaSBob8yjYyBDw7RuZyBuZ2hp4buHcCBUaOG7sWMgcGjhuqltIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaA!5e0!3m2!1svi!2s!4v1569207231123!5m2!1svi!2s" allowfullscreen></iframe>
-                    </div>
-                </div>
             </div>
         </div>
     </footer>
 
+    <script>
+        document.getElementById('sendOtpBtn').addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+
+            fetch('/Account/SendOTP', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Đã xảy ra lỗi khi gửi yêu cầu.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message);
+                    document.getElementById('otpForm').style.display = 'none';
+                    document.getElementById('otpVerificationForm').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Đã xảy ra lỗi: " + error.message);
+                });
+        });
+
+        document.getElementById('otpVerificationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const otp = document.getElementById('otp').value;
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+            if (newPassword !== confirmNewPassword) {
+                alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+                return;
+            }
+
+            fetch('/Account/VerifyOTPAndChangePassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    otp: otp,
+                    currentPassword: currentPassword,
+                    newPassword: newPassword
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Đã xảy ra lỗi: " + error.message);
+                });
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

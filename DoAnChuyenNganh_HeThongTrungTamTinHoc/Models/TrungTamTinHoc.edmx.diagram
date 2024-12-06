@@ -7,7 +7,6 @@
       <Diagram DiagramId="64bc2abf7fff4caa9543ca8c87134b48" Name="Diagram1">
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.BinhLuanKhoaHoc" Width="1.5" PointX="6" PointY="7.625" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.ChuongTrinhHoc" Width="1.5" PointX="1.5" PointY="20.25" />
-        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.GiaoDichHocPhi" Width="1.5" PointX="9" PointY="9" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.GiaoVien" Width="1.5" PointX="0.75" PointY="10.25" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.HocVien" Width="1.5" PointX="3.75" PointY="2.25" />
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.KhoaHoc" Width="1.5" PointX="0.75" PointY="15" />
@@ -22,9 +21,6 @@
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__BinhLuanKh__MaHV__0A9D95DB" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__BinhLuanKh__MaKH__0B91BA14" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__KhoaHoc__MaChuon__5812160E" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaHV__6FE99F9F" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaKH__70DDC3D8" />
-        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaPT__71D1E811" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LichDay__MaGV__74AE54BC" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LienHe__MaGV__05D8E0BE" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__LopHoc__MaGV__5BE2A6F2" />
@@ -42,6 +38,11 @@
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.ChiTiet_HocVien_LopHoc" Width="1.5" PointX="9" PointY="4.625" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__ChiTiet_Ho__MaHV__6383C8BA" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__ChiTiet_Ho__MaLH__6477ECF3" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.GiaoDichHocPhi" Width="1.5" PointX="9" PointY="8.875" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaHV__6EF57B66" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaKH__6FE99F9F" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaLH__71D1E811" />
+        <AssociationConnector Association="QL_TrungTamTinHocModel.FK__GiaoDichHo__MaPT__70DDC3D8" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

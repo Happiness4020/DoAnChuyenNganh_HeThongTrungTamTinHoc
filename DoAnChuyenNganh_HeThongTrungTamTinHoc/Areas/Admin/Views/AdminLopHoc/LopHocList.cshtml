@@ -42,17 +42,26 @@
 
 <h2 style="color: #0066b3">@ViewBag.Title</h2>
 
-@if (!string.IsNullOrEmpty(ViewBag.Message))
+@if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @ViewBag.Message
+        @TempData["SuccessMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+
 <a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
 <br />
-@*<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("LopHocAdd", "AdminLopHoc")">Thêm Lớp Học</a>*@
+<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("LopHocAdd", "AdminLopHoc")">Thêm Lớp Học</a>
 
 <form class="d-flex mb-3 mt-2" action="@Url.Action("LopHocList", "AdminLopHoc")">
     <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm lớp học" aria-label="Search" style="max-width: 400px;">
@@ -72,6 +81,7 @@
                     <th>Giáo viên</th>
                     <th>Khóa học</th>
                     <th>Thứ trong tuần</th>
+                    <th>Số học viên đăng ký</th>
                     <th>Trạng thái</th>
                     <th>Hành động</th>
                 </tr>
@@ -80,21 +90,22 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => item.TenPhong)</td>
-                        <td>@Html.DisplayFor(modelItem => item.GioBatDau)</td>
-                        <td>@Html.DisplayFor(modelItem => item.GioKetThuc)</td>
-                        <td>@Html.DisplayFor(modelItem => item.GiaoVien.HoTen)</td>
-                        <td>@Html.DisplayFor(modelItem => item.KhoaHoc.TenKH)</td>
-                        <td>@Html.DisplayFor(modelItem => item.ThuHoc)</td>
+                        <td>@item.TenPhong</td>
+                        <td>@item.GioBatDau</td>
+                        <td>@item.GioKetThuc</td>
+                        <td>@item.GiaoVien.HoTen</td>
+                        <td>@item.KhoaHoc.TenKH</td>
+                        <td>@item.ThuHoc</td>
+                        <td>@item.ChiTiet_HocVien_LopHoc.Count() / @item.SiSo</td>
                         <td>
-                            @if (item.TrangThai)
+                            @if (item.ChiTiet_HocVien_LopHoc.Count() >= 20)
                             {
-                                <span style="color: green; font-weight: bold;">Đã mở lớp</span>
+                                <span style="color: green; font-weight: bold;">Đủ điều kiện mở lớp</span>
                                 <a href="@Url.Action("PhanLichHocChoHocVien", "AdminLopHoc", new { maLH = item.MaLH, soBuoiHoc = item.KhoaHoc.Sobuoihoc  })" class="btn btn-outline-primary btn-sm">Phân Lịch Học</a>
                             }
                             else
                             {
-                                <span style="color: red; font-weight: bold;">Chưa mở lớp</span>
+                                <span style="color: red; font-weight: bold;">Chưa thể mở lớp</span>
                             }
                         </td>
                         <td>

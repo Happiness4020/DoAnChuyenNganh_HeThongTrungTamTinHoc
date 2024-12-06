@@ -1,0 +1,44 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Nhập OTP";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2>Nhập OTP</h2>
+                </div>
+                <div class="card-body">
+                    @if (TempData["Email"] == null)
+                    {
+                        <div class="alert alert-danger">Không tìm thấy thông tin email, vui lòng thử lại.</div>
+                    }
+                    else
+                    {
+                        <p>Email của bạn: <strong>@TempData["Email"]</strong></p>
+                    }
+
+                    @using (Html.BeginForm("NhapOTP", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group mb-3">
+                            <label for="OTP" class="form-label">Mã OTP:</label>
+                            <input type="text" name="OTP" class="form-control form-control-lg" placeholder="Nhập mã OTP" required />
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="MatKhauMoi" class="form-label">Mật Khẩu Mới:</label>
+                            <input type="password" name="newPassword" class="form-control form-control-lg" placeholder="Nhập mật khẩu mới" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg btn-block shadow-sm">Đặt Lại Mật Khẩu</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

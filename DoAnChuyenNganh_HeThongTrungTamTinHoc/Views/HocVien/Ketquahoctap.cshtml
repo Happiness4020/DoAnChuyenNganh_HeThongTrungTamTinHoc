@@ -1,9 +1,10 @@
-﻿@{
+﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.ChiTiet_HocVien_LopHoc>
+@{
     ViewBag.Title = "Kết quả học tập";
     Layout = "~/Views/Shared/_HocVien.cshtml";
 }
 
-@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.ChiTiet_HocVien_LopHoc>
+
 
 <div class="text-center mt-3">
     <h2 class="mb-4" style="color: #0066b3;">@ViewBag.Title của học viên <span style="color: orangered;">@ViewBag.HocVien.HoTen</span></h2>
@@ -38,7 +39,7 @@
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Tên lớp Lớp</th>
+                    <th>Tên Lớp</th>
                     <th>Điểm Kiểm Tra Lần 1</th>
                     <th>Điểm Kiểm Tra Lần 2</th>
                     <th>Điểm Kiểm Tra Lần 3</th>
@@ -51,7 +52,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@ViewBag.Lop.TenLop</td>
+                        <td>@ViewBag.Lop.TenPhong</td>
                         <td>@(item.DiemKiemTraLan1 ?? 0)</td>
                         <td>@(item.DiemKiemTraLan2 ?? 0)</td>
                         <td>@(item.DiemKiemTraLan3 ?? 0)</td>

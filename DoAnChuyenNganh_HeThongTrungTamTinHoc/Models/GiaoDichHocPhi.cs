@@ -17,6 +17,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public int MaGD { get; set; }
         public string MaHV { get; set; }
         public string MaKH { get; set; }
+        public string MaLH { get; set; }
         public Nullable<int> MaPT { get; set; }
         public Nullable<System.DateTime> NgayGD { get; set; }
         public Nullable<double> SoTien { get; set; }
@@ -26,6 +27,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     
         public virtual HocVien HocVien { get; set; }
         public virtual KhoaHoc KhoaHoc { get; set; }
+        public virtual LopHoc LopHoc { get; set; }
         public virtual PhuongThucThanhToan PhuongThucThanhToan { get; set; }
     }
 }
