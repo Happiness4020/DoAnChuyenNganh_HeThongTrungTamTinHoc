@@ -320,8 +320,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                 if (taiKhoan == null)
                 {
-                    ModelState.AddModelError("", "Thông tin bạn cung cấp không chính xác. Vui lòng kiểm tra lại.");
-                    return View();
+                    TempData["ErrorMessage"] = "Thông tin bạn cung cấp không chính xác. Vui lòng kiểm tra lại.";
+                    return RedirectToAction("Quenmatkhau", "Account");
                 }
 
                 var otp = TaoMaOTP();
@@ -339,7 +339,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                 if (response.StatusCode != HttpStatusCode.Accepted)
                 {
-                    ModelState.AddModelError("", "Gửi OTP thất bại. Vui lòng thử lại.");
+                    TempData["ErrorMessage"] = "Gửi OTP thất bại. Vui lòng thử lại.";
                     return View();
                 }
 
@@ -350,8 +350,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Đã xảy ra lỗi: " + ex.Message);
-                return View();
+                TempData["ErrorMessage"] = "Thông tin bạn cung cấp không chính xác. Vui lòng kiểm tra lại.";
+                return RedirectToAction("Quenmatkhau", "Account");
             }
         }
 

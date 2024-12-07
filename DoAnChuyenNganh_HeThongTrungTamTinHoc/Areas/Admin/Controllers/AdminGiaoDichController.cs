@@ -21,11 +21,50 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         private TrungTamTinHocEntities db = new TrungTamTinHocEntities();
 
         // GET: Admin/AdminGiaoDichHocPhi
-        public ActionResult GiaoDichList()
+        public ActionResult GiaoDichList(string search = "", string sortOrder = "trangthai")
         {
-            var giaoDichHocPhi = db.GiaoDichHocPhi.Include(g => g.HocVien).Include(g => g.PhuongThucThanhToan).Include(g => g.KhoaHoc);
+            var giaoDichHocPhi = db.GiaoDichHocPhi
+                .Include(g => g.HocVien)
+                .Include(g => g.PhuongThucThanhToan)
+                .Include(g => g.KhoaHoc)
+                .Where(g => g.HocVien.HoTen.Contains(search)
+                         || g.KhoaHoc.TenKH.Contains(search)
+                         || g.PhuongThucThanhToan.TenPT.Contains(search))
+                .ToList();
+
+            // Lưu lại giá trị tìm kiếm và sắp xếp để hiển thị trên view
+            ViewBag.Search = search;
+            ViewBag.SortOrder = sortOrder;
+
+            // Sắp xếp dữ liệu
+            switch (sortOrder)
+            {
+                case "tenhocvien":
+                    giaoDichHocPhi = giaoDichHocPhi.OrderBy(g => g.HocVien.HoTen).ToList();
+                    break;
+                case "tenkhoahoc":
+                    giaoDichHocPhi = giaoDichHocPhi.OrderBy(g => g.KhoaHoc.TenKH).ToList();
+                    break;
+                case "phuongthucthanhtoan":
+                    giaoDichHocPhi = giaoDichHocPhi.OrderBy(g => g.PhuongThucThanhToan.TenPT).ToList();
+                    break;
+                case "trangthai":
+                    giaoDichHocPhi = giaoDichHocPhi
+                        .OrderBy(g => g.TrangThai == "Chờ duyệt" ? 0 : 1) // "Chờ duyệt" trước, "Đã duyệt" sau
+                        .ThenBy(g => g.HocVien.HoTen) // Có thể sắp xếp phụ theo tên học viên
+                        .ToList();
+                    break;
+                default:
+                    giaoDichHocPhi = giaoDichHocPhi.OrderBy(g => g.TrangThai == "Chờ duyệt" ? 0 : 1).ToList();
+                    break;
+            }
+
+            // Phân trang
+           
+
             return View(giaoDichHocPhi);
         }
+
 
 
 

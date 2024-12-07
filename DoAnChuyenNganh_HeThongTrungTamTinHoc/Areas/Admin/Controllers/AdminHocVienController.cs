@@ -184,17 +184,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(hocvien);
                 }
 
-
-
+                // Kiểm tra email trùng lặp
                 var emailExists = ttth.HocVien.Any(h => h.Email == hocvien.Email && h.MaHV != hocvien.MaHV);
-
                 if (emailExists)
                 {
                     ModelState.AddModelError("Email", "Email này đã được sử dụng!!");
                     return View(hocvien);
                 }
 
-
+                // Cập nhật thông tin
                 hv.HoTen = hocvien.HoTen;
                 hv.NgaySinh = hocvien.NgaySinh;
                 hv.GioiTinh = hocvien.GioiTinh;
@@ -202,11 +200,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 hv.SoDT = hocvien.SoDT;
                 hv.DiaChi = hocvien.DiaChi;
 
-
-                string fileName = "noimage.jpg";
+                // Cập nhật ảnh nếu có tệp mới
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
-
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
                     if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
@@ -215,38 +211,21 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         return View();
                     }
 
-
-                    if (!string.IsNullOrEmpty(hv.Anh))
-                    {
-                        var oldImagePath = Path.Combine(Server.MapPath("~/AnhHocVien"), hv.Anh);
-                        if (System.IO.File.Exists(oldImagePath))
-                        {
-                            System.IO.File.Delete(oldImagePath);
-                        }
-                    }
-
-
-                    fileName = hv.MaHV + fileEx;
+                    // Lưu ảnh mới
+                    string fileName = hv.MaHV + fileEx;
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
                     imageFile.SaveAs(path);
                     hv.Anh = fileName;
                 }
-                else
-                {
-                    hv.Anh = fileName;
-                }
 
-
+                // Lưu các thay đổi
                 ttth.SaveChanges();
-
                 return RedirectToAction("HocVienList");
             }
-            else
-            {
-                return View();
-            }
 
+            return View(hocvien);
         }
+
 
     }
 }

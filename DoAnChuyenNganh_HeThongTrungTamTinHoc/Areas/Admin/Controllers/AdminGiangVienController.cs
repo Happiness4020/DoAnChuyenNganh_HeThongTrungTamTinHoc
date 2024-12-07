@@ -18,16 +18,16 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         // GET: Admin/AdminGiangVien
         public ActionResult GiangVienList(string search = "", string sortOrder = "ten", int page = 1, int pageSize = 10)
         {
-            // Lấy danh sách giảng viên từ cơ sở dữ liệu
+   
             var giangviensQuery = db.GiaoVien.AsQueryable();
 
-            // Tìm kiếm theo tên giảng viên
+
             if (!string.IsNullOrEmpty(search))
             {
                 giangviensQuery = giangviensQuery.Where(gv => gv.HoTen.Contains(search));
             }
 
-            // Sắp xếp danh sách giảng viên theo tiêu chí được chọn
+
             switch (sortOrder)
             {
                 case "ten":
@@ -44,15 +44,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     break;
             }
 
-            // Tính toán phân trang
+
             int totalRecords = giangviensQuery.Count();
             int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
             int skipRecords = (page - 1) * pageSize;
 
-            // Lấy dữ liệu giảng viên theo trang
+
             var giangviens = giangviensQuery.Skip(skipRecords).Take(pageSize).ToList();
 
-            // Lưu các giá trị vào ViewBag để sử dụng trong View
+
             ViewBag.Search = search;
             ViewBag.SortOrder = sortOrder;
             ViewBag.Page = page;
@@ -105,7 +105,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
                    
-                    // Kiểm tra loại file
+
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
                     if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
@@ -113,18 +113,17 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         ModelState.AddModelError("Anh", "Chỉ chấp nhận hình ảnh JPG hoặc PNG và không lớn hơn 2MB.");
                         return View();
                     }
-                    // Tạo tên file ảnh từ mã giảng viên
+
                     filename = magv + fileEx;
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), filename);
                     imageFile.SaveAs(path);
                 }
 
-                // Lưu thông tin giảng viên vào CSDL
                 giaovien = new GiaoVien
                 {
                     MaGV = magv,
                     HoTen = gv.HoTen,
-                    Anh = filename, // Nếu không có ảnh, `Anh` sẽ được lưu là chuỗi rỗng
+                    Anh = filename, 
                     NgayVaoLam = gv.NgayVaoLam,
                     BangCapGV = gv.BangCapGV,
                     LinhVucDaoTao = gv.LinhVucDaoTao,
@@ -171,6 +170,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Tìm giảng viên trong cơ sở dữ liệu
                 GiaoVien giangVienTonTai = db.GiaoVien.FirstOrDefault(h => h.MaGV == gv.MaGV);
                 if (giangVienTonTai == null)
                 {
@@ -178,6 +178,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(gv);
                 }
 
+                // Kiểm tra email trùng lặp
                 var emailDaTonTai = db.GiaoVien.Any(t => t.Email == gv.Email && t.MaGV != gv.MaGV);
                 if (emailDaTonTai)
                 {
@@ -185,7 +186,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(gv);
                 }
 
-
+                // Cập nhật thông tin
                 giangVienTonTai.HoTen = gv.HoTen;
                 giangVienTonTai.NgayVaoLam = gv.NgayVaoLam;
                 giangVienTonTai.BangCapGV = gv.BangCapGV;
@@ -195,13 +196,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 giangVienTonTai.DiaChi = gv.DiaChi;
                 giangVienTonTai.Luong = gv.Luong;
 
-
+                // Cập nhật ảnh nếu có tệp mới
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
-
-                    
-
-
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
                     if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
@@ -210,30 +207,20 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         return View();
                     }
 
-
-                    if (!string.IsNullOrEmpty(giangVienTonTai.Anh))
-                    {
-                        var oldImagePath = Path.Combine(Server.MapPath("~/AnhHocVien"), giangVienTonTai.Anh);
-                        if (System.IO.File.Exists(oldImagePath))
-                        {
-                            System.IO.File.Delete(oldImagePath);
-                        }
-                    }
-
-
+                    // Lưu ảnh mới
                     var fileName = giangVienTonTai.MaGV + fileEx;
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
                     imageFile.SaveAs(path);
                     giangVienTonTai.Anh = fileName;
                 }
 
-
+                // Lưu các thay đổi
                 db.SaveChanges();
-
                 return RedirectToAction("GiangVienList");
             }
 
             return View(gv);
         }
+
     }
 }
