@@ -186,7 +186,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
             otpStore[email] = otp;
 
-            var sendGridClient = new SendGridClient("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");
+            var apikey = System.Configuration.ConfigurationManager.AppSettings["SendGridAPIKey"];
+            var sendGridClient = new SendGridClient(apikey);
             var from = new EmailAddress("buikhanhduy13082003@gmail.com", "Trung Tâm Tin Học HUIT");
             var subject = "Mã OTP xác nhận";
             var to = new EmailAddress(email);
@@ -277,13 +278,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 ModelState.AddModelError("MatKhau", "Lỗi xảy ra khi đổi mật khẩu!!");
             }
         }
-
-
-
-
-
-
-
 
         ////////////////////////////////
 
