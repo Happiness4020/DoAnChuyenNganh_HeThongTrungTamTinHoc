@@ -279,6 +279,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
         }
 
+
+
+
         ////////////////////////////////
 
         [HttpGet]
@@ -286,13 +289,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public async Task<ActionResult> Quenmatkhau(string MaHV, string MaGV, string Email)
         {
             try
-            { 
-            
+            {
                 TaiKhoan taiKhoan = null;
 
                 if (!string.IsNullOrEmpty(MaHV))
@@ -318,13 +319,23 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     return RedirectToAction("Quenmatkhau", "Account");
                 }
 
+                // Tạo mã OTP
                 var otp = TaoMaOTP();
-                otpStore[Email] = otp;
+                if (otpStore.ContainsKey(Email))
+                {
+                    otpStore[Email] = otp; // Ghi đè nếu đã có
+                }
+                else
+                {
+                    otpStore.Add(Email, otp);
+                }
 
-                var sendGridClient = new SendGridClient("API_KEY");
-                var from = new EmailAddress("buikhanhduy13082003@gmail.com", "Trung Tâm Tin Học HUIT");
+                // Gửi email
+                var apikey = System.Configuration.ConfigurationManager.AppSettings["SendGridAPIKey"];
+                var sendGridClient = new SendGridClient(apikey);
+                var from = new EmailAddress("your-email@gmail.com", "Trung Tâm Tin Học");
                 var to = new EmailAddress(Email);
-                var subject = "Mã OTP để đặt lại mật khẩu";
+                var subject = "Mã OTP đặt lại mật khẩu";
                 var plainTextContent = $"Mã OTP của bạn là: {otp}";
                 var htmlContent = $"<strong>Mã OTP của bạn là: {otp}</strong>";
 
@@ -333,21 +344,25 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                 if (response.StatusCode != HttpStatusCode.Accepted)
                 {
-                    TempData["ErrorMessage"] = "Gửi OTP thất bại. Vui lòng thử lại.";
-                    return View();
+                    TempData["ErrorMessage"] = "Không thể gửi email. Vui lòng thử lại.";
+                    return RedirectToAction("Quenmatkhau", "Account");
                 }
 
+                // Lưu email và MaTaiKhoan vào session
                 Session["Email"] = Email;
                 Session["MaTaiKhoan"] = taiKhoan.MaTK;
 
+                TempData["SuccessMessage"] = "Mã OTP đã được gửi tới email của bạn.";
                 return RedirectToAction("NhapOTP");
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Thông tin bạn cung cấp không chính xác. Vui lòng kiểm tra lại.";
+                TempData["ErrorMessage"] = "Đã xảy ra lỗi. Vui lòng thử lại.";
                 return RedirectToAction("Quenmatkhau", "Account");
             }
         }
+
+
 
         public ActionResult NhapOTP()
         {
@@ -360,57 +375,54 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             try
             {
                 string email = Session["Email"]?.ToString();
-                string maTaiKhoanString = TempData["MaTaiKhoan"]?.ToString();
+                string maTaiKhoanString = Session["MaTaiKhoan"]?.ToString();
 
                 if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(maTaiKhoanString))
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Thông tin không hợp lệ.");
+                    ModelState.AddModelError("", "Thông tin không hợp lệ.");
+                    return View();
                 }
 
-                // Chuyển đổi MaTK từ string sang int
                 if (!int.TryParse(maTaiKhoanString, out int maTaiKhoan))
                 {
                     ModelState.AddModelError("", "Mã tài khoản không hợp lệ.");
                     return View();
                 }
 
+                // Kiểm tra mã OTP
                 if (!otpStore.ContainsKey(email) || otpStore[email] != otp)
                 {
                     ModelState.AddModelError("", "Mã OTP không chính xác hoặc đã hết hạn.");
                     return View();
                 }
 
-                // Cập nhật mật khẩu mới
+                // Cập nhật mật khẩu
                 var taiKhoan = ttth.TaiKhoan.FirstOrDefault(tk => tk.MaTK == maTaiKhoan);
                 if (taiKhoan != null)
                 {
-                    taiKhoan.MatKhau = newPassword;
-                    try
-                    {
-                        ttth.SaveChanges();
-                        Console.WriteLine("Cập nhật mật khẩu thành công.");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Lỗi khi lưu thay đổi: {ex.Message}");
-                    }
+                    taiKhoan.MatKhau = newPassword; // Nên mã hóa mật khẩu trước khi lưu
+                    ttth.SaveChanges();
+
+                    otpStore.Remove(email); // Xóa mã OTP sau khi sử dụng
+                    TempData["SuccessMessage"] = "Mật khẩu của bạn đã được thay đổi thành công.";
+                    return RedirectToAction("DangNhap");
                 }
                 else
                 {
-                    Console.WriteLine("Tài khoản không tồn tại.");
+                    ModelState.AddModelError("", "Không tìm thấy tài khoản.");
                 }
 
-                otpStore.Remove(email);
-
-                TempData["SuccessMessage"] = "Mật khẩu của bạn đã được thay đổi thành công. Vui lòng đăng nhập lại.";
-                return RedirectToAction("DangNhap");
+                return View();
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Đã xảy ra lỗi: " + ex.Message);
+                ModelState.AddModelError("", "Đã xảy ra lỗi. Vui lòng thử lại.");
                 return View();
             }
         }
+
+
+        
 
         //private string TaoOTP()
         //{
