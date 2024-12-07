@@ -410,6 +410,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminLichHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminLopHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminPhuongThucThanhToanController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminSaoLuuPhucHoiController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminThongKeController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -582,6 +583,7 @@
     <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichList.cshtml" />
     <Content Include="Areas\Admin\Views\AdminKhoaHoc\DanhSachHocVienThamGiaKhoaHoc.cshtml" />
     <Content Include="Areas\Admin\Views\AdminThongKe\ThongKeGiaoDich.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminSaoLuuPhucHoi\SaoLuuPhucHoi.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

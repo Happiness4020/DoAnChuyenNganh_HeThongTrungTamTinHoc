@@ -332,7 +332,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
         public async Task<ActionResult> GuiMaHV(string email, string mahv)
         {
-            var sendGridClient = new SendGridClient("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");
+            var apikey = System.Configuration.ConfigurationManager.AppSettings["SendGridAPIKey"];
+            var sendGridClient = new SendGridClient(apikey);
             var from = new EmailAddress("buikhanhduy13082003@gmail.com", "Trung Tâm Tin Học HUIT");
             var subject = "Mã học viên";
             var to = new EmailAddress(email);
