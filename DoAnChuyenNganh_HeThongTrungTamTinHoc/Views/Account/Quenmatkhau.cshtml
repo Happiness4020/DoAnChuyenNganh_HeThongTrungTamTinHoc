@@ -4,6 +4,21 @@
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
+<!-- Thông báo nếu có -->
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">

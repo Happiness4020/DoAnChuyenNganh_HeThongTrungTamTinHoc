@@ -62,10 +62,10 @@
 <!-- Sử dụng Bootstrap Grid để căn chỉnh các nút -->
 <div class="row mt-4 mb-3 justify-content-center">
     <div class="col-md-3 mb-2">
-        <a class="btn btn-outline-primary w-100" href="@Url.Action("DuyetTatCaGiaoDich", "AdminGiaoDich")">Duyệt tất cả giao dịch</a>
+        <a class="btn btn-outline-primary w-100" href="@Url.Action("DuyetTatCaGiaoDich", "AdminGiaoDich")"  onclick="return confirm('Bạn có chắc chắn muốn duyệt tắt giao dịch này?');">Duyệt tất cả giao dịch</a>
     </div>
     <div class="col-md-3 mb-2">
-        <a class="btn btn-outline-danger w-100" href="@Url.Action("TuChoiTatCaGiaoDich", "AdminGiaoDich")">Từ chối tất cả giao dịch</a>
+        <a class="btn btn-outline-danger w-100" href="@Url.Action("TuChoiTatCaGiaoDich", "AdminGiaoDich")" onclick="return confirm('Bạn có chắc chắn muốn từ chối tất cả giao dịch này?');">Từ chối tất cả giao dịch</a>
     </div>
 </div>
 
@@ -74,6 +74,18 @@
     <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>
     <a class="btn btn-danger ms-2" href="@Url.Action("GiaoDichList", "AdminGiaoDich")">Hủy</a>
 </form>
+
+<div class="d-flex justify-content-between mb-3">
+    <form class="d-inline">
+        <label for="sortOrder" class="me-2 fw-bold">Sắp xếp:</label>
+        <select name="sortOrder" id="sortOrder" class="form-select d-inline w-auto" onchange="this.form.submit()">
+            <option value="tenhocvien" @(ViewBag.SortOrder == "tenhocvien" ? "selected" : "")>Tên học viên</option>
+            <option value="tenkhoahoc" @(ViewBag.SortOrder == "tenkhoahoc" ? "selected" : "")>Tên khóa học</option>
+            <option value="phuongthucthanhtoan" @(ViewBag.SortOrder == "phuongthucthanhtoan" ? "selected" : "")>Phương thức thanh toán</option>
+            <option value="trangthai" @(ViewBag.SortOrder == "trangthai" ? "selected" : "")>Trạng thái</option>
+        </select>
+    </form>
+</div>
 
 <div class="container mt-5">
     <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Giao Dịch Học Phí</h2>
@@ -105,9 +117,14 @@
                         <td>
                             @if (item.TrangThai == "Chờ duyệt")
                             {
-                                <a href="@Url.Action("DuyetGiaoDich", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-success btn-sm">Duyệt</a>
-                                <a href="@Url.Action("TuChoiGiaoDich", "AdminGiaoDich", new { id = item.MaGD })" class="btn btn-danger btn-sm">Từ chối</a>
-                            }
+                                <a href="@Url.Action("DuyetGiaoDich", "AdminGiaoDich", new { id = item.MaGD })"
+                                   class="btn btn-success btn-sm"
+                                   onclick="return confirm('Bạn có chắc chắn muốn duyệt giao dịch này?');">Duyệt</a>
+
+                                <a href="@Url.Action("TuChoiGiaoDich", "AdminGiaoDich", new { id = item.MaGD })"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Bạn có chắc chắn muốn từ chối giao dịch này?');">Từ chối</a> 
+                             }
                             else
                             {
                                 <span class="text-muted">Đã xử lý</span>

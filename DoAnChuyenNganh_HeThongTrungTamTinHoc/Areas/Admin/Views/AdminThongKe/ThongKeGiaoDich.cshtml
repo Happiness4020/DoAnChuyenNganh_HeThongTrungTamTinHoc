@@ -7,6 +7,15 @@
 
 <h2 class="text-center text-primary mt-4">@ViewBag.Title</h2>
 
+
+<div class="d-flex justify-content-end mt-4">
+    <a id="exportButton" data-url="@Url.Action("ExportToExcel", "AdminThongKe", new { fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="btn btn-success">
+        <i class="fas fa-file-excel me-2"></i> Xuất File Excel
+    </a>
+</div>
+
+
+
 <!-- Form lọc dữ liệu -->
 <div class="card mt-4">
     <div class="card-body">
@@ -41,7 +50,7 @@
         <thead class="table-primary">
             <tr>
                 <th>Tháng/Năm</th>
-                <th>Tổng tiền (VND)</th>
+                <th>Tổng tiền (VNĐ)</th>
                 <th>Số người đăng ký</th>
             </tr>
         </thead>
@@ -81,7 +90,7 @@
             labels: labels,
             datasets: [
                 {
-                    label: 'Tổng tiền (VND)',
+                    label: 'Tổng tiền (VNĐ)',
                     data: dataTongTien,
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -104,4 +113,11 @@
             }
         }
     });
+
+    document.getElementById("exportButton").addEventListener("click", function (e) {
+        e.preventDefault();
+        var url = this.getAttribute("data-url");
+        window.location.href = url;
+    });
+
 </script>
