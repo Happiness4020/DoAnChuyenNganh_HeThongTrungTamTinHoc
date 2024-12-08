@@ -5,6 +5,22 @@
 }
 
 <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="mt-4">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        else if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
     <div class="card shadow-lg p-4" style="width: 400px; border-radius: 10px;">
         <div class="text-center mb-4">
             <h3 class="fw-bold text-primary">@ViewBag.Title</h3>
@@ -29,9 +45,9 @@
         }
         <div class="text-center mt-3">
             <span class="text-muted">Bạn chưa có tài khoản?</span>
-            <a class="text-primary text-decoration-none fw-bold" href="/Account/DangKy">Đăng ký ngay</a> 
+            <a class="text-primary text-decoration-none fw-bold" href="/Account/DangKy">Đăng ký ngay</a>
 
-            
+
         </div>
 
         <div class="text-center mt-3">
@@ -39,6 +55,8 @@
             <a class="text-primary text-decoration-none fw-bold" href="/Account/Quenmatkhau">Quên mật khẩu</a>
         </div>
 
-        </div>
     </div>
+</div>
+
+
 

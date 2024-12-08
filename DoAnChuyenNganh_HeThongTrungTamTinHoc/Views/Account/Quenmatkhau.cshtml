@@ -4,11 +4,11 @@
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
-<!-- Thông báo nếu có -->
-@if (TempData["Message"] != null)
+
+@if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">
-        @TempData["Message"]
+        @TempData["SuccessMessage"]
     </div>
 }
 

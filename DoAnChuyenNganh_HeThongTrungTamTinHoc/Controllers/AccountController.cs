@@ -321,7 +321,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 var otp = TaoMaOTP();
                 otpStore[Email] = otp;
 
-                var sendGridClient = new SendGridClient("API_KEY");
+                var apikey = System.Configuration.ConfigurationManager.AppSettings["SendGridAPIKey"];
+                var sendGridClient = new SendGridClient(apikey);
                 var from = new EmailAddress("buikhanhduy13082003@gmail.com", "Trung Tâm Tin Học HUIT");
                 var to = new EmailAddress(Email);
                 var subject = "Mã OTP để đặt lại mật khẩu";
@@ -360,17 +361,17 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             try
             {
                 string email = Session["Email"]?.ToString();
-                string maTaiKhoanString = TempData["MaTaiKhoan"]?.ToString();
+                string maTaiKhoanString = Session["MaTaiKhoan"]?.ToString();
 
                 if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(maTaiKhoanString))
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Thông tin không hợp lệ.");
+                    TempData["ErrorMessage"] = "Thông tin không hợp lệ!!!";
+                    return View();
                 }
 
-                // Chuyển đổi MaTK từ string sang int
                 if (!int.TryParse(maTaiKhoanString, out int maTaiKhoan))
                 {
-                    ModelState.AddModelError("", "Mã tài khoản không hợp lệ.");
+                    TempData["ErrorMessage"] = "Mã tài khoản không hợp lệ!!!";
                     return View();
                 }
 
@@ -380,7 +381,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     return View();
                 }
 
-                // Cập nhật mật khẩu mới
                 var taiKhoan = ttth.TaiKhoan.FirstOrDefault(tk => tk.MaTK == maTaiKhoan);
                 if (taiKhoan != null)
                 {
@@ -402,21 +402,14 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                 otpStore.Remove(email);
 
-                TempData["SuccessMessage"] = "Mật khẩu của bạn đã được thay đổi thành công. Vui lòng đăng nhập lại.";
+                TempData["SuccessMessage"] = "Mật khẩu của bạn đã được thay đổi thành công";
                 return RedirectToAction("DangNhap");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Đã xảy ra lỗi: " + ex.Message);
-                return View();
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi lấy lại mật khẩu: " + ex;
+                return RedirectToAction("DangNhap");
             }
         }
-
-        //private string TaoOTP()
-        //{
-        //    var random = new Random();
-        //    return random.Next(100000, 999999).ToString();
-        //}
-
     }
 }
