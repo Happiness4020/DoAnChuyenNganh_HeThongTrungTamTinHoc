@@ -1,7 +1,8 @@
-﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LichDay>
+﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels.LichDayTheoTuanViewModel>
 @{
     ViewBag.Title = "Lịch dạy";
     Layout = "~/Views/Shared/_GiangVien.cshtml";
+    var lichDayTheoTuan = ViewBag.LichDayTheoTuan as List<dynamic>;
 }
 
 <body class="d-flex flex-column h-100 w-100">
@@ -12,39 +13,43 @@
         <div class="container-fluid">
             <h3 class="text-center" style="color: #0066b3;">@ViewBag.Title của giảng viên <span style="color: orangered">@ViewBag.TenGV</span></h3>
 
-            @if (ViewBag.LichDay.Count == 0)
+            @if (Model == null)
             {
-                <h3 style="color: orangered;" class="text-center mt-5">Hiện chưa có lịch dạy!</h3>
+                <h3 style="color: orangered;" class="text-center mt-5">Hiện chưa có lịch dạy</h3>
             }
-            else
+            else if(Model != null)
             {
-                foreach (var item in Model)
+                foreach (var weekGroup in Model)
                 {
-                    <a href="@Url.Action("DanhSachHocVien", "GiangVien", new { malh = item.MaLH, ngayday = item.NgayDay.ToString("yyyy/MM/dd") })" class="text-decoration-none">
-
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th>Lớp học</th>
-                                    <th>Mã lớp</th>
-                                    <th>Ngày dạy</th>
-                                    <th>Giờ bắt đầu</th>
-                                    <th>Giờ kết thúc</th>
-                                    <th>Giảng viên</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>@item.LopHoc.TenPhong</strong></td>
-                                    <td>@item.MaLH</td>
-                                    <td style="color: orange">@item.NgayDay.ToString("yyyy/MM/dd")</td>
-                                    <td style="color: orangered">@item.GioBatDau</td>
-                                    <td style="color: orangered">@item.GioKetThuc</td>
-                                    <td>@item.GiaoVien.HoTen</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </a> 
+                    foreach (var item in weekGroup.Days)
+                    {
+                        <a href="@Url.Action("DanhSachHocVien", "GiangVien", new { malh = item.MaLH, ngayday = item.NgayDay.ToString("yyyy/MM/dd") })" class="text-decoration-none">
+                            <table class="table table-bordered table-hover mt-3">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th>Thứ</th>
+                                        <th>Ngày</th>
+                                        <th>Lớp học</th>
+                                        <th>Mã lớp</th>
+                                        <th>Giờ bắt đầu</th>
+                                        <th>Giờ kết thúc</th>
+                                        <th>Giảng viên</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@item.NgayDay.ToString("dddd", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                        <td>@item.NgayDay.ToString("yyyy/MM/dd")</td>
+                                        <td><strong>@item.LopHoc.TenPhong</strong></td>
+                                        <td>@item.MaLH</td>
+                                        <td>@item.GioBatDau</td>
+                                        <td>@item.GioKetThuc</td>
+                                        <td>@item.GiaoVien.HoTen</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </a>
+                    }
                 }
             }
         </div>

@@ -210,7 +210,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         private string TaoMaOTP()
         {
             var random = new Random();
-            var otp = random.Next(100000, 999999).ToString(); // Tạo OTP 6 chữ số
+            var otp = random.Next(100000, 999999).ToString();
             return otp;
         }
 
@@ -223,7 +223,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult VerifyOTPAndChangePassword(string email, string otp, string currentPassword, string newPassword)
         {
-            // Bước 1: Kiểm tra xem mã OTP có hợp lệ không
             if (!otpStore.ContainsKey(email) || otpStore[email] != otp)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Mã OTP không hợp lệ hoặc đã hết hạn.");
@@ -246,11 +245,23 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             try
             {
                 string magv = Session["MaGV"]?.ToString();
+                string mahv = Session["MaHV"]?.ToString();
 
-                var taikhoan = ttth.TaiKhoan.Where(tk => tk.MaGV == magv).FirstOrDefault();
-                if (currentPassword == taikhoan.MatKhau)
+                if(magv != null)
                 {
-                    return true;
+                    var taikhoan = ttth.TaiKhoan.Where(tk => tk.MaGV == magv).FirstOrDefault();
+                    if (currentPassword == taikhoan.MatKhau)
+                    {
+                        return true;
+                    }
+                }   
+                else if(mahv != null)
+                {
+                    var taikhoan = ttth.TaiKhoan.Where(tk => tk.MaHV == mahv).FirstOrDefault();
+                    if (currentPassword == taikhoan.MatKhau)
+                    {
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -265,13 +276,28 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             try
             {
                 string magv = Session["MaGV"]?.ToString();
-                TaiKhoan taikhoan = ttth.TaiKhoan.FirstOrDefault(tk => tk.MaGV == magv);
-                if (taikhoan != null)
-                {
-                    taikhoan.MatKhau = matkhaumoi;
+                string mahv = Session["MaHV"]?.ToString();
 
-                    ttth.SaveChanges();
-                }
+                if(magv != null)
+                {
+                    TaiKhoan taikhoan = ttth.TaiKhoan.FirstOrDefault(tk => tk.MaGV == magv);
+                    if (taikhoan != null)
+                    {
+                        taikhoan.MatKhau = matkhaumoi;
+
+                        ttth.SaveChanges();
+                    }
+                }    
+                else if (mahv != null)
+                {
+                    TaiKhoan taikhoan = ttth.TaiKhoan.FirstOrDefault(tk => tk.MaHV == mahv);
+                    if (taikhoan != null)
+                    {
+                        taikhoan.MatKhau = matkhaumoi;
+
+                        ttth.SaveChanges();
+                    }
+                }    
             }
             catch
             {

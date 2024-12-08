@@ -38,7 +38,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             string magv = Session["MaGV"]?.ToString();
             if (string.IsNullOrEmpty(magv))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã giảng viên!!!");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Bạn cần đăng nhập bằng tài khoản của giáo viên!!!");
             }
 
             DateTime ngayHienTai = DateTime.Today;
@@ -47,15 +47,25 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 .Where(ld => ld.MaGV == magv && ld.NgayDay >= ngayHienTai)
                 .Include(ld => ld.LopHoc)
                 .Include(ld => ld.GiaoVien)
+                .OrderBy(ld => ld.NgayDay)
                 .ToList();
 
             var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
 
             ViewBag.MaGV = magv;
-            ViewBag.TenGV = giaovien.HoTen;
-            ViewBag.LichDay = lichdays;
-            ViewBag.Email = giaovien.Email;
-            return View(lichdays);
+            ViewBag.TenGV = giaovien?.HoTen ?? "Chưa cập nhật";
+            ViewBag.Email = giaovien?.Email ?? "Chưa cập nhật";
+
+            var lichdaytheotuan = lichdays
+                .GroupBy(ld => System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(ld.NgayDay, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Monday))
+                .Select(group => new LichDayTheoTuanViewModel
+                {
+                    Week = group.Key,
+                    Days = group.OrderBy(ld => ld.NgayDay).ToList()
+                })
+                .ToList();
+
+            return View(lichdaytheotuan);
         }
        
         public ActionResult DanhSachHocVien(string malh, DateTime ngayday)
