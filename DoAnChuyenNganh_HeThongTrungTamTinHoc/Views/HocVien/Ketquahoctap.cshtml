@@ -25,7 +25,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Bạn đã vắng mặt trong <strong style="color: orangered">3 buổi học</strong> của lớp <strong>@ViewBag.Lop.TenLop</strong>!!! Nghỉ quá 3 buổi sẽ bị buộc thôi học.
+                        Bạn đã vắng mặt trong <strong style="color: orangered">3 buổi học</strong> của các lớp:
+                        <ul>
+                            @foreach (var lop in ViewBag.LopCanhBao)
+                            {
+                                <li>Lớp: @lop.MaLH - Số buổi vắng: @lop.Sobuoivang</li>
+                            }
+                        </ul>
+                        Vắng mặt quá <strong style="color: orangered;">3 buổi</strong> trong một lớp học sẽ bị <strong style="color: orangered;">buộc thôi học</strong>. Hãy đi học đầy đủ
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đã hiểu</button>
@@ -35,7 +42,7 @@
         </div>
     }
 
-    <div class="table-responsive">
+    <div class="table-responsive mx-5">
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -52,7 +59,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@ViewBag.Lop.TenPhong</td>
+                        <td>@item.MaLH</td>
                         <td>@(item.DiemKiemTraLan1 ?? 0)</td>
                         <td>@(item.DiemKiemTraLan2 ?? 0)</td>
                         <td>@(item.DiemKiemTraLan3 ?? 0)</td>

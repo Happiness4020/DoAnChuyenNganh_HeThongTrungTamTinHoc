@@ -51,7 +51,7 @@
                         <th>Điểm KTL 3</th>
                         <th>Điểm trung bình</th>
                         <th>Số buổi vắng</th>
-                        <th>Đã kết thúc</th>
+                        <th>Kết quả</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -80,10 +80,7 @@
                                 @Model[i].Sobuoivang
                             </td>
                             <td>
-                                <select name="HocVienList[@i].Daketthuc" class="form-control">
-                                    <option value="false" @(Model[i].Daketthuc == false ? "selected" : "")>Đang học</option>
-                                    <option value="true" @(Model[i].Daketthuc == true ? "selected" : "")>Đã kết thúc</option>
-                                </select>
+                                @Model[i].KetQua
                             </td>
                             <td>
                                 <button type="submit" class="btn btn-primary" style="width: 100px;" onclick="return xacNhanCapNhat()">Cập nhật</button>
