@@ -19,7 +19,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-            // Cấu hình route tùy chỉnh cho AddToCart
             routes.MapRoute(
                 name: "AddToCart",
                 url: "HocVien/AddToCart/{courseId}",

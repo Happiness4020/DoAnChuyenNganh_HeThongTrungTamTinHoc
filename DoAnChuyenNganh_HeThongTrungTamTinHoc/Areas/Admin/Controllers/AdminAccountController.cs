@@ -78,7 +78,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     {
                         MaHV = tk.MaHV,
                         TenDangNhap = tk.TenDangNhap,
-                        MatKhau = tk.MatKhau, // Lưu mật khẩu đã mã hóa bằng BCrypt
+                        MatKhau = tk.MatKhau,
                         QuyenHan = tk.QuyenHan,
                         MaGV = null
                     };
@@ -96,7 +96,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     {
                         MaGV = tk.MaGV,
                         TenDangNhap = tk.TenDangNhap,
-                        MatKhau = tk.MatKhau, // Lưu mật khẩu đã mã hóa bằng BCrypt
+                        MatKhau = tk.MatKhau,
                         QuyenHan = tk.QuyenHan,
                         MaHV = null
                     };
@@ -156,7 +156,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Kiểm tra trùng tên đăng nhập
                 var taikhoan = db.TaiKhoan.FirstOrDefault(t => t.TenDangNhap == tk.TenDangNhap && t.MaTK != id);
                 if (taikhoan != null)
                 {
@@ -164,14 +163,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(tk);
                 }
 
-                // Kiểm tra điều kiện mã học viên hoặc giáo viên
                 if (string.IsNullOrEmpty(tk.MaHV) && string.IsNullOrEmpty(tk.MaGV))
                 {
                     ModelState.AddModelError("", "Vui lòng chọn Mã học viên hoặc Mã giáo viên.");
                     return View(tk);
                 }
 
-                // Kiểm tra mã học viên đã có tài khoản khác hay chưa
                 if (!string.IsNullOrEmpty(tk.MaHV))
                 {
                     taikhoan = db.TaiKhoan.FirstOrDefault(t => t.MaHV == tk.MaHV && t.MaTK != id);
@@ -182,7 +179,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     }
                 }
 
-                // Kiểm tra mã giáo viên đã có tài khoản khác hay chưa
                 if (!string.IsNullOrEmpty(tk.MaGV))
                 {
                     taikhoan = db.TaiKhoan.FirstOrDefault(t => t.MaGV == tk.MaGV && t.MaTK != id);
@@ -193,7 +189,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     }
                 }
 
-                // Lấy tài khoản từ database và cập nhật thông tin
                 TaiKhoan taikhoanUpdate = db.TaiKhoan.FirstOrDefault(t => t.MaTK == id);
                 if (taikhoanUpdate != null)
                 {
@@ -208,7 +203,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 }
             }
 
-            // Nếu model không hợp lệ, tải lại danh sách học viên và giáo viên
             var hocviens = db.HocVien
                              .Where(hv => !db.TaiKhoan.Any(t => t.MaHV == hv.MaHV) || hv.MaHV == tk.MaHV)
                              .ToList();
@@ -220,6 +214,5 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             return View(tk);
         }
-
     }
 }

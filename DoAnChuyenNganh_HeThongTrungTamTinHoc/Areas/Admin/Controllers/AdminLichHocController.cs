@@ -25,8 +25,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 .Where(lh => lh.HocVien.HoTen.Contains(search) || lh.LopHoc.MaLH.Contains(search))
                 .ToList();
 
-            ViewBag.Search = search; // Giữ giá trị tìm kiếm
-            ViewBag.SortOrder = sortOrder; // Giữ giá trị sắp xếp
+            ViewBag.Search = search;
+            ViewBag.SortOrder = sortOrder;
 
             switch (sortOrder)
             {
@@ -58,7 +58,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         {
             ViewBag.MaLichHoc = malh;
             ViewBag.MaHVList = new SelectList(db.HocVien, "MaHV", "HoTen");
-            ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenLop");
+            ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenPhong");
             return View();
         }
 
@@ -82,7 +82,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
 
             ViewBag.MaHVList = new SelectList(db.HocVien, "MaHV", "HoTen", lichHoc.MaHV);
-            ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenLop", lichHoc.MaLH);
+            ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenPhong", lichHoc.MaLH);
             return View(lichHoc);
         }
 
@@ -101,7 +101,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
 
             ViewBag.MaHVList = new SelectList(db.HocVien, "MaHV", "HoTen", lichHoc.MaHV);
-            ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenLop", lichHoc.MaLH);
+            ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenPhong", lichHoc.MaLH);
             return View(lichHoc);
         }
 
@@ -117,7 +117,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
 
             ViewBag.MaHVList = new SelectList(db.HocVien, "MaHV", "HoTen", lichHoc.MaHV);
-            ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenLop", lichHoc.MaLH);
+            ViewBag.MaLHList = new SelectList(db.LopHoc, "MaLH", "TenPhong", lichHoc.MaLH);
             return View(lichHoc);
         }
 

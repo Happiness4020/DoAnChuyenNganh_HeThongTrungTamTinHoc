@@ -136,8 +136,8 @@
                                     <a href="/KhoaHoc/ChiTietKhoaHoc/@khoahoc.MaKH" class="text-decoration-none" style="color: #0066b3">@khoahoc.TenKH</a>
                                 </h5>
                                 <span class="card-text flex-grow-1">Ngày khai giảng: @khoahoc.NgayBatDau</span>
-                                <h4>Học phí: @khoahoc.HocPhi VND</h4>
-                                <p>Số lượt đăng ký: @khoahoc.SoLanDangKy</p>
+                                <h4 style="color: orangered;">Học phí: @string.Format("{0:N0} VND", khoahoc.HocPhi)</h4>
+                                <p>Số lượt đăng ký: <span class="fw-bold text-info">@khoahoc.SoLanDangKy</span></p>
                             </div>
                         </div>
                     </div>

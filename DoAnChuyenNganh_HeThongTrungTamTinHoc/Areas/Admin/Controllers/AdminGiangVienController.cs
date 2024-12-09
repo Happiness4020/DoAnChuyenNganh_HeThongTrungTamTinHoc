@@ -18,15 +18,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         // GET: Admin/AdminGiangVien
         public ActionResult GiangVienList(string search = "", string sortOrder = "ten", int page = 1, int pageSize = 10)
         {
-   
             var giangviensQuery = db.GiaoVien.AsQueryable();
-
 
             if (!string.IsNullOrEmpty(search))
             {
                 giangviensQuery = giangviensQuery.Where(gv => gv.HoTen.Contains(search));
             }
-
 
             switch (sortOrder)
             {
@@ -44,14 +41,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     break;
             }
 
-
             int totalRecords = giangviensQuery.Count();
             int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
             int skipRecords = (page - 1) * pageSize;
 
-
             var giangviens = giangviensQuery.Skip(skipRecords).Take(pageSize).ToList();
-
 
             ViewBag.Search = search;
             ViewBag.SortOrder = sortOrder;
@@ -60,7 +54,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             return View(giangviens);
         }
-
 
         public ActionResult GiangVienAdd()
         {
@@ -104,8 +97,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 string filename = "noimage.jpg";
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
-                   
-
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
                     if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
@@ -144,8 +135,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
         }
 
-       
-
         public ActionResult GiangVienDelete(string id)
         {
             GiaoVien gv = db.GiaoVien.Where(t => t.MaGV == id).FirstOrDefault();
@@ -170,7 +159,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Tìm giảng viên trong cơ sở dữ liệu
                 GiaoVien giangVienTonTai = db.GiaoVien.FirstOrDefault(h => h.MaGV == gv.MaGV);
                 if (giangVienTonTai == null)
                 {
@@ -178,7 +166,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(gv);
                 }
 
-                // Kiểm tra email trùng lặp
                 var emailDaTonTai = db.GiaoVien.Any(t => t.Email == gv.Email && t.MaGV != gv.MaGV);
                 if (emailDaTonTai)
                 {
@@ -186,7 +173,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(gv);
                 }
 
-                // Cập nhật thông tin
                 giangVienTonTai.HoTen = gv.HoTen;
                 giangVienTonTai.NgayVaoLam = gv.NgayVaoLam;
                 giangVienTonTai.BangCapGV = gv.BangCapGV;
@@ -196,7 +182,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 giangVienTonTai.DiaChi = gv.DiaChi;
                 giangVienTonTai.Luong = gv.Luong;
 
-                // Cập nhật ảnh nếu có tệp mới
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
                     var allowedExtensions = new[] { ".jpg", ".png" };
@@ -207,20 +192,17 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         return View();
                     }
 
-                    // Lưu ảnh mới
                     var fileName = giangVienTonTai.MaGV + fileEx;
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
                     imageFile.SaveAs(path);
                     giangVienTonTai.Anh = fileName;
                 }
 
-                // Lưu các thay đổi
                 db.SaveChanges();
                 return RedirectToAction("GiangVienList");
             }
 
             return View(gv);
         }
-
     }
 }

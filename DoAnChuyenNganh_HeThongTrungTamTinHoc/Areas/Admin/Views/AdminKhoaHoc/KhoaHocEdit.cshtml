@@ -60,7 +60,7 @@
                         <div class="col-3"></div>
                         <div class="col-6">
                             @Html.LabelFor(model => model.NgayBatDau, "Ngày bắt đầu")
-                            @Html.TextBoxFor(model => model.NgayBatDau, "{0:dd/MM/yyyy}", new { placeholder = "Ngày bắt đầu", @class = "form-control" })
+                            @Html.TextBoxFor(model => model.NgayBatDau, "{0:yyyy/MM/dd}", new { placeholder = "Ngày bắt đầu", @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.NgayBatDau, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                         <div class="col-3"></div>
                         <div class="col-6">
                             @Html.LabelFor(model => model.NgayKetThuc, "Ngày kết thúc")
-                            @Html.TextBoxFor(model => model.NgayKetThuc, "{0:dd/MM/yyyy}", new { placeholder = "Ngày kết thúc", @class = "form-control" })
+                            @Html.TextBoxFor(model => model.NgayKetThuc, "{0:yyyy/MM/dd}", new { placeholder = "Ngày kết thúc", @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.NgayKetThuc, "", new { @class = "text-danger" })
                         </div>
                     </div>

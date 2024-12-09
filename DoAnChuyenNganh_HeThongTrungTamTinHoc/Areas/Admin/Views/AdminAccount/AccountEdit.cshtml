@@ -89,17 +89,16 @@
         const maHocVienDropdown = document.getElementById("maHocVienDropdown");
         const maGiaoVienDropdown = document.getElementById("maGiaoVienDropdown");
 
-        // Hàm cập nhật trạng thái chọn lựa mã học viên và giáo viên
         function updateDropdownState() {
             const selectedRole = quyenHanDropdown.value;
             if (selectedRole === "Học viên") {
                 maHocVienDropdown.disabled = false;
                 maGiaoVienDropdown.disabled = true;
-                maGiaoVienDropdown.value = "";  // Xóa lựa chọn mã giáo viên nếu đã chọn
+                maGiaoVienDropdown.value = "";
             } else if (selectedRole === "Giáo viên") {
                 maGiaoVienDropdown.disabled = false;
                 maHocVienDropdown.disabled = true;
-                maHocVienDropdown.value = "";  // Xóa lựa chọn mã học viên nếu đã chọn
+                maHocVienDropdown.value = "";
             } else {
                 maHocVienDropdown.disabled = true;
                 maGiaoVienDropdown.disabled = true;
@@ -108,10 +107,8 @@
             }
         }
 
-        // Gọi hàm updateDropdownState khi thay đổi quyền hạn
         quyenHanDropdown.addEventListener("change", updateDropdownState);
 
-        // Gọi hàm updateDropdownState khi tải trang để thiết lập trạng thái ban đầu
         updateDropdownState();
     });
 </script>

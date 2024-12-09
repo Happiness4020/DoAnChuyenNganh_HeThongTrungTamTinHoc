@@ -20,7 +20,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View();
         }
 
-
         public ActionResult ThongKeGiaoDich(DateTime? fromDate, DateTime? toDate)
         {
             var giaoDichQuery = db.GiaoDichHocPhi.AsQueryable();
@@ -55,7 +54,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             return View(thongKeTheoThang);
         }
-
 
         public ActionResult ExportToExcel(DateTime? fromDate, DateTime? toDate)
         {
@@ -135,12 +133,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
         }
 
-
-
-
-
-
-
         //public ActionResult ThongKeKhoaHoc()
         //{
         //    // Truy xuất danh sách khóa học và số lượng học viên đăng ký
@@ -160,7 +152,5 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         //    return View(thongKeKhoaHoc);
         //}
 
-
     }
-
 }
