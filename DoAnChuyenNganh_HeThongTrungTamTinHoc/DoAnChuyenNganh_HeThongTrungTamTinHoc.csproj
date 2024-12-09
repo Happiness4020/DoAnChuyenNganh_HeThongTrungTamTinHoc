@@ -484,22 +484,13 @@
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LichHocView.cs" />
-    <Compile Include="Models\LienHe.cs">
-      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\LopHoc.cs">
-      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NguoiQuanLy.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PhuongThucThanhToan.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TaiKhoan.cs">
-      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TaiLieuHocTap.cs">
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ThanhToan.cs" />

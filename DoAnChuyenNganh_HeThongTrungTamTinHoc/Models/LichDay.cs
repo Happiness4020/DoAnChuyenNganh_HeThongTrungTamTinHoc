@@ -31,6 +31,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         [Required(ErrorMessage = " Bạn phải nhập giờ kết thúc ")]
         public System.TimeSpan GioKetThuc { get; set; }
 
+
         public virtual GiaoVien GiaoVien { get; set; }
         public virtual LopHoc LopHoc { get; set; }
     }
