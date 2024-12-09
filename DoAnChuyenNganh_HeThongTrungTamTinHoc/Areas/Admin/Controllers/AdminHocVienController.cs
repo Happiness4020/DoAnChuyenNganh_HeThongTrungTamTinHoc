@@ -142,11 +142,20 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult HocVienDelete(string id, HocVien hocvien)
         {
-
-            hocvien = ttth.HocVien.Where(t => t.MaHV == id).FirstOrDefault();
-            ttth.HocVien.Remove(hocvien);
-            ttth.SaveChanges();
-            return RedirectToAction("HocVienList");
+            try 
+            {
+                hocvien = ttth.HocVien.Where(t => t.MaHV == id).FirstOrDefault();
+                ttth.HocVien.Remove(hocvien);
+                ttth.SaveChanges();
+                TempData["SuccessMessage"] = "Đã xóa học viên thành công";
+                return RedirectToAction("HocVienList");
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Dữ liệu học viên này vẫn đang được lưu tại nơi khác!!! Không thể xóa";
+                return RedirectToAction("HocVienList");
+            }
+            
         }
 
         public ActionResult HocVienEdit(string id)
@@ -204,7 +213,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 ttth.SaveChanges();
                 return RedirectToAction("HocVienList");
             }
-
             return View(hocvien);
         }
 
