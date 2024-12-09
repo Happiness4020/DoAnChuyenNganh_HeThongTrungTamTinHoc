@@ -305,8 +305,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
         }
 
-        ////////////////////////////////
-
         [HttpGet]
         public ActionResult Quenmatkhau()
         {

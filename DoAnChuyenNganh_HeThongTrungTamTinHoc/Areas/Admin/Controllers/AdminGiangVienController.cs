@@ -143,10 +143,19 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult GiangVienDelete(string id, GiaoVien giaovien)
         {
-            GiaoVien gv = db.GiaoVien.Where(t => t.MaGV == id).FirstOrDefault();
-            db.GiaoVien.Remove(gv);
-            db.SaveChanges();
-            return RedirectToAction("GiangVienList");
+            try
+            {
+                GiaoVien gv = db.GiaoVien.Where(t => t.MaGV == id).FirstOrDefault();
+                db.GiaoVien.Remove(gv);
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Đã xóa học viên thành công";
+                return RedirectToAction("GiangVienList");
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Dữ liệu giảng viên này vẫn đang được lưu tại nơi khác!!! Không thể xóa";
+                return RedirectToAction("GiangVienList");
+            }
         }
 
         public ActionResult GiangVienEdit(string id)

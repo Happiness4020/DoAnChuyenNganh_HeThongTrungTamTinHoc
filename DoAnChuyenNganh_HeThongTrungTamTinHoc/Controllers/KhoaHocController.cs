@@ -397,7 +397,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                     Session["MaHV"] = mahv;
 
-                    TempData["SuccessMessage"] = "Thanh toán thành công, hãy chọn lớp học.";
+                    TempData["SuccessMessage"] = "Thanh toán thành công!!! Hãy dùng mã học viên được gửi đến email đã đăng ký của bạn để tạo tài khoản học viên. Vui lòng chọn và đăng ký lớp học ở bên dưới.";
                     return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = makh });
                 }
             }
@@ -413,37 +413,45 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
         public ActionResult DanhSachLopHocTheoKhoaHoc(string maKH)
         {
-            var hocVienId = Session["MaHV"]?.ToString();
-            if (string.IsNullOrEmpty(hocVienId))
+            try
             {
-                TempData["ErrorMessage"] = "Bạn phải hoàn tất đăng ký khóa học để chọn lớp.";
-                return RedirectToAction("DangKyKhoaHoc", new { makh = maKH });
+                var hocVienId = Session["MaHV"]?.ToString();
+                if (string.IsNullOrEmpty(hocVienId))
+                {
+                    TempData["ErrorMessage"] = "Bạn phải hoàn tất đăng ký khóa học để chọn lớp.";
+                    return RedirectToAction("DangKyKhoaHoc", new { makh = maKH });
+                }
+
+                var danhSachLop = db.LopHoc.Where(l => l.MaKH == maKH && l.TrangThai == false)
+                                           .Select(l => new
+                                           {
+                                               l,
+                                               SoLuongHocVien = db.ChiTiet_HocVien_LopHoc.Count(ctl => ctl.MaLH == l.MaLH)
+                                           })
+                                           .ToList();
+
+                if (!danhSachLop.Any())
+                {
+                    TempData["ErrorMessage"] = "Không có lớp học nào cho khóa học này.";
+                    return RedirectToAction("DangKyKhoaHoc", new { makh = maKH });
+                }
+
+                ViewBag.TenKhoaHoc = db.KhoaHoc.Where(kh => kh.MaKH == maKH).Select(kh => kh.TenKH).FirstOrDefault();
+                ViewBag.MaKhoaHoc = maKH;
+
+                var danhSachLopModel = danhSachLop.Select(d => new LopHocViewModel
+                {
+                    LopHoc = d.l,
+                    SoLuongHocVien = d.SoLuongHocVien
+                }).ToList();
+
+                return View(danhSachLopModel);
             }
-
-            var danhSachLop = db.LopHoc.Where(l => l.MaKH == maKH && l.TrangThai == false)
-                                       .Select(l => new
-                                       {
-                                           l,
-                                           SoLuongHocVien = db.ChiTiet_HocVien_LopHoc.Count(ctl => ctl.MaLH == l.MaLH)
-                                       })
-                                       .ToList();
-
-            if (!danhSachLop.Any())
+            catch(Exception ex)
             {
-                TempData["ErrorMessage"] = "Không có lớp học nào cho khóa học này.";
-                return RedirectToAction("DangKyKhoaHoc", new { makh = maKH });
+                Console.WriteLine("Có lỗi xảy ra khi tải danh sách lớp: " + ex);
+                return View();
             }
-
-            ViewBag.TenKhoaHoc = db.KhoaHoc.Where(kh => kh.MaKH == maKH).Select(kh => kh.TenKH).FirstOrDefault();
-            ViewBag.MaKhoaHoc = maKH;
-
-            var danhSachLopModel = danhSachLop.Select(d => new LopHocViewModel
-            {
-                LopHoc = d.l,
-                SoLuongHocVien = d.SoLuongHocVien
-            }).ToList();
-
-            return View(danhSachLopModel);
         }
 
 
@@ -452,66 +460,67 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult DangKyLop(string maLH)
         {
-            var hocVienId = Session["MaHV"]?.ToString();
-
-            if (string.IsNullOrEmpty(hocVienId))
+            try
             {
-                TempData["Error"] = "Bạn phải đăng nhập để đăng ký lớp học.";
-                TempData["ErrorMessage"] = "Bạn phải đăng nhập để đăng ký lớp học.";
-                return RedirectToAction("Login", "Account");
-            }
+                var hocVienId = Session["MaHV"]?.ToString();
 
-            var hocVien = db.HocVien.Find(hocVienId);
-            var lopHoc = db.LopHoc.Find(maLH);
-
-            if (hocVien != null && lopHoc != null)
-            {
-                // Kiểm tra xem học viên đã đăng ký lớp trong khóa học này chưa
-                var daDangKy = db.GiaoDichHocPhi.Any(gd =>
-                    gd.MaHV == hocVien.MaHV && gd.MaKH == lopHoc.MaKH && gd.TrangThai != "Hủy");
-
-                if (daDangKy)
+                if (string.IsNullOrEmpty(hocVienId))
                 {
-                    TempData["ErrorMessage"] = "Bạn đã đăng ký một lớp trong khóa học này rồi.";
-                    return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc.MaKH });
+                    TempData["Error"] = "Bạn phải đăng nhập để đăng ký lớp học.";
+                    TempData["ErrorMessage"] = "Bạn phải đăng nhập để đăng ký lớp học.";
+                    return RedirectToAction("Login", "Account");
                 }
 
-                var giaoDich = new GiaoDichHocPhi
+                var hocVien = db.HocVien.Find(hocVienId);
+                var lopHoc = db.LopHoc.Find(maLH);
+
+                if (hocVien != null && lopHoc != null)
                 {
-                    MaHV = hocVien.MaHV,
-                    MaKH = lopHoc.MaKH,
-                    MaLH = maLH,
-                    MaPT = 1,
-                    NgayGD = DateTime.Now,
-                    SoTien = lopHoc.KhoaHoc.HocPhi,
-                    SoDT = hocVien.SoDT,
-                    Email = hocVien.Email,
-                    TrangThai = "Chờ duyệt"
-                };
+                    var daDangKy = db.GiaoDichHocPhi.Any(gd =>
+                        gd.MaHV == hocVien.MaHV && gd.MaKH == lopHoc.MaKH && gd.TrangThai != "Hủy");
 
-                db.GiaoDichHocPhi.Add(giaoDich);
-                db.SaveChanges();
+                    if (daDangKy)
+                    {
+                        TempData["ErrorMessage"] = "Bạn đã đăng ký một lớp trong khóa học này rồi.";
+                        return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc.MaKH });
+                    }
 
-                TempData["Success"] = "Đăng ký lớp học thành công. Vui lòng chờ admin duyệt.";
+                    var giaoDich = new GiaoDichHocPhi
+                    {
+                        MaHV = hocVien.MaHV,
+                        MaKH = lopHoc.MaKH,
+                        MaLH = maLH,
+                        MaPT = 1,
+                        NgayGD = DateTime.Now,
+                        SoTien = lopHoc.KhoaHoc.HocPhi,
+                        SoDT = hocVien.SoDT,
+                        Email = hocVien.Email,
+                        TrangThai = "Chờ duyệt"
+                    };
+
+                    db.GiaoDichHocPhi.Add(giaoDich);
+                    db.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Đăng ký lớp học thành công. Vui lòng chờ admin duyệt.";
+                    return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc?.MaKH });
+                }
+                else
+                {
+                    TempData["Error"] = "Lớp học không tồn tại hoặc đã có lỗi xảy ra.";
+                    TempData["ErrorMessage"] = "Lớp học không tồn tại hoặc đã có lỗi xảy ra.";
+                }
                 return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc?.MaKH });
-                TempData["SuccessMessage"] = "Đăng ký lớp học thành công. Vui lòng chờ admin duyệt.";
-                return RedirectToAction("ThanhToan");
             }
-            else
+            catch
             {
-                TempData["Error"] = "Lớp học không tồn tại hoặc đã có lỗi xảy ra.";
-                TempData["ErrorMessage"] = "Lớp học không tồn tại hoặc đã có lỗi xảy ra.";
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi đăng ký khóa học!!!";
+                return RedirectToAction("Index");
             }
-
-            return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc?.MaKH });
         }
-
-
 
         public ActionResult ThanhToan()
         {
             return View();
         }
-
     }
 }

@@ -244,10 +244,19 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LopHocDeleteConfirmed(string id)
         {
-            LopHoc lopHoc = db.LopHoc.Find(id);
-            db.LopHoc.Remove(lopHoc);
-            db.SaveChanges();
-            return RedirectToAction("LopHocList");
+            try
+            {
+                LopHoc lopHoc = db.LopHoc.Find(id);
+                db.LopHoc.Remove(lopHoc);
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Đã xóa lớp học thành công";
+                return RedirectToAction("LopHocList");
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Dữ liệu lớp học này vẫn đang được lưu tại nơi khác!!! Không thể xóa";
+                return RedirectToAction("LopHocList");
+            }
         }
 
         public List<string> LayDanhSachHocVienDaDangKy(string maKH, int soLuongCanLay = 20)
@@ -263,93 +272,102 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
         public ActionResult PhanLichHocChoHocVien(string maLH, int soBuoiHoc)
         {
-            var lopHoc = db.LopHoc.Find(maLH);
-            if (lopHoc == null)
+            try
             {
-                return HttpNotFound("Lớp học không tồn tại.");
-            }
+                var lopHoc = db.LopHoc.Find(maLH);
+                if (lopHoc == null)
+                {
+                    return HttpNotFound("Lớp học không tồn tại.");
+                }
 
-            var khoaHoc = db.KhoaHoc.Find(lopHoc.MaKH);
-            if (khoaHoc == null)
-            {
-                return HttpNotFound("Khóa học không tồn tại.");
-            }
+                var khoaHoc = db.KhoaHoc.Find(lopHoc.MaKH);
+                if (khoaHoc == null)
+                {
+                    return HttpNotFound("Khóa học không tồn tại.");
+                }
 
-            DateTime ngayBatDau = khoaHoc.NgayBatDau;
+                DateTime ngayBatDau = khoaHoc.NgayBatDau;
 
 
-            var danhSachHocVien = db.ChiTiet_HocVien_LopHoc
-                                    .Where(ct => ct.MaLH == maLH)
-                                    .Select(ct => ct.MaHV)
-                                    .ToList();
+                var danhSachHocVien = db.ChiTiet_HocVien_LopHoc
+                                        .Where(ct => ct.MaLH == maLH)
+                                        .Select(ct => ct.MaHV)
+                                        .ToList();
 
-            if (danhSachHocVien.Count == 0)
-            {
-                TempData["ErrorMessage"] = "Không có học viên trong lớp này.";
+                if (danhSachHocVien.Count == 0)
+                {
+                    TempData["ErrorMessage"] = "Không có học viên trong lớp này.";
+                    return RedirectToAction("LopHocList");
+                }
+
+                DateTime ngayKetThuc = db.Database.SqlQuery<DateTime>(
+                    "SELECT dbo.TinhNgayKetThuc(@NgayBatDau, @SoBuoiHoc, @ThuHoc)",
+                    new SqlParameter("@NgayBatDau", ngayBatDau),
+                    new SqlParameter("@SoBuoiHoc", soBuoiHoc),
+                    new SqlParameter("@ThuHoc", lopHoc.ThuHoc)
+                ).FirstOrDefault();
+
+
+                if (khoaHoc.NgayKetThuc == null || khoaHoc.NgayKetThuc != ngayKetThuc)
+                {
+                    khoaHoc.NgayKetThuc = ngayKetThuc;
+                    db.SaveChanges();
+                }
+
+                List<DayOfWeek> ngayHocTrongTuan = new List<DayOfWeek>();
+
+                if (lopHoc.ThuHoc == "2-4-6")
+                {
+                    ngayHocTrongTuan = new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Friday };
+                }
+                else if (lopHoc.ThuHoc == "3-5-7")
+                {
+                    ngayHocTrongTuan = new List<DayOfWeek> { DayOfWeek.Tuesday, DayOfWeek.Thursday, DayOfWeek.Saturday };
+                }
+
+                List<DateTime> dsNgayHoc = new List<DateTime>();
+                DateTime ngayHienTai = ngayBatDau;
+
+
+                while (dsNgayHoc.Count < soBuoiHoc)
+                {
+                    if (ngayHocTrongTuan.Contains(ngayHienTai.DayOfWeek))
+                    {
+                        dsNgayHoc.Add(ngayHienTai);
+                    }
+                    ngayHienTai = ngayHienTai.AddDays(1);
+                }
+
+                foreach (var maHV in danhSachHocVien)
+                {
+                    foreach (var ngayHoc in dsNgayHoc)
+                    {
+                        string malichhoc = Utility.TaoMaNgauNhien("LH", 8);
+
+                        var lichHoc = new LichHoc
+                        {
+                            MaLichHoc = malichhoc,
+                            MaLH = maLH,
+                            MaHV = maHV,
+                            NgayHoc = ngayHoc,
+                            DiemDanh = false,
+                            GioBatDau = lopHoc.GioBatDau,
+                            GioKetThuc = lopHoc.GioKetThuc
+                        };
+                        db.LichHoc.Add(lichHoc);
+                    }
+                }
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = $"Đã phân lịch học cho {danhSachHocVien.Count} học viên trong lớp {lopHoc.TenPhong}.";
                 return RedirectToAction("LopHocList");
             }
-
-            DateTime ngayKetThuc = db.Database.SqlQuery<DateTime>(
-                "SELECT dbo.TinhNgayKetThuc(@NgayBatDau, @SoBuoiHoc, @ThuHoc)",
-                new SqlParameter("@NgayBatDau", ngayBatDau),
-                new SqlParameter("@SoBuoiHoc", soBuoiHoc),
-                new SqlParameter("@ThuHoc", lopHoc.ThuHoc)  
-            ).FirstOrDefault();
-
-
-            if (khoaHoc.NgayKetThuc == null || khoaHoc.NgayKetThuc != ngayKetThuc)
+            catch(Exception ex)
             {
-                khoaHoc.NgayKetThuc = ngayKetThuc;
-                db.SaveChanges();  
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi phân lịch học: " + ex;
+                return RedirectToAction("LopHocList");
             }
-
-            List<DayOfWeek> ngayHocTrongTuan = new List<DayOfWeek>();
-
-            if (lopHoc.ThuHoc == "2-4-6")
-            {
-                ngayHocTrongTuan = new List<DayOfWeek> { DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Friday };
-            }
-            else if (lopHoc.ThuHoc == "3-5-7")
-            {
-                ngayHocTrongTuan = new List<DayOfWeek> { DayOfWeek.Tuesday, DayOfWeek.Thursday, DayOfWeek.Saturday };
-            }
-
-            List<DateTime> dsNgayHoc = new List<DateTime>();
-            DateTime ngayHienTai = ngayBatDau;
-
-
-            while (dsNgayHoc.Count < soBuoiHoc)
-            {
-                if (ngayHocTrongTuan.Contains(ngayHienTai.DayOfWeek))
-                {
-                    dsNgayHoc.Add(ngayHienTai);
-                }
-                ngayHienTai = ngayHienTai.AddDays(1); 
-            }
-
-            foreach (var maHV in danhSachHocVien)
-            {
-                foreach (var ngayHoc in dsNgayHoc)
-                {
-                    string malichhoc = Utility.TaoMaNgauNhien("LH", 8);
-
-                    var lichHoc = new LichHoc
-                    {
-                        MaLichHoc = malichhoc,
-                        MaLH = maLH,
-                        MaHV = maHV,
-                        NgayHoc = ngayHoc,
-                        DiemDanh = false,
-                        GioBatDau = lopHoc.GioBatDau,
-                        GioKetThuc = lopHoc.GioKetThuc
-                    };
-                    db.LichHoc.Add(lichHoc);
-                }
-            }
-            db.SaveChanges();
-
-            TempData["SuccessMessage"] = $"Đã phân lịch học cho {danhSachHocVien.Count} học viên trong lớp {lopHoc.TenPhong}.";
-            return RedirectToAction("LopHocList");
+            
         }
     }
 }

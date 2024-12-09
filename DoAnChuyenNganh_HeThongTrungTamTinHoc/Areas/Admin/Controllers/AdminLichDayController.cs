@@ -90,13 +90,22 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult LichDayDeleteConfirmed(string id)
         {
-            var lichDay = db.LichDay.FirstOrDefault(ld => ld.MaLichDay == id);
-            if (lichDay != null)
+            try
             {
-                db.LichDay.Remove(lichDay);
-                db.SaveChanges();
+                var lichDay = db.LichDay.FirstOrDefault(ld => ld.MaLichDay == id);
+                if (lichDay != null)
+                {
+                    db.LichDay.Remove(lichDay);
+                    db.SaveChanges();
+                }
+                TempData["SuccessMessage"] = "Đã xóa lịch dạy thành công";
+                return RedirectToAction("LichDayList");
             }
-            return RedirectToAction("LichDayList");
+            catch(Exception ex)
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi xóa lịch dạy: " + ex;
+                return RedirectToAction("LichDayList");
+            }
         }
 
         public ActionResult LichDayEdit(string id)

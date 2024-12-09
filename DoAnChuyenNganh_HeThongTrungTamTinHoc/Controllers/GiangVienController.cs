@@ -20,136 +20,168 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         // GET: GiangVien
         public ActionResult Index()
         {
-            string magv = Session["MaGV"]?.ToString();
-            if (string.IsNullOrEmpty(magv))
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã giảng viên!!!");
-            }
-            ViewBag.MaGV = magv;
-
-            var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
-
-            ViewBag.Email = giaovien.Email;
-
-            return View(giaovien);
-        }
-
-        public ActionResult LichDay(int? page)
-        {
-            string magv = Session["MaGV"]?.ToString();
-            if (string.IsNullOrEmpty(magv))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Bạn cần đăng nhập bằng tài khoản của giáo viên!!!");
-            }
-
-            DateTime ngayHienTai = DateTime.Today;
-
-            var lichdays = db.LichDay
-                .Where(ld => ld.MaGV == magv && ld.NgayDay >= ngayHienTai)
-                .Include(ld => ld.LopHoc)
-                .Include(ld => ld.GiaoVien)
-                .OrderBy(ld => ld.NgayDay)
-                .ToList();
-
-            var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
-
-            ViewBag.MaGV = magv;
-            if(giaovien != null)
-            {
-                ViewBag.TenGV = giaovien.HoTen ?? "Chưa cập nhật";
-                ViewBag.Email = giaovien.Email ?? "Chưa cập nhật";
-            }    
-
-            var lichdaytheotuan = lichdays
-                .GroupBy(ld => System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(ld.NgayDay, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Monday))
-                .Select(group => new LichDayTheoTuanViewModel
-                {
-                    Week = group.Key,
-                    Days = group.OrderBy(ld => ld.NgayDay).ToList()
-                })
-                .ToList();
-
-            int sotuan = 1;
-            int sotrang = page ?? 1;
-            var dulieu = new PagedList<LichDayTheoTuanViewModel>(lichdaytheotuan, sotrang, sotuan);
-
-            return View(dulieu);
-        }
-       
-        public ActionResult DanhSachHocVien(string malh, DateTime ngayday)
-        {
-            if (malh != null && ngayday != null)
-            {
-                var hocviens = db.LichHoc
-                    .Where(lh => lh.MaLH == malh && lh.NgayHoc == ngayday)
-                    .Select(lh => new
-                    {
-                        lh.HocVien.MaHV,
-                        lh.HocVien.HoTen,
-                        lh.HocVien.SoDT,
-                        lh.HocVien.Email,
-                        lh.DiemDanh
-                    })
-                    .ToList()
-                    .Select(hv => new HocVienViewModel
-                    {
-                        MaHV = hv.MaHV,
-                        HoTen = hv.HoTen,
-                        SoDT = hv.SoDT,
-                        Email = hv.Email,
-                        DiemDanh = hv.DiemDanh
-                    })
-                    .ToList();
-
-                var lop = db.LopHoc.Where(lh => lh.MaLH == malh).FirstOrDefault();
-
                 string magv = Session["MaGV"]?.ToString();
                 if (string.IsNullOrEmpty(magv))
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã giảng viên!!!");
                 }
+                ViewBag.MaGV = magv;
+
                 var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
+                ViewBag.Email = giaovien.Email;
+
+                return View(giaovien);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Có lỗi xảy ra khi tải trang: " + ex);
+                return View();
+            }
+        }
+
+        public ActionResult LichDay(int? page)
+        {
+            try
+            {
+                string magv = Session["MaGV"]?.ToString();
+                if (string.IsNullOrEmpty(magv))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Bạn cần đăng nhập bằng tài khoản của giáo viên!!!");
+                }
+
+                DateTime ngayHienTai = DateTime.Today;
+
+                var lichdays = db.LichDay
+                    .Where(ld => ld.MaGV == magv && ld.NgayDay >= ngayHienTai)
+                    .Include(ld => ld.LopHoc)
+                    .Include(ld => ld.GiaoVien)
+                    .OrderBy(ld => ld.NgayDay)
+                    .ToList();
+
+                var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
+                ViewBag.MaGV = magv;
+                if (giaovien != null)
+                {
+                    ViewBag.TenGV = giaovien.HoTen ?? "Chưa cập nhật";
+                    ViewBag.Email = giaovien.Email ?? "Chưa cập nhật";
+                }
+
+                var lichdaytheotuan = lichdays
+                    .GroupBy(ld => System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(ld.NgayDay, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Monday))
+                    .Select(group => new LichDayTheoTuanViewModel
+                    {
+                        Week = group.Key,
+                        Days = group.OrderBy(ld => ld.NgayDay).ToList()
+                    })
+                    .ToList();
+
+                int sotuan = 1;
+                int sotrang = page ?? 1;
+                var dulieu = new PagedList<LichDayTheoTuanViewModel>(lichdaytheotuan, sotrang, sotuan);
+
+                return View(dulieu);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Có lỗi xảy ra khi tải danh sách lịch dạy: " + ex);
+                return View();
+            }
+        }
+       
+        public ActionResult DanhSachHocVien(string malh, DateTime ngayday)
+        {
+            try
+            {
+                if (malh != null && ngayday != null)
+                {
+                    var hocviens = db.LichHoc
+                        .Where(lh => lh.MaLH == malh && lh.NgayHoc == ngayday)
+                        .Select(lh => new
+                        {
+                            lh.HocVien.MaHV,
+                            lh.HocVien.HoTen,
+                            lh.HocVien.SoDT,
+                            lh.HocVien.Email,
+                            lh.DiemDanh
+                        })
+                        .ToList()
+                        .Select(hv => new HocVienViewModel
+                        {
+                            MaHV = hv.MaHV,
+                            HoTen = hv.HoTen,
+                            SoDT = hv.SoDT,
+                            Email = hv.Email,
+                            DiemDanh = hv.DiemDanh
+                        })
+                        .ToList();
+
+                    var lop = db.LopHoc.Where(lh => lh.MaLH == malh).FirstOrDefault();
+
+                    string magv = Session["MaGV"]?.ToString();
+                    if (string.IsNullOrEmpty(magv))
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã giảng viên!!!");
+                    }
+                    var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
+                    if (giaovien != null)
+                    {
+                        ViewBag.Email = giaovien.Email;
+                    }
+
+                    if (lop != null)
+                    {
+                        ViewBag.TenLop = lop.TenPhong;
+                    }
+
+                    ViewBag.MaLH = malh;
+                    ViewBag.NgayDay = ngayday.ToString("yyyy/MM/dd");
+                    return View(hocviens);
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Có lỗi xảy ra khi tải danh sách học viên: " + ex);
+                return View();
+            }
+        }
+
+        public ActionResult DanhSachLopHoc()
+        {
+            try
+            {
+                string magv = Session["MaGV"]?.ToString();
+                if (string.IsNullOrEmpty(magv))
+                {
+                    return RedirectToAction("Error");
+                }
+
+                var lopHocs = db.LopHoc
+                    .Where(l => l.MaGV == magv && db.ChiTiet_HocVien_LopHoc.Any(ct => ct.MaLH == l.MaLH))
+                    .ToList();
+
+                var giaovien = db.GiaoVien.FirstOrDefault(gv => gv.MaGV == magv);
 
                 if (giaovien != null)
                 {
                     ViewBag.Email = giaovien.Email;
                 }
 
-                if (lop != null)
-                {
-                    ViewBag.TenLop = lop.TenPhong;
-                }
-
-                ViewBag.MaLH = malh;
-                ViewBag.NgayDay = ngayday.ToString("yyyy/MM/dd");
-                return View(hocviens);
-            }    
-            else
-            {
-                return View();
-            }    
-        }
-
-        public ActionResult DanhSachLopHoc()
-        {
-            string magv = Session["MaGV"]?.ToString();
-            if (string.IsNullOrEmpty(magv))
-            {
-                return RedirectToAction("Error");
+                return View(lopHocs);
             }
-
-            var lopHocs = db.LopHoc
-                .Where(l => l.MaGV == magv && db.ChiTiet_HocVien_LopHoc.Any(ct => ct.MaLH == l.MaLH))
-                .ToList();
-
-            var giaovien = db.GiaoVien.FirstOrDefault(gv => gv.MaGV == magv);
-
-            if(giaovien != null)
+            catch(Exception ex)
             {
-                ViewBag.Email = giaovien.Email;
-            }    
-
-            return View(lopHocs);
+                Console.WriteLine("Có lỗi xảy ra khi tải danh sách lớp học: " + ex);
+                return View();
+            }
         }
 
         public ActionResult ChiTietLopHoc(string malh)
@@ -256,27 +288,34 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
                 }
 
-                DateTime ngayHoc;
-                if (!DateTime.TryParse(ngayday, out ngayHoc))
+                DateTime ngayhoc;
+                if (!DateTime.TryParse(ngayday, out ngayhoc))
                 {
                     TempData["ErrorMessage"] = "Ngày học không hợp lệ!!!";
                     return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
                 }
 
+                if (ngayhoc.Date != DateTime.Now.Date)
+                {
+                    TempData["ErrorMessage"] = "Chỉ có thể điểm danh trong ngày lớp học diễn ra!!!";
+                    return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
+                }
+
+
                 foreach (var item in diemDanh)
                 {
-                    string maHV = item.Key;
-                    bool vangHoc = item.Value;
+                    string mahv = item.Key;
+                    bool vanghoc = item.Value;
 
-                    var lichHoc = db.LichHoc.FirstOrDefault(l => l.MaHV == maHV && l.MaLH == malh && l.NgayHoc == ngayHoc);
+                    var lichhoc = db.LichHoc.FirstOrDefault(l => l.MaHV == mahv && l.MaLH == malh && l.NgayHoc == ngayhoc);
 
-                    if (lichHoc != null)
+                    if (lichhoc != null)
                     {
-                        if (vangHoc)
+                        if (vanghoc)
                         {
-                            if (!lichHoc.DiemDanh)
+                            if (!lichhoc.DiemDanh)
                             {
-                                var chiTiet = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaLH == malh && ct.MaHV == maHV);
+                                var chiTiet = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaLH == malh && ct.MaHV == mahv);
                                 if (chiTiet != null)
                                 {
                                     chiTiet.Sobuoivang++;
@@ -285,17 +324,16 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         }
                         else
                         {
-                            if (lichHoc.DiemDanh)
+                            if (lichhoc.DiemDanh)
                             {
-                                var chiTiet = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaLH == malh && ct.MaHV == maHV);
+                                var chiTiet = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(ct => ct.MaLH == malh && ct.MaHV == mahv);
                                 if (chiTiet != null)
                                 {
                                     chiTiet.Sobuoivang = Math.Max(0, chiTiet.Sobuoivang - 1);
                                 }
                             }
                         }
-
-                        lichHoc.DiemDanh = vangHoc ? true : false;
+                        lichhoc.DiemDanh = vanghoc ? true : false;
                     }
                 }
 
