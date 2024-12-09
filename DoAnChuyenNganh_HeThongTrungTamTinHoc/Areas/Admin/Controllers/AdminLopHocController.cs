@@ -347,7 +347,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             {
                 foreach (var ngayHoc in dsNgayHoc)
                 {
-                    string malichhoc = Utility.TaoMaNgauNhien("LH", 4);
+                    string malichhoc = Utility.TaoMaNgauNhien("LH", 8);
 
                     var lichHoc = new LichHoc
                     {
