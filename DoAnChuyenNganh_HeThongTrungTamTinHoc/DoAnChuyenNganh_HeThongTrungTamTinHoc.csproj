@@ -377,7 +377,22 @@
     <Content Include="images\kh10.jpg" />
     <Content Include="images\kh11.jpg" />
     <Content Include="images\kh12.jpg" />
+    <Content Include="images\kh13.jpg" />
+    <Content Include="images\kh14.jpg" />
+    <Content Include="images\kh15.jpg" />
+    <Content Include="images\kh16.jpg" />
+    <Content Include="images\kh17.jpg" />
+    <Content Include="images\kh18.jpg" />
+    <Content Include="images\kh19.jpg" />
     <Content Include="images\kh2.jpg" />
+    <Content Include="images\kh20.jpg" />
+    <Content Include="images\kh21.jpg" />
+    <Content Include="images\kh22.jpg" />
+    <Content Include="images\kh23.jpg" />
+    <Content Include="images\kh24.jpg" />
+    <Content Include="images\kh25.jpg" />
+    <Content Include="images\kh26.jpg" />
+    <Content Include="images\kh27.jpg" />
     <Content Include="images\kh3.jpg" />
     <Content Include="images\kh4.jpg" />
     <Content Include="images\kh5.jpg" />
@@ -390,7 +405,6 @@
     <Content Include="images\noimage.jpg" />
     <Content Include="images\phogiamdoc.jpg" />
     <Content Include="images\phongmay.jpg" />
-    <Content Include="images\school.png" />
     <Content Include="images\sodotochuc.png" />
     <Content Include="images\sv_logo_dashboard.png" />
     <Content Include="images\tapthettth.jpg" />
@@ -715,8 +729,6 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\DangKy\" />
     <Folder Include="Areas\Admin\Views\DemDSLopHoc\" />
-    <Folder Include="Views\BinhLuan\" />
-    <Folder Include="Views\ChatBot\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.11.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />

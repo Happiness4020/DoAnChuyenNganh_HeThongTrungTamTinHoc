@@ -1,5 +1,6 @@
 ﻿using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -33,7 +34,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return View(giaovien);
         }
 
-        public ActionResult LichDay()
+        public ActionResult LichDay(int? page)
         {
             string magv = Session["MaGV"]?.ToString();
             if (string.IsNullOrEmpty(magv))
@@ -53,8 +54,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
 
             ViewBag.MaGV = magv;
-            ViewBag.TenGV = giaovien?.HoTen ?? "Chưa cập nhật";
-            ViewBag.Email = giaovien?.Email ?? "Chưa cập nhật";
+            if(giaovien != null)
+            {
+                ViewBag.TenGV = giaovien.HoTen ?? "Chưa cập nhật";
+                ViewBag.Email = giaovien.Email ?? "Chưa cập nhật";
+            }    
 
             var lichdaytheotuan = lichdays
                 .GroupBy(ld => System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(ld.NgayDay, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Monday))
@@ -65,46 +69,65 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 })
                 .ToList();
 
-            return View(lichdaytheotuan);
+            int sotuan = 1;
+            int sotrang = page ?? 1;
+            var dulieu = new PagedList<LichDayTheoTuanViewModel>(lichdaytheotuan, sotrang, sotuan);
+
+            return View(dulieu);
         }
        
         public ActionResult DanhSachHocVien(string malh, DateTime ngayday)
         {
-            var hocviens = db.LichHoc
-            .Where(lh => lh.MaLH == malh && lh.NgayHoc == ngayday)
-            .Select(lh => new
+            if (malh != null && ngayday != null)
             {
-                lh.HocVien.MaHV,
-                lh.HocVien.HoTen,
-                lh.HocVien.SoDT,
-                lh.HocVien.Email,
-                lh.DiemDanh
-            })
-            .ToList()
-            .Select(hv => new HocVienViewModel
+                var hocviens = db.LichHoc
+                    .Where(lh => lh.MaLH == malh && lh.NgayHoc == ngayday)
+                    .Select(lh => new
+                    {
+                        lh.HocVien.MaHV,
+                        lh.HocVien.HoTen,
+                        lh.HocVien.SoDT,
+                        lh.HocVien.Email,
+                        lh.DiemDanh
+                    })
+                    .ToList()
+                    .Select(hv => new HocVienViewModel
+                    {
+                        MaHV = hv.MaHV,
+                        HoTen = hv.HoTen,
+                        SoDT = hv.SoDT,
+                        Email = hv.Email,
+                        DiemDanh = hv.DiemDanh
+                    })
+                    .ToList();
+
+                var lop = db.LopHoc.Where(lh => lh.MaLH == malh).FirstOrDefault();
+
+                string magv = Session["MaGV"]?.ToString();
+                if (string.IsNullOrEmpty(magv))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã giảng viên!!!");
+                }
+                var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+
+                if (giaovien != null)
+                {
+                    ViewBag.Email = giaovien.Email;
+                }
+
+                if (lop != null)
+                {
+                    ViewBag.TenLop = lop.TenPhong;
+                }
+
+                ViewBag.MaLH = malh;
+                ViewBag.NgayDay = ngayday.ToString("yyyy/MM/dd");
+                return View(hocviens);
+            }    
+            else
             {
-                MaHV = hv.MaHV,
-                HoTen = hv.HoTen,
-                SoDT = hv.SoDT,
-                Email = hv.Email,
-                DiemDanh = hv.DiemDanh
-            })
-            .ToList();
-
-            var lop = db.LopHoc.Where(lh => lh.MaLH == malh).FirstOrDefault();
-
-            string magv = Session["MaGV"]?.ToString();
-            if (string.IsNullOrEmpty(magv))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Cần mã giảng viên!!!");
-            }
-            var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
-
-            ViewBag.Email = giaovien.Email;
-            ViewBag.TenLop = lop.TenPhong;
-            ViewBag.MaLH = malh;
-            ViewBag.NgayDay = ngayday.ToString("yyyy/MM/dd");
-            return View(hocviens);
+                return View();
+            }    
         }
 
         public ActionResult DanhSachLopHoc()
@@ -116,12 +139,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
 
             var lopHocs = db.LopHoc
-                .Where(l => l.MaGV == magv)
+                .Where(l => l.MaGV == magv && db.ChiTiet_HocVien_LopHoc.Any(ct => ct.MaLH == l.MaLH))
                 .ToList();
 
-            var giaovien = db.GiaoVien.Where(gv => gv.MaGV == magv).FirstOrDefault();
+            var giaovien = db.GiaoVien.FirstOrDefault(gv => gv.MaGV == magv);
 
-            ViewBag.Email = giaovien.Email;
+            if(giaovien != null)
+            {
+                ViewBag.Email = giaovien.Email;
+            }    
 
             return View(lopHocs);
         }
