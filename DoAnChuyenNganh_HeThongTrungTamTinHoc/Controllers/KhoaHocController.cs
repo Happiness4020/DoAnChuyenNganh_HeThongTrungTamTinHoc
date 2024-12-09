@@ -243,6 +243,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
         public ActionResult DangKyKhoaHoc(string makh)
         {
+            string mahv = Session["MaHV"]?.ToString();
+            if(mahv != null)
+            {
+                return RedirectToAction("Error404", "Account");
+            }    
+
             List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
             ViewBag.ChuongTrinhHocs = cths;
 

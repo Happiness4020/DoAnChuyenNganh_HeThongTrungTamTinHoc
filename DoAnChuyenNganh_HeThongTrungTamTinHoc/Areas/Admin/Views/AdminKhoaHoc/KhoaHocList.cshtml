@@ -91,14 +91,14 @@
                         <td>@kh.TenKH</td>
                         <td>@kh.MoTa</td>
                         <td>
-                            @{ var imagePath = Server.MapPath($"~/AnhKhoaHoc/{kh.Anh}");
+                            @{ var imagePath = Server.MapPath($"~/images/{kh.Anh}");
                                 if (System.IO.File.Exists(imagePath) && kh.Anh != null)
                                 {
-                                    <img src="~/AnhKhoaHoc/@kh.Anh" width="150px" />
+                                    <img src="~/images/@kh.Anh" width="150" />
                                 }
                                 else
                                 {
-                                    <img src="~/AnhKhoaHoc/noimage.jpg" width="150px" />
+                                    <img src="~/images/noimage.jpg" width="150" />
                                 }
                             }
                         </td>

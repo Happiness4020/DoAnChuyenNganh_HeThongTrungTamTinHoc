@@ -88,9 +88,16 @@
                 <p class="card-text mb-2 text-white">Số buổi học: <span class="text-warning">@Html.DisplayFor(model => model.Sobuoihoc)</span></p>
                 <p class="card-text mb-2 text-white">Học phí: <span class="text-warning">@string.Format("{0:N0} VND", Model.HocPhi)</span></p>
                 <p class="card-text mb-2 text-white">Loại khóa học: <span class="text-warning">@Html.DisplayFor(model => model.LoaiKH)</span></p>
-                <div class="mt-4">
-                    <a href="@Url.Action("DangKyKhoaHoc", "KhoaHoc", new { MaKH = Model.MaKH })" class="btn btn-danger text-white px-4 py-2" style="font-weight: bold;">Đăng ký</a>
-                </div>
+                @if (Session["MaHV"] == null)
+                {
+                    <div class="mt-4">
+                        <a href="@Url.Action("DangKyKhoaHoc", "KhoaHoc", new { MaKH = Model.MaKH })" class="btn btn-danger text-white px-4 py-2" style="font-weight: bold;">Đăng ký</a>
+                    </div> 
+                }
+                else
+                {
+                    <p class="text-white mt-4"><strong>Hãy đến trang học viên của bạn để thực hiện đăng ký khóa học</strong></p>
+                }
             </div>
         </div>
     </div>
