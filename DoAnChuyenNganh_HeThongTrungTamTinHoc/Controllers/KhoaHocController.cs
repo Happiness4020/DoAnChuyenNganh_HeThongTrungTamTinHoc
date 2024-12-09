@@ -452,51 +452,66 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public ActionResult DangKyLop(string maLH)
         {
-            try
+            var hocVienId = Session["MaHV"]?.ToString();
+
+            if (string.IsNullOrEmpty(hocVienId))
             {
-                var hocVienId = Session["MaHV"]?.ToString();
-
-                if (string.IsNullOrEmpty(hocVienId))
-                {
-                    TempData["Error"] = "Bạn phải đăng nhập để đăng ký lớp học.";
-                    return RedirectToAction("Login", "Account");
-                }
-
-                var hocVien = db.HocVien.Find(hocVienId);
-                var lopHoc = db.LopHoc.Find(maLH);
-
-                if (hocVien != null && lopHoc != null)
-                {
-                    var giaoDich = new GiaoDichHocPhi
-                    {
-                        MaHV = hocVien.MaHV,
-                        MaKH = lopHoc.MaKH,
-                        MaLH = maLH,
-                        MaPT = 1,
-                        NgayGD = DateTime.Now,
-                        SoTien = lopHoc.KhoaHoc.HocPhi,
-                        SoDT = hocVien.SoDT,
-                        Email = hocVien.Email,
-                        TrangThai = "Chờ duyệt"
-                    };
-
-                    db.GiaoDichHocPhi.Add(giaoDich);
-                    db.SaveChanges();
-
-                    TempData["SuccessMessage"] = "Đăng ký lớp học thành công. Vui lòng chờ admin duyệt.";
-                    return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc?.MaKH });
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Lớp học không tồn tại hoặc đã có lỗi xảy ra.";
-                    return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc?.MaKH });
-                }
+                TempData["Error"] = "Bạn phải đăng nhập để đăng ký lớp học.";
+                TempData["ErrorMessage"] = "Bạn phải đăng nhập để đăng ký lớp học.";
+                return RedirectToAction("Login", "Account");
             }
-            catch
+
+            var hocVien = db.HocVien.Find(hocVienId);
+            var lopHoc = db.LopHoc.Find(maLH);
+
+            if (hocVien != null && lopHoc != null)
             {
+                // Kiểm tra xem học viên đã đăng ký lớp trong khóa học này chưa
+                var daDangKy = db.GiaoDichHocPhi.Any(gd =>
+                    gd.MaHV == hocVien.MaHV && gd.MaKH == lopHoc.MaKH && gd.TrangThai != "Hủy");
+
+                if (daDangKy)
+                {
+                    TempData["ErrorMessage"] = "Bạn đã đăng ký một lớp trong khóa học này rồi.";
+                    return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc.MaKH });
+                }
+
+                var giaoDich = new GiaoDichHocPhi
+                {
+                    MaHV = hocVien.MaHV,
+                    MaKH = lopHoc.MaKH,
+                    MaLH = maLH,
+                    MaPT = 1,
+                    NgayGD = DateTime.Now,
+                    SoTien = lopHoc.KhoaHoc.HocPhi,
+                    SoDT = hocVien.SoDT,
+                    Email = hocVien.Email,
+                    TrangThai = "Chờ duyệt"
+                };
+
+                db.GiaoDichHocPhi.Add(giaoDich);
+                db.SaveChanges();
+
+                TempData["Success"] = "Đăng ký lớp học thành công. Vui lòng chờ admin duyệt.";
+                return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc?.MaKH });
+                TempData["SuccessMessage"] = "Đăng ký lớp học thành công. Vui lòng chờ admin duyệt.";
+                return RedirectToAction("ThanhToan");
+            }
+            else
+            {
+                TempData["Error"] = "Lớp học không tồn tại hoặc đã có lỗi xảy ra.";
                 TempData["ErrorMessage"] = "Lớp học không tồn tại hoặc đã có lỗi xảy ra.";
-                return View();
             }
+
+            return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc?.MaKH });
         }
+
+
+
+        public ActionResult ThanhToan()
+        {
+            return View();
+        }
+
     }
 }
