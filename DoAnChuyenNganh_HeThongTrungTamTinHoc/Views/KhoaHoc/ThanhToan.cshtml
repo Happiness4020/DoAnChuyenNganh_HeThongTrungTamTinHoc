@@ -1,0 +1,49 @@
+﻿
+﻿@{ 
+    ViewBag.Title = "ThanhToan";
+                Layout = "~/Views/Shared/_Main.cshtml"; 
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center">
+                    <!-- Icon success -->
+                    <div class="icon-wrapper text-success mb-3">
+                        <i class="bi bi-check-circle-fill" style="font-size: 3rem;"></i>
+                    </div>
+                    <h2 class="card-title text-success">Thanh toán thành công!</h2>
+                    <p class="card-text">Cảm ơn bạn đã đăng ký khóa học! Chúng tôi sẽ gửi thông tin chi tiết đến email của bạn trong thời gian sớm nhất.</p>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-3 px-4">Quay về trang chủ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+        background-color: #fff;
+    }
+
+    .card-body {
+        padding: 40px;
+    }
+
+    .card-title {
+        font-size: 1.75rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 1.1rem;
+        color: #6c757d;
+    }
+
+    .icon-wrapper {
+        animation: bounce 1s infinite;
+    }
+</style>
