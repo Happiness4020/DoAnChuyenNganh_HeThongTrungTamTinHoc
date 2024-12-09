@@ -318,7 +318,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         {
             try
             { 
-            
                 TaiKhoan taiKhoan = null;
 
                 if (!string.IsNullOrEmpty(MaHV))

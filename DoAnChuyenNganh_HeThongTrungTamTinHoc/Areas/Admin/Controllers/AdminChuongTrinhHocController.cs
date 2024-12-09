@@ -77,10 +77,19 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult ChuongTrinhHocDelete(string id, ChuongTrinhHoc cth)
         {
-            cth = db.ChuongTrinhHoc.Where(t => t.MaChuongTrinh == id).FirstOrDefault();
-            db.ChuongTrinhHoc.Remove(cth);
-            db.SaveChanges();
-            return RedirectToAction("ChuongTrinhHocList");
+            try
+            {
+                cth = db.ChuongTrinhHoc.Where(t => t.MaChuongTrinh == id).FirstOrDefault();
+                db.ChuongTrinhHoc.Remove(cth);
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Đã xóa chương trình học thành công";
+                return RedirectToAction("ChuongTrinhHocList");
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Chương trình học vẫn đang được duy trì!!! Không thể xóa";
+                return RedirectToAction("ChuongTrinhHocList");
+            }
         }
 
         public ActionResult ChuongTrinhHocEdit(string id)
@@ -91,12 +100,31 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult ChuongTrinhHocEdit(ChuongTrinhHoc cth)
         {
-            ChuongTrinhHoc chuongTrinhHoc = db.ChuongTrinhHoc.Where(t => t.MaChuongTrinh == cth.MaChuongTrinh).FirstOrDefault();
+            try
+            {
+                ChuongTrinhHoc chuongTrinhHoc = db.ChuongTrinhHoc.Where(t => t.MaChuongTrinh == cth.MaChuongTrinh).FirstOrDefault();
 
-            chuongTrinhHoc.TenChuongTrinh = cth.TenChuongTrinh;
+                var tenct = db.ChuongTrinhHoc.FirstOrDefault(ct => ct.TenChuongTrinh == cth.TenChuongTrinh);
+                if (tenct != null)
+                {
+                    TempData["ErrorMessage"] = "Chương trình đã tồn tại!!!";
+                    return RedirectToAction("ChuongTrinhHocEdit");
+                }
+                else
+                {
+                    chuongTrinhHoc.TenChuongTrinh = cth.TenChuongTrinh;
 
-            db.SaveChanges();
-            return RedirectToAction("ChuongTrinhHocList");
+                    db.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Đã cập nhật chương trình học thành công";
+                    return RedirectToAction("ChuongTrinhHocList");
+                }
+            }
+            catch(Exception ex)
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật chương trình học: " + ex;
+                return RedirectToAction("ChuongTrinhHocEdit");
+            }
         }
     }
 }

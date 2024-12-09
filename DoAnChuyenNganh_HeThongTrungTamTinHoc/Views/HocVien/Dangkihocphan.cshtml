@@ -41,9 +41,6 @@
     }
 </style>
 
-
-
-<!-- Thông báo nếu có -->
 @if (TempData["Message"] != null)
 {
     <div class="alert alert-success">
@@ -96,8 +93,7 @@
                             </a>
                         }
                         <h5 class="card-title flex-grow-1 mt-2"><a href="#" class="text-decoration-none" style="color: #0066b3">@item.TenKH</a></h5>
-                        <p class="card-text flex-grow-1">@item.MoTa</p>
-                        <h4>Học phí: @item.HocPhi VND</h4>
+                        <h4 style="color: orangered">Học phí: @string.Format("{0:N0} VND", item.HocPhi)</h4>
 
                         <a href="@Url.Action("DanhSachLopHocTheoKhoaHoc", "HocVien", new { maKH = item.MaKH })" class="btn btn-outline-primary mt-2">
                             <i class="fa fa-shopping-cart"></i> Đăng ký

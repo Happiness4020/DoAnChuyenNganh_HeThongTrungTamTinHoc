@@ -52,12 +52,8 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="EPPlus, Version=7.5.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.7.5.1\lib\net462\EPPlus.dll</HintPath>
-    </Reference>
-    <Reference Include="EPPlus, Version=7.5.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.7.5.1\lib\net462\EPPlus.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="EPPlus, Version=7.5.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.7.5.0\lib\net462\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Google.Api.CommonProtos, Version=2.16.0.0, Culture=neutral, PublicKeyToken=3ec5ea7f18953e47, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Api.CommonProtos.2.16.0\lib\net461\Google.Api.CommonProtos.dll</HintPath>
@@ -442,7 +438,6 @@
     <Compile Include="Areas\Admin\Controllers\AdminLichDayController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminLichHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminLopHocController.cs" />
-    <Compile Include="Areas\Admin\Controllers\AdminPhuongThucThanhToanController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminSaoLuuPhucHoiController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminThongKeController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
@@ -505,7 +500,6 @@
       <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ThanhToan.cs" />
-    <Compile Include="Services\LichDayService.cs" />
     <Compile Include="Models\DangNhap.cs" />
     <Compile Include="Models\MaHVorMaGVAttribute.cs" />
     <Compile Include="Models\TrungTamTinHoc.Context.cs">
@@ -607,10 +601,6 @@
     <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocDelete.cshtml" />
     <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocEdit.cshtml" />
     <Content Include="Areas\Admin\Views\AdminLopHoc\LopHocList.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminPhuongThucThanhToan\PhuongThucThanhToanAdd.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminPhuongThucThanhToan\PhuongThucThanhToanDelete.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminPhuongThucThanhToan\PhuongThucThanhToanEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminPhuongThucThanhToan\PhuongThucThanhToanList.cshtml" />
     <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichAdd.cshtml" />
     <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichDelete.cshtml" />
     <Content Include="Areas\Admin\Views\AdminGiaoDich\GiaoDichEdit.cshtml" />
@@ -727,8 +717,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Views\DangKy\" />
-    <Folder Include="Areas\Admin\Views\DemDSLopHoc\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.11.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
