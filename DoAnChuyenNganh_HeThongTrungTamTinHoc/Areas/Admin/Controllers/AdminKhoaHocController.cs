@@ -160,13 +160,22 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult KhoaHocDelete(string id, KhoaHoc khoahoc)
         {
-            khoahoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == id);
-            if (khoahoc != null)
+            try
             {
-                ttth.KhoaHoc.Remove(khoahoc);
-                ttth.SaveChanges();
+                khoahoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == id);
+                if (khoahoc != null)
+                {
+                    ttth.KhoaHoc.Remove(khoahoc);
+                    ttth.SaveChanges();
+                }
+                TempData["SuccessMessage"] = "Đã xóa khóa học thành công";
+                return RedirectToAction("KhoaHocList");
             }
-            return RedirectToAction("KhoaHocList");
+            catch
+            {
+                TempData["ErrorMessage"] = "Dữ liệu khóa học này vẫn đang được lưu tại nơi khác!!! Không thể xóa";
+                return RedirectToAction("KhoaHocList");
+            }
         }
 
         public ActionResult KhoaHocEdit(string id)

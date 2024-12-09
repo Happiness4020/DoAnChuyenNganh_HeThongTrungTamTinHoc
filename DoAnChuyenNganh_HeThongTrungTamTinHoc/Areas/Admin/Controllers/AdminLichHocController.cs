@@ -142,10 +142,19 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LichHocDelete(string id, LichHoc lichHoc)
         {
-            lichHoc = db.LichHoc.FirstOrDefault(ld => ld.MaLichHoc == id);
-            db.LichHoc.Remove(lichHoc);
-            db.SaveChanges();
-            return RedirectToAction("LichHocList");
+            try
+            {
+                lichHoc = db.LichHoc.FirstOrDefault(ld => ld.MaLichHoc == id);
+                db.LichHoc.Remove(lichHoc);
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Đã xóa lịch học thành công";
+                return RedirectToAction("LichHocList");
+            }
+            catch(Exception ex)
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi xóa lịch học: " + ex;
+                return RedirectToAction("LichHocList");
+            }
         }
     }
 }

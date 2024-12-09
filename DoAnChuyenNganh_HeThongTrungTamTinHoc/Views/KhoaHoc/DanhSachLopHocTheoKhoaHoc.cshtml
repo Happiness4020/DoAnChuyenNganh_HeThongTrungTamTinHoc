@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
-<!-- Thông báo thành công hoặc lỗi -->
 <div class="container">
     @if (TempData["SuccessMessage"] != null)
     {
@@ -65,7 +64,6 @@
                                 <span class="badge bg-dark">@soLuongHocVien/20</span>
                             </td>
                             <td>
-                                <!-- Form đăng ký lớp học -->
                                 @if (soLuongHocVien < 20)
                                 {
                                     <form action="@Url.Action("DangKyLop", "KhoaHoc")" method="post" class="d-inline">

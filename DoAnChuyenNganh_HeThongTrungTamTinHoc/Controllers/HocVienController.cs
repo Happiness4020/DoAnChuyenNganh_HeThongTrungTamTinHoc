@@ -53,82 +53,94 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
         public ActionResult LichHoc()
         {
-            string maHV = Session["MaHV"]?.ToString();
-            if (string.IsNullOrEmpty(maHV))
+            try
             {
-                return RedirectToAction("Login", "HocVien");
-            }
-
-            using (var db = new TrungTamTinHocEntities())
-            {
-                var lichHoc = (from lh in db.LichHoc.AsNoTracking()
-                               join lop in db.LopHoc.AsNoTracking() on lh.MaLH equals lop.MaLH
-                               join gv in db.GiaoVien.AsNoTracking() on lop.MaGV equals gv.MaGV
-                               join kh in db.KhoaHoc.AsNoTracking() on lop.MaKH equals kh.MaKH
-                               join ct in db.ChiTiet_HocVien_LopHoc.AsNoTracking() on lop.MaLH equals ct.MaLH
-                               where ct.MaHV == maHV
-                               select new
-                               {
-                                   MaLop = lop.MaLH,
-                                   TenLop = lop.TenPhong,
-                                   GioBatDau = lh.GioBatDau,
-                                   GioKetThuc = lh.GioKetThuc,
-                                   TenGV = gv.HoTen,
-                                   NgayHoc = lh.NgayHoc,
-                                   NgayBatDau = kh.NgayBatDau,
-                                   NgayKetThuc = kh.NgayKetThuc
-                               }).Distinct().ToList();
-
-                var lichHocViewList = lichHoc.Select(x => new LichHocViewModel
+                string maHV = Session["MaHV"]?.ToString();
+                if (string.IsNullOrEmpty(maHV))
                 {
-                    MaLop = x.MaLop,
-                    TenLop = x.TenLop,
-                    GioBatDau = x.GioBatDau.ToString(@"hh\:mm"),
-                    GioKetThuc = x.GioKetThuc.ToString(@"hh\:mm"),
-                    TenGV = x.TenGV,
-                    NgayHoc = x.NgayHoc.ToString("dd/MM/yyyy"),
-                }).ToList();
+                    return RedirectToAction("Login", "HocVien");
+                }
 
-                ViewBag.HocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHV);
+                using (var db = new TrungTamTinHocEntities())
+                {
+                    var lichHoc = (from lh in db.LichHoc.AsNoTracking()
+                                   join lop in db.LopHoc.AsNoTracking() on lh.MaLH equals lop.MaLH
+                                   join gv in db.GiaoVien.AsNoTracking() on lop.MaGV equals gv.MaGV
+                                   join kh in db.KhoaHoc.AsNoTracking() on lop.MaKH equals kh.MaKH
+                                   join ct in db.ChiTiet_HocVien_LopHoc.AsNoTracking() on lop.MaLH equals ct.MaLH
+                                   where ct.MaHV == maHV
+                                   select new
+                                   {
+                                       MaLop = lop.MaLH,
+                                       TenLop = lop.TenPhong,
+                                       GioBatDau = lh.GioBatDau,
+                                       GioKetThuc = lh.GioKetThuc,
+                                       TenGV = gv.HoTen,
+                                       NgayHoc = lh.NgayHoc,
+                                       NgayBatDau = kh.NgayBatDau,
+                                       NgayKetThuc = kh.NgayKetThuc
+                                   }).Distinct().ToList();
 
-                return View(lichHocViewList);
+                    var lichHocViewList = lichHoc.Select(x => new LichHocViewModel
+                    {
+                        MaLop = x.MaLop,
+                        TenLop = x.TenLop,
+                        GioBatDau = x.GioBatDau.ToString(@"hh\:mm"),
+                        GioKetThuc = x.GioKetThuc.ToString(@"hh\:mm"),
+                        TenGV = x.TenGV,
+                        NgayHoc = x.NgayHoc.ToString("dd/MM/yyyy"),
+                    }).ToList();
+
+                    ViewBag.HocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHV);
+
+                    return View(lichHocViewList);
+                }
             }
-
+            catch(Exception ex)
+            {
+                Console.WriteLine("Có lỗi xảy ra khi tải danh sách lịch học: " + ex);
+                return View();
+            }
         }
-
-
-
 
         public ActionResult Ketquahoctap()
         {
-            using (var db = new TrungTamTinHocEntities())
+            try
             {
-                var maHocVien = Session["MaHV"]?.ToString();
-
-                if (string.IsNullOrEmpty(maHocVien))
+                using (var db = new TrungTamTinHocEntities())
                 {
-                    return RedirectToAction("HocVien", "Index");
+                    var maHocVien = Session["MaHV"]?.ToString();
+
+                    if (string.IsNullOrEmpty(maHocVien))
+                    {
+                        return RedirectToAction("HocVien", "Index");
+                    }
+
+                    var ketQuaHocTap = db.ChiTiet_HocVien_LopHoc
+                                         .Where(c => c.MaHV == maHocVien)
+                                         .ToList();
+
+                    var hocvien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHocVien);
+                    ViewBag.HocVien = hocvien;
+
+                    var lopCanhBao = ketQuaHocTap
+                                       .Where(kq => kq.Sobuoivang == 3)
+                                       .Select(kq => new LopCanhBaoViewModel
+                                       {
+                                           MaLH = kq.MaLH,
+                                           Sobuoivang = kq.Sobuoivang
+                                       })
+                                       .ToList();
+
+                    ViewBag.LopCanhBao = lopCanhBao;
+
+                    return View(ketQuaHocTap);
                 }
-
-                var ketQuaHocTap = db.ChiTiet_HocVien_LopHoc
-                                     .Where(c => c.MaHV == maHocVien)
-                                     .ToList();
-
-                var hocvien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHocVien);
-                ViewBag.HocVien = hocvien;
-
-                var lopCanhBao = ketQuaHocTap
-                                   .Where(kq => kq.Sobuoivang == 3)
-                                   .Select(kq => new LopCanhBaoViewModel
-                                   {
-                                       MaLH = kq.MaLH,
-                                       Sobuoivang = kq.Sobuoivang
-                                   })
-                                   .ToList();
-
-                ViewBag.LopCanhBao = lopCanhBao;
-
-                return View(ketQuaHocTap);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Có lỗi xảy ra khi tải danh sách lịch học: " + ex);
+                return View();
             }
         }
 
