@@ -349,7 +349,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         return RedirectToAction("Index");
                     }
 
-                    if (Anh.ContentLength > 3 * 1024 * 1024) // 5MB
+                    if (Anh.ContentLength > 3 * 1024 * 1024)
                     {
                         TempData["ErrorMessage"] = "Kích thước ảnh không được vượt quá 3MB!";
                         return RedirectToAction("Index");

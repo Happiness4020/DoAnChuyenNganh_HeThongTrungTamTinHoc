@@ -33,13 +33,11 @@
     </div>
 </div>
 
-<!-- Form đăng ký -->
 <div class="container my-5">
     <h3 class="text-center mb-4 text-primary fw-bold">Thông tin của bạn</h3>
     <form id="formDangKy" class="border p-4 rounded shadow-lg bg-light" method="post" action="@Url.Action("LuuThongTinHocVien", "KhoaHoc")">
         <input type="hidden" name="MaKH" value="@ViewBag.MaKH" />
 
-        <!-- Các trường thông tin người dùng -->
         <div class="mb-3">
             <label for="hoTen" class="form-label">Họ Tên</label>
             <input type="text" class="form-control" id="hoTen" name="HoTen" required placeholder="Nhập họ tên">
@@ -84,7 +82,6 @@
     </form>
 </div>
 
-<!-- Thông báo thành công hoặc lỗi -->
 <div class="container">
     @if (TempData["SuccessMessage"] != null)
     {

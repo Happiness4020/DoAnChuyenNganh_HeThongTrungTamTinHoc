@@ -177,7 +177,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         [HttpPost]
         public async Task<ActionResult> SendOTP(string email)
         {
-            if (!IsValidEmail(email))
+            if (!EmailHopLe(email))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Email không hợp lệ!!!");
             }
@@ -214,7 +214,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return otp;
         }
 
-        private bool IsValidEmail(string email)
+        private bool EmailHopLe(string email)
         {
             var emailRegex = new System.Text.RegularExpressions.Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
             return emailRegex.IsMatch(email);
@@ -228,7 +228,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Mã OTP không hợp lệ hoặc đã hết hạn.");
             }
 
-            if (!IsCurrentPasswordValid(currentPassword))
+            if (!MatKhauHienTaiHopLe(currentPassword))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Mật khẩu hiện tại không đúng.");
             }
@@ -240,7 +240,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             return Json(new { message = "Mật khẩu đã được thay đổi thành công." });
         }
 
-        public bool IsCurrentPasswordValid(string currentPassword)
+        public bool MatKhauHienTaiHopLe(string currentPassword)
         {
             try
             {
@@ -369,9 +369,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                 return RedirectToAction("NhapOTP");
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                TempData["ErrorMessage"] = "Thông tin bạn cung cấp không chính xác. Vui lòng kiểm tra lại.";
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi lấy lại mật khẩu: " + ex;
                 return RedirectToAction("Quenmatkhau", "Account");
             }
         }
