@@ -22,7 +22,7 @@
                     <p class="card-text mb-2">Ngày khai giảng: <span class="text-warning">@Model.NgayBatDau.ToString("dd/MM/yyyy")</span></p>
                     <p class="card-text mb-2">Ngày kết thúc: <span class="text-warning">@Model.NgayKetThuc</span></p>
                     <p class="card-text mb-2">Số buổi học: <span class="text-warning">@Model.Sobuoihoc</span></p>
-                    <p class="card-text mb-2">Học phí: <span class="text-warning">@Model.HocPhi.ToString("C0")</span></p>
+                    <p class="card-text mb-2">Học phí: <span class="text-warning">@string.Format("{0:N0} VND", Model.HocPhi)</span></p>
                     <p class="card-text mb-2">Loại khóa học: <span class="text-warning">@Model.LoaiKH</span></p>
                 </div>
             </div>
@@ -30,10 +30,8 @@
     </div>
 </div>
 
-
- Form đăng ký 
 <div class="container my-5">
-    <h3 class="text-center mb-4 text-primary fw-bold">Thông tin của bạn</h3>
+    <h2 class="text-center mb-4 fw-bold" style="color: #0066b3;">Thông tin đăng ký</h2>
     <form id="formDangKy" class="border p-4 rounded shadow-lg bg-light">
         <input type="hidden" name="MaKH" value="@Model.MaKH" />
         <div class="mb-3">
@@ -81,7 +79,6 @@
     </form>
 </div>
 
-<!-- Thông báo thành công hoặc lỗi -->
 <div class="container">
     @if (TempData["SuccessMessage"] != null)
     {

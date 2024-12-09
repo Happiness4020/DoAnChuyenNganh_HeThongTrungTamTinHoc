@@ -433,7 +433,6 @@
     <Compile Include="Areas\Admin\Controllers\AdminThongKeController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BinhLuanController.cs" />
     <Compile Include="Controllers\ChuongTrinhHocController.cs" />
     <Compile Include="Controllers\GiangVienController.cs" />
     <Compile Include="Controllers\GioiThieuController.cs" />
