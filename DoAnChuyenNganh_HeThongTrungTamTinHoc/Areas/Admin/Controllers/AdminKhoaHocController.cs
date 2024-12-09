@@ -25,10 +25,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 .Where(kh => kh.TenKH.Contains(search))
                 .ToList();
 
-            ViewBag.Search = search; // Giữ giá trị tìm kiếm
-            ViewBag.SortOrder = sortOrder; // Giữ giá trị sắp xếp
+            ViewBag.Search = search;
+            ViewBag.SortOrder = sortOrder;
 
-            // Sắp xếp theo sortOrder
             switch (sortOrder)
             {
                 case "tenkh":
@@ -45,7 +44,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     break;
             }
 
-            // Phân trang
             int totalRecords = khoahoc.Count;
             int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
             int recordsToSkip = (page - 1) * pageSize;

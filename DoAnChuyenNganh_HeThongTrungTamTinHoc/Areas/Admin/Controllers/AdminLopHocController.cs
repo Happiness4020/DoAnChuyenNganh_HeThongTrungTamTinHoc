@@ -27,7 +27,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             var lopHocQuery = db.LopHoc
                                 .Include(l => l.GiaoVien)
                                 .Include(l => l.KhoaHoc)
-                                .Include(l => l.GiaoDichHocPhi); // Include để lấy danh sách học viên đăng ký
+                                .Include(l => l.GiaoDichHocPhi);
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -38,7 +38,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             var lopHoc = lopHocQuery.ToList();
 
-            // Đếm số học viên đã được duyệt trong từng lớp học
             var lopHocWithStudentCount = lopHoc.Select(l => new
             {
                 LopHoc = l,
@@ -55,11 +54,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             var paginatedLopHoc = lopHocWithStudentCount.Skip(recordsToSkip).Take(pageSize).ToList();
 
-            return View(paginatedLopHoc.Select(l => l.LopHoc).ToList()); // Truyền danh sách lớp học vào View
+            return View(paginatedLopHoc.Select(l => l.LopHoc).ToList());
         }
-
-
-
 
         public ActionResult LopHocAdd()
         {
@@ -78,12 +74,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LopHocAdd(LopHoc lopHoc, string MaKH)
         {
-            // Kiểm tra lớp học với tên lớp và giáo viên đã tồn tại chưa
             bool gv = db.LopHoc.Any(l => l.TenPhong == lopHoc.TenPhong && l.MaGV == lopHoc.MaGV);
 
             if (gv)
             {
-                // Nếu tồn tại thì thêm lỗi vào ModelState và hiển thị thông báo
                 ModelState.AddModelError("TenPhong", "Lớp học này đã tồn tại với giáo viên đã chọn.");
             }
 
@@ -96,7 +90,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                // Nếu không tồn tại thì tiếp tục thêm lớp học
                 lopHoc.MaLH = malh;
                 db.LopHoc.Add(lopHoc);
                 db.SaveChanges();
@@ -107,8 +100,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             ViewBag.MaKHList = new SelectList(db.KhoaHoc, "MaKH", "TenKH", lopHoc.MaKH);
             return View(lopHoc);
         }
-
-
 
         public ActionResult LopHocAddGV( LopHoc model ,string MaKH, string tenKhoaHoc, bool trangThai)
         {
@@ -204,7 +195,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(lopHoc);
         }
 
-
         public ActionResult LopHocEdit(string id)
         {
             if (id == null)
@@ -260,8 +250,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return RedirectToAction("LopHocList");
         }
 
-
-
         public List<string> LayDanhSachHocVienDaDangKy(string maKH, int soLuongCanLay = 20)
         {
             var danhSachHocVien = db.GiaoDichHocPhi
@@ -272,8 +260,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                                      .ToList();
             return danhSachHocVien;
         }
-
-
 
         public ActionResult PhanLichHocChoHocVien(string maLH, int soBuoiHoc)
         {
@@ -303,7 +289,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 return RedirectToAction("LopHocList");
             }
 
-
             DateTime ngayKetThuc = db.Database.SqlQuery<DateTime>(
                 "SELECT dbo.TinhNgayKetThuc(@NgayBatDau, @SoBuoiHoc, @ThuHoc)",
                 new SqlParameter("@NgayBatDau", ngayBatDau),
@@ -317,7 +302,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 khoaHoc.NgayKetThuc = ngayKetThuc;
                 db.SaveChanges();  
             }
-
 
             List<DayOfWeek> ngayHocTrongTuan = new List<DayOfWeek>();
 
@@ -359,23 +343,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         GioBatDau = lopHoc.GioBatDau,
                         GioKetThuc = lopHoc.GioKetThuc
                     };
-
-
                     db.LichHoc.Add(lichHoc);
                 }
             }
-
-
             db.SaveChanges();
-
 
             TempData["SuccessMessage"] = $"Đã phân lịch học cho {danhSachHocVien.Count} học viên trong lớp {lopHoc.TenPhong}.";
             return RedirectToAction("LopHocList");
         }
-
-
-
-
-
     }
 }

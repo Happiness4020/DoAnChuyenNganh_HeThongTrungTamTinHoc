@@ -14,9 +14,6 @@
     </a>
 </div>
 
-
-
-<!-- Form lọc dữ liệu -->
 <div class="card mt-4">
     <div class="card-body">
         <form method="get" class="row g-3">
@@ -35,7 +32,6 @@
     </div>
 </div>
 
-<!-- Thông tin thống kê -->
 <div class="card mt-4">
     <div class="card-body">
         <h4 class="card-title">Thông tin thống kê:</h4>
@@ -44,7 +40,6 @@
     </div>
 </div>
 
-<!-- Bảng thống kê -->
 <div class="table-responsive mt-4">
     <table class="table table-striped table-hover">
         <thead class="table-primary">
@@ -67,7 +62,6 @@
     </table>
 </div>
 
-<!-- Biểu đồ -->
 <div class="card mt-4">
     <div class="card-body">
         <h4 class="card-title">Biểu đồ thống kê</h4>
@@ -77,15 +71,13 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Dữ liệu biểu đồ
     var labels = @Html.Raw(Json.Encode(Model.Select(t => t.ThangNam)));
     var dataTongTien = @Html.Raw(Json.Encode(Model.Select(t => t.TongTien)));
     var dataSoNguoiDangKy = @Html.Raw(Json.Encode(Model.Select(t => t.SoNguoiDangKy)));
 
-    // Cấu hình biểu đồ
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
-        type: 'bar', // Loại biểu đồ
+        type: 'bar',
         data: {
             labels: labels,
             datasets: [

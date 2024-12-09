@@ -32,11 +32,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                          || g.PhuongThucThanhToan.TenPT.Contains(search))
                 .ToList();
 
-            // Lưu lại giá trị tìm kiếm và sắp xếp để hiển thị trên view
             ViewBag.Search = search;
             ViewBag.SortOrder = sortOrder;
 
-            // Sắp xếp dữ liệu
             switch (sortOrder)
             {
                 case "tenhocvien":
@@ -50,8 +48,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     break;
                 case "trangthai":
                     giaoDichHocPhi = giaoDichHocPhi
-                        .OrderBy(g => g.TrangThai == "Chờ duyệt" ? 0 : 1) // "Chờ duyệt" trước, "Đã duyệt" sau
-                        .ThenBy(g => g.HocVien.HoTen) // Có thể sắp xếp phụ theo tên học viên
+                        .OrderBy(g => g.TrangThai == "Chờ duyệt" ? 0 : 1)
+                        .ThenBy(g => g.HocVien.HoTen)
                         .ToList();
                     break;
                 default:
@@ -59,14 +57,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     break;
             }
 
-            // Phân trang
-           
-
             return View(giaoDichHocPhi);
         }
-
-
-
 
         public ActionResult GiaoDichAdd()
         {
@@ -75,7 +67,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             ViewBag.KhoaHocList = new SelectList(db.KhoaHoc, "MaKH", "TenKH");
             return View();
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -126,7 +117,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 return RedirectToAction("GiaoDichList");
             }
 
-            // Gán lại danh sách nếu ModelState không hợp lệ
             ViewBag.HocVienList = new SelectList(db.HocVien, "MaHV", "HoTen", giaoDichHocPhi.MaHV);
             ViewBag.PhuongThucList = new SelectList(db.PhuongThucThanhToan, "MaPT", "TenPT", giaoDichHocPhi.MaPT);
             ViewBag.KhoaHocList = new SelectList(db.KhoaHoc, "MaKH", "TenKH", giaoDichHocPhi.MaKH);
@@ -164,7 +154,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         {
             using (var db = new TrungTamTinHocEntities())
             {
-                // Lấy tất cả giao dịch có trạng thái "Chờ duyệt"
                 var giaoDichList = db.GiaoDichHocPhi.Where(gd => gd.TrangThai == "Chờ duyệt").ToList();
 
                 if (giaoDichList.Any())
@@ -173,7 +162,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     {
                         giaoDich.TrangThai = "Đã duyệt";
 
-                        // Thêm học viên vào lớp học sau khi giao dịch được duyệt
                         var chiTietHocVienLop = new ChiTiet_HocVien_LopHoc
                         {
                             MaHV = giaoDich.MaHV,
@@ -185,7 +173,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                             db.ChiTiet_HocVien_LopHoc.Add(chiTietHocVienLop);
                         }
 
-                        // Gửi email xác nhận cho từng học viên
                         SendEmailInternal(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
                     }
 
@@ -197,7 +184,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     TempData["ErrorMessage"] = "Không có giao dịch nào cần duyệt.";
                 }
             }
-
             return RedirectToAction("GiaoDichList");
         }
 
@@ -207,7 +193,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         {
             using (var db = new TrungTamTinHocEntities())
             {
-                // Lấy tất cả giao dịch có trạng thái "Chờ duyệt"
                 var giaoDichList = db.GiaoDichHocPhi.Where(gd => gd.TrangThai == "Chờ duyệt").ToList();
 
                 if (giaoDichList.Any())
@@ -216,10 +201,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     {
                         giaoDich.TrangThai = "Từ chối";
 
-                        // Gửi email thông báo từ chối cho từng học viên
                         SendEmailRejected(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
                     }
-
                     db.SaveChanges();
                     TempData["ErrorMessage"] = "Tất cả giao dịch đã bị từ chối.";
                 }
@@ -246,7 +229,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     giaoDich.TrangThai = "Đã duyệt";
                     db.SaveChanges();
 
-                    // Thêm học viên vào lớp học sau khi giao dịch được duyệt
                     var chiTietHocVienLop = new ChiTiet_HocVien_LopHoc
                     {
                         MaHV = giaoDich.MaHV,
@@ -259,7 +241,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         db.SaveChanges();
                     }
 
-                    // Gửi email xác nhận cho học viên
                     SendEmailInternal(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
 
                     TempData["Message"] = "Giao dịch đã được duyệt.";
@@ -268,8 +249,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return RedirectToAction("GiaoDichList");
         }
 
-
-        // Hàm gủi email thanh toán thành công
         private void SendEmailInternal(List<GiaoDichHocPhi> cart, string email)
         {
             try
@@ -278,13 +257,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 var toAddress = new MailAddress(email);
                 string subject = "Xác Nhận Thanh Toán Các Khóa Học";
 
-                // Xây dựng nội dung email từ danh sách giao dịch
                 var courseDetails = new StringBuilder();
                 double totalAmount = 0;
 
                 foreach (var item in cart)
                 {
-                    // Thêm thông tin chi tiết giao dịch vào email
                     courseDetails.AppendLine(
                   $"<tr><td>{item.MaHV}</td><td>{item.MaKH}</td><td>{(item.MaPT == 1 ? "Chuyển khoản" : "Khác")}</td><td>{item.NgayGD?.ToString("dd/MM/yyyy") ?? ""}</td><td>{item.SoTien:C}</td><td>{item.SoDT}</td><td>{item.Email}</td></tr>");
 
@@ -364,7 +341,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                // Ghi log hoặc xử lý lỗi
                 throw new Exception("Không thể gửi email: " + ex.Message);
             }
         }
@@ -386,7 +362,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     giaoDich.TrangThai = "Từ chối";
                     db.SaveChanges();
 
-                    // Gửi email thông báo từ chối
                     SendEmailRejected(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
 
                     TempData["ErrorMessage"] = "Giao dịch đã bị từ chối.";
@@ -395,9 +370,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return RedirectToAction("GiaoDichList");
         }
 
-
-
-        // Hàm gửi email từ chối giao dịch
         private void SendEmailRejected(List<GiaoDichHocPhi> cart, string email)
         {
             try
@@ -406,7 +378,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 var toAddress = new MailAddress(email);
                 string subject = "Thông Báo Từ Chối Giao Dịch Thanh Toán";
 
-                // Xây dựng nội dung email từ danh sách giao dịch
                 var courseDetails = new StringBuilder();
                 foreach (var item in cart)
                 {
@@ -484,11 +455,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                // Ghi log hoặc xử lý lỗi
                 throw new Exception("Không thể gửi email: " + ex.Message);
             }
         }
-
     }
 }
 

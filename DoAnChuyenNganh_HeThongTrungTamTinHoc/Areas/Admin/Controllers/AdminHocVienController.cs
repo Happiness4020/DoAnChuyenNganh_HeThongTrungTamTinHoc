@@ -18,19 +18,15 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         private static Random random = new Random();
         private string mahv = Utility.TaoMaNgauNhien("HV", 8);
 
-
         public ActionResult HocVienList(string search = "", string sortOrder = "tenhocvien", int page = 1, int pageSize = 10)
         {
-            // Lấy danh sách học viên từ cơ sở dữ liệu
             var hocvienQuery = ttth.HocVien.AsQueryable();
 
-            // Tìm kiếm theo tên học viên
             if (!string.IsNullOrEmpty(search))
             {
                 hocvienQuery = hocvienQuery.Where(hv => hv.HoTen.Contains(search));
             }
 
-            // Sắp xếp danh sách học viên theo tiêu chí được chọn
             switch (sortOrder)
             {
                 case "tenhocvien":
@@ -47,15 +43,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     break;
             }
 
-            // Tính toán phân trang
             int totalRecords = hocvienQuery.Count();
             int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
             int skipRecords = (page - 1) * pageSize;
 
-            // Lấy dữ liệu học viên theo trang
             var hocvien = hocvienQuery.Skip(skipRecords).Take(pageSize).ToList();
 
-            // Lưu các giá trị vào ViewBag để sử dụng trong View
             ViewBag.Search = search;
             ViewBag.SortOrder = sortOrder;
             ViewBag.Page = page;
@@ -103,8 +96,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
-
-                    // Kiểm tra loại file
                     var allowedExtensions = new[] { ".jpg", ".png" };
                     var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
                     if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
@@ -113,9 +104,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         return View();
                     }
 
-
-
-                    // Truy vấn lại và đổi tên ảnh
                     HocVien Hocvien = ttth.HocVien.ToList().Last();
                     var fileName = Hocvien.MaHV.ToString() + fileEx;
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
@@ -123,13 +111,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
 
                 }
-                // Lưu thông tin vào CSDL
                 hv = new HocVien
                 {
                     MaHV = mahv,
                     HoTen = hocvien.HoTen,
                     Anh = filename,
-                    NgaySinh = DateTime.Parse(hocvien.NgaySinh.ToString("dd/MM/yyyy")),
+                    NgaySinh = DateTime.Parse(hocvien.NgaySinh.ToString("yyyy/MM/dd")),
                     GioiTinh = hocvien.GioiTinh,
                     Email = hocvien.Email,
                     SoDT = hocvien.SoDT,
@@ -184,7 +171,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(hocvien);
                 }
 
-                // Kiểm tra email trùng lặp
                 var emailExists = ttth.HocVien.Any(h => h.Email == hocvien.Email && h.MaHV != hocvien.MaHV);
                 if (emailExists)
                 {
@@ -192,7 +178,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     return View(hocvien);
                 }
 
-                // Cập nhật thông tin
                 hv.HoTen = hocvien.HoTen;
                 hv.NgaySinh = hocvien.NgaySinh;
                 hv.GioiTinh = hocvien.GioiTinh;
@@ -200,7 +185,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 hv.SoDT = hocvien.SoDT;
                 hv.DiaChi = hocvien.DiaChi;
 
-                // Cập nhật ảnh nếu có tệp mới
                 if (imageFile != null && imageFile.ContentLength > 0)
                 {
                     var allowedExtensions = new[] { ".jpg", ".png" };
@@ -211,14 +195,12 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         return View();
                     }
 
-                    // Lưu ảnh mới
                     string fileName = hv.MaHV + fileEx;
                     var path = Path.Combine(Server.MapPath("~/AnhHocVien"), fileName);
                     imageFile.SaveAs(path);
                     hv.Anh = fileName;
                 }
 
-                // Lưu các thay đổi
                 ttth.SaveChanges();
                 return RedirectToAction("HocVienList");
             }

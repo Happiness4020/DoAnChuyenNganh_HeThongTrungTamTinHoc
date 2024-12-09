@@ -9,12 +9,12 @@
     <hr />
     <div class="text-center">
         <form action="@Url.Action("SaoLuu", "AdminSaoLuuPhucHoi")" method="post">
-            <button type="submit" class="btn btn-primary">Sao lưu Dữ liệu</button>
+            <button type="submit" class="btn btn-primary">Sao lưu dữ liệu</button>
         </form>
         <form action="@Url.Action("PhucHoi", "AdminSaoLuuPhucHoi")" method="post" enctype="multipart/form-data" class="mt-3">
             <label for="filephuchoi" class="form-label">Tải lên tệp sao lưu:</label>
             <input type="file" id="filephuchoi" name="filephuchoi" class="form-control" accept=".bak" required />
-            <button type="submit" class="btn btn-success mt-3">Phục hồi Dữ liệu</button>
+            <button type="submit" class="btn btn-success mt-3">Phục hồi dữ liệu</button>
         </form>
     </div>
     <div class="mt-5">

@@ -17,7 +17,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         private static Random random = new Random();
         private string maLichDay = Utility.TaoMaNgauNhien("LD", 5);
 
-        // Danh sách Lịch dạy
         public ActionResult LichDayList(string search = "", int page = 1, int pageSize = 10, string sortOrder = "")
         {
             List<LichDay> lichDays = db.LichDay
@@ -27,7 +26,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             ViewBag.Search = search;
             ViewBag.SortOrder = sortOrder;
 
-            // Sắp xếp theo sortOrder
             switch (sortOrder)
             {
                 case "magv":
@@ -41,7 +39,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     break;
             }
 
-            // Phân trang
             int totalRecords = lichDays.Count;
             int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
             int recordsToSkip = (page - 1) * pageSize;
@@ -54,7 +51,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(lichDays);
         }
 
-        // Thêm mới Lịch dạy
         public ActionResult LichDayAdd()
         {
             ViewBag.MaLichDay = maLichDay;
@@ -86,7 +82,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View();
         }
 
-        // Xóa Lịch dạy
         public ActionResult LichDayDelete(string id)
         {
             LichDay lichDay = db.LichDay.FirstOrDefault(ld => ld.MaLichDay == id);
@@ -105,7 +100,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return RedirectToAction("LichDayList");
         }
 
-        // Chỉnh sửa Lịch dạy
         public ActionResult LichDayEdit(string id)
         {
             var lichDay = db.LichDay.FirstOrDefault(ld => ld.MaLichDay == id);

@@ -28,7 +28,7 @@
             &nbsp;
             &nbsp;
             <dt>Lớp học</dt>
-            <dd>@Model.LopHoc.TenLop</dd>
+            <dd>@Model.LopHoc.TenPhong</dd>
             &nbsp;
             &nbsp;
             <dt>Điểm danh</dt>
@@ -40,8 +40,8 @@
             @Html.AntiForgeryToken()
 
             <div class="form-actions no-color">
-                <input type="submit" value="Xóa" class="btn btn-default" /> |
-                <a class="btn btn-danger ms-2" href="@Url.Action("LichHocList", "AdminLichHoc")">Quay lại</a>
+                <input type="submit" value="Xóa" class="btn btn-danger" />
+                <a class="btn btn-secondary ms-2" href="@Url.Action("LichHocList", "AdminLichHoc")">Quay lại</a>
             </div>
         }
     </form>

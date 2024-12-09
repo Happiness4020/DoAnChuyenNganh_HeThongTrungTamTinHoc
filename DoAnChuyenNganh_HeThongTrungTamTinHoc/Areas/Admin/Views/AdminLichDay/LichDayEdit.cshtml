@@ -49,7 +49,7 @@
                         <div class="col-3"></div>
                         <div class="col-6">
                             @Html.LabelFor(model => model.NgayDay, "Ngày Dạy")
-                            @Html.TextBoxFor(model => model.NgayDay, "{0:dd/MM/yyyy}", new { placeholder = "Ngày Dạy", @class = "form-control" })
+                            @Html.TextBoxFor(model => model.NgayDay, "{0:yyyy/MM/dd}", new { placeholder = "Ngày Dạy", @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.NgayDay, "", new { @class = "text-danger" })
                         </div>
                     </div>

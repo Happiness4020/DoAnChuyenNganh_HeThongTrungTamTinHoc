@@ -96,7 +96,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 {
                     TempData["ErrorMessage"] = "Tệp sao lưu trống hoặc không hợp lệ!!! Hãy chọn tệp khác.";
                 }
-
                 return RedirectToAction("SaoLuuPhucHoi");
             }
             catch(Exception ex)

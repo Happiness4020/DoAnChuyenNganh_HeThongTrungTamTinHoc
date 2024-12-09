@@ -55,7 +55,7 @@
                         <div class="col-3"></div>
                         <div class="col-6">
                             @Html.LabelFor(model => model.NgayGD, "Ngày Giao Dịch")
-                            @Html.TextBoxFor(model => model.NgayGD, "{0:dd/MM/yyyy}", new { placeholder = "Ngày Giao Dịch", @class = "form-control" })
+                            @Html.TextBoxFor(model => model.NgayGD, "{0:yyyy/MM/dd}", new { placeholder = "Ngày Giao Dịch", @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.NgayGD, "", new { @class = "text-danger" })
                         </div>
                     </div>
