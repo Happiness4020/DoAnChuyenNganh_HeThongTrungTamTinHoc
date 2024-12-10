@@ -104,48 +104,57 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult KhoaHocAdd(KhoaHoc khoahoc, HttpPostedFileBase imageFile)
         {
-            if (string.IsNullOrEmpty(khoahoc.MaChuongTrinh))
+            try
             {
-                ModelState.AddModelError("MaChuongTrinh", "Vui lòng chọn chương trình");
-            }
-
-            ViewBag.MaChuongTrinh = new SelectList(ttth.ChuongTrinhHoc.ToList(), "MaChuongTrinh", "TenChuongTrinh");
-
-            if (ModelState.IsValid)
-            {
-                var existingKhoaHoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == khoahoc.MaKH);
-                if (existingKhoaHoc != null)
+                if (string.IsNullOrEmpty(khoahoc.MaChuongTrinh))
                 {
-                    ModelState.AddModelError("MaKH", "Mã khóa học đã tồn tại!");
-                    return View();
+                    ModelState.AddModelError("MaChuongTrinh", "Vui lòng chọn chương trình");
                 }
 
-                if (imageFile != null && imageFile.ContentLength > 0)
+                ViewBag.MaChuongTrinh = new SelectList(ttth.ChuongTrinhHoc.ToList(), "MaChuongTrinh", "TenChuongTrinh");
+
+                if (ModelState.IsValid)
                 {
-                    var allowedExtensions = new[] { ".jpg", ".png" };
-                    var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
-                    if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
+                    var existingKhoaHoc = ttth.KhoaHoc.FirstOrDefault(kh => kh.MaKH == khoahoc.MaKH);
+                    if (existingKhoaHoc != null)
                     {
-                        ModelState.AddModelError("Anh", "Chỉ chấp nhận hình ảnh JPG hoặc PNG và không lớn hơn 2MB.");
+                        ModelState.AddModelError("MaKH", "Mã khóa học đã tồn tại!");
                         return View();
                     }
 
-                    var fileName = khoahoc.MaKH + fileEx;
-                    var path = Path.Combine(Server.MapPath("~/AnhKhoaHoc"), fileName);
-                    imageFile.SaveAs(path);
-                    khoahoc.Anh = fileName;
-                }
-                else
-                {
-                    khoahoc.Anh = "noimage.jpg";
-                }
+                    if (imageFile != null && imageFile.ContentLength > 0)
+                    {
+                        var allowedExtensions = new[] { ".jpg", ".png" };
+                        var fileEx = Path.GetExtension(imageFile.FileName).ToLower();
+                        if (!allowedExtensions.Contains(fileEx) || imageFile.ContentLength > 2000000)
+                        {
+                            ModelState.AddModelError("Anh", "Chỉ chấp nhận hình ảnh JPG hoặc PNG và không lớn hơn 2MB.");
+                            return View();
+                        }
 
-                ttth.KhoaHoc.Add(khoahoc);
-                ttth.SaveChanges();
+                        var fileName = khoahoc.MaKH + fileEx;
+                        var path = Path.Combine(Server.MapPath("~/images"), fileName);
+                        imageFile.SaveAs(path);
+                        khoahoc.Anh = fileName;
+                    }
+                    else
+                    {
+                        khoahoc.Anh = "noimage.jpg";
+                    }
+
+                    ttth.KhoaHoc.Add(khoahoc);
+                    ttth.SaveChanges();
+                    return RedirectToAction("KhoaHocList");
+                }
+                return View();
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi thêm khóa học ";
                 return RedirectToAction("KhoaHocList");
             }
-            return View();
         }
+        
 
         public ActionResult KhoaHocDelete(string id)
         {
@@ -222,7 +231,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     }
 
                     var fileName = kh.MaKH + fileEx;
-                    var path = Path.Combine(Server.MapPath("~/AnhKhoaHoc"), fileName);
+                    var path = Path.Combine(Server.MapPath("~/images"), fileName);
                     imageFile.SaveAs(path);
                     kh.Anh = fileName;
                 }
