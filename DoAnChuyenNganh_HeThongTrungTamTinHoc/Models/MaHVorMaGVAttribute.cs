@@ -10,12 +10,10 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            // Lấy các giá trị của các trường MaHV và MaGV từ đối tượng model
             var taiKhoan = (TaiKhoan)validationContext.ObjectInstance;
             bool hasMaHV = !string.IsNullOrEmpty(taiKhoan.MaHV);
             bool hasMaGV = !string.IsNullOrEmpty(taiKhoan.MaGV);
 
-            // Kiểm tra điều kiện chỉ một trong hai mã được chọn
             if (hasMaHV && hasMaGV)
             {
                 return new ValidationResult("Chỉ được chọn một trong hai: Mã học viên hoặc Mã giáo viên.");

@@ -20,10 +20,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter
 
             using (var db = new TrungTamTinHocEntities())
             {
-                // Lấy thông tin người dùng từ CSDL
                 var user = db.TaiKhoan.FirstOrDefault(u => u.TenDangNhap == username);
 
-                if (user != null && user.QuyenHan == "Quản lý") // Chỉ cho phép quyền "Quản lý"
+                if (user != null && user.QuyenHan == "Quản lý")
                 {
                     return user.QuyenHan == "Quản lý";
                 }
@@ -34,7 +33,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            // Nếu không được phép, chuyển hướng về trang lỗi hoặc trang đăng nhập
             filterContext.Result = new RedirectResult("~/Account/Error404");
         }
     }

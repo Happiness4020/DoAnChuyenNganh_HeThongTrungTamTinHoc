@@ -26,9 +26,9 @@
         margin: 0 auto;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        object-fit: cover; /* Đảm bảo ảnh phù hợp với khung mà không bị méo */
-        height: 250px; /* Đặt chiều cao cố định */
-        width: 200px; /* Đặt chiều rộng cố định */
+        object-fit: cover;
+        height: 250px;
+        width: 200px;
     }
 
     .img-container {
@@ -50,13 +50,13 @@
         transition: background-color 0.3s ease;
     }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
 
-        .btn-success:hover {
-            background-color: #218838;
-        }
+    .btn-success:hover {
+        background-color: #218838;
+    }
 
     .container {
         background-color: #f8f9fa;
@@ -83,7 +83,6 @@
     }
 </style>
 
-<!-- Hiển thị thông báo -->
 @if (TempData["Message"] != null)
 {
     <div class="alert alert-success text-center">

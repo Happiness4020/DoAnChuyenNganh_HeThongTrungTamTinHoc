@@ -303,17 +303,26 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
         public ActionResult RemoveFromCart(string courseId)
         {
-            var cart = Session["Cart"] as List<GiaoDichHocPhi> ?? new List<GiaoDichHocPhi>();
-
-            var courseToRemove = cart.FirstOrDefault(c => c.MaKH == courseId);
-            if (courseToRemove != null)
+            try
             {
-                cart.Remove(courseToRemove);
+                var cart = Session["Cart"] as List<GiaoDichHocPhi> ?? new List<GiaoDichHocPhi>();
+
+                var courseToRemove = cart.FirstOrDefault(c => c.MaKH == courseId);
+                if (courseToRemove != null)
+                {
+                    cart.Remove(courseToRemove);
+                }
+
+                Session["Cart"] = cart;
+
+                TempData["SuccessMessage"] = "Xóa khóa học khỏi giỏ hàng thành công";
+                return RedirectToAction("HocPhi");
             }
-
-            Session["Cart"] = cart;
-
-            return RedirectToAction("HocPhi");
+            catch(Exception ex)
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi xóa khóa học khỏi giỏ hàng: " + ex;
+                return RedirectToAction("HocPhi");
+            }
         }
 
 

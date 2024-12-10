@@ -1,5 +1,4 @@
-﻿/* Reset CSS */
-* {
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -12,7 +11,6 @@ body {
     color: #333;
 }
 
-/* Header */
 header {
     background-color: white;
     color: #fff;
@@ -55,7 +53,6 @@ header nav ul li a:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Main Content */
 main {
     padding: 40px 20px;
     margin: 0 auto;
@@ -81,9 +78,6 @@ main h2 {
     color: #333;
 }
 
-
-/*Lịch dạy*/
-
 .schedule-table {
     width: 100%;
     border-collapse: collapse;
@@ -91,28 +85,26 @@ main h2 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-    .schedule-table th, .schedule-table td {
-        padding: 10px;
-        text-align: left;
-        border: 1px solid #ddd;
-    }
+.schedule-table th, .schedule-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
 
-    .schedule-table th {
-        background-color: #0066b3;
-        color: white;
-        font-weight: bold;
-    }
+.schedule-table th {
+    background-color: #0066b3;
+    color: white;
+    font-weight: bold;
+}
 
-    .schedule-table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
+.schedule-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
 
-    .schedule-table tr:hover {
-        background-color: #f1f1f1;
-    }
+.schedule-table tr:hover {
+    background-color: #f1f1f1;
+}
 
-
-/* Footer */
 footer {
     background-color: #0066b3;
     color: white;

@@ -5,12 +5,10 @@
     var lopHocDaDangKy = ViewBag.LopHocDaDangKy as List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LopHoc>;
 }
 
-
-<!-- Thông báo nếu có -->
-@if (TempData["Message"] != null)
+@if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">
-        @TempData["Message"]
+        @TempData["SuccessMessage"]
     </div>
 }
 
@@ -111,7 +109,6 @@
         rows.forEach(function (row) {
             var isConflicting = row.getAttribute("data-conflict") === "true";
 
-            // Ẩn hoặc hiện hàng dựa trên checkbox
             if (checkbox.checked && isConflicting) {
                 row.style.display = "none";
             } else {
