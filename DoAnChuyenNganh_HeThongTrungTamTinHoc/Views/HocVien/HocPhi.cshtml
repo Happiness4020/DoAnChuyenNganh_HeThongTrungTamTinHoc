@@ -7,6 +7,23 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">Giỏ Hàng - Học Phí</h2>
 
+    <div class="container mt-3">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        else if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+
     @if (Model == null || !Model.Any())
     {
         <div class="alert alert-warning text-center">
@@ -34,20 +51,20 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            var course = item.KhoaHoc; // Khóa học liên quan
-                            var student = item.HocVien; // Học viên liên quan
+                            var course = item.KhoaHoc;
+                            var student = item.HocVien;
 
                             if (course != null && student != null)
                             {
                                 <tr>
-                                    <td>@student.MaHV</td> <!-- Mã học viên -->
-                                    <td>@course.MaKH</td> <!-- Mã khóa học -->
+                                    <td>@student.MaHV</td>
+                                    <td>@course.MaKH</td>
                                     <td>@item.MaLH</td>
                                     <td>@item.MaPT</td>
-                                    <td>@(item.NgayGD.HasValue ? item.NgayGD.Value.ToString("dd/MM/yyyy") : "Không xác định")</td> <!-- Ngày giao dịch -->
+                                    <td>@(item.NgayGD.HasValue ? item.NgayGD.Value.ToString("dd/MM/yyyy") : "Không xác định")</td>
                                     <td>@string.Format("{0:N0} VND", item.SoTien)</td>
-                                    <td>@student.SoDT</td> <!-- Số điện thoại học viên -->
-                                    <td>@student.Email</td> <!-- Email học viên -->
+                                    <td>@student.SoDT</td>
+                                    <td>@student.Email</td>
                                     <td class="text-center">
                                         <a href="@Url.Action("RemoveFromCart", "HocVien", new { courseId = item.MaKH })" class="btn btn-danger btn-sm">
                                             <i class="fas fa-trash-alt"></i> Xóa

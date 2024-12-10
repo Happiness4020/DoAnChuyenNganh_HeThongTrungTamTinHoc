@@ -502,7 +502,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     db.SaveChanges();
 
                     TempData["SuccessMessage"] = "Đăng ký lớp học thành công. Vui lòng chờ admin duyệt.";
-                    return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc?.MaKH });
+                    return RedirectToAction("ThanhToan");
                 }
                 else
                 {
