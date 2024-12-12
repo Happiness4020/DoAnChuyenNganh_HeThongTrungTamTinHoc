@@ -23,6 +23,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public Nullable<double> DiemTrungBinh { get; set; }
         public int Sobuoivang { get; set; }
         public string KetQua { get; set; }
+        public Nullable<bool> ChoPhepNhapDiem { get; set; }
     
         public virtual HocVien HocVien { get; set; }
         public virtual LopHoc LopHoc { get; set; }
