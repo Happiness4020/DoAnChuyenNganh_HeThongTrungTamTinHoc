@@ -8,6 +8,7 @@ using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.IO;
+using System.Drawing;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
@@ -92,41 +93,63 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 {
                     var worksheet = package.Workbook.Worksheets.Add("Thống Kê Doanh Thu");
 
+                    // Tiêu đề
                     worksheet.Cells["A1"].Value = "BÁO CÁO DOANH THU THEO THÁNG";
-                    worksheet.Cells["A1:C1"].Merge = true; // Gộp ô
+                    worksheet.Cells["A1:C1"].Merge = true;
                     worksheet.Cells["A1"].Style.Font.Size = 16;
                     worksheet.Cells["A1"].Style.Font.Bold = true;
                     worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
+                    // Tiêu đề cột
                     worksheet.Cells[4, 1].Value = "Tháng/Năm";
                     worksheet.Cells[4, 2].Value = "Tổng Số Học Viên Đăng Ký";
                     worksheet.Cells[4, 3].Value = "Tổng Doanh Thu (VNĐ)";
-
                     worksheet.Cells[4, 1, 4, 3].Style.Font.Bold = true;
                     worksheet.Cells[4, 1, 4, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[4, 1, 4, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[4, 1, 4, 3].Style.Fill.BackgroundColor.SetColor(Color.LightBlue);
 
+                    // Dữ liệu
                     for (int i = 0; i < thongKeTheoThang.Count; i++)
                     {
                         worksheet.Cells[i + 5, 1].Value = thongKeTheoThang[i].ThangNam;
                         worksheet.Cells[i + 5, 2].Value = thongKeTheoThang[i].TongSoHocVien;
-                        worksheet.Cells[i + 5, 3].Value = thongKeTheoThang[i].TongTien.ToString("N0");
+                        worksheet.Cells[i + 5, 3].Value = thongKeTheoThang[i].TongTien;
+
+                        worksheet.Cells[i + 5, 1, i + 5, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                     }
 
+                    // Dòng tổng cộng
                     int totalRow = thongKeTheoThang.Count + 5;
                     worksheet.Cells[totalRow, 1].Value = "Tổng Cộng";
                     worksheet.Cells[totalRow, 1].Style.Font.Bold = true;
+                    worksheet.Cells[totalRow, 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[totalRow, 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
                     worksheet.Cells[totalRow, 2].Value = tongSoHocVien;
                     worksheet.Cells[totalRow, 2].Style.Font.Bold = true;
-                    worksheet.Cells[totalRow, 3].Value = tongDoanhThu.ToString("N0");
+                    worksheet.Cells[totalRow, 3].Value = tongDoanhThu;
                     worksheet.Cells[totalRow, 3].Style.Font.Bold = true;
+                    worksheet.Cells[totalRow, 1, totalRow, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
-                    worksheet.Cells[5, 3, totalRow, 3].Style.Numberformat.Format = "#,##0 VNĐ";
+                    // Định dạng số tiền
+                    worksheet.Cells[5, 3, totalRow, 3].Style.Numberformat.Format = "#,##0";
 
-                    for (int col = 1; col <= worksheet.Dimension.End.Column; col++)
-                    {
-                        worksheet.Column(col).Width = 20;
-                    }
+                    // Thêm viền cho tất cả các ô
+                    worksheet.Cells[4, 1, totalRow, 3].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    worksheet.Cells[4, 1, totalRow, 3].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    worksheet.Cells[4, 1, totalRow, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    worksheet.Cells[4, 1, totalRow, 3].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 
+                    // Căn chỉnh cột
+                    worksheet.Cells[4, 1, totalRow, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[4, 1, totalRow, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+                    // Điều chỉnh độ rộng cột
+                    worksheet.Column(1).Width = 15; // Tháng/Năm
+                    worksheet.Column(2).Width = 30; // Tổng Số Học Viên Đăng Ký
+                    worksheet.Column(3).Width = 25; // Tổng Doanh Thu
+
+                    // Xuất file
                     var stream = new MemoryStream();
                     package.SaveAs(stream);
                     stream.Position = 0;
@@ -144,24 +167,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             }
         }
 
-        //public ActionResult ThongKeKhoaHoc()
-        //{
-        //    // Truy xuất danh sách khóa học và số lượng học viên đăng ký
-        //    var thongKeKhoaHoc = db.KhoaHoc
-        //        .Select(kh => new ThongKeKhoaHocViewModel
-        //        {
-        //            TenKhoaHoc = kh.TenKH,
-        //            SoLuongDangKy = kh.LopHoc.SelectMany(lh => lh.ChiTiet_HocVien_LopHoc).Count()
-        //        })
-        //        .ToList();
-
-        //    // Tìm khóa học đăng ký nhiều nhất và ít nhất
-        //    ViewBag.KhoaHocMax = thongKeKhoaHoc.OrderByDescending(kh => kh.SoLuongDangKy).FirstOrDefault();
-        //    ViewBag.KhoaHocMin = thongKeKhoaHoc.OrderBy(kh => kh.SoLuongDangKy).FirstOrDefault();
-
-        //    // Gửi dữ liệu sang View
-        //    return View(thongKeKhoaHoc);
-        //}
 
     }
 }

@@ -150,7 +150,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
 
 
-        public ActionResult DuyetTatCaGiaoDich()
+        public async Task<ActionResult> DuyetTatCaGiaoDich()
         {
             using (var db = new TrungTamTinHocEntities())
             {
@@ -173,10 +173,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                             db.ChiTiet_HocVien_LopHoc.Add(chiTietHocVienLop);
                         }
 
-                        SendEmailInternal(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
+                        // Chuyển sang gọi hàm bất đồng bộ
+                        await SendEmailInternalAsync(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
                     }
 
-                    db.SaveChanges();
+                    await db.SaveChangesAsync(); // Lưu dữ liệu bất đồng bộ
                     TempData["Message"] = "Tất cả giao dịch đã được duyệt.";
                 }
                 else
@@ -189,7 +190,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
 
 
-        public ActionResult TuChoiTatCaGiaoDich()
+
+        public async Task<ActionResult> TuChoiTatCaGiaoDich()
         {
             using (var db = new TrungTamTinHocEntities())
             {
@@ -201,9 +203,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                     {
                         giaoDich.TrangThai = "Từ chối";
 
-                        SendEmailRejected(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
+                        // Gọi hàm gửi email bất đồng bộ
+                        await SendEmailRejectedAsync(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
                     }
-                    db.SaveChanges();
+
+                    await db.SaveChangesAsync(); // Lưu thay đổi bất đồng bộ
                     TempData["ErrorMessage"] = "Tất cả giao dịch đã bị từ chối.";
                 }
                 else
@@ -219,7 +223,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
 
 
-        public ActionResult DuyetGiaoDich(int id)
+
+        public async Task<ActionResult> DuyetGiaoDich(int id)
         {
             using (var db = new TrungTamTinHocEntities())
             {
@@ -241,7 +246,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         db.SaveChanges();
                     }
 
-                    SendEmailInternal(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
+                    await SendEmailInternalAsync(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
 
                     TempData["Message"] = "Giao dịch đã được duyệt.";
                 }
@@ -249,7 +254,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return RedirectToAction("GiaoDichList");
         }
 
-        private void SendEmailInternal(List<GiaoDichHocPhi> cart, string email)
+        private async Task SendEmailInternalAsync(List<GiaoDichHocPhi> cart, string email)
         {
             try
             {
@@ -263,8 +268,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 foreach (var item in cart)
                 {
                     courseDetails.AppendLine(
-                  $"<tr><td>{item.MaHV}</td><td>{item.MaKH}</td><td>{(item.MaPT == 1 ? "Chuyển khoản" : "Khác")}</td><td>{item.NgayGD?.ToString("dd/MM/yyyy") ?? ""}</td><td>{item.SoTien:C}</td><td>{item.SoDT}</td><td>{item.Email}</td></tr>");
-
+                        $"<tr><td>{item.MaHV}</td><td>{item.MaKH}</td><td>{(item.MaPT == 1 ? "Chuyển khoản" : "Khác")}</td><td>{item.NgayGD?.ToString("dd/MM/yyyy") ?? ""}</td><td>{item.SoTien:C}</td><td>{item.SoDT}</td><td>{item.Email}</td></tr>");
                     totalAmount += item.SoTien ?? 0;
                 }
 
@@ -335,12 +339,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         IsBodyHtml = true
                     })
                     {
-                        smtpClient.Send(message);
+                        await smtpClient.SendMailAsync(message);
                     }
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"[ERROR] Không thể gửi email: {ex.Message}");
                 throw new Exception("Không thể gửi email: " + ex.Message);
             }
         }
@@ -352,7 +357,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 
 
 
-        public ActionResult TuChoiGiaoDich(int id)
+
+        public async Task<ActionResult> TuChoiGiaoDich(int id)
         {
             using (var db = new TrungTamTinHocEntities())
             {
@@ -360,9 +366,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 if (giaoDich != null)
                 {
                     giaoDich.TrangThai = "Từ chối";
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
 
-                    SendEmailRejected(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
+                    await SendEmailRejectedAsync(new List<GiaoDichHocPhi> { giaoDich }, giaoDich.Email);
 
                     TempData["ErrorMessage"] = "Giao dịch đã bị từ chối.";
                 }
@@ -370,7 +376,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return RedirectToAction("GiaoDichList");
         }
 
-        private void SendEmailRejected(List<GiaoDichHocPhi> cart, string email)
+        private async Task SendEmailRejectedAsync(List<GiaoDichHocPhi> cart, string email)
         {
             try
             {
@@ -449,7 +455,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                         IsBodyHtml = true
                     })
                     {
-                        smtpClient.Send(message);
+                        await smtpClient.SendMailAsync(message);
                     }
                 }
             }
@@ -458,6 +464,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
                 throw new Exception("Không thể gửi email: " + ex.Message);
             }
         }
+
     }
 }
 
