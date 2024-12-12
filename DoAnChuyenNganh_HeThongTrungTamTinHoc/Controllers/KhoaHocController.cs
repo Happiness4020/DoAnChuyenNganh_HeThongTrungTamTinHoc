@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -340,27 +342,55 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
         public async Task<ActionResult> GuiMaHV(string email, string mahv)
         {
-            var apikey = System.Configuration.ConfigurationManager.AppSettings["SendGridAPIKey"];
-            var sendGridClient = new SendGridClient(apikey);
-            var from = new EmailAddress("buikhanhduy13082003@gmail.com", "Trung Tâm Tin Học HUIT");
-            var subject = "Mã học viên";
-            var to = new EmailAddress(email);
-            var plainTextContent = $"Mã học viên của bạn là: {mahv}";
-            var htmlContent = $"<strong>Mã học viên của bạn là: {mahv}</strong>" +
-                $"<p>Hãy dùng mã học viên của bạn để đăng ký tài khoản trên website của Trung tâm Tin học HUIT. Tài khoản học viên giúp bạn cập nhật thông tin học, các thông tin cá nhân và kết quả học tập của bạn.</p>";
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-
-            var response = await sendGridClient.SendEmailAsync(msg);
-
-            if (response.StatusCode == HttpStatusCode.Accepted)
+            try
             {
-                return Json(new { message = "Mã OTP đã được gửi đến email của bạn." });
+
+                // Cấu hình thông tin email
+                var fromAddress = new MailAddress(ConfigurationManager.AppSettings["FromEmailAddress"], "Trung Tâm Tin Học HUIT");
+                var toAddress = new MailAddress(email);
+                string subject = "Mã học viên";
+
+                // Nội dung email
+                string body = $@"
+                <html>
+                <body>
+                    <p>Xin chào,</p>
+                    <p>Mã học viên của bạn là:</p>
+                    <h3>{mahv}</h3>
+                    <p>Hãy dùng mã học viên của bạn để đăng ký tài khoản trên website của Trung tâm Tin học HUIT. Tài khoản học viên giúp bạn cập nhật thông tin học, các thông tin cá nhân và kết quả học tập của bạn.</p>
+                </body>
+                </html>";
+
+                // Gửi email
+                using (var smtpClient = new SmtpClient
+                {
+                    Host = ConfigurationManager.AppSettings["SMTPHost"],
+                    Port = int.Parse(ConfigurationManager.AppSettings["SMTPPort"]),
+                    EnableSsl = bool.Parse(ConfigurationManager.AppSettings["EnabledSSL"]),
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, ConfigurationManager.AppSettings["FromEmailPassword"])
+                })
+                {
+                    using (var message = new MailMessage(fromAddress, toAddress)
+                    {
+                        Subject = subject,
+                        Body = body,
+                        IsBodyHtml = true
+                    })
+                    {
+                        await smtpClient.SendMailAsync(message);
+                    }
+                }
+
+                return Json(new { message = "Mã học viên đã được gửi đến email của bạn." });
             }
-            else
+            catch (Exception ex)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Gửi email thất bại. Vui lòng thử lại sau.");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Gửi email thất bại. Vui lòng thử lại sau. " + ex.Message);
             }
         }
+
 
 
 
@@ -502,7 +532,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     db.SaveChanges();
 
                     TempData["SuccessMessage"] = "Đăng ký lớp học thành công. Vui lòng chờ admin duyệt.";
-                    return RedirectToAction("DanhSachLopHocTheoKhoaHoc", new { maKH = lopHoc?.MaKH });
+                    return RedirectToAction("ThanhToan");
                 }
                 else
                 {

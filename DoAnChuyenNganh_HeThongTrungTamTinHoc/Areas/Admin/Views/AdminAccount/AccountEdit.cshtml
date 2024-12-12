@@ -33,14 +33,6 @@
                     <div class="row my-2">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            @Html.LabelFor(model => model.MatKhau, "Mật khẩu")
-                            @Html.TextBoxFor(model => model.MatKhau, new { placeholder = "Mật khẩu", @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-3"></div>
-                        <div class="col-6">
                             @Html.LabelFor(model => model.QuyenHan, "Quyền hạn")
                             @Html.DropDownListFor(model => model.QuyenHan, new List<SelectListItem>()
                                {
@@ -91,15 +83,20 @@
 
         function updateDropdownState() {
             const selectedRole = quyenHanDropdown.value;
-            if (selectedRole === "Học viên") {
+            if (selectedRole === "Học viên")
+            {
                 maHocVienDropdown.disabled = false;
                 maGiaoVienDropdown.disabled = true;
                 maGiaoVienDropdown.value = "";
-            } else if (selectedRole === "Giáo viên") {
+            }
+            else if (selectedRole === "Giáo viên")
+            {
                 maGiaoVienDropdown.disabled = false;
                 maHocVienDropdown.disabled = true;
                 maHocVienDropdown.value = "";
-            } else {
+            }
+            else
+            {
                 maHocVienDropdown.disabled = true;
                 maGiaoVienDropdown.disabled = true;
                 maHocVienDropdown.value = "";
