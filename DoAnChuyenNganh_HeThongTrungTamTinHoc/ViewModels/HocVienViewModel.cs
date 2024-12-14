@@ -21,5 +21,6 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels
         public int Sobuoivang { get; set; }
         public string KetQua { get; set; }
         public bool DiemDanh { get; set; }
+        public bool? ChoPhepNhapDiem { get; set; }
     }
 }

@@ -51,7 +51,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         }
 
 
-        public ActionResult LichHoc()
+        public ActionResult LichHoc(int? page)
         {
             try
             {

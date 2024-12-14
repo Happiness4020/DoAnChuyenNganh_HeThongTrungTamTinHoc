@@ -598,6 +598,7 @@
     <Content Include="Areas\Admin\Views\AdminKhoaHoc\DanhSachHocVienThamGiaKhoaHoc.cshtml" />
     <Content Include="Areas\Admin\Views\AdminThongKe\ThongKeGiaoDich.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSaoLuuPhucHoi\SaoLuuPhucHoi.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLopHoc\DanhSachLopMoCapNhatDiem.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />

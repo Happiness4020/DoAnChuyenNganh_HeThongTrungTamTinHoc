@@ -61,7 +61,11 @@
 
 <a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
 <br />
-<a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("LopHocAdd", "AdminLopHoc")">Thêm Lớp Học</a>
+<div class="d-flex gap-2">
+    <a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("LopHocAdd", "AdminLopHoc")">Thêm Lớp Học</a>
+    <a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("DanhSachLopMoCapNhatDiem", "AdminLopHoc")">Mở cập nhật điểm</a>
+</div>
+
 
 <form class="d-flex mb-3 mt-2" action="@Url.Action("LopHocList", "AdminLopHoc")">
     <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm lớp học" aria-label="Search" style="max-width: 400px;">
@@ -117,12 +121,13 @@
                                 <span style="color: red; font-weight: bold;">Chưa thể mở lớp</span>
                              }
                         </td>
-                            <td>
-                                <a href="@Url.Action("LopHocEdit", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
-                                <a href="@Url.Action("LopHocDelete", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
+                        <td>
+                            <a href="@Url.Action("LopHocEdit", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
+                            <a href="@Url.Action("LopHocDelete", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
 
-                            </td>
-                        </tr>
+                        </td>
+                    </tr>
+                        
                     }
             </tbody>
         </table>

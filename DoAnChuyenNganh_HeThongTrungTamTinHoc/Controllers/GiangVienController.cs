@@ -207,7 +207,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 DiemKiemTraLan3 = (float)ctlh.DiemKiemTraLan3,
                 DiemTrungBinh = (float)ctlh.DiemTrungBinh,
                 Sobuoivang = ctlh.Sobuoivang,
-                KetQua = ctlh.KetQua
+                KetQua = ctlh.KetQua,
+                ChoPhepNhapDiem = ctlh.ChoPhepNhapDiem
             })
             .ToList();
 
@@ -241,6 +242,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
             }
 
             ViewBag.MaLop = malh;
+
+            var ctlh = db.ChiTiet_HocVien_LopHoc.FirstOrDefault(lh => lh.MaLH == malh);
+            if(ctlh == null || ctlh.ChoPhepNhapDiem == false)
+            {
+                TempData["ErrorMessage"] = "Chưa được phép nhập điểm cho lớp học này!!!";
+                return RedirectToAction("ChiTietLopHoc", new { malh = malh });
+            }    
 
             foreach (var hv in HocVienList)
             {

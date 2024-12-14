@@ -11,6 +11,7 @@ using DoAnChuyenNganh_HeThongTrungTamTinHoc.Models;
 using System.Text;
 using DoAnChuyenNganh_HeThongTrungTamTinHoc.Filter;
 using System.Data.SqlClient;
+using DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels;
 
 namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
 {
@@ -57,12 +58,107 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Areas.Admin.Controllers
             return View(paginatedLopHoc.Select(l => l.LopHoc).ToList());
         }
 
+        public ActionResult DanhSachLopMoCapNhatDiem()
+        {
+            try
+            {
+                var dslop = db.LopHoc
+                    .Where(lh => db.ChiTiet_HocVien_LopHoc.Any(ct => ct.MaLH == lh.MaLH && (ct.KetQua == "Chưa có kết quả" || ct.ChoPhepNhapDiem == true)))
+                    .Select(lh => new LopHocViewModel
+                    {
+                        MaLH = lh.MaLH,
+                        TenPhong = lh.TenPhong,
+                        GioBatDau = lh.GioBatDau,
+                        GioKetThuc = lh.GioKetThuc,
+                        GiaoVienHoTen = lh.GiaoVien.HoTen,
+                        KhoaHocTenKH = lh.KhoaHoc.TenKH,
+                        ThuHoc = lh.ThuHoc,
+                        ChoPhepNhapDiem = db.ChiTiet_HocVien_LopHoc.Any(ct => ct.MaLH == lh.MaLH && ct.ChoPhepNhapDiem.Value)
+                    })
+                    .ToList();
+
+                return View(dslop);
+            }
+            catch
+            {
+                return RedirectToAction("DanhSachLopMoCapNhatDiem", "AdminLopHoc");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult MoNhapDiem(string malh)
+        {
+            if (string.IsNullOrEmpty(malh))
+            {
+                TempData["ErrorMessage"] = "Mã lớp học không hợp lệ!!!";
+                return RedirectToAction("DanhSachLopMoCapNhatDiem", "AdminLopHoc");
+            }
+
+            try
+            {
+                var ctlhs = db.ChiTiet_HocVien_LopHoc.Where(ct => ct.MaLH == malh).ToList();
+
+                if (ctlhs.Any())
+                {
+                    foreach (var chitiet in ctlhs)
+                    {
+                        chitiet.ChoPhepNhapDiem = true;
+                    }
+
+                    db.SaveChanges();
+                    TempData["SuccessMessage"] = "Đã mở nhập điểm cho lớp học thành công";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy dữ liệu chi tiết lớp học!!!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra khi mở nhập điểm: " + ex;
+            }
+
+            return RedirectToAction("DanhSachLopMoCapNhatDiem", "AdminLopHoc");
+        }
+
+        [HttpPost]
+        public ActionResult DongNhapDiem(string malh)
+        {
+            if (string.IsNullOrEmpty(malh))
+            {
+                TempData["ErrorMessage"] = "Mã lớp học không hợp lệ!!!";
+                return RedirectToAction("DanhSachLopMoCapNhatDiem", "AdminLopHoc");
+            }
+
+            try
+            {
+                var ctlhs = db.ChiTiet_HocVien_LopHoc.Where(ct => ct.MaLH == malh).ToList();
+
+                if (ctlhs.Any())
+                {
+                    foreach (var chitiet in ctlhs)
+                    {
+                        chitiet.ChoPhepNhapDiem = false;
+                    }
+
+                    db.SaveChanges();
+                    TempData["SuccessMessage"] = "Đã đóng nhập điểm cho lớp học thành công";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy dữ liệu chi tiết lớp học!!!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra khi đóng nhập điểm: " + ex;
+            }
+
+            return RedirectToAction("DanhSachLopMoCapNhatDiem", "AdminLopHoc");
+        }
+
         public ActionResult LopHocAdd()
         {
-
-            //ViewBag.TrangThai = trangThai;
-            //ViewBag.TenKhoaHoc = db.KhoaHoc.Find(model.MaKH)?.TenKH;
-            //ViewBag.MaKH = model.MaKH;
             ViewBag.MaLH = malh;
             ViewBag.MaGVList = new SelectList(db.GiaoVien, "MaGV", "HoTen");
             ViewBag.MaKHList = new SelectList(db.KhoaHoc, "MaKH", "TenKH");

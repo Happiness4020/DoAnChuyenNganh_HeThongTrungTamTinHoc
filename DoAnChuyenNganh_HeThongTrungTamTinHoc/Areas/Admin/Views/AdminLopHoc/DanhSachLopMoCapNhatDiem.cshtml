@@ -1,0 +1,69 @@
+﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels.LopHocViewModel>
+@{
+    ViewBag.Title = "DanhSachLopMoCapNhatDiem";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    else if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+</div>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center" style="color: #0066b3">Danh sách lớp học có thể mở nhập điểm</h2>
+    <div class="table-responsive">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>Tên lớp</th>
+                    <th>Giờ bắt đầu</th>
+                    <th>Giờ kết thúc</th>
+                    <th>Giáo viên</th>
+                    <th>Khóa học</th>
+                    <th>Thứ trong tuần</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TenPhong</td>
+                        <td>@item.GioBatDau</td>
+                        <td>@item.GioKetThuc</td>
+                        <td>@item.GiaoVienHoTen</td>
+                        <td>@item.KhoaHocTenKH</td>
+                        <td>@item.ThuHoc</td>
+                        <td>
+                            @if (item.ChoPhepNhapDiem == false)
+                            {
+                                <form method="post" action="@Url.Action("MoNhapDiem", "AdminLopHoc", new { malh = item.MaLH })">
+                                    <button type="submit" class="btn btn-outline-success btn-sm">Mở nhập điểm</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form method="post" action="@Url.Action("DongNhapDiem", "AdminLopHoc", new { malh = item.MaLH })">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Đóng nhập điểm</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

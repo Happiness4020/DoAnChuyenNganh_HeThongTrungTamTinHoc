@@ -19,5 +19,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels
         public string ThuHoc { get; set; }
         public LopHoc LopHoc { get; set; }
         public int SoLuongHocVien { get; set; }
+        public string GiaoVienHoTen { get; set; }
+        public string KhoaHocTenKH { get; set; }
+        public bool? ChoPhepNhapDiem { get; set; }
     }
 }
