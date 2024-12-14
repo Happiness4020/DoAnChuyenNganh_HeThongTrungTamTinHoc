@@ -92,7 +92,14 @@
                                 @Model[i].KetQua
                             </td>
                             <td>
-                                <button type="submit" class="btn btn-primary" style="width: 100px;" onclick="return xacNhanCapNhat()">Cập nhật</button>
+                                @if (Model[i].ChoPhepNhapDiem == false)
+                                {
+                                    <button type="submit" class="btn btn-primary" style="width: 100px;" onclick="return xacNhanCapNhat()" disabled>Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary" style="width: 100px;" onclick="return xacNhanCapNhat()">Cập nhật</button>
+                                }
                             </td>
                         </tr>
                     }
