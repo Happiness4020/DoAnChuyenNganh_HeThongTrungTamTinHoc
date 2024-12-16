@@ -34,6 +34,7 @@
         <EntityTypeShape EntityType="QL_TrungTamTinHocModel.ChiTiet_HocVien_LopHoc" Width="1.5" PointX="8.25" PointY="11.75" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__ChiTiet_Ho__MaHV__52593CB8" />
         <AssociationConnector Association="QL_TrungTamTinHocModel.FK__ChiTiet_Ho__MaLH__534D60F1" />
+        <EntityTypeShape EntityType="QL_TrungTamTinHocModel.TinTucThongBao" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
