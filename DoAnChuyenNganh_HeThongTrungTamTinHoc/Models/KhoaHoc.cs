@@ -36,7 +36,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Models
         public System.DateTime NgayBatDau { get; set; }
 
         [Display(Name = "Ngày kết thúc")]
-        [Required(ErrorMessage = "Bạn phải nhập ngày kết thúc")]
+        //[Required(ErrorMessage = "Bạn phải nhập ngày kết thúc")]
         public Nullable<System.DateTime> NgayKetThuc { get; set; }
 
         [Required(ErrorMessage = "Bạn phải nhập số buổi học")]

@@ -261,6 +261,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
             return View(kh);
         }
+
+
         [HttpPost]
         public ActionResult DangKyKhoaHoc(string makh, DangKyKhoaHocViewModel model)
         {

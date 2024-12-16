@@ -1,0 +1,54 @@
+﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TinTucThongBao>
+
+@{
+    ViewBag.Title = "Danh sách bài báo và thông báo";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<h2 class="text-center my-4">Danh sách bài báo và thông báo</h2>
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <img src="~/images/@item.Anh" class="card-img-top" alt="Ảnh tin tức" style="height: 200px; object-fit: cover;" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary">@item.TieuDe</h5>
+                        <p class="card-text text-muted"><small>Ngày tạo: @item.NgayTao</small></p>
+                        <a href="@Url.Action("ChiTiet", "TinTucThongBao", new { id = item.ID })" class="btn btn-outline-primary mt-auto">Đọc tiếp</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #0066b3;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .btn-outline-primary {
+        color: #0066b3;
+        border-color: #0066b3;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #0066b3;
+            color: #fff;
+        }
+</style>

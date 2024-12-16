@@ -1,0 +1,67 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TinTucThongBao
+@{
+    ViewBag.Title = Model.TieuDe;
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<h2 class="text-center mb-4">@Model.TieuDe</h2>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mb-4 shadow-lg rounded">
+                <img src="~/images/@Model.Anh" class="card-img-top" alt="Ảnh tin tức" />
+                <div class="card-body">
+                    <h5 class="card-title">@Model.TieuDe</h5>
+                    <p class="card-text">@Html.Raw(Model.NoiDung)</p>
+                    <p class="card-text">
+                        <small class="text-muted">Ngày tạo: @Model.NgayTao</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional CSS styles -->
+<style>
+    /* Make sure the image fits the card */
+    .card-img-top {
+        height: 300px;
+        object-fit: cover;
+    }
+
+    /* Add some padding for the card content */
+    .card-body {
+        padding: 20px;
+    }
+
+    /* Improve typography */
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #555;
+    }
+
+    /* Optional: Make the card shadow more pronounced */
+    .shadow-lg {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Make the title look more prominent */
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #007bff;
+    }
+
+    /* Center the card */
+    .container {
+        margin-top: 30px;
+    }
+</style>

@@ -51,6 +51,18 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
         }
 
 
+        public int GetWeekNumber(DateTime date)
+        {
+            var calendar = System.Globalization.CultureInfo.InvariantCulture.Calendar;
+            return calendar.GetWeekOfYear(date, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+        }
+
+        public string GetDayOfWeek(DateTime date)
+        {
+            return date.ToString("dddd", new System.Globalization.CultureInfo("vi-VN")); // Thứ trong tuần bằng tiếng Việt
+        }
+
+
         public ActionResult LichHoc(int? page)
         {
             try
@@ -89,6 +101,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                         GioKetThuc = x.GioKetThuc.ToString(@"hh\:mm"),
                         TenGV = x.TenGV,
                         NgayHoc = x.NgayHoc.ToString("dd/MM/yyyy"),
+                        TuanHoc = GetWeekNumber(x.NgayHoc),
+                        ThuHoc = GetDayOfWeek(x.NgayHoc)
                     }).ToList();
 
                     ViewBag.HocVien = db.HocVien.FirstOrDefault(hv => hv.MaHV == maHV);
@@ -635,6 +649,13 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 TempData["ErrorMessage"] = "Có lỗi xảy ra trong quá trình cập nhật mật khẩu! Vui lòng thử lại.";
                 return View();
             }
+        }
+
+
+
+        public ActionResult XacThuc()
+        {
+            return View();
         }
     }
 
