@@ -1,0 +1,88 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TinTucThongBao
+@{
+    ViewBag.Title = "TinTucThongBaoDelete";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<h3>Bạn có chắc chắn muốn xóa bài đăng này không?</h3>
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <form class="p-4 mt-0" style="max-width: 100%" action="/Admin/AdminTinTucThongBao/TinTucThongBaoDelete/@Model.ID" method="post">
+        <input type="hidden" name="Id" value="@Model.ID" />
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Ảnh bài đăng
+            </dt>
+            <dd>
+                @if (!string.IsNullOrEmpty(Model.Anh))
+                {
+                    {
+                        var imagePath = Server.MapPath($"~/images/{Model.Anh}");
+                        if (System.IO.File.Exists(imagePath) && Model.Anh != null)
+                        {
+                            <img src="~/images/@Model.Anh" width="150px" />
+                        }
+                        else
+                        {
+                            <img src="~/images/noimage.jpg" width="150px" />
+                        }
+                    }
+                }
+            </dd>
+            &nbsp;
+            &nbsp;
+
+            <dt>
+                Tiêu đề
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.TieuDe)
+            </dd>
+            &nbsp;
+            &nbsp;
+            <dt>
+                Nội dung
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NoiDung)
+            </dd>
+            &nbsp;
+            &nbsp;
+
+            <dt>
+                Ngày đăng
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NgayTao)
+            </dd>
+            &nbsp;
+            &nbsp;
+            <dt>
+                Loại tin
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LoaiTin)
+            </dd>
+            &nbsp;
+            &nbsp;
+            <dt>
+                Trạng thái
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.TrangThai)
+            </dd>
+            &nbsp;
+            &nbsp;
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Xóa" class="btn btn-danger" />
+                <a class="btn btn-secondary ms-2" href="@Url.Action("DanhSachTinTucThongBao", "AdminTinTucThongBao")">Quay lại</a>
+            </div>
+        }
+    </form>
+</div>

@@ -439,6 +439,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminLopHocController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminSaoLuuPhucHoiController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminThongKeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminTinTucThongBaoController.cs" />
     <Compile Include="Areas\Admin\Controllers\DangKyController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChuongTrinhHocController.cs" />
@@ -602,6 +603,10 @@
     <Content Include="Areas\Admin\Views\AdminThongKe\ThongKeGiaoDich.cshtml" />
     <Content Include="Areas\Admin\Views\AdminSaoLuuPhucHoi\SaoLuuPhucHoi.cshtml" />
     <Content Include="Areas\Admin\Views\AdminLopHoc\DanhSachLopMoCapNhatDiem.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminTinTucThongBao\DanhSachTinTucThongBao.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminTinTucThongBao\TinTucThongBaoAdd.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminTinTucThongBao\TinTucThongBaoEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminTinTucThongBao\TinTucThongBaoDelete.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
