@@ -98,6 +98,23 @@
 
 <script>
     document.getElementById("btnCheckout").addEventListener("click", function () {
+        var email = document.getElementById("email").value;
+        var soDT = document.getElementById("soDT").value;
+
+        var dinhdangemail = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!dinhdangemail.test(email)) {
+            alert("Email không hợp lệ. Vui lòng nhập đúng định dạng email.");
+            event.preventDefault();
+            return;
+        }
+
+        var dinhdangsodt = /^(03|05|07|08|09)\d{8}$/;
+        if (!dinhdangsodt.test(soDT)) {
+            alert("Số điện thoại không hợp lệ. Vui lòng nhập đúng định dạng số điện thoại.");
+            event.preventDefault();
+            return;
+        }
+
         var formData = new FormData(document.getElementById("formDangKy"));
 
         fetch("@Url.Action("DangKyKhoaHoc", "KhoaHoc", new { makh = Model.MaKH })", {
