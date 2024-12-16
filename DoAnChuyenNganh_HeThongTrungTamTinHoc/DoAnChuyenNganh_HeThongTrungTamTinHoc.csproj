@@ -492,6 +492,9 @@
     <Compile Include="Models\ThanhToan.cs" />
     <Compile Include="Models\DangNhap.cs" />
     <Compile Include="Models\MaHVorMaGVAttribute.cs" />
+    <Compile Include="Models\TinTucThongBao.cs">
+      <DependentUpon>TrungTamTinHoc.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TrungTamTinHoc.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

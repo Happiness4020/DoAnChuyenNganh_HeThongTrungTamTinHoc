@@ -151,6 +151,18 @@
           <Property Name="MaHV" Type="varchar" MaxLength="30" />
           <Property Name="MaGV" Type="varchar" MaxLength="30" />
         </EntityType>
+        <EntityType Name="TinTucThongBao">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Anh" Type="nvarchar" MaxLength="255" />
+          <Property Name="TieuDe" Type="nvarchar" MaxLength="155" Nullable="false" />
+          <Property Name="NoiDung" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LoaiTin" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="NgayTao" Type="datetime" />
+          <Property Name="TrangThai" Type="bit" />
+        </EntityType>
         <Association Name="FK__BinhLuanKh__MaHV__6E01572D">
           <End Role="HocVien" Type="Self.HocVien" Multiplicity="1" />
           <End Role="BinhLuanKhoaHoc" Type="Self.BinhLuanKhoaHoc" Multiplicity="*" />
@@ -373,6 +385,7 @@
           <EntitySet Name="LopHoc" EntityType="Self.LopHoc" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhuongThucThanhToan" EntityType="Self.PhuongThucThanhToan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaiKhoan" EntityType="Self.TaiKhoan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TinTucThongBao" EntityType="Self.TinTucThongBao" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__BinhLuanKh__MaHV__6E01572D" Association="Self.FK__BinhLuanKh__MaHV__6E01572D">
             <End Role="HocVien" EntitySet="HocVien" />
             <End Role="BinhLuanKhoaHoc" EntitySet="BinhLuanKhoaHoc" />
@@ -527,6 +540,7 @@
             <End Role="LopHoc" EntitySet="LopHoc" />
             <End Role="ChiTiet_HocVien_LopHoc" EntitySet="ChiTiet_HocVien_LopHoc" />
           </AssociationSet>
+          <EntitySet Name="TinTucThongBao" EntityType="QL_TrungTamTinHocModel.TinTucThongBao" />
         </EntityContainer>
         <EntityType Name="BinhLuanKhoaHoc">
           <Key>
@@ -912,6 +926,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TinTucThongBao">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Anh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TieuDe" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
+          <Property Name="NoiDung" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LoaiTin" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="NgayTao" Type="DateTime" Precision="3" />
+          <Property Name="TrangThai" Type="Boolean" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1071,6 +1097,19 @@
                 <ScalarProperty Name="MaHV" ColumnName="MaHV" />
                 <ScalarProperty Name="MaLH" ColumnName="MaLH" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TinTucThongBao">
+            <EntityTypeMapping TypeName="QL_TrungTamTinHocModel.TinTucThongBao">
+              <MappingFragment StoreEntitySet="TinTucThongBao">
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+                <ScalarProperty Name="LoaiTin" ColumnName="LoaiTin" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+                <ScalarProperty Name="Anh" ColumnName="Anh" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
