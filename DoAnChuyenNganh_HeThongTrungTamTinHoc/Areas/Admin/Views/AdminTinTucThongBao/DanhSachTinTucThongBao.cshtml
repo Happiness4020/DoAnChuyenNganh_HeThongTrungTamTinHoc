@@ -1,7 +1,6 @@
-﻿@model IEnumerable<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.LopHoc>
-
+﻿@model List<DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TinTucThongBao>
 @{
-    ViewBag.Title = "Danh Sách Lớp Học";
+    ViewBag.Title = "DanhSachTinTucThongBao";
     Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
 }
 
@@ -40,8 +39,6 @@
     }
 </style>
 
-<h2 style="color: #0066b3">@ViewBag.Title</h2>
-
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -62,30 +59,39 @@
 <a class="btn btn-outline-primary mt-3" style="width: 180px;" href="@Url.Action("Index", "Admin")">Quay lại</a>
 <br />
 <div class="d-flex gap-2">
-    <a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("LopHocAdd", "AdminLopHoc")">Thêm Lớp Học</a>
-    <a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("DanhSachLopMoCapNhatDiem", "AdminLopHoc")">Mở cập nhật điểm</a>
+    <a class="btn btn-outline-primary mt-2 mb-2" style="width: 180px;" href="@Url.Action("TinTucThongBaoAdd", "AdminTinTucThongBao")">Đăng bài</a>
 </div>
 
 
-<form class="d-flex mb-3 mt-2" action="@Url.Action("LopHocList", "AdminLopHoc")">
+<form class="d-flex mb-3 mt-2" action="@Url.Action("DanhSachTinTucThongBao", "AdminTinTucThongBao")">
     <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm lớp học" aria-label="Search" style="max-width: 400px;">
     <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>
-    <a class="btn btn-danger ms-2" href="@Url.Action("LopHocList", "AdminLopHoc")">Hủy</a>
+    <a class="btn btn-danger ms-2" href="@Url.Action("DanhSachTinTucThongBao", "AdminTinTucThongBao")">Hủy</a>
 </form>
 
+<div class="d-flex justify-content-between mb-3">
+    <form class="d-inline">
+        <label for="sortOrder" class="me-2 fw-bold">Sắp xếp:</label>
+        <select name="sortOrder" id="sortOrder" class="form-select d-inline w-auto" onchange="this.form.submit()">
+            <option value="tieude" @(ViewBag.SortOrder == "tieude" ? "selected" : "")>Tiêu đề</option>
+            <option value="noidung" @(ViewBag.SortOrder == "noidung" ? "selected" : "")>Nội dung</option>
+            <option value="ngaytao" @(ViewBag.SortOrder == "ngaytao" ? "selected" : "")>Ngày tạo</option>
+        </select>
+    </form>
+</div>
+
 <div class="container mt-5">
-    <h2 class="mb-4 text-center" style="color: #0066b3">Danh Sách Lớp Học</h2>
+    <h2 class="mb-4 text-center" style="color: #0066b3">Danh sách Tin tức & Thông báo</h2>
     <div class="table-responsive">
         <table class="table custom-table">
             <thead>
                 <tr>
-                    <th>Tên lớp</th>
-                    <th>Giờ bắt đầu</th>
-                    <th>Giờ kết thúc</th>
-                    <th>Giáo viên</th>
-                    <th>Khóa học</th>
-                    <th>Thứ trong tuần</th>
-                    <th>Số học viên đăng ký</th>
+                    <th>ID</th>
+                    <th>Ảnh</th>
+                    <th>Tiêu đề</th>
+                    <th>Nội dung</th>
+                    <th>Loại tin</th>
+                    <th>Ngày tạo</th>
                     <th>Trạng thái</th>
                     <th>Hành động</th>
                 </tr>
@@ -94,40 +100,33 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.TenPhong</td>
-                        <td>@item.GioBatDau</td>
-                        <td>@item.GioKetThuc</td>
-                        <td>@item.GiaoVien.HoTen</td>
-                        <td>@item.KhoaHoc.TenKH</td>
-                        <td>@item.ThuHoc</td>
-                        <td>@item.ChiTiet_HocVien_LopHoc.Count() / @item.SiSo</td>
+                        <td>@item.ID</td>
                         <td>
-                            @if (item.ChiTiet_HocVien_LopHoc.Count() >= 20)
-                            {
-                                @*<span style="color: green; font-weight: bold;">Đủ điều kiện mở lớp</span>
-                                <a href="@Url.Action("PhanLichHocChoHocVien", "AdminLopHoc", new { maLH = item.MaLH, soBuoiHoc = item.KhoaHoc.Sobuoihoc })" class="btn btn-outline-primary btn-sm">Phân Lịch Học</a>*@
-                                if (item.LichHoc.Any(lh => lh.MaLH == item.MaLH))
+                            @{ var imagePath = Server.MapPath($"~/images/{item.Anh}");
+                                if (System.IO.File.Exists(imagePath) && item.Anh != null)
                                 {
-                                    <span style="color: green; font-weight: bold;">Đã phân lịch học</span> 
-                                 }
+                                    <img src="~/images/@item.Anh" width="150px" />
+                                }
                                 else
                                 {
-                                    <span style="color: green; font-weight: bold;">Đủ điều kiện mở lớp</span>
-                                    <a href="@Url.Action("PhanLichHocChoHocVien", "AdminLopHoc", new { maLH = item.MaLH, soBuoiHoc = item.KhoaHoc.Sobuoihoc })" class="btn btn-outline-primary btn-sm">Phân Lịch Học</a>
+                                    <img src="~/images/noimage.jpg" width="150px" />
                                 }
-                             }
-                             else
-                             {
-                                <span style="color: red; font-weight: bold;">Chưa thể mở lớp</span>
-                             }
+                            }
                         </td>
+                        <td>@item.TieuDe</td>
+                        <td>@item.NoiDung</td>
+                        <td>@item.LoaiTin</td>
+                        <td>@item.NgayTao</td>
+                        <td>@item.TrangThai</td>
                         <td>
-                            <a href="@Url.Action("LopHocEdit", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-light-primary btn-sm">Sửa</a>
-                            <a href="@Url.Action("LopHocDelete", "AdminLopHoc", new { id = item.MaLH })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
+                            <div class="d-flex gap-2">
+                                <a href="@Url.Action("TinTucThongBaoEdit", "AdminTinTucThongBao", new { id = item.ID })" style="text-decoration: none;" class="btn btn-primary btn-sm">Sửa</a>
+                                <a href="@Url.Action("TinTucThongBaoDelete", "AdminTinTucThongBao", new { id = item.ID })" style="text-decoration: none;" class="btn btn-danger btn-sm">Xóa</a>
+                            </div>
                         </td>
                     </tr>
-                        
-                    }
+
+                }
             </tbody>
         </table>
     </div>
@@ -139,7 +138,7 @@
             @{
                 int trangtruoc = ViewBag.Page - 1;
                 int trangsau = ViewBag.Page + 1;
-                int totalPages = ViewBag.TotalPages;
+                int totalPages = ViewBag.totalPages;
                 int startPage = Math.Max(ViewBag.Page - 2, 1);
                 int endPage = Math.Min(ViewBag.Page + 2, totalPages);
             }
@@ -179,5 +178,3 @@
         </ul>
     </nav>
 </div>
-
-

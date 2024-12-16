@@ -1,0 +1,70 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TinTucThongBao
+@{
+    ViewBag.Title = "Đăng bài";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <div class="row g-0 mt-1 mb-0">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="card-body p-0 text-dark">
+                <h2 style="color: #0066b3">@ViewBag.Title</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row g-0 mt-1">
+        <div class="col-md-12">
+            <div class="card-body text-dark p-0">
+                @using (Html.BeginForm("TinTucThongBaoAdd", "AdminTinTucThongBao", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.Anh, "Ảnh bài đăng")
+                            <input type="file" name="imageFile" id="imageFile" class="form-control" />
+                            @Html.ValidationMessageFor(model => model.Anh, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.TieuDe, "Tiêu đề")
+                            @Html.TextBoxFor(model => model.TieuDe, new { placeholder = "Tiêu đề", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.NoiDung, "Nội dung")
+                            @Html.TextAreaFor(model => model.NoiDung, new { placeholder = "Nội dung", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.LoaiTin, "Loại tin")
+                            @Html.DropDownListFor(model => model.LoaiTin, new List<SelectListItem>()
+                               {
+                                    new SelectListItem {Text = "Tin tức",Value = "Tin tức"},
+                                    new SelectListItem {Text = "Thông báo",Value = "Thông báo"},
+                               }, "Chọn loại tin", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.LoaiTin, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row my-2 mt-3 mb-3">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary">Đăng bài</button> &nbsp;
+                            <a href="/Admin/AdminTinTucThongBao/DanhSachTinTucThongBao" class="btn btn-danger">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

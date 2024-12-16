@@ -1,0 +1,120 @@
+﻿@model DoAnChuyenNganh_HeThongTrungTamTinHoc.Models.TinTucThongBao
+@{
+    ViewBag.Title = "TinTucThongBaoEdit";
+    Layout = "~/Areas/Admin/Views/Shared/Layout_Admin.cshtml";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card mb-3 mx-auto mt-3" style="max-width: 800px;">
+    <div class="row g-0 mt-1 mb-0">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="card-body p-0 text-dark">
+                <h2 style="color: #0066b3">Chỉnh sửa thông tin bài đăng</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-0 mt-1">
+        <div class="col-md-12">
+            <div class="card-body text-dark p-0">
+                @using (Html.BeginForm("TinTucThongBaoEdit", "AdminTinTucThongBao", new { area = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.ID)
+
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.Anh, "Ảnh bài đăng")
+                            <input type="file" name="imageFile" id="imageFile" class="form-control" />
+                            <p>Ảnh hiện tại:</p>
+                            @{
+                                var imagePath = Server.MapPath($"~/images/{Model.Anh}");
+                                if (System.IO.File.Exists(imagePath) && Model.Anh != null)
+                                {
+                                    <img src="~/images/@Model.Anh" width="150px"/>
+                                }
+                                else
+                                {
+                                    <img src="~/images/noimage.jpg" width="150px"/>
+                                }
+                            }
+                            @Html.ValidationMessageFor(model => model.Anh, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.TieuDe, "Tiêu đề")
+                            @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.NoiDung, "Nội dung")
+                            @Html.TextBoxFor(model => model.NoiDung, new { placeholder = "Ngày sinh", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NoiDung, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.LoaiTin, "Loại tin")
+                            @Html.DropDownListFor(model => model.LoaiTin, new List<SelectListItem>()
+                               {
+                                    new SelectListItem {Text = "Tin tức", Value = "Tin tức", Selected = Model.LoaiTin == "Tin tức"},
+                                    new SelectListItem {Text = "Thông báo", Value = "Thông báo", Selected = Model.LoaiTin == "Thông báo"},
+                               }, "Chọn loại tin", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.LoaiTin, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.TrangThai, "Trạng thái")
+                            @Html.DropDownListFor(model => model.TrangThai, new List<SelectListItem>()
+                               {
+                                    new SelectListItem {Text = "Hiện", Value = "true", Selected = Model.TrangThai == true},
+                                    new SelectListItem {Text = "Ẩn", Value = "false", Selected = Model.TrangThai == false},
+                               }, "Chọn trạng thái", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row my-2 mt-3 mb-3">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button> &nbsp;
+                            <a href="/Admin/AdminTinTucThongBao/DanhSachTinTucThongBao" class="btn btn-danger">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
