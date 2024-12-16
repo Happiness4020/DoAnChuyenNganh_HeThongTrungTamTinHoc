@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Xác Thực Thanh Toán";
+    Layout = "~/Views/Shared/_HocVien.cshtml";
+}
+
+<style>
+    .alert-info {
+        background-color: #e7f3fe;
+        border: 1px solid #b8daff;
+        color: #0056b3;
+        border-radius: 10px;
+    }
+
+    .spinner-border {
+        width: 3rem;
+        height: 3rem;
+    }
+
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="alert alert-info text-center p-4 shadow-lg">
+                <h2 class="mb-4">Đợi xác thực thanh toán</h2>
+                <p>Chúng tôi đang xử lý yêu cầu thanh toán của bạn. Vui lòng không làm mới hoặc đóng trang này.</p>
+                <div class="spinner-border text-primary my-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted">Bạn sẽ được chuyển tiếp sau khi xác thực thành công.</p>
+                <button class="btn btn-outline-primary mt-3" onclick="cancelTransaction()">Hủy Giao Dịch</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Giả lập quá trình chờ
+    setTimeout(() => {
+        window.location.href = '/TrangThaiThanhToan';
+    }, 5000); // Chuyển sau 5 giây
+
+    function cancelTransaction() {
+        if (confirm("Bạn có chắc muốn hủy giao dịch?")) {
+            window.location.href = '/HuyThanhToan';
+        }
+    }
+</script>
+

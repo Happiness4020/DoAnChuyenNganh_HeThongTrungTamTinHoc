@@ -12,7 +12,7 @@
         border-radius: 5px;
         font-size: 0.9em;
         line-height: 1.5;
-        background-color: #28a745;
+        background-color: #0066b3;
     }
 
     .no-data {
@@ -21,48 +21,55 @@
         font-weight: bold;
     }
 </style>
+
 <body class="d-flex flex-column h-100 w-100">
     <header class="custom-header" style="background-color: #0066b3;">
     </header>
 
     <main class="container my-4">
         <h3 class="text-center py-3" style="color: #0066b3;">@ViewBag.Title của học viên <span style="color: orangered;">@ViewBag.HocVien.HoTen</span></h3>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Mã Lớp</th>
-                        <th>Tên Lớp</th>
-                        <th>Giờ Bắt Đầu</th>
-                        <th>Giờ Kết Thúc</th>
-                        <th>Giáo Viên</th>
-                        <th>Ngày Học</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model != null && Model.Any())
-                    {
-                        foreach (var item in Model)
-                        {
+
+        @if (Model != null && Model.Any())
+        {
+            var groupedByWeek = Model.GroupBy(x => x.TuanHoc); // Nhóm lịch học theo tuần
+            foreach (var weekGroup in groupedByWeek)
+            {
+                <div class="class-box">
+                    <h4>Tuần @weekGroup.Key</h4>
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
                             <tr>
-                                <td>@item.MaLop</td>
-                                <td>@item.TenLop</td>
-                                <td><i class="fas fa-clock"></i> @item.GioBatDau</td>
-                                <td><i class="fas fa-clock"></i> @item.GioKetThuc</td>
-                                <td><i class="fas fa-user"></i> @item.TenGV</td>
-                                <td>@item.NgayHoc</td>
+                                <th>Mã Lớp</th>
+                                <th>Tên Lớp</th>
+                                <th>Giờ Bắt Đầu</th>
+                                <th>Giờ Kết Thúc</th>
+                                <th>Giáo Viên</th>
+                                <th>Ngày Học</th>
+                                <th>Thứ</th>
                             </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="7" class="text-center no-data">Không có dữ liệu lịch học</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in weekGroup)
+                            {
+                                <tr>
+                                    <td>@item.MaLop</td>
+                                    <td>@item.TenLop</td>
+                                    <td><i class="fas fa-clock"></i> @item.GioBatDau</td>
+                                    <td><i class="fas fa-clock"></i> @item.GioKetThuc</td>
+                                    <td><i class="fas fa-user"></i> @item.TenGV</td>
+                                    <td>@item.NgayHoc</td>
+                                    <td>@item.ThuHoc</td> <!-- Hiển thị thứ trong tuần -->
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="no-data text-center">Không có dữ liệu lịch học</div>
+        }
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

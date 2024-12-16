@@ -55,7 +55,7 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                 DateTime ngayHienTai = DateTime.Today;
 
                 var lichdays = db.LichDay
-                    .Where(ld => ld.MaGV == magv && ld.NgayDay >= ngayHienTai)
+                    .Where(ld => ld.MaGV == magv )
                     .Include(ld => ld.LopHoc)
                     .Include(ld => ld.GiaoVien)
                     .OrderBy(ld => ld.NgayDay)

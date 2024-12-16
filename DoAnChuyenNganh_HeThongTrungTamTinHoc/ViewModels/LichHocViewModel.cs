@@ -15,5 +15,8 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.ViewModels
         public string NgayHoc { get; set; }
         public string NgayBatDau { get; set; }
         public string NgayKetThuc { get; set; }
+        public int TuanHoc { get; set; }
+        public string ThuHoc { get; set; }
+
     }
 }

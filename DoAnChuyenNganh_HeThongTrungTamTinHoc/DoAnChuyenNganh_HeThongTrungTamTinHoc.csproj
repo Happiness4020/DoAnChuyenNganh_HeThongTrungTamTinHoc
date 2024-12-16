@@ -449,6 +449,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhoaHocController.cs" />
     <Compile Include="Controllers\LienHeController.cs" />
+    <Compile Include="Controllers\TinTucThongBaoController.cs" />
     <Compile Include="Filter\AdminAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -707,6 +708,9 @@
     <Content Include="Views\KhoaHoc\LuuThongTinHocVien.cshtml" />
     <Content Include="Views\KhoaHoc\DanhSachLopHocTheoKhoaHoc.cshtml" />
     <Content Include="Views\KhoaHoc\ThanhToan.cshtml" />
+    <Content Include="Views\HocVien\XacThuc.cshtml" />
+    <Content Include="Views\TinTucThongBao\Index.cshtml" />
+    <Content Include="Views\TinTucThongBao\ChiTiet.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
