@@ -263,9 +263,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
 
                     try
                     {
-                        hocvien.DiemKiemTraLan1 = Math.Round((double)hv.DiemKiemTraLan1, 2);
-                        hocvien.DiemKiemTraLan2 = Math.Round((double)hv.DiemKiemTraLan2, 2);
-                        hocvien.DiemKiemTraLan3 = Math.Round((double)hv.DiemKiemTraLan3, 2);
+                        hocvien.DiemKiemTraLan1 = hv.DiemKiemTraLan1;
+                        hocvien.DiemKiemTraLan2 = hv.DiemKiemTraLan2;
+                        hocvien.DiemKiemTraLan3 = hv.DiemKiemTraLan3;
                         hocvien.KetQua = hv.KetQua;
 
                         db.SaveChanges();
