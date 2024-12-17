@@ -123,8 +123,9 @@
                             </a>
                         }
                         <h5 class="card-title flex-grow-1 mt-2"><a href="/KhoaHoc/ChiTietKhoaHoc/@item.MaKH" class="text-decoration-none" style="color: #0066b3">@Html.DisplayFor(model => item.TenKH)</a></h5>
-                        <span class="card-text flex-grow-1">Ngày khai giảng: @Html.DisplayFor(model => item.NgayBatDau)</span>
-                        <h4>Học phí: @Html.DisplayFor(model => item.HocPhi) VND</h4>
+                        @{ var ngaykhaigiang = item.NgayBatDau.ToString("yyyy/MM/dd");}
+                        <span class="card-text flex-grow-1">Ngày khai giảng: @Html.DisplayFor(model => ngaykhaigiang)</span>
+                        <h4>Học phí: @string.Format("{0:N0} VND", item.HocPhi)</h4>
                     </div>
                 </div>
             </div>

@@ -303,11 +303,11 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
                     return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
                 }
 
-                if (ngayhoc.Date != DateTime.Now.Date)
-                {
-                    TempData["ErrorMessage"] = "Chỉ có thể điểm danh trong ngày lớp học diễn ra!!!";
-                    return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
-                }
+                //if (ngayhoc.Date != DateTime.Now.Date)
+                //{
+                //    TempData["ErrorMessage"] = "Chỉ có thể điểm danh trong ngày lớp học diễn ra!!!";
+                //    return RedirectToAction("DanhSachHocVien", new { malh, ngayday });
+                //}
 
 
                 foreach (var item in diemDanh)

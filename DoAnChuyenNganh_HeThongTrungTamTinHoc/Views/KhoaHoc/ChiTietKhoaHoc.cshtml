@@ -83,7 +83,8 @@
             <div class="card-body">
                 <h5 class="card-title mb-2 text-white" style="font-weight: 600; font-size: 1.8em;">@Model.TenKH</h5>
                 <p class="card-text mb-2 text-white">Chương trình học: <a href="/ChuongTrinhHoc/KhoaHocTheoChuongTrinh/@Model.ChuongTrinhHoc.MaChuongTrinh" class="text-warning">@Html.DisplayFor(model => model.ChuongTrinhHoc.TenChuongTrinh)</a></p>
-                <p class="card-text mb-2 text-white">Ngày khai giảng: <span class="text-warning">@Html.DisplayFor(model => model.NgayBatDau)</span></p>
+                @{ var ngaybatdau = Model.NgayBatDau.ToString("yyyy/MM/dd");}
+                <p class="card-text mb-2 text-white">Ngày khai giảng: <span class="text-warning">@Html.DisplayFor(model => ngaybatdau)</span></p>
                 <p class="card-text mb-2 text-white">Ngày kết thúc: <span class="text-warning">@Html.DisplayFor(model => model.NgayKetThuc)</span></p>
                 <p class="card-text mb-2 text-white">Số buổi học: <span class="text-warning">@Html.DisplayFor(model => model.Sobuoihoc)</span></p>
                 <p class="card-text mb-2 text-white">Học phí: <span class="text-warning">@string.Format("{0:N0} VND", Model.HocPhi)</span></p>
@@ -92,7 +93,7 @@
                 {
                     <div class="mt-4">
                         <a href="@Url.Action("DangKyKhoaHoc", "KhoaHoc", new { MaKH = Model.MaKH })" class="btn btn-danger text-white px-4 py-2" style="font-weight: bold;">Đăng ký</a>
-                    </div> 
+                    </div>
                 }
                 else
                 {
@@ -135,7 +136,7 @@
                                 <h5 class="card-title flex-grow-1 mt-2">
                                     <a href="/KhoaHoc/ChiTietKhoaHoc/@khoahoc.MaKH" class="text-decoration-none" style="color: #0066b3">@khoahoc.TenKH</a>
                                 </h5>
-                                <span class="card-text flex-grow-1">Ngày khai giảng: @khoahoc.NgayBatDau</span>
+                                <span class="card-text flex-grow-1">Ngày khai giảng: @khoahoc.NgayBatDau.ToString("yyyy/MM/dd")</span>
                                 <h4 style="color: orangered;">Học phí: @string.Format("{0:N0} VND", khoahoc.HocPhi)</h4>
                                 <p>Số lượt đăng ký: <span class="fw-bold text-info">@khoahoc.SoLanDangKy</span></p>
                             </div>

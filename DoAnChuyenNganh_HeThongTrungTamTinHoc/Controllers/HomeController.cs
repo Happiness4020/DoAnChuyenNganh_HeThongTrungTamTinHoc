@@ -44,6 +44,9 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
              .ToList();
             ViewBag.BinhLuans = binhluans;
 
+            var tintucs = db.TinTucThongBao.Take(4).ToList();
+            ViewBag.TinTuc = tintucs;
+
             return View(khs);
         }
 
