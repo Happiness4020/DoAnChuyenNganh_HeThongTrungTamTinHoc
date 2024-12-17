@@ -11,11 +11,40 @@ namespace DoAnChuyenNganh_HeThongTrungTamTinHoc.Controllers
     {
         TrungTamTinHocEntities db = new TrungTamTinHocEntities();
         // GET: TinTucThongBao
-        public ActionResult Index()
+        public ActionResult Index(string search = "", string sortOrder = "ngaytao", int page = 1, int pageSize = 6)
         {
-            var tinTucThongBao = db.TinTucThongBao.Where(t => t.TrangThai == true).ToList();
+            List<ChuongTrinhHoc> cths = db.ChuongTrinhHoc.ToList();
+            ViewBag.ChuongTrinhHocs = cths;
 
-            return View(tinTucThongBao);
+            var tintucthongbaoQuery = db.TinTucThongBao.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                tintucthongbaoQuery = tintucthongbaoQuery.Where(tt => tt.TieuDe.Contains(search));
+            }
+
+            switch (sortOrder)
+            {
+                case "ngaytao":
+                    tintucthongbaoQuery = tintucthongbaoQuery.OrderByDescending(tt => tt.NgayTao);
+                    break;
+                default:
+                    tintucthongbaoQuery = tintucthongbaoQuery.OrderByDescending(tt => tt.NgayTao);
+                    break;
+            }
+
+            int totalRecords = tintucthongbaoQuery.Count();
+            int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            int recordsToSkip = (page - 1) * pageSize;
+
+            var dstt = tintucthongbaoQuery.Skip(recordsToSkip).Take(pageSize).ToList();
+
+            ViewBag.Search = search;
+            ViewBag.SortOrder = sortOrder;
+            ViewBag.Page = page;
+            ViewBag.TotalPages = totalPages;
+
+            return View(dstt);
         }
 
         public ActionResult ChiTiet(int id)

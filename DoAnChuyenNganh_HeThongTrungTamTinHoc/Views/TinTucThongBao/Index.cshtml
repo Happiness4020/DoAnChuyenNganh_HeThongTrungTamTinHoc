@@ -5,50 +5,106 @@
     Layout = "~/Views/Shared/_Main.cshtml";
 }
 
-<h2 class="text-center my-4">Danh sách bài báo và thông báo</h2>
+<div class="container mt-5">
+    <form class="d-flex mb-3 mt-2" action="@Url.Action("Index", "TinTucThongBao")">
+        <input class="form-control me-2" id="search" name="search" value="@ViewBag.Search" type="search" placeholder="Tìm kiếm thông báo" aria-label="Search" style="max-width: 400px;">
+        <button class="btn btn-outline-primary ms-2" type="submit">Tìm kiếm</button>
+        <a class="btn btn-danger ms-2" href="@Url.Action("Index", "TinTucThongBao")">Hủy</a>
+    </form>
 
-<div class="container">
-    <div class="row">
+    <div class="d-flex justify-content-between mb-3">
+        <form class="d-inline">
+            <label for="sortOrder" class="me-2 fw-bold">Sắp xếp:</label>
+            <select name="sortOrder" id="sortOrder" class="form-select d-inline w-auto" onchange="this.form.submit()">
+                <option value="ngaytao" @(ViewBag.SortOrder == "ngaytao" ? "selected" : "")>Ngày tạo</option>
+            </select>
+        </form>
+    </div>
+</div>
+
+<h3 class="text-center my-4">Danh sách Tin tức và Thông báo</h3>
+
+<div class="container-fluid d-flex justify-content-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @{
+                int trangtruoc = ViewBag.Page - 1;
+                int trangsau = ViewBag.Page + 1;
+                int totalPages = ViewBag.totalPages;
+                int startPage = Math.Max(ViewBag.Page - 2, 1);
+                int endPage = Math.Min(ViewBag.Page + 2, totalPages);
+            }
+
+            <li class="page-item @(ViewBag.Page == 1 ? "disabled" : "")">
+                <a class="page-link" href="?page=@trangtruoc&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder" tabindex="-1"><</a>
+            </li>
+
+            @if (startPage > 1)
+            {
+                <li class="page-item"><a class="page-link" href="?page=1&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">1</a></li>
+                if (startPage > 2)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                    <a class="page-link" href="?page=@i&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@i</a>
+                </li>
+            }
+
+            @if (endPage < totalPages)
+            {
+                if (endPage < totalPages - 1)
+                {
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                }
+                <li class="page-item"><a class="page-link" href="?page=@totalPages&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">@totalPages</a></li>
+            }
+
+            <li class="page-item @(ViewBag.Page == totalPages ? "disabled" : "")">
+                <a class="page-link" href="?page=@trangsau&search=@ViewBag.Search&sortOrder=@ViewBag.SortOrder">></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="container mb-3">
+    <div class="list-group">
         @foreach (var item in Model)
         {
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card shadow-sm h-100">
-                    <img src="~/images/@item.Anh" class="card-img-top" alt="Ảnh tin tức" style="height: 200px; object-fit: cover;" />
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title text-primary">@item.TieuDe</h5>
-                        <p class="card-text text-muted"><small>Ngày tạo: @item.NgayTao</small></p>
-                        <a href="@Url.Action("ChiTiet", "TinTucThongBao", new { id = item.ID })" class="btn btn-outline-primary mt-auto">Đọc tiếp</a>
-                    </div>
+            <a href="@Url.Action("ChiTiet", "TinTucThongBao", new { id = item.ID })" class="list-group-item list-group-item-action d-flex align-items-center">
+                <img src="~/images/@item.Anh" class="rounded me-3" alt="Ảnh tin tức" style="width: 85px; height: 85px; object-fit: cover;">
+                <div>
+                    <h5 class="mb-1" style="color: #0066b3;">@item.TieuDe</h5>
+                    <small class="text-muted">Ngày tạo: @item.NgayTao.Value.ToString("yyyy/MM/dd")</small>
                 </div>
-            </div>
+            </a>
         }
     </div>
 </div>
 
 <style>
-    h2 {
-        font-size: 2.5rem;
+    h3 {
+        font-size: 2rem;
         font-weight: bold;
         color: #0066b3;
     }
 
-    .card-title {
-        font-size: 1.25rem;
+    .list-group-item {
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+        .list-group-item:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+    .text-primary {
+        font-size: 1.2rem;
         font-weight: 600;
     }
-
-    .card-body {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .btn-outline-primary {
-        color: #0066b3;
-        border-color: #0066b3;
-    }
-
-        .btn-outline-primary:hover {
-            background-color: #0066b3;
-            color: #fff;
-        }
 </style>
+
